@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mainScreenActivity"
+    android:background="#DEFCF9">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="500dp">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="310dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageback"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/dots"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:backgroundTint="#000000"/>
+
+                <ImageView
+                    android:id="@+id/imageBell"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bell"
+                    app:layout_constraintEnd_toStartOf="@+id/imageback"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:backgroundTint="#FFC107"/>
+
+                <ImageView
+                    android:id="@+id/imageUser"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/avatar" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/custompanel"
+                    android:elevation="4dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Xin Chào "
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtUsername"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="THÀNH"
+                            android:textAlignment="viewEnd"
+                            android:textAllCaps="true"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="#707070" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.25"
+                            android:orientation="vertical"
+                            android:layout_marginHorizontal="20px"
+                            android:background="@drawable/customtextedit">
+
+                            <ImageView
+                                android:id="@+id/imageMessage"
+                                android:layout_width="match_parent"
+                                android:layout_height="59dp"
+                                android:layout_gravity="center"
+                                android:paddingTop="20px"
+                                app:srcCompat="@drawable/timetable" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Lịch học"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.25"
+                            android:orientation="vertical"
+                            android:layout_marginHorizontal="20px"
+                            android:background="@drawable/customtextedit">
+
+                            <ImageView
+                                android:id="@+id/imageTimetable"
+                                android:layout_width="match_parent"
+                                android:layout_height="59dp"
+                                android:layout_gravity="center"
+                                android:paddingTop="20px"
+                                app:srcCompat="@drawable/planning" />
+
+                            <TextView
+                                android:id="@+id/textView52"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Môn học\n dự kiến"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.25"
+                            android:layout_marginHorizontal="20px"
+                            android:background="@drawable/customtextedit"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/imageDocument"
+                                android:layout_width="match_parent"
+                                android:layout_height="59dp"
+                                android:layout_gravity="center"
+                                android:paddingTop="20px"
+                                app:srcCompat="@drawable/score" />
+
+                            <TextView
+                                android:id="@+id/textView53"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Điểm"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.25"
+                            android:orientation="vertical"
+                            android:layout_marginHorizontal="20px"
+                            android:background="@drawable/customtextedit">
+
+                            <ImageView
+                                android:id="@+id/imageResult"
+                                android:layout_width="match_parent"
+                                android:layout_height="59dp"
+                                android:layout_gravity="center"
+                                android:paddingTop="20px"
+                                app:srcCompat="@drawable/todolist" />
+
+                            <TextView
+                                android:id="@+id/textView54"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Công việc"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/customtextedit"
+                            android:layout_marginHorizontal="20px"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/imgAnother"
+                                android:layout_width="match_parent"
+                                android:layout_height="59dp"
+                                android:layout_gravity="center"
+                                android:paddingTop="20px"
+                                app:srcCompat="@drawable/another" />
+
+                            <TextView
+                                android:id="@+id/txtAnother"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Khác"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="20px"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="59dp"
+                                android:layout_gravity="center"
+                                android:paddingTop="20px" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="\n"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="20px"
+                            android:orientation="vertical">
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="20px"
+                            android:orientation="vertical">
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lịch học hôm nay"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="600px"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custompanel">
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:listitem="@layout/customlv_lichhochomnay">
+
+                    </ListView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Công việc cần làm"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="600px"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custompanel">
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:listitem="@layout/customlv_congvieccanlam">
+                    </ListView>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
