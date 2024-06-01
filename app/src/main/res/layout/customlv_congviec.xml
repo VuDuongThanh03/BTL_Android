@@ -19,6 +19,7 @@
             android:paddingTop="10px"
             android:paddingBottom="10px">
             <TextView
+                android:id="@+id/tv_tenviec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tên công việc"
@@ -38,6 +39,7 @@
                     android:textStyle="bold">
                 </TextView>
                 <TextView
+                    android:id="@+id/tv_chitietcv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Làm cái gì đó"
@@ -57,6 +59,7 @@
                     android:textStyle="bold">
                 </TextView>
                 <TextView
+                    android:id="@+id/tv_mucuutien"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Quan trọng"
@@ -76,6 +79,7 @@
                     android:textStyle="bold">
                 </TextView>
                 <TextView
+                    android:id="@+id/tv_hancvgio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="17:00"
@@ -83,6 +87,7 @@
                     android:textStyle="bold">
                 </TextView>
                 <TextView
+                    android:id="@+id/tv_hancvngay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="22/5/2024"
