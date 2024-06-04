@@ -13,9 +13,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddSubject extends AppCompatActivity {
@@ -24,6 +24,7 @@ public class AddSubject extends AppCompatActivity {
     private TextView tvTotalCredits;
     private List<Subject> subjectList;
     private SubjectAdapter adapter;
+    private DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +37,8 @@ public class AddSubject extends AppCompatActivity {
         rvSubjects = findViewById(R.id.rvSubjects);
         tvTotalCredits = findViewById(R.id.tvTotalCredits);
 
-        subjectList = new ArrayList<>();
-        subjectList.add(new Subject("Thiết kế ứng dụng trên thiết bị di động", "MOB101", 3, "Item"));
-        subjectList.add(new Subject("Thiết kế ứng dụng trên thiết bị di động", "MOB102", 3, "Item"));
-        subjectList.add(new Subject("Thiết kế ứng dụng trên thiết bị di động", "MOB103", 3, "Item"));
-        subjectList.add(new Subject("Thiết kế ứng dụng trên thiết bị di động", "MOB104", 3, "Item"));
+        db = new DatabaseHelper(this);
+        subjectList = db.getAllSubjects();
 
         adapter = new SubjectAdapter(subjectList);
         rvSubjects.setLayoutManager(new LinearLayoutManager(this));
@@ -76,7 +74,11 @@ public class AddSubject extends AppCompatActivity {
                 int credits = data.getIntExtra("credits", 0);
                 String semester = data.getStringExtra("semester");
 
-                subjectList.add(new Subject(name, code, credits, semester));
+                Subject subject = new Subject(name, code, credits, semester);
+                db.addSubject(subject);
+
+                subjectList.clear();
+                subjectList.addAll(db.getAllSubjects());
                 adapter.notifyDataSetChanged();
                 updateTotalCredits();
             }
