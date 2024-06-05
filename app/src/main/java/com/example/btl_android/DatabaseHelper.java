@@ -14,6 +14,7 @@ import com.example.btl_android.add_subject.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
+/** @noinspection ALL*/
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database name and version

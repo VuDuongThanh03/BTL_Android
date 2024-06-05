@@ -11,6 +11,7 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
+/** @noinspection ALL*/
 public class CongViecAdapter extends BaseAdapter {
 
     private final Context context;

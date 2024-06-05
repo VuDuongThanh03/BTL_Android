@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/** @noinspection ALL*/
 public class LoginActivity extends AppCompatActivity {
 
     Button login;

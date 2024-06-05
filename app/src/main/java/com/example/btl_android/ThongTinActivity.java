@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+/** @noinspection ALL*/
 public class ThongTinActivity extends AppCompatActivity {
 
     Button btn_continue;

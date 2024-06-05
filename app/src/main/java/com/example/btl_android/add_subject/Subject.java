@@ -1,5 +1,6 @@
 package com.example.btl_android.add_subject;
 
+/** @noinspection ALL*/
 public class Subject {
     private int id;
     private String name;

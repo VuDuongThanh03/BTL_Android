@@ -1,5 +1,6 @@
 package com.example.btl_android.add_subject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.R;
 
+/** @noinspection ALL*/
 public class AddSubjectHandle extends AppCompatActivity {
     private EditText etName;
     private EditText etCode;

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.cong_viec.CongViecActivity;
 
+/** @noinspection ALL*/
 public class MainScreenActivity extends AppCompatActivity {
 
     LinearLayout congviec;

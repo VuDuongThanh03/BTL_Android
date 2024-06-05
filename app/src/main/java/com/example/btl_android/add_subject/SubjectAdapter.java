@@ -12,6 +12,7 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
+/** @noinspection ALL*/
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
     private final List<Subject> subjects;
 

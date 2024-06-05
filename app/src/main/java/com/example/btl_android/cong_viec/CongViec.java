@@ -1,5 +1,6 @@
 package com.example.btl_android.cong_viec;
 
+/** @noinspection ALL*/
 public class CongViec {
     String tenCongViec;
     String chiTietCongViec;

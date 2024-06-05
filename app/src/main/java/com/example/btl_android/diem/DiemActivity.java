@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.R;
 
+/** @noinspection ALL*/
 public class DiemActivity extends AppCompatActivity {
 
     @Override

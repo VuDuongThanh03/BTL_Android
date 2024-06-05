@@ -18,6 +18,7 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
+/** @noinspection ALL*/
 public class AddSubject extends AppCompatActivity {
     private static final int ADD_SUBJECT_REQUEST_CODE = 1;
     private RecyclerView rvSubjects;
