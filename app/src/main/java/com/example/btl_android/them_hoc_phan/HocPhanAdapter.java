@@ -1,4 +1,4 @@
-package com.example.btl_android.add_subject;
+package com.example.btl_android.them_hoc_phan;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,29 +13,29 @@ import com.example.btl_android.R;
 import java.util.List;
 
 /** @noinspection ALL*/
-public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
-    private final List<Subject> subjects;
+public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.SubjectViewHolder> {
+    private final List<HocPhan> hocPhans;
 
-    public SubjectAdapter(final List<Subject> subjects) {
-        this.subjects = subjects;
+    public HocPhanAdapter(final List<HocPhan> hocPhans) {
+        this.hocPhans = hocPhans;
     }
 
     @NonNull
     @Override
     public SubjectViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subject, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.customrv_hoc_phan, parent, false);
         return new SubjectViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final SubjectViewHolder holder, final int position) {
-        final Subject subject = this.subjects.get(position);
-        holder.bind(subject);
+        final HocPhan hocPhan = this.hocPhans.get(position);
+        holder.bind(hocPhan);
     }
 
     @Override
     public int getItemCount() {
-        return this.subjects.size();
+        return this.hocPhans.size();
     }
 
     class SubjectViewHolder extends RecyclerView.ViewHolder {
@@ -48,10 +48,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             this.tvCredits = itemView.findViewById(R.id.tvCredits);
         }
 
-        public void bind(final Subject subject) {
-            this.tvName.setText("Môn: " + subject.getName());
-            this.tvCode.setText("Mã học phần: " + subject.getCode());
-            this.tvCredits.setText("Số tín chỉ: " + subject.getCredits());
+        public void bind(final HocPhan hocPhan) {
+            this.tvName.setText("Môn: " + hocPhan.getName());
+            this.tvCode.setText("Mã học phần: " + hocPhan.getCode());
+            this.tvCredits.setText("Số tín chỉ: " + hocPhan.getCredits());
         }
     }
 }

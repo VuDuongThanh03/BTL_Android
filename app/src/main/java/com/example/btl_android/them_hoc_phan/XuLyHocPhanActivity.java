@@ -1,4 +1,4 @@
-package com.example.btl_android.add_subject;
+package com.example.btl_android.them_hoc_phan;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.btl_android.R;
 
 /** @noinspection ALL*/
-public class AddSubjectHandle extends AppCompatActivity {
+public class XuLyHocPhanActivity extends AppCompatActivity {
     private EditText etName;
     private EditText etCode;
     private EditText etCredits;
@@ -24,7 +24,7 @@ public class AddSubjectHandle extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_add_subject_handle);
+        this.setContentView(R.layout.activity_xu_ly_hoc_phan);
 
         this.etName = this.findViewById(R.id.etName);
         this.etCode = this.findViewById(R.id.etCode);
@@ -36,14 +36,14 @@ public class AddSubjectHandle extends AppCompatActivity {
         this.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                AddSubjectHandle.this.handleAddSubject();
+                XuLyHocPhanActivity.this.handleAddSubject();
             }
         });
 
         this.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                AddSubjectHandle.this.finish();
+                XuLyHocPhanActivity.this.finish();
             }
         });
     }
@@ -70,7 +70,7 @@ public class AddSubjectHandle extends AppCompatActivity {
         // Thông báo thêm thành công
         Toast.makeText(this, "Thêm môn học thành công", Toast.LENGTH_SHORT).show();
 
-        // Tạo Intent để gửi dữ liệu về Activity AddSubject
+        // Tạo Intent để gửi dữ liệu về Activity HocPhanActivity
         final Intent resultIntent = new Intent();
         resultIntent.putExtra("name", name);
         resultIntent.putExtra("code", code);

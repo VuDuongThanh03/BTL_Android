@@ -9,7 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.btl_android.add_subject.Subject;
+import com.example.btl_android.them_hoc_phan.HocPhan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Common column names
     private static final String COLUMN_ID = "id";
 
-    // Subject table column names
+    // HocPhan table column names
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_CODE = "code";
     private static final String COLUMN_CREDITS = "credits";
@@ -136,22 +136,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // CRUD operations for subjects
-    public void addSubject(final Subject subject) {
+    public void addSubject(final HocPhan hocPhan) {
         final SQLiteDatabase db = getWritableDatabase();
 
         final ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_NAME, subject.getName());
-        values.put(DatabaseHelper.COLUMN_CODE, subject.getCode());
-        values.put(DatabaseHelper.COLUMN_CREDITS, subject.getCredits());
-        values.put(DatabaseHelper.COLUMN_SEMESTER, subject.getSemester());
+        values.put(DatabaseHelper.COLUMN_NAME, hocPhan.getName());
+        values.put(DatabaseHelper.COLUMN_CODE, hocPhan.getCode());
+        values.put(DatabaseHelper.COLUMN_CREDITS, hocPhan.getCredits());
+        values.put(DatabaseHelper.COLUMN_SEMESTER, hocPhan.getSemester());
 
         db.insert(DatabaseHelper.TABLE_SUBJECTS, null, values);
 
         db.close();
     }
 
-    public List<Subject> getAllSubjects() {
-        final List<Subject> subjectList = new ArrayList<>();
+    public List<HocPhan> getAllSubjects() {
+        final List<HocPhan> hocPhanList = new ArrayList<>();
         final String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_SUBJECTS;
 
         final SQLiteDatabase db = getReadableDatabase();
@@ -159,18 +159,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                final Subject subject = new Subject();
-                subject.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)));
-                subject.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME)));
-                subject.setCode(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CODE)));
-                subject.setCredits(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CREDITS)));
-                subject.setSemester(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_SEMESTER)));
-                subjectList.add(subject);
+                final HocPhan hocPhan = new HocPhan();
+                hocPhan.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)));
+                hocPhan.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME)));
+                hocPhan.setCode(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CODE)));
+                hocPhan.setCredits(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CREDITS)));
+                hocPhan.setSemester(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_SEMESTER)));
+                hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         db.close();
-        return subjectList;
+        return hocPhanList;
     }
 }

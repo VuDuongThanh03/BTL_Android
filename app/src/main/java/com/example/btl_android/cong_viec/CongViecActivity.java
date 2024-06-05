@@ -35,7 +35,7 @@ public class CongViecActivity extends AppCompatActivity {
         Context x = this;
         lvcongviec = findViewById(R.id.lvcongviec);
 
-        cvAdapter = new CongViecAdapter(x, R.layout.customlv_congviec, listcongviec);
+        cvAdapter = new CongViecAdapter(x, R.layout.customlv_cong_viec, listcongviec);
         lvcongviec.setAdapter(cvAdapter);
     }
 }

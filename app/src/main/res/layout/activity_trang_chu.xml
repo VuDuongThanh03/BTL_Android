@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainScreenActivity"
+    tools:context=".dang_nhap.TrangChuActivity"
     android:background="#DEFCF9">
 
     <ScrollView
@@ -338,7 +338,7 @@
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_lichhochomnay">
+                        tools:listitem="@layout/customlv_lich_hoc_hom_nay">
 
                     </ListView>
                 </LinearLayout>
@@ -372,7 +372,7 @@
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_congvieccanlam">
+                        tools:listitem="@layout/customlv_cong_viec_can_lam">
                     </ListView>
                 </LinearLayout>
             </LinearLayout>

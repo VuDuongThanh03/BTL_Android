@@ -1,4 +1,4 @@
-package com.example.btl_android.add_subject;
+package com.example.btl_android.them_hoc_phan;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,18 +19,18 @@ import com.example.btl_android.R;
 import java.util.List;
 
 /** @noinspection ALL*/
-public class AddSubject extends AppCompatActivity {
+public class HocPhanActivity extends AppCompatActivity {
     private static final int ADD_SUBJECT_REQUEST_CODE = 1;
     private RecyclerView rvSubjects;
     private TextView tvTotalCredits;
-    private List<Subject> subjectList;
-    private SubjectAdapter adapter;
+    private List<HocPhan> hocPhanList;
+    private HocPhanAdapter adapter;
     private DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_subject);
+        setContentView(R.layout.activity_hoc_phan);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,9 +39,9 @@ public class AddSubject extends AppCompatActivity {
         tvTotalCredits = findViewById(R.id.tvTotalCredits);
 
         db = new DatabaseHelper(this);
-        subjectList = db.getAllSubjects();
+        hocPhanList = db.getAllSubjects();
 
-        adapter = new SubjectAdapter(subjectList);
+        adapter = new HocPhanAdapter(hocPhanList);
         rvSubjects.setLayoutManager(new LinearLayoutManager(this));
         rvSubjects.setAdapter(adapter);
 
@@ -50,7 +50,7 @@ public class AddSubject extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menutoolbar, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
     }
 
@@ -58,7 +58,7 @@ public class AddSubject extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.add_subject) {
-            Intent intent = new Intent(this, AddSubjectHandle.class);
+            Intent intent = new Intent(this, XuLyHocPhanActivity.class);
             startActivityForResult(intent, ADD_SUBJECT_REQUEST_CODE);
             return true;
         }
@@ -75,11 +75,11 @@ public class AddSubject extends AppCompatActivity {
                 final int credits = data.getIntExtra("credits", 0);
                 final String semester = data.getStringExtra("semester");
 
-                final Subject subject = new Subject(name, code, credits, semester);
-                this.db.addSubject(subject);
+                final HocPhan hocPhan = new HocPhan(name, code, credits, semester);
+                this.db.addSubject(hocPhan);
 
-                this.subjectList.clear();
-                this.subjectList.addAll(this.db.getAllSubjects());
+                this.hocPhanList.clear();
+                this.hocPhanList.addAll(this.db.getAllSubjects());
                 this.adapter.notifyDataSetChanged();
                 this.updateTotalCredits();
             }
@@ -88,8 +88,8 @@ public class AddSubject extends AppCompatActivity {
 
     private void updateTotalCredits() {
         int totalCredits = 0;
-        for (final Subject subject : this.subjectList) {
-            totalCredits += subject.getCredits();
+        for (final HocPhan hocPhan : this.hocPhanList) {
+            totalCredits += hocPhan.getCredits();
         }
         this.tvTotalCredits.setText("Tổng tín chỉ dự kiến: " + totalCredits);
     }

@@ -1,17 +1,17 @@
-package com.example.btl_android.add_subject;
+package com.example.btl_android.them_hoc_phan;
 
 /** @noinspection ALL*/
-public class Subject {
+public class HocPhan {
     private int id;
     private String name;
     private String code;
     private int credits;
     private String semester;
 
-    public Subject() {
+    public HocPhan() {
     }
 
-    public Subject(final String name, final String code, final int credits, final String semester) {
+    public HocPhan(final String name, final String code, final int credits, final String semester) {
         this.name = name;
         this.code = code;
         this.credits = credits;

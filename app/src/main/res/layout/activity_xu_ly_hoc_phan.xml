@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".add_subject.AddSubjectHandle">
+    tools:context=".them_hoc_phan.XuLyHocPhanActivity">
 
     <EditText
         android:id="@+id/etName"
