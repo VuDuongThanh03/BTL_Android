@@ -20,6 +20,7 @@ import java.util.List;
 
 public class AddSubject extends AppCompatActivity {
     private static final int ADD_SUBJECT_REQUEST_CODE = 1;
+
     private RecyclerView rvSubjects;
     private TextView tvTotalCredits;
     private List<Subject> subjectList;

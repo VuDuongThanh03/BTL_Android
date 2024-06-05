@@ -150,12 +150,15 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/linearLayoutMonHocDuKien"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.25"
                             android:orientation="vertical"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/customtextedit">
+                            android:background="@drawable/customtextedit"
+                            android:clickable="true"
+                            android:focusable="true">
 
                             <ImageView
                                 android:id="@+id/imageTimetable"
@@ -163,7 +166,7 @@
                                 android:layout_height="59dp"
                                 android:layout_gravity="center"
                                 android:paddingTop="20px"
-                                app:srcCompat="@drawable/planning" />
+                                app:srcCompat="@drawable/planning"/>
 
                             <TextView
                                 android:id="@+id/textView52"
@@ -173,7 +176,7 @@
                                 android:text="Môn học\n dự kiến"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -325,9 +328,7 @@
                     android:text="Lịch học hôm nay"
                     android:textColor="@color/black"
                     android:textSize="20dp"
-                    android:textStyle="bold">
-
-                </TextView>
+                    android:textStyle="bold"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -338,10 +339,10 @@
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_lichhochomnay">
-
-                    </ListView>
+                        tools:listitem="@layout/customlv_lichhochomnay"/>
                 </LinearLayout>
+
+
 
             </LinearLayout>
 

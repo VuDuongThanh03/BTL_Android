@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:title="Thêm Môn Học"
-        android:id="@+id/add_subject"
-        app:showAsAction="always" />
+        android:id="@+id/add_subject" />
+    <item
+        android:title="Kỳ học"
+        android:id="@+id/semester"
+         />
+    <item
+        android:title="Trở về"
+        android:id="@+id/back_to_mainScreen"
+      />
 </menu>
