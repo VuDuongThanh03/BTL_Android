@@ -1,10 +1,12 @@
-package com.example.btl_android;
+package com.example.btl_android.cong_viec;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.btl_android.R;
 
 import java.util.ArrayList;
 

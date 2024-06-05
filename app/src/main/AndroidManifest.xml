@@ -12,19 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
-        <activity android:name=".add_subject.AddSubjectHandle" />
 
+        <activity
+            android:name=".diem.TongKetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".diem.DiemChiTietActivity"
+            android:exported="false" />
+        <activity
+            android:name=".diem.DiemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".add_subject.AddSubjectHandle"
+            android:exported="false" />
         <activity
             android:name=".add_subject.AddSubject"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
-            android:name=".CongViecActivity"
+            android:name=".cong_viec.CongViecActivity"
             android:exported="false" />
         <activity
             android:name=".MainScreenActivity"

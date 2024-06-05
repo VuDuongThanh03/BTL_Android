@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.btl_android.cong_viec.CongViecActivity;
+
 public class MainScreenActivity extends AppCompatActivity {
 
     LinearLayout congviec;
