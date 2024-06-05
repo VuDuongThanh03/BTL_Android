@@ -54,116 +54,116 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_MATKHAU = "matKhau";
     private static final String COLUMN_HOTEN = "hoTen";
 
-    public DatabaseHelper(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public DatabaseHelper(@Nullable final Context context) {
+        super(context, DatabaseHelper.DATABASE_NAME, null, DatabaseHelper.DATABASE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        createTableSubjects(db);
-        createTableSinhVien(db);
-        createTableTaiKhoan(db);
-        createTableCongViec(db);
+    public void onCreate(final SQLiteDatabase db) {
+        this.createTableSubjects(db);
+        this.createTableSinhVien(db);
+        this.createTableTaiKhoan(db);
+        this.createTableCongViec(db);
     }
 
-    private void createTableSubjects(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_SUBJECTS + "("
-                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_NAME + " TEXT,"
-                + COLUMN_CODE + " TEXT,"
-                + COLUMN_CREDITS + " INTEGER,"
-                + COLUMN_SEMESTER + " TEXT" + ")";
+    private void createTableSubjects(final SQLiteDatabase db) {
+        final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_SUBJECTS + "("
+                + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + DatabaseHelper.COLUMN_NAME + " TEXT,"
+                + DatabaseHelper.COLUMN_CODE + " TEXT,"
+                + DatabaseHelper.COLUMN_CREDITS + " INTEGER,"
+                + DatabaseHelper.COLUMN_SEMESTER + " TEXT" + ")";
         db.execSQL(createTable);
     }
 
-    private void createTableSinhVien(SQLiteDatabase db) {
+    private void createTableSinhVien(final SQLiteDatabase db) {
         try {
-            String createTable = "CREATE TABLE " + TABLE_SINHVIEN + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_MA_SINHVIEN + " TEXT NOT NULL,"
-                    + COLUMN_KHOA + " TEXT,"
-                    + COLUMN_ID_TK + " INTEGER NOT NULL,"
-                    + COLUMN_MA_CHUYENNGANH + " INTEGER NOT NULL,"
-                    + "FOREIGN KEY (" + COLUMN_ID_TK + ") REFERENCES " + TABLE_TAIKHOAN + "(" + COLUMN_ID + ")" + ")";
+            final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_SINHVIEN + "("
+                    + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + DatabaseHelper.COLUMN_MA_SINHVIEN + " TEXT NOT NULL,"
+                    + DatabaseHelper.COLUMN_KHOA + " TEXT,"
+                    + DatabaseHelper.COLUMN_ID_TK + " INTEGER NOT NULL,"
+                    + DatabaseHelper.COLUMN_MA_CHUYENNGANH + " INTEGER NOT NULL,"
+                    + "FOREIGN KEY (" + DatabaseHelper.COLUMN_ID_TK + ") REFERENCES " + DatabaseHelper.TABLE_TAIKHOAN + "(" + DatabaseHelper.COLUMN_ID + ")" + ")";
             db.execSQL(createTable);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.e("Error", "There are some problems in createTableSinhVien!");
         }
     }
 
-    private void createTableTaiKhoan(SQLiteDatabase db) {
+    private void createTableTaiKhoan(final SQLiteDatabase db) {
         try {
-            String createTable = "CREATE TABLE " + TABLE_TAIKHOAN + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_TAIKHOAN + " TEXT NOT NULL,"
-                    + COLUMN_MATKHAU + " TEXT NOT NULL,"
-                    + COLUMN_HOTEN + " TEXT NOT NULL" + ")";
+            final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_TAIKHOAN + "("
+                    + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + DatabaseHelper.COLUMN_TAIKHOAN + " TEXT NOT NULL,"
+                    + DatabaseHelper.COLUMN_MATKHAU + " TEXT NOT NULL,"
+                    + DatabaseHelper.COLUMN_HOTEN + " TEXT NOT NULL" + ")";
             db.execSQL(createTable);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.e("Error", "There are some problems in createTableTaiKhoan!");
         }
     }
 
-    private void createTableCongViec(SQLiteDatabase db) {
+    private void createTableCongViec(final SQLiteDatabase db) {
         try {
-            String createTable = "CREATE TABLE " + TABLE_CONGVIEC + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_TEN_VIEC + " TEXT NOT NULL,"
-                    + COLUMN_CHITIET + " TEXT,"
-                    + COLUMN_MUC_UUTIEN + " INTEGER,"
-                    + COLUMN_THOIHAN + " TEXT NOT NULL,"
-                    + COLUMN_TRANGTHAI + " INTEGER NOT NULL,"
-                    + COLUMN_ID_SV + " INTEGER NOT NULL,"
-                    + "FOREIGN KEY (" + COLUMN_ID_SV + ") REFERENCES " + TABLE_SINHVIEN + "(" + COLUMN_ID + ")"
+            final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_CONGVIEC + "("
+                    + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + DatabaseHelper.COLUMN_TEN_VIEC + " TEXT NOT NULL,"
+                    + DatabaseHelper.COLUMN_CHITIET + " TEXT,"
+                    + DatabaseHelper.COLUMN_MUC_UUTIEN + " INTEGER,"
+                    + DatabaseHelper.COLUMN_THOIHAN + " TEXT NOT NULL,"
+                    + DatabaseHelper.COLUMN_TRANGTHAI + " INTEGER NOT NULL,"
+                    + DatabaseHelper.COLUMN_ID_SV + " INTEGER NOT NULL,"
+                    + "FOREIGN KEY (" + DatabaseHelper.COLUMN_ID_SV + ") REFERENCES " + DatabaseHelper.TABLE_SINHVIEN + "(" + DatabaseHelper.COLUMN_ID + ")"
                     + ")";
             db.execSQL(createTable);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.e("Error", "There are some problems in createTableCongViec!");
         }
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         // Drop older tables if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUBJECTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SINHVIEN);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONGVIEC);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAIKHOAN);
+        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_SUBJECTS);
+        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_SINHVIEN);
+        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_CONGVIEC);
+        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_TAIKHOAN);
 
         // Create tables again
-        onCreate(db);
+        this.onCreate(db);
     }
 
     // CRUD operations for subjects
-    public void addSubject(Subject subject) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void addSubject(final Subject subject) {
+        final SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, subject.getName());
-        values.put(COLUMN_CODE, subject.getCode());
-        values.put(COLUMN_CREDITS, subject.getCredits());
-        values.put(COLUMN_SEMESTER, subject.getSemester());
+        final ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_NAME, subject.getName());
+        values.put(DatabaseHelper.COLUMN_CODE, subject.getCode());
+        values.put(DatabaseHelper.COLUMN_CREDITS, subject.getCredits());
+        values.put(DatabaseHelper.COLUMN_SEMESTER, subject.getSemester());
 
-        db.insert(TABLE_SUBJECTS, null, values);
+        db.insert(DatabaseHelper.TABLE_SUBJECTS, null, values);
 
         db.close();
     }
 
     public List<Subject> getAllSubjects() {
-        List<Subject> subjectList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_SUBJECTS;
+        final List<Subject> subjectList = new ArrayList<>();
+        final String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_SUBJECTS;
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        final SQLiteDatabase db = getReadableDatabase();
+        final Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                Subject subject = new Subject();
-                subject.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
-                subject.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)));
-                subject.setCode(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CODE)));
-                subject.setCredits(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CREDITS)));
-                subject.setSemester(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SEMESTER)));
+                final Subject subject = new Subject();
+                subject.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)));
+                subject.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME)));
+                subject.setCode(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CODE)));
+                subject.setCredits(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CREDITS)));
+                subject.setSemester(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_SEMESTER)));
                 subjectList.add(subject);
             } while (cursor.moveToNext());
         }

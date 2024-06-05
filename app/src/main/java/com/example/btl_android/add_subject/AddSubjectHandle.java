@@ -20,47 +20,47 @@ public class AddSubjectHandle extends AppCompatActivity {
     private Button btnCancel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_subject_handle);
+        this.setContentView(R.layout.activity_add_subject_handle);
 
-        etName = findViewById(R.id.etName);
-        etCode = findViewById(R.id.etCode);
-        etCredits = findViewById(R.id.etCredits);
-        etSemester = findViewById(R.id.etSemester);
-        btnAdd = findViewById(R.id.btnAdd);
-        btnCancel = findViewById(R.id.btnCancel);
+        this.etName = this.findViewById(R.id.etName);
+        this.etCode = this.findViewById(R.id.etCode);
+        this.etCredits = this.findViewById(R.id.etCredits);
+        this.etSemester = this.findViewById(R.id.etSemester);
+        this.btnAdd = this.findViewById(R.id.btnAdd);
+        this.btnCancel = this.findViewById(R.id.btnCancel);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        this.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                handleAddSubject();
+            public void onClick(final View v) {
+                AddSubjectHandle.this.handleAddSubject();
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        this.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                finish();
+            public void onClick(final View v) {
+                AddSubjectHandle.this.finish();
             }
         });
     }
 
     private void handleAddSubject() {
-        String name = etName.getText().toString().trim();
-        String code = etCode.getText().toString().trim();
-        String creditsStr = etCredits.getText().toString().trim();
-        String semester = etSemester.getText().toString().trim();
+        final String name = this.etName.getText().toString().trim();
+        final String code = this.etCode.getText().toString().trim();
+        final String creditsStr = this.etCredits.getText().toString().trim();
+        final String semester = this.etSemester.getText().toString().trim();
 
         if (name.isEmpty() || code.isEmpty() || creditsStr.isEmpty() || semester.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int credits;
+        final int credits;
         try {
             credits = Integer.parseInt(creditsStr);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             Toast.makeText(this, "Số tín chỉ phải là số nguyên", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -69,12 +69,12 @@ public class AddSubjectHandle extends AppCompatActivity {
         Toast.makeText(this, "Thêm môn học thành công", Toast.LENGTH_SHORT).show();
 
         // Tạo Intent để gửi dữ liệu về Activity AddSubject
-        Intent resultIntent = new Intent();
+        final Intent resultIntent = new Intent();
         resultIntent.putExtra("name", name);
         resultIntent.putExtra("code", code);
         resultIntent.putExtra("credits", credits);
         resultIntent.putExtra("semester", semester);
-        setResult(RESULT_OK, resultIntent);
-        finish();
+        this.setResult(Activity.RESULT_OK, resultIntent);
+        this.finish();
     }
 }

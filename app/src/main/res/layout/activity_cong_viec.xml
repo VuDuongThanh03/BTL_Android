@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".congViecActivity"
+    tools:context=".CongViecActivity"
     android:background="#DEFCF9">
 
     <TextView

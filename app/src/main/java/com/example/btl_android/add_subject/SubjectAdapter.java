@@ -13,44 +13,44 @@ import com.example.btl_android.R;
 import java.util.List;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
-    private List<Subject> subjects;
+    private final List<Subject> subjects;
 
-    public SubjectAdapter(List<Subject> subjects) {
+    public SubjectAdapter(final List<Subject> subjects) {
         this.subjects = subjects;
     }
 
     @NonNull
     @Override
-    public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subject, parent, false);
+    public SubjectViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subject, parent, false);
         return new SubjectViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SubjectViewHolder holder, int position) {
-        Subject subject = subjects.get(position);
+    public void onBindViewHolder(@NonNull final SubjectViewHolder holder, final int position) {
+        final Subject subject = this.subjects.get(position);
         holder.bind(subject);
     }
 
     @Override
     public int getItemCount() {
-        return subjects.size();
+        return this.subjects.size();
     }
 
     class SubjectViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvCode, tvCredits;
 
-        public SubjectViewHolder(@NonNull View itemView) {
+        public SubjectViewHolder(@NonNull final View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tvName);
-            tvCode = itemView.findViewById(R.id.tvCode);
-            tvCredits = itemView.findViewById(R.id.tvCredits);
+            this.tvName = itemView.findViewById(R.id.tvName);
+            this.tvCode = itemView.findViewById(R.id.tvCode);
+            this.tvCredits = itemView.findViewById(R.id.tvCredits);
         }
 
-        public void bind(Subject subject) {
-            tvName.setText("Môn: " + subject.getName());
-            tvCode.setText("Mã học phần: " + subject.getCode());
-            tvCredits.setText("Số tín chỉ: " + subject.getCredits());
+        public void bind(final Subject subject) {
+            this.tvName.setText("Môn: " + subject.getName());
+            this.tvCode.setText("Mã học phần: " + subject.getCode());
+            this.tvCredits.setText("Số tín chỉ: " + subject.getCredits());
         }
     }
 }

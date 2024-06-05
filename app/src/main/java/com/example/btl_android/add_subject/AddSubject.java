@@ -67,29 +67,29 @@ public class AddSubject extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_SUBJECT_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (data != null) {
-                String name = data.getStringExtra("name");
-                String code = data.getStringExtra("code");
-                int credits = data.getIntExtra("credits", 0);
-                String semester = data.getStringExtra("semester");
+        if (requestCode == ADD_SUBJECT_REQUEST_CODE && RESULT_OK == resultCode) {
+            if (null != data) {
+                final String name = data.getStringExtra("name");
+                final String code = data.getStringExtra("code");
+                final int credits = data.getIntExtra("credits", 0);
+                final String semester = data.getStringExtra("semester");
 
-                Subject subject = new Subject(name, code, credits, semester);
-                db.addSubject(subject);
+                final Subject subject = new Subject(name, code, credits, semester);
+                this.db.addSubject(subject);
 
-                subjectList.clear();
-                subjectList.addAll(db.getAllSubjects());
-                adapter.notifyDataSetChanged();
-                updateTotalCredits();
+                this.subjectList.clear();
+                this.subjectList.addAll(this.db.getAllSubjects());
+                this.adapter.notifyDataSetChanged();
+                this.updateTotalCredits();
             }
         }
     }
 
     private void updateTotalCredits() {
         int totalCredits = 0;
-        for (Subject subject : subjectList) {
+        for (final Subject subject : this.subjectList) {
             totalCredits += subject.getCredits();
         }
-        tvTotalCredits.setText("Tổng tín chỉ dự kiến: " + totalCredits);
+        this.tvTotalCredits.setText("Tổng tín chỉ dự kiến: " + totalCredits);
     }
 }
