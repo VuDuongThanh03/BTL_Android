@@ -7,40 +7,44 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="QLHT_App"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
-        <activity android:name=".add_subject.AddSubjectHandle" />
 
         <activity
-            android:name=".add_subject.AddSubject"
-            android:exported="false">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
-        <activity
-            android:name=".congViecActivity"
+            android:name=".diem.DiemChiTietActivity"
             android:exported="false" />
         <activity
-            android:name=".mainScreenActivity"
+            android:name=".diem.DiemActivity"
             android:exported="false" />
         <activity
-            android:name=".thongTinActivity"
+            android:name=".them_hoc_phan.XuLyHocPhanActivity"
             android:exported="false" />
         <activity
-            android:name=".loginActivity"
-            android:exported="true">
+            android:name=".them_hoc_phan.HocPhanActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".cong_viec.CongViecActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dang_nhap.TrangChuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dang_nhap.ThongTinActivity"
+            android:exported="false" />
+        <activity
+
+            android:name=".dang_nhap.DangNhapActivity"
+            android:exported="false">
+        </activity>
+
     </application>
 
 </manifest>

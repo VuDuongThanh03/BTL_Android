@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".thongTinActivity">
+    tools:context=".dang_nhap.ThongTinActivity">
 
     <ImageView
         android:id="@+id/imageView4"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/loginboxback"
+        android:background="@drawable/login_box_back"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/customtextedit"
+            android:background="@drawable/custom_text_edit"
             android:ems="10"
             android:hint="Nhập họ tên"
             android:inputType="textPersonName"
@@ -89,7 +89,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/customtextedit"
+            android:background="@drawable/custom_text_edit"
             android:ems="10"
             android:hint="Nhập mã sinh viên"
             android:inputType="textPersonName"
@@ -112,7 +112,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/customtextedit">
+            android:background="@drawable/custom_text_edit">
             <Spinner
                 android:id="@+id/spn_chuyennganh"
                 android:layout_width="match_parent"
@@ -142,7 +142,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/customtextedit">
+            android:background="@drawable/custom_text_edit">
             <Spinner
                 android:id="@+id/spn_khoa"
                 android:layout_width="match_parent"

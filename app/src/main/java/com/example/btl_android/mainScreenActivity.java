@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.btl_android.add_subject.AddSubject;
-import com.example.btl_android.add_subject.AddSubjectHandle;
+import com.example.btl_android.cong_viec.CongViecActivity;
 
+/** @noinspection ALL*/
 public class mainScreenActivity extends AppCompatActivity {
 
     LinearLayout congviec;
@@ -17,24 +17,15 @@ public class mainScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
+        setContentView(R.layout.activity_trang_chu);
 
-        congviec = findViewById(R.id.congvieczone);
-        monHocDuKien = findViewById(R.id.linearLayoutMonHocDuKien); // Liên kết biến với LinearLayout "Môn học dự kiến"
+        congviec = findViewById(R.id.btnCongViec);
 
         congviec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mainScreenActivity.this, congViecActivity.class);
+                Intent intent = new Intent(mainScreenActivity.this, CongViecActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        monHocDuKien.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mainScreenActivity.this, AddSubject.class);
-                startActivity(intent); // Chuyển sang Activity AddSubject khi nhấn vào "Môn học dự kiến"
             }
         });
     }

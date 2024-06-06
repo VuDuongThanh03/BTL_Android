@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mainScreenActivity"
+    tools:context=".dang_nhap.TrangChuActivity"
     android:background="#DEFCF9">
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -32,7 +32,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageback"
+                    android:id="@+id/imageDot"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
@@ -49,7 +49,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/bell"
-                    app:layout_constraintEnd_toStartOf="@+id/imageback"
+                    app:layout_constraintEnd_toStartOf="@+id/imageDot"
                     app:layout_constraintTop_toTopOf="parent"
                     android:backgroundTint="#FFC107"/>
 
@@ -70,7 +70,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="12dp"
-                    android:background="@drawable/custompanel"
+                    android:background="@drawable/custom_panel1"
                     android:elevation="4dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -85,7 +85,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -107,7 +106,6 @@
                     </LinearLayout>
 
                     <View
-                        android:id="@+id/view"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="20dp"
@@ -116,7 +114,8 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="4"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
@@ -124,20 +123,20 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/btnLichHoc"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.25"
+                            android:layout_weight="1"
                             android:orientation="vertical"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/customtextedit">
+                            android:background="@drawable/custom_text_edit">
 
                             <ImageView
-                                android:id="@+id/imageMessage"
                                 android:layout_width="match_parent"
-                                android:layout_height="59dp"
+                                android:layout_height="60dp"
                                 android:layout_gravity="center"
                                 android:paddingTop="20px"
-                                app:srcCompat="@drawable/timetable" />
+                                app:srcCompat="@drawable/time_table" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -150,53 +149,50 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/linearLayoutMonHocDuKien"
+                            android:id="@+id/btnHocPhan"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.25"
+                            android:layout_weight="1"
                             android:orientation="vertical"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/customtextedit"
+                            android:background="@drawable/custom_text_edit"
                             android:clickable="true"
                             android:focusable="true">
 
                             <ImageView
-                                android:id="@+id/imageTimetable"
                                 android:layout_width="match_parent"
-                                android:layout_height="59dp"
+                                android:layout_height="60dp"
                                 android:layout_gravity="center"
                                 android:paddingTop="20px"
                                 app:srcCompat="@drawable/planning"/>
 
                             <TextView
-                                android:id="@+id/textView52"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="Môn học\n dự kiến"
+                                android:text="Học phần\n dự kiến"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/btnDiem"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.25"
+                            android:layout_weight="1"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/customtextedit"
+                            android:background="@drawable/custom_text_edit"
                             android:orientation="vertical">
 
                             <ImageView
-                                android:id="@+id/imageDocument"
                                 android:layout_width="match_parent"
-                                android:layout_height="59dp"
+                                android:layout_height="60dp"
                                 android:layout_gravity="center"
                                 android:paddingTop="20px"
                                 app:srcCompat="@drawable/score" />
 
                             <TextView
-                                android:id="@+id/textView53"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -206,26 +202,23 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
 
-
                         <LinearLayout
-                            android:id="@+id/congvieczone"
+                            android:id="@+id/btnCongViec"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.25"
+                            android:layout_weight="1"
                             android:orientation="vertical"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/customtextedit">
+                            android:background="@drawable/custom_text_edit">
 
                             <ImageView
-                                android:id="@+id/imageResult"
                                 android:layout_width="match_parent"
-                                android:layout_height="59dp"
+                                android:layout_height="60dp"
                                 android:layout_gravity="center"
                                 android:paddingTop="20px"
-                                app:srcCompat="@drawable/todolist" />
+                                app:srcCompat="@drawable/to_do_list" />
 
                             <TextView
-                                android:id="@+id/textView54"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -247,23 +240,22 @@
                         android:weightSum="4">
 
                         <LinearLayout
+                            android:id="@+id/btnKhac"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@drawable/customtextedit"
+                            android:background="@drawable/custom_text_edit"
                             android:layout_marginHorizontal="20px"
                             android:orientation="vertical">
 
                             <ImageView
-                                android:id="@+id/imgAnother"
                                 android:layout_width="match_parent"
-                                android:layout_height="59dp"
+                                android:layout_height="60dp"
                                 android:layout_gravity="center"
                                 android:paddingTop="20px"
                                 app:srcCompat="@drawable/another" />
 
                             <TextView
-                                android:id="@+id/txtAnother"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -272,6 +264,7 @@
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -293,15 +286,15 @@
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginHorizontal="20px"
                             android:orientation="vertical">
-
-
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -313,7 +306,6 @@
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -334,16 +326,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="600px"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/custompanel">
+                    android:background="@drawable/custom_panel1">
 
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_lichhochomnay"/>
+                        tools:listitem="@layout/customlv_lich_hoc_hom_nay"/>
                 </LinearLayout>
-
-
-
             </LinearLayout>
 
             <LinearLayout
@@ -361,19 +350,18 @@
                     android:textSize="20dp"
                     android:textColor="@color/black"
                     android:textStyle="bold">
-
                 </TextView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="600px"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/custompanel">
+                    android:background="@drawable/custom_panel1">
 
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_congvieccanlam">
+                        tools:listitem="@layout/customlv_cong_viec_can_lam">
                     </ListView>
                 </LinearLayout>
             </LinearLayout>
