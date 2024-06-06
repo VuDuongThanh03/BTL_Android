@@ -15,13 +15,7 @@
 
         <activity
             android:name=".diem.TongKetActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".diem.DiemChiTietActivity"
             android:exported="false" />
@@ -46,7 +40,11 @@
         <activity
             android:name=".dang_nhap.DangNhapActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
