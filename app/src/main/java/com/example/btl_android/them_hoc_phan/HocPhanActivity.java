@@ -23,6 +23,8 @@ public class HocPhanActivity extends AppCompatActivity {
     private static final int ADD_SUBJECT_REQUEST_CODE = 1;
     private RecyclerView rvSubjects;
     private TextView tvTotalCredits;
+    private TextView tvTotalPracticalCredits;
+    private TextView tvTotalHeSo;
     private List<HocPhan> hocPhanList;
     private HocPhanAdapter adapter;
     private DatabaseHelper db;
@@ -37,6 +39,8 @@ public class HocPhanActivity extends AppCompatActivity {
 
         rvSubjects = findViewById(R.id.rvSubjects);
         tvTotalCredits = findViewById(R.id.tvTotalCredits);
+        tvTotalPracticalCredits = findViewById(R.id.tvTotalPracticalCredits);
+        tvTotalHeSo = findViewById(R.id.tvTotalHeSo);
 
         db = new DatabaseHelper(this);
         hocPhanList = db.getAllSubjects();
@@ -45,7 +49,7 @@ public class HocPhanActivity extends AppCompatActivity {
         rvSubjects.setLayoutManager(new LinearLayoutManager(this));
         rvSubjects.setAdapter(adapter);
 
-        updateTotalCredits();
+        updateTotals();
     }
 
     @Override
@@ -70,27 +74,38 @@ public class HocPhanActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_SUBJECT_REQUEST_CODE && RESULT_OK == resultCode) {
             if (null != data) {
-                final String name = data.getStringExtra("name");
-                final String code = data.getStringExtra("code");
-                final int credits = data.getIntExtra("credits", 0);
-                final String semester = data.getStringExtra("semester");
+                final String tenHp = data.getStringExtra("tenHp");
+                final String maHp = data.getStringExtra("maHp");
+                final int soTinChiLyThuyet = data.getIntExtra("soTinChiLyThuyet", 0);
+                final int soTinChiThucHanh = data.getIntExtra("soTinChiThucHanh", 0);
+                final int hocKy = data.getIntExtra("hocKy", 0);
+                final String hinhThucThi = data.getStringExtra("hinhThucThi");
+                final String heSo = data.getStringExtra("heSo");
 
-                final HocPhan hocPhan = new HocPhan(name, code, credits, semester);
+                final HocPhan hocPhan = new HocPhan(tenHp, maHp, soTinChiLyThuyet, soTinChiThucHanh, hocKy, hinhThucThi, heSo);
                 this.db.addSubject(hocPhan);
 
                 this.hocPhanList.clear();
                 this.hocPhanList.addAll(this.db.getAllSubjects());
                 this.adapter.notifyDataSetChanged();
-                this.updateTotalCredits();
+                this.updateTotals();
             }
         }
     }
 
-    private void updateTotalCredits() {
+    private void updateTotals() {
         int totalCredits = 0;
+        int totalPracticalCredits = 0;
+        float totalHeSo = 0;
+
         for (final HocPhan hocPhan : this.hocPhanList) {
-            totalCredits += hocPhan.getCredits();
+            totalCredits += hocPhan.getSoTinChiLyThuyet();
+            totalPracticalCredits += hocPhan.getSoTinChiThucHanh();
+            totalHeSo += Float.parseFloat(hocPhan.getHeSo());
         }
-        this.tvTotalCredits.setText("Tổng tín chỉ dự kiến: " + totalCredits);
+
+        this.tvTotalCredits.setText("Tổng tín chỉ lý thuyết: " + totalCredits);
+        this.tvTotalPracticalCredits.setText("Tổng tín chỉ thực hành: " + totalPracticalCredits);
+        this.tvTotalHeSo.setText("Tổng hệ số: " + totalHeSo);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.btl_android;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -127,12 +126,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
             db.execSQL(CREATE_TABLE_DIEMDANH);
         } catch (final Exception e) {
-            Log.e("Error", "There are some problems in creating database");
+            Log.e("Error", "There are some problems in creating database", e);
         }
     }
 
     @Override
-    public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Xóa bảng cũ nếu tồn tại
         db.execSQL("DROP TABLE IF EXISTS SinhVien");
         db.execSQL("DROP TABLE IF EXISTS CongViec");
         db.execSQL("DROP TABLE IF EXISTS ChuyenNganh");
@@ -141,25 +141,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS DiemDanh");
 
+        // Tạo lại cấu trúc cơ sở dữ liệu
         onCreate(db);
     }
 
+
     // CRUD operations for HocPhan
+    // Phương thức thêm môn học
     public void addSubject(final HocPhan hocPhan) {
         final SQLiteDatabase db = getWritableDatabase();
-
-        String sql = "INSERT INTO HocPhan (tenHp, maHp, soTinChiLyThuyet, hocKy) VALUES (?, ?, ?, ?)";
-
-        db.execSQL(sql, new Object[]{
-                hocPhan.getName(),
-                hocPhan.getCode(),
-                hocPhan.getCredits(),
-                hocPhan.getSemester()
-        });
-
-        db.close();
+        try {
+            String sql = "INSERT INTO HocPhan (tenHp, maHp, soTinChiLyThuyet, soTinChiThucHanh, hocKy, hinhThucThi, heSo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            db.execSQL(sql, new Object[]{
+                    hocPhan.getTenHp(),
+                    hocPhan.getMaHp(),
+                    hocPhan.getSoTinChiLyThuyet(),
+                    hocPhan.getSoTinChiThucHanh(),
+                    hocPhan.getHocKy(),
+                    hocPhan.getHinhThucThi(),
+                    hocPhan.getHeSo()
+            });
+        } finally {
+            db.close();
+        }
     }
 
+    // Phương thức lấy tất cả môn học
     public List<HocPhan> getAllSubjects() {
         final List<HocPhan> hocPhanList = new ArrayList<>();
         final String selectQuery = "SELECT * FROM HocPhan";
@@ -170,11 +177,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 final HocPhan hocPhan = new HocPhan();
-                hocPhan.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
-                hocPhan.setName(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
-                hocPhan.setCode(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-                hocPhan.setCredits(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-                hocPhan.setSemester(cursor.getString(cursor.getColumnIndexOrThrow("hocKy")));
+                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
+                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
+                hocPhan.setSoTinChiLyThuyet(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
+                hocPhan.setSoTinChiThucHanh(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiThucHanh")));
+                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
+                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")));
+                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndexOrThrow("heSo")));
                 hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }

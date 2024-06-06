@@ -8,7 +8,7 @@
     android:layout_marginTop="8dp">
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvTenHp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Môn: Thiết kế ứng dụng trên thiết bị di động"
@@ -16,7 +16,7 @@
         android:textColor="@android:color/black"/>
 
     <TextView
-        android:id="@+id/tvCode"
+        android:id="@+id/tvMaHp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mã học phần: "
@@ -24,10 +24,43 @@
         android:textColor="@android:color/black"/>
 
     <TextView
-        android:id="@+id/tvCredits"
+        android:id="@+id/tvSoTinChiLyThuyet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Số tín chỉ: "
+        android:text="Số tín chỉ lý thuyết: "
         android:textSize="16sp"
         android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tvSoTinChiThucHanh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số tín chỉ thực hành: "
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tvHocKy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Học kỳ: "
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tvHinhThucThi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hình thức thi: "
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tvHeSo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hệ số: "
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
+
 </LinearLayout>
