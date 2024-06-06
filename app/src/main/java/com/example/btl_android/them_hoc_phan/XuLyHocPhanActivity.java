@@ -4,71 +4,55 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.R;
 
+/** @noinspection ALL*/
 public class XuLyHocPhanActivity extends AppCompatActivity {
-    private EditText etName;
-    private EditText etCode;
-    private EditText etCredits;
-    private Spinner spinnerSemester;
-    private Button btnAdd;
-    private Button btnCancel;
+    private EditText etTenHp;
+    private EditText etMaHp;
+    private EditText etSoTinChiLyThuyet;
+    private EditText etHocKy;
+    private Button btnThem;
+    private Button btnHuy;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_xu_ly_hoc_phan);
+        this.setContentView(R.layout.activity_xu_ly_hoc_phan);
 
-        etName = findViewById(R.id.etName);
-        etCode = findViewById(R.id.etCode);
-        etCredits = findViewById(R.id.etCredits);
-        spinnerSemester = findViewById(R.id.spinnerSemester);
-        btnAdd = findViewById(R.id.btnAdd);
-        btnCancel = findViewById(R.id.btnCancel);
+        this.etTenHp = this.findViewById(R.id.etTenHp);
+        this.etMaHp = this.findViewById(R.id.etMaHp);
+        this.etSoTinChiLyThuyet = this.findViewById(R.id.etSoTinChiLyThuyet);
+        this.etHocKy = this.findViewById(R.id.etHocKy);
+        this.btnThem = this.findViewById(R.id.btnThem);
+        this.btnHuy = this.findViewById(R.id.btnHuy);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.semester_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSemester.setAdapter(adapter);
+        this.btnThem.setOnClickListener(v -> XuLyHocPhanActivity.this.handleAddSubject());
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleAddSubject();
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        this.btnHuy.setOnClickListener(v -> XuLyHocPhanActivity.this.finish());
     }
 
     private void handleAddSubject() {
-        String name = etName.getText().toString().trim();
-        String code = etCode.getText().toString().trim();
-        String creditsStr = etCredits.getText().toString().trim();
-        String semester = spinnerSemester.getSelectedItem().toString(); // Lấy kỳ học được chọn từ Spinner
+        final String tenHp = this.etTenHp.getText().toString().trim();
+        final String maHp = this.etMaHp.getText().toString().trim();
+        final String creditsStr = this.etSoTinChiLyThuyet.getText().toString().trim();
+        final String hocKy = this.etHocKy.getText().toString().trim();
 
-        if (name.isEmpty() || code.isEmpty() || creditsStr.isEmpty() || semester.isEmpty()) {
+        if (tenHp.isEmpty() || maHp.isEmpty() || creditsStr.isEmpty() || hocKy.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int credits;
+        final int soTinChiLyThuyet;
         try {
-            credits = Integer.parseInt(creditsStr);
-        } catch (NumberFormatException e) {
+            soTinChiLyThuyet = Integer.parseInt(creditsStr);
+        } catch (final NumberFormatException e) {
             Toast.makeText(this, "Số tín chỉ phải là số nguyên", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -77,12 +61,12 @@ public class XuLyHocPhanActivity extends AppCompatActivity {
         Toast.makeText(this, "Thêm môn học thành công", Toast.LENGTH_SHORT).show();
 
         // Tạo Intent để gửi dữ liệu về Activity HocPhanActivity
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("name", name);
-        resultIntent.putExtra("code", code);
-        resultIntent.putExtra("credits", credits);
-        resultIntent.putExtra("semester", semester);
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        final Intent resultIntent = new Intent();
+        resultIntent.putExtra("tenHp", tenHp);
+        resultIntent.putExtra("maHp", maHp);
+        resultIntent.putExtra("soTinChiLyThuyet", soTinChiLyThuyet);
+        resultIntent.putExtra("hocKy", hocKy);
+        this.setResult(Activity.RESULT_OK, resultIntent);
+        this.finish();
     }
 }
