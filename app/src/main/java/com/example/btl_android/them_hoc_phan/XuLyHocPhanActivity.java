@@ -4,65 +4,71 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.R;
 
-/** @noinspection ALL*/
 public class XuLyHocPhanActivity extends AppCompatActivity {
     private EditText etName;
     private EditText etCode;
     private EditText etCredits;
-    private EditText etSemester;
+    private Spinner spinnerSemester;
     private Button btnAdd;
     private Button btnCancel;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_xu_ly_hoc_phan);
+        setContentView(R.layout.activity_xu_ly_hoc_phan);
 
-        this.etName = this.findViewById(R.id.etName);
-        this.etCode = this.findViewById(R.id.etCode);
-        this.etCredits = this.findViewById(R.id.etCredits);
-        this.etSemester = this.findViewById(R.id.etSemester);
-        this.btnAdd = this.findViewById(R.id.btnAdd);
-        this.btnCancel = this.findViewById(R.id.btnCancel);
+        etName = findViewById(R.id.etName);
+        etCode = findViewById(R.id.etCode);
+        etCredits = findViewById(R.id.etCredits);
+        spinnerSemester = findViewById(R.id.spinnerSemester);
+        btnAdd = findViewById(R.id.btnAdd);
+        btnCancel = findViewById(R.id.btnCancel);
 
-        this.btnAdd.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.semester_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSemester.setAdapter(adapter);
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
-                XuLyHocPhanActivity.this.handleAddSubject();
+            public void onClick(View v) {
+                handleAddSubject();
             }
         });
 
-        this.btnCancel.setOnClickListener(new View.OnClickListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
-                XuLyHocPhanActivity.this.finish();
+            public void onClick(View v) {
+                finish();
             }
         });
     }
 
     private void handleAddSubject() {
-        final String name = this.etName.getText().toString().trim();
-        final String code = this.etCode.getText().toString().trim();
-        final String creditsStr = this.etCredits.getText().toString().trim();
-        final String semester = this.etSemester.getText().toString().trim();
+        String name = etName.getText().toString().trim();
+        String code = etCode.getText().toString().trim();
+        String creditsStr = etCredits.getText().toString().trim();
+        String semester = spinnerSemester.getSelectedItem().toString(); // Lấy kỳ học được chọn từ Spinner
 
         if (name.isEmpty() || code.isEmpty() || creditsStr.isEmpty() || semester.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        final int credits;
+        int credits;
         try {
             credits = Integer.parseInt(creditsStr);
-        } catch (final NumberFormatException e) {
+        } catch (NumberFormatException e) {
             Toast.makeText(this, "Số tín chỉ phải là số nguyên", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -71,12 +77,12 @@ public class XuLyHocPhanActivity extends AppCompatActivity {
         Toast.makeText(this, "Thêm môn học thành công", Toast.LENGTH_SHORT).show();
 
         // Tạo Intent để gửi dữ liệu về Activity HocPhanActivity
-        final Intent resultIntent = new Intent();
+        Intent resultIntent = new Intent();
         resultIntent.putExtra("name", name);
         resultIntent.putExtra("code", code);
         resultIntent.putExtra("credits", credits);
         resultIntent.putExtra("semester", semester);
-        this.setResult(Activity.RESULT_OK, resultIntent);
-        this.finish();
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 }

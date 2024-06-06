@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".them_hoc_phan.XuLyHocPhanActivity">
@@ -38,11 +39,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
-    <EditText
-        android:id="@+id/etSemester"
+    <Spinner
+        android:id="@+id/spinnerSemester"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Học kỳ"
         app:layout_constraintTop_toBottomOf="@id/etCredits"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thêm"
-        app:layout_constraintTop_toBottomOf="@id/etSemester"
+        app:layout_constraintTop_toBottomOf="@id/spinnerSemester"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="16dp" />
 
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hủy"
-        app:layout_constraintTop_toBottomOf="@id/etSemester"
+        app:layout_constraintTop_toBottomOf="@id/spinnerSemester"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
