@@ -26,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_SINHVIEN = "SinhVien";
     private static final String TABLE_CONGVIEC = "CongViec";
     private static final String TABLE_TAIKHOAN = "TaiKhoan";
+    private static final String TABLE_THOIKHOABIEU="THOIKHOABIEU";
 
     // Common column names
     private static final String COLUMN_ID = "id";
@@ -55,6 +56,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_MATKHAU = "matKhau";
     private static final String COLUMN_HOTEN = "hoTen";
 
+    // ThoiKhoaBieu table column names
+     private static final String COLUMN_MON = "mon";
+    private static final String COLUMN_THU = "thu";
+    private static final String COLUMN_NGAY = "ngay";
+    private static final String COLUMN_GIANGVIEN = "giangvien";
+    private static final String COLUMN_PHONG = "phong";
+    private static final String COLUMN_TIET = "tiet";
+    private static final String COLUMN_DIADIEM = "diadiem";
+
     public DatabaseHelper(@Nullable final Context context) {
         super(context, DatabaseHelper.DATABASE_NAME, null, DatabaseHelper.DATABASE_VERSION);
     }
@@ -65,8 +75,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.createTableSinhVien(db);
         this.createTableTaiKhoan(db);
         this.createTableCongViec(db);
+        this.createTableThoiKhoaBieu(db);
     }
-
+     private void createTableThoiKhoaBieu(final SQLiteDatabase db) {
+        final String query="CREATE TABLE " + TABLE_THOIKHOABIEU+
+                "("+  COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_MON + " TEXT,"
+                + COLUMN_THU + " TEXT,"
+                + COLUMN_NGAY + " TEXT,"
+                + COLUMN_GIANGVIEN + " TEXT,"
+                + COLUMN_PHONG + " TEXT,"
+                + COLUMN_TIET + " TEXT,"
+                + COLUMN_DIADIEM + " TEXT" + ")";
+        db.execSQL(query);
+    }
     private void createTableSubjects(final SQLiteDatabase db) {
         final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_SUBJECTS + "("
                 + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -130,7 +152,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_SINHVIEN);
         db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_CONGVIEC);
         db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_TAIKHOAN);
-
+        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_THOIKHOABIEU);
         // Create tables again
         this.onCreate(db);
     }
@@ -172,5 +194,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return hocPhanList;
+    }
+     void AddTimeTable(String mon,String thu,String ngay,String giangvien,String phong,String tiet,String diadiem)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues tb=new ContentValues();
+
+        tb.put(COLUMN_MON,mon);
+        tb.put(COLUMN_THU,thu);
+        tb.put(COLUMN_NGAY,ngay);
+        tb.put(COLUMN_GIANGVIEN,giangvien);
+        tb.put(COLUMN_PHONG,phong);
+        tb.put(COLUMN_TIET,tiet);
+        tb.put(COLUMN_DIADIEM,diadiem);
+        long result = db.insert(TABLE_THOIKHOABIEU,null,tb);
+        if(result == -1)
+        {
+            Toast.makeText(context,"Failed",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(context,"Them Thanh Cong",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    Cursor readAllData()
+    {
+        String query = "SELECT * FROM "+TABLE_THOIKHOABIEU;
+        SQLiteDatabase db= this.getReadableDatabase();
+
+        Cursor cursor=  null;
+        if (db != null);
+        {
+           cursor= db.rawQuery(query,null);
+
+        }
+        return cursor;
     }
 }
