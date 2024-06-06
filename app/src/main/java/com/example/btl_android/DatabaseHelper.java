@@ -21,39 +21,96 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Table names
-    private static final String TABLE_SUBJECTS = "subjects";
-    private static final String TABLE_SINHVIEN = "SinhVien";
-    private static final String TABLE_CONGVIEC = "CongViec";
-    private static final String TABLE_TAIKHOAN = "TaiKhoan";
+    // SinhVien table
+    private static final String CREATE_TABLE_SINHVIEN =
+            "CREATE TABLE IF NOT EXISTS SinhVien (" +
+                    "maSv TEXT NOT NULL," +
+                    "maCn INTEGER NOT NULL," +
+                    "tenTk INTEGER NOT NULL UNIQUE," +
+                    "matKhau TEXT NOT NULL," +
+                    "khoa TEXT NOT NULL," +
+                    "PRIMARY KEY(maSv)," +
+                    "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
 
-    // Common column names
-    private static final String COLUMN_ID = "id";
+    // CongViec table
+    private static final String CREATE_TABLE_CONGVIEC =
+            "CREATE TABLE IF NOT EXISTS CongViec (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "idSv TEXT NOT NULL," +
+                    "tenViec TEXT NOT NULL," +
+                    "mucUuTien INTEGER," +
+                    "thoiHan TEXT NOT NULL," +
+                    "trangThai INTEGER NOT NULL," +
+                    "chiTiet TEXT," +
+                    "FOREIGN KEY (idSv) REFERENCES SinhVien(maSv)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
 
-    // HocPhan table column names
-    private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_CODE = "code";
-    private static final String COLUMN_CREDITS = "credits";
-    private static final String COLUMN_SEMESTER = "semester";
+    // ChuyenNganh table
+    private static final String CREATE_TABLE_CHUYENNGANH =
+            "CREATE TABLE IF NOT EXISTS ChuyenNganh (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "tenCn TEXT NOT NULL" +
+                    ");";
 
-    // SinhVien table column names
-    private static final String COLUMN_MA_SINHVIEN = "maSV";
-    private static final String COLUMN_KHOA = "khoa";
-    private static final String COLUMN_ID_TK = "idTk";
-    private static final String COLUMN_MA_CHUYENNGANH = "maChuyenNganh";
+    // HocPhan table
+    private static final String CREATE_TABLE_HOCPHAN =
+            "CREATE TABLE IF NOT EXISTS HocPhan (" +
+                    "maHp TEXT PRIMARY KEY," +
+                    "tenHp TEXT NOT NULL," +
+                    "soTinChiLyThuyet INTEGER NOT NULL," +
+                    "soTinChiThucHanh INTEGER NOT NULL," +
+                    "hocKy INTEGER NOT NULL," +
+                    "hinhThucThi TEXT NOT NULL," +
+                    "heSo TEXT NOT NULL" +
+                    ");";
 
-    // CongViec table column names
-    private static final String COLUMN_TEN_VIEC = "tenViec";
-    private static final String COLUMN_CHITIET = "chiTiet";
-    private static final String COLUMN_MUC_UUTIEN = "mucUuTien";
-    private static final String COLUMN_THOIHAN = "thoiHan";
-    private static final String COLUMN_TRANGTHAI = "trangThai";
-    private static final String COLUMN_ID_SV = "idSv";
+    // LoaiHocPhan table
+    private static final String CREATE_TABLE_LOAIHOCPHAN =
+            "CREATE TABLE IF NOT EXISTS LoaiHocPhan (" +
+                    "maHp TEXT NOT NULL," +
+                    "maCn INTEGER NOT NULL," +
+                    "loai INTEGER NOT NULL," +
+                    "PRIMARY KEY(maHp, maCn)," +
+                    "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
+                    "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
 
-    // TaiKhoan table column names
-    private static final String COLUMN_TAIKHOAN = "taiKhoan";
-    private static final String COLUMN_MATKHAU = "matKhau";
-    private static final String COLUMN_HOTEN = "hoTen";
+    // KetQuaHocPhan table
+    private static final String CREATE_TABLE_KETQUAHOCPHAN =
+            "CREATE TABLE IF NOT EXISTS KetQuaHocPhan (" +
+                    "maHp TEXT NOT NULL," +
+                    "maSv TEXT NOT NULL," +
+                    "lop TEXT NOT NULL," +
+                    "tx1 REAL," +
+                    "tx2 REAL," +
+                    "giuaKy REAL," +
+                    "cuoiKy REAL," +
+                    "diemKiVong REAL," +
+                    "hocKy INTEGER NOT NULL," +
+                    "nam INTEGER NOT NULL," +
+                    "PRIMARY KEY(maHp, maSv)," +
+                    "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
+                    "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
+
+    // DiemDanh table
+    private static final String CREATE_TABLE_DIEMDANH =
+            "CREATE TABLE IF NOT EXISTS DiemDanh (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "idHp TEXT NOT NULL," +
+                    "ngay TEXT NOT NULL," +
+                    "vang INTEGER," +
+                    "loai INTEGER," +
+                    "FOREIGN KEY (idHp) REFERENCES KetQuaHocPhan(lop)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
 
     public DatabaseHelper(@Nullable final Context context) {
         super(context, DatabaseHelper.DATABASE_NAME, null, DatabaseHelper.DATABASE_VERSION);
@@ -61,98 +118,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
-        this.createTableSubjects(db);
-        this.createTableSinhVien(db);
-        this.createTableTaiKhoan(db);
-        this.createTableCongViec(db);
-    }
-
-    private void createTableSubjects(final SQLiteDatabase db) {
-        final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_SUBJECTS + "("
-                + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + DatabaseHelper.COLUMN_NAME + " TEXT,"
-                + DatabaseHelper.COLUMN_CODE + " TEXT,"
-                + DatabaseHelper.COLUMN_CREDITS + " INTEGER,"
-                + DatabaseHelper.COLUMN_SEMESTER + " TEXT" + ")";
-        db.execSQL(createTable);
-    }
-
-    private void createTableSinhVien(final SQLiteDatabase db) {
         try {
-            final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_SINHVIEN + "("
-                    + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + DatabaseHelper.COLUMN_MA_SINHVIEN + " TEXT NOT NULL,"
-                    + DatabaseHelper.COLUMN_KHOA + " TEXT,"
-                    + DatabaseHelper.COLUMN_ID_TK + " INTEGER NOT NULL,"
-                    + DatabaseHelper.COLUMN_MA_CHUYENNGANH + " INTEGER NOT NULL,"
-                    + "FOREIGN KEY (" + DatabaseHelper.COLUMN_ID_TK + ") REFERENCES " + DatabaseHelper.TABLE_TAIKHOAN + "(" + DatabaseHelper.COLUMN_ID + ")" + ")";
-            db.execSQL(createTable);
+            db.execSQL(CREATE_TABLE_SINHVIEN);
+            db.execSQL(CREATE_TABLE_CONGVIEC);
+            db.execSQL(CREATE_TABLE_CHUYENNGANH);
+            db.execSQL(CREATE_TABLE_HOCPHAN);
+            db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
+            db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
+            db.execSQL(CREATE_TABLE_DIEMDANH);
         } catch (final Exception e) {
-            Log.e("Error", "There are some problems in createTableSinhVien!");
-        }
-    }
-
-    private void createTableTaiKhoan(final SQLiteDatabase db) {
-        try {
-            final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_TAIKHOAN + "("
-                    + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + DatabaseHelper.COLUMN_TAIKHOAN + " TEXT NOT NULL,"
-                    + DatabaseHelper.COLUMN_MATKHAU + " TEXT NOT NULL,"
-                    + DatabaseHelper.COLUMN_HOTEN + " TEXT NOT NULL" + ")";
-            db.execSQL(createTable);
-        } catch (final Exception e) {
-            Log.e("Error", "There are some problems in createTableTaiKhoan!");
-        }
-    }
-
-    private void createTableCongViec(final SQLiteDatabase db) {
-        try {
-            final String createTable = "CREATE TABLE " + DatabaseHelper.TABLE_CONGVIEC + "("
-                    + DatabaseHelper.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + DatabaseHelper.COLUMN_TEN_VIEC + " TEXT NOT NULL,"
-                    + DatabaseHelper.COLUMN_CHITIET + " TEXT,"
-                    + DatabaseHelper.COLUMN_MUC_UUTIEN + " INTEGER,"
-                    + DatabaseHelper.COLUMN_THOIHAN + " TEXT NOT NULL,"
-                    + DatabaseHelper.COLUMN_TRANGTHAI + " INTEGER NOT NULL,"
-                    + DatabaseHelper.COLUMN_ID_SV + " INTEGER NOT NULL,"
-                    + "FOREIGN KEY (" + DatabaseHelper.COLUMN_ID_SV + ") REFERENCES " + DatabaseHelper.TABLE_SINHVIEN + "(" + DatabaseHelper.COLUMN_ID + ")"
-                    + ")";
-            db.execSQL(createTable);
-        } catch (final Exception e) {
-            Log.e("Error", "There are some problems in createTableCongViec!");
+            Log.e("Error", "There are some problems in creating database");
         }
     }
 
     @Override
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
-        // Drop older tables if existed
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_SUBJECTS);
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_SINHVIEN);
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_CONGVIEC);
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_TAIKHOAN);
+        db.execSQL("DROP TABLE IF EXISTS SinhVien");
+        db.execSQL("DROP TABLE IF EXISTS CongViec");
+        db.execSQL("DROP TABLE IF EXISTS ChuyenNganh");
+        db.execSQL("DROP TABLE IF EXISTS HocPhan");
+        db.execSQL("DROP TABLE IF EXISTS LoaiHocPhan");
+        db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
+        db.execSQL("DROP TABLE IF EXISTS DiemDanh");
 
-        // Create tables again
-        this.onCreate(db);
+        onCreate(db);
     }
 
-    // CRUD operations for subjects
+    // CRUD operations for HocPhan
     public void addSubject(final HocPhan hocPhan) {
         final SQLiteDatabase db = getWritableDatabase();
 
-        final ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_NAME, hocPhan.getName());
-        values.put(DatabaseHelper.COLUMN_CODE, hocPhan.getCode());
-        values.put(DatabaseHelper.COLUMN_CREDITS, hocPhan.getCredits());
-        values.put(DatabaseHelper.COLUMN_SEMESTER, hocPhan.getSemester());
+        String sql = "INSERT INTO HocPhan (tenHp, maHp, soTinChiLyThuyet, hocKy) VALUES (?, ?, ?, ?)";
 
-        db.insert(DatabaseHelper.TABLE_SUBJECTS, null, values);
+        db.execSQL(sql, new Object[]{
+                hocPhan.getName(),
+                hocPhan.getCode(),
+                hocPhan.getCredits(),
+                hocPhan.getSemester()
+        });
 
         db.close();
     }
 
     public List<HocPhan> getAllSubjects() {
         final List<HocPhan> hocPhanList = new ArrayList<>();
-        final String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_SUBJECTS;
+        final String selectQuery = "SELECT * FROM HocPhan";
 
         final SQLiteDatabase db = getReadableDatabase();
         final Cursor cursor = db.rawQuery(selectQuery, null);
@@ -160,11 +170,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 final HocPhan hocPhan = new HocPhan();
-                hocPhan.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)));
-                hocPhan.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME)));
-                hocPhan.setCode(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CODE)));
-                hocPhan.setCredits(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CREDITS)));
-                hocPhan.setSemester(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_SEMESTER)));
+                hocPhan.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+                hocPhan.setName(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
+                hocPhan.setCode(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
+                hocPhan.setCredits(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
+                hocPhan.setSemester(cursor.getString(cursor.getColumnIndexOrThrow("hocKy")));
                 hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }
