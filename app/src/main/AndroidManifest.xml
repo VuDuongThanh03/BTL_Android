@@ -24,11 +24,7 @@
             android:exported="false" />
         <activity
             android:name=".them_hoc_phan.HocPhanActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false" >
         </activity>
         <activity
             android:name=".cong_viec.CongViecActivity"
@@ -40,9 +36,13 @@
             android:name=".dang_nhap.ThongTinActivity"
             android:exported="false" />
         <activity
-
             android:name=".dang_nhap.DangNhapActivity"
-            android:exported="false">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
     </application>
