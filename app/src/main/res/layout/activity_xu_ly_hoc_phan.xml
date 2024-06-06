@@ -8,7 +8,7 @@
     tools:context=".them_hoc_phan.XuLyHocPhanActivity">
 
     <EditText
-        android:id="@+id/etName"
+        android:id="@+id/etTenHp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Tên môn học"
@@ -18,51 +18,51 @@
         android:layout_margin="16dp" />
 
     <EditText
-        android:id="@+id/etCode"
+        android:id="@+id/etMaHp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Mã môn học"
-        app:layout_constraintTop_toBottomOf="@id/etName"
+        app:layout_constraintTop_toBottomOf="@id/etTenHp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
     <EditText
-        android:id="@+id/etCredits"
+        android:id="@+id/etSoTinChiLyThuyet"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Số tín chỉ"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/etCode"
+        app:layout_constraintTop_toBottomOf="@id/etMaHp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
     <EditText
-        android:id="@+id/etSemester"
+        android:id="@+id/etHocKy"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Học kỳ"
-        app:layout_constraintTop_toBottomOf="@id/etCredits"
+        app:layout_constraintTop_toBottomOf="@id/etSoTinChiLyThuyet"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
     <Button
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnThem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thêm"
-        app:layout_constraintTop_toBottomOf="@id/etSemester"
+        app:layout_constraintTop_toBottomOf="@id/etHocKy"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="16dp" />
 
     <Button
-        android:id="@+id/btnCancel"
+        android:id="@+id/btnHuy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hủy"
-        app:layout_constraintTop_toBottomOf="@id/etSemester"
+        app:layout_constraintTop_toBottomOf="@id/etHocKy"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 

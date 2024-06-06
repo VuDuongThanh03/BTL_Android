@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,9 +12,8 @@ import com.example.btl_android.R;
 
 /** @noinspection ALL*/
 public class DangNhapActivity extends AppCompatActivity {
-
+    public static EditText etTenTk;
     Button login;
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +26,6 @@ public class DangNhapActivity extends AppCompatActivity {
                 DangNhapActivity.this.startActivity(intent);
             }
         });
-
+        etTenTk = findViewById(R.id.etTenTk);
     }
 }

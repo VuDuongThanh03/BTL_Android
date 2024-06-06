@@ -40,23 +40,23 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSubjects"
+        android:id="@+id/rvHocPhan"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tvSemester"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tvTotalCredits"/>
+        app:layout_constraintBottom_toTopOf="@+id/tvTongTinChi"/>
 
     <TextView
-        android:id="@+id/tvTotalCredits"
+        android:id="@+id/tvTongTinChi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tổng tín chỉ dự kiến: 0"
         android:textSize="16sp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/rvSubjects"
+        app:layout_constraintTop_toBottomOf="@+id/rvHocPhan"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

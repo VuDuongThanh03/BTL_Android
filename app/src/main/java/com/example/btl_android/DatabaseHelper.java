@@ -1,6 +1,5 @@
 package com.example.btl_android;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,8 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-
-import com.example.btl_android.them_hoc_phan.HocPhan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,11 +100,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // DiemDanh table
     private static final String CREATE_TABLE_DIEMDANH =
             "CREATE TABLE IF NOT EXISTS DiemDanh (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "maSv TEXT NOT NULL," +
                     "idHp TEXT NOT NULL," +
                     "ngay TEXT NOT NULL," +
                     "vang INTEGER," +
                     "loai INTEGER," +
+                    "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
                     "FOREIGN KEY (idHp) REFERENCES KetQuaHocPhan(lop)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
@@ -151,36 +150,76 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sql = "INSERT INTO HocPhan (tenHp, maHp, soTinChiLyThuyet, hocKy) VALUES (?, ?, ?, ?)";
 
         db.execSQL(sql, new Object[]{
-                hocPhan.getName(),
-                hocPhan.getCode(),
-                hocPhan.getCredits(),
-                hocPhan.getSemester()
+                hocPhan.getTenHp(),
+                hocPhan.getMaHp(),
+                hocPhan.getSoTinChiLt(),
+                hocPhan.getHocKy()
         });
 
         db.close();
     }
 
     public List<HocPhan> getAllSubjects() {
-        final List<HocPhan> hocPhanList = new ArrayList<>();
-        final String selectQuery = "SELECT * FROM HocPhan";
+        List<HocPhan> hocPhanList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM HocPhan";
 
-        final SQLiteDatabase db = getReadableDatabase();
-        final Cursor cursor = db.rawQuery(selectQuery, null);
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                final HocPhan hocPhan = new HocPhan();
-                hocPhan.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
-                hocPhan.setName(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
-                hocPhan.setCode(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-                hocPhan.setCredits(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-                hocPhan.setSemester(cursor.getString(cursor.getColumnIndexOrThrow("hocKy")));
+                HocPhan hocPhan = new HocPhan();
+                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
+                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
+                hocPhan.setSoTinChiLt(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
+                hocPhan.setHocKy(cursor.getString(cursor.getColumnIndexOrThrow("hocKy")));
                 hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         db.close();
+        return hocPhanList;
+    }
+
+    public List<HocPhan> getSubjectsByYear(String tenTk, int year) {
+        List<HocPhan> hocPhanList = new ArrayList<>();
+        String selectQuery = "SELECT hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
+                "hp.hinhThucThi, kq.lop, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, " +
+                "kq.cuoiKy, kq.diemKiVong, " +
+                "SUM(CASE WHEN dd.vang = 1 AND dd.loai = 0 THEN 1 ELSE 0 END) AS vangLt, " +
+                "SUM(CASE WHEN dd.vang = 1 AND dd.loai = 1 THEN 1 ELSE 0 END) AS vangTh " +
+                "FROM KetQuaHocPhan kq " +
+                "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
+                "JOIN SinhVien sv ON sv.maSv = kq.maSv " +
+                "LEFT JOIN DiemDanh dd ON dd.idHp = kq.lop AND dd.maSv = sv.maSv " +
+                "WHERE sv.tenTk = ? AND kq.nam = ? " +
+                "GROUP BY hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
+                "hp.hinhThucThi, kq.lop, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, " +
+                "kq.cuoiKy, kq.diemKiVong";
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{tenTk, String.valueOf(year)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                HocPhan hocPhan = new HocPhan();
+                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
+                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
+                hocPhan.setSoTinChiLt(cursor.getInt(cursor.getColumnIndex("soTinChiLyThuyet")));
+                hocPhan.setSoTinChiTh(cursor.getInt(cursor.getColumnIndex("soTinChiThucHanh")));
+                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
+                hocPhan.setLop(cursor.getString(cursor.getColumnIndex("lop")));
+                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
+                hocPhan.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
+                hocPhan.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
+                hocPhan.setGiuaKy(cursor.getFloat(cursor.getColumnIndex("giuaKy")));
+                hocPhan.setCuoiKy(cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
+                hocPhan.setDiemKyVong(cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
+                hocPhan.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
+                hocPhan.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
+            } while (cursor.moveToNext());
+        }
         return hocPhanList;
     }
 }
