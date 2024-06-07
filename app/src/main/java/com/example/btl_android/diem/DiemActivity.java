@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.HocPhan;
 import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
+import com.example.btl_android.dang_nhap.DangNhapActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +43,9 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        db = DatabaseHelper.getInstance(this);
+        db.getWritableDatabase();
 
         btnQuayLai = findViewById(R.id.imageQuayLai);
         btnTongKet = findViewById(R.id.imageTongKet);
@@ -68,15 +73,21 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
         hocPhanList.add(new HocPhan());
         hocPhanList.add(new HocPhan());
+
+        diemHpAdapter = new DiemAdapter(hocPhanList, this, R.id.rvDiemHp);
+        rvDiemHp.setAdapter(diemHpAdapter);
     }
 
     @Override
     public void onItemClick(View view, int pos, int id) {
         switch (id) {
             case R.id.rvHocKy:
-                String nam = hocKyList.get(pos);
-                diemHpAdapter = new DiemAdapter(hocPhanList, this, R.id.rvDiemHp);
-                rvDiemHp.setAdapter(diemHpAdapter);
+                String hocKy = hocKyList.get(pos);
+                hocKy = Character.toString(hocKy.charAt(hocKy.length() - 1));
+                hocPhanList = db.getSubjectsBySemester(DangNhapActivity.etTenTk.toString(), hocKy);
+                if (hocPhanList.isEmpty()) {
+                    Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                } else diemHpAdapter.notifyDataSetChanged();
                 break;
             case R.id.rvDiemHp:
                 HocPhan hp = hocPhanList.get(pos);
