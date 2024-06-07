@@ -165,6 +165,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void deleteHocPhan(String maHp) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("HocPhan", "maHp=?", new String[]{maHp});
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Failed to delete HocPhan");
+        } else {
+            Log.i("DatabaseHelper", "HocPhan deleted successfully");
+        }
+        db.close();
+    }
+
+    public boolean isMaHpUnique(String maHp) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE maHp = ?", new String[]{maHp});
+        boolean isUnique = !cursor.moveToFirst();
+        cursor.close();
+        return isUnique;
+    }
+
+
+
 
 
 

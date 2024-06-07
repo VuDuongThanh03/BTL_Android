@@ -1,11 +1,13 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.R;
@@ -15,6 +17,7 @@ import java.util.List;
 public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanViewHolder> {
 
     private List<HocPhan> hocPhanList;
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
     public HocPhanAdapter(List<HocPhan> hocPhanList) {
         this.hocPhanList = hocPhanList;
@@ -37,6 +40,14 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
         holder.hocKyTextView.setText(String.valueOf(hocPhan.getHocKy()));
         holder.hinhThucThiTextView.setText(hocPhan.getHinhThucThi());
         holder.heSoTextView.setText(hocPhan.getHeSo());
+
+        holder.cardView.setCardBackgroundColor(selectedPosition == position ? Color.LTGRAY : Color.WHITE);
+
+        holder.itemView.setOnClickListener(v -> {
+            notifyItemChanged(selectedPosition);
+            selectedPosition = holder.getAdapterPosition();
+            notifyItemChanged(selectedPosition);
+        });
     }
 
     @Override
@@ -44,8 +55,13 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
         return hocPhanList.size();
     }
 
-    static class HocPhanViewHolder extends RecyclerView.ViewHolder {
+    public HocPhan getSelectedHocPhan() {
+        return selectedPosition != RecyclerView.NO_POSITION ? hocPhanList.get(selectedPosition) : null;
+    }
+
+    public static class HocPhanViewHolder extends RecyclerView.ViewHolder {
         TextView maHpTextView, tenHpTextView, soTinChiLyThuyetTextView, soTinChiThucHanhTextView, hocKyTextView, hinhThucThiTextView, heSoTextView;
+        CardView cardView;
 
         public HocPhanViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,6 +72,7 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
             hocKyTextView = itemView.findViewById(R.id.hocKyTextView);
             hinhThucThiTextView = itemView.findViewById(R.id.hinhThucThiTextView);
             heSoTextView = itemView.findViewById(R.id.heSoTextView);
+            cardView = itemView.findViewById(R.id.cardView);
         }
     }
 }

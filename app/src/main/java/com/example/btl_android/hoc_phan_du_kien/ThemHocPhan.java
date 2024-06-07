@@ -60,11 +60,14 @@ public class ThemHocPhan extends AppCompatActivity {
                 );
 
                 // Insert HocPhan into database
-                dbHelper.insertHocPhan(hocPhan);
-
-                Toast.makeText(this, "Học phần đã được thêm!", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK);
-                finish();
+                if (dbHelper.isMaHpUnique(hocPhan.getMaHp())) {
+                    dbHelper.insertHocPhan(hocPhan);
+                    Toast.makeText(this, "Học phần đã được thêm!", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);
+                    finish();
+                } else {
+                    Toast.makeText(this, "Mã học phần đã tồn tại!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -72,28 +75,34 @@ public class ThemHocPhan extends AppCompatActivity {
     }
 
     private boolean validateInputs() {
-        if (maHpEditText.getText().toString().isEmpty() ||
-                tenHpEditText.getText().toString().isEmpty() ||
-                soTinChiLyThuyetEditText.getText().toString().isEmpty() ||
-                soTinChiThucHanhEditText.getText().toString().isEmpty() ||
-                hocKyEditText.getText().toString().isEmpty() ||
-                hinhThucThiEditText.getText().toString().isEmpty() ||
-                heSoEditText.getText().toString().isEmpty()) {
+        String maHp = maHpEditText.getText().toString();
+        String tenHp = tenHpEditText.getText().toString();
+        String soTinChiLyThuyet = soTinChiLyThuyetEditText.getText().toString();
+        String soTinChiThucHanh = soTinChiThucHanhEditText.getText().toString();
+        String hocKy = hocKyEditText.getText().toString();
+        String hinhThucThi = hinhThucThiEditText.getText().toString();
+        String heSo = heSoEditText.getText().toString();
 
+        if (maHp.isEmpty() || tenHp.isEmpty() || soTinChiLyThuyet.isEmpty() || soTinChiThucHanh.isEmpty() || hocKy.isEmpty() || hinhThucThi.isEmpty() || heSo.isEmpty()) {
             Toast.makeText(this, "Yêu cầu nhập tất cả các trường", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        int soTinChiLyThuyet = Integer.parseInt(soTinChiLyThuyetEditText.getText().toString());
-        int soTinChiThucHanh = Integer.parseInt(soTinChiThucHanhEditText.getText().toString());
-        int hocKy = Integer.parseInt(hocKyEditText.getText().toString());
+        if (!heSo.matches("^\\d+-\\d+-\\d+$")) {
+            Toast.makeText(this, "Hệ số phải có định dạng x-y-z với x, y, z là các số", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
-        if (soTinChiLyThuyet < 0 || soTinChiThucHanh < 0) {
+        int soTinChiLyThuyetInt = Integer.parseInt(soTinChiLyThuyet);
+        int soTinChiThucHanhInt = Integer.parseInt(soTinChiThucHanh);
+        int hocKyInt = Integer.parseInt(hocKy);
+
+        if (soTinChiLyThuyetInt < 0 || soTinChiThucHanhInt < 0) {
             Toast.makeText(this, "Số tín chỉ không hợp lệ", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (hocKy < 1 || hocKy > 8) {
+        if (hocKyInt < 1 || hocKyInt > 8) {
             Toast.makeText(this, "Học kỳ phải từ 1 đến 8", Toast.LENGTH_SHORT).show();
             return false;
         }

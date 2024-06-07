@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,8 @@ public class HocPhanDuKien extends AppCompatActivity {
     private HocPhanAdapter hocPhanAdapter;
     private List<HocPhan> hocPhanList;
     private DatabaseHelper databaseHelper;
+    private int selectedHocKy = -1; // -1 means no specific hocKy selected
+    private Button[] hocKyButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,39 @@ public class HocPhanDuKien extends AppCompatActivity {
 
         hocPhanAdapter = new HocPhanAdapter(hocPhanList);
         recyclerView.setAdapter(hocPhanAdapter);
+
+        setupHocKyButtons();
+    }
+
+    private void setupHocKyButtons() {
+        hocKyButtons = new Button[8];
+        for (int i = 1; i <= 8; i++) {
+            int buttonId = getResources().getIdentifier("button" + i, "id", getPackageName());
+            hocKyButtons[i - 1] = findViewById(buttonId);
+            final int hocKy = i;
+            hocKyButtons[i - 1].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedHocKy = hocKy;
+                    updateHocKyButtonColors();
+                    hocPhanList.clear();
+                    loadHocPhanFromDatabase();
+                    hocPhanAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    private void updateHocKyButtonColors() {
+        for (int i = 0; i < hocKyButtons.length; i++) {
+            if (i == selectedHocKy - 1) {
+                hocKyButtons[i].setBackgroundResource(R.drawable.button_selected); // Sử dụng drawable khi nút được chọn
+                hocKyButtons[i].setTextColor(0xFFFFFFFF); // Màu chữ trắng
+            } else {
+                hocKyButtons[i].setBackgroundResource(R.drawable.button_border); // Sử dụng drawable ban đầu
+                hocKyButtons[i].setTextColor(0xFF000000); // Màu chữ đen
+            }
+        }
     }
 
     @Override
@@ -64,7 +102,15 @@ public class HocPhanDuKien extends AppCompatActivity {
                 // Handle edit action
                 return true;
             case R.id.action_delete:
-                // Handle delete action
+                HocPhan selectedHocPhan = hocPhanAdapter.getSelectedHocPhan();
+                if (selectedHocPhan != null) {
+                    databaseHelper.deleteHocPhan(selectedHocPhan.getMaHp());
+                    hocPhanList.clear();
+                    loadHocPhanFromDatabase();
+                    hocPhanAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(this, "Vui lòng chọn môn học cần xóa", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -82,7 +128,12 @@ public class HocPhanDuKien extends AppCompatActivity {
     }
 
     private void loadHocPhanFromDatabase() {
-        Cursor cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT * FROM HocPhan", null);
+        String query = "SELECT * FROM HocPhan";
+        if (selectedHocKy != -1) {
+            query += " WHERE hocKy = " + selectedHocKy;
+        }
+
+        Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") String maHp = cursor.getString(cursor.getColumnIndex("maHp"));
