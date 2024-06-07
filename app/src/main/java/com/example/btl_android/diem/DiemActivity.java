@@ -2,6 +2,7 @@ package com.example.btl_android.diem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -9,14 +10,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.btl_android.DatabaseHelper;
+import com.example.btl_android.HocPhan;
+import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /** @noinspection ALL*/
-public class DiemActivity extends AppCompatActivity {
-    ImageButton btnQuayLai, btnTongKet;
-    RecyclerView rvHocPhan;
+public class DiemActivity extends AppCompatActivity implements OnItemClickListener {
+    private DatabaseHelper db;
+    private ImageButton btnQuayLai, btnTongKet;
+    private RecyclerView rvHocKy, rvDiemHp;
+    List<String> hocKyList;
+    List<HocPhan> hocPhanList;
+    private HocKyAdapter hocKyAdapter;
+    private DiemAdapter diemHpAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +44,46 @@ public class DiemActivity extends AppCompatActivity {
 
         btnQuayLai = findViewById(R.id.imageQuayLai);
         btnTongKet = findViewById(R.id.imageTongKet);
+        rvHocKy = findViewById(R.id.rvHocKy);
+        rvDiemHp = findViewById(R.id.rvDiemHp);
+        hocKyList = new ArrayList<>();
+        hocPhanList = new ArrayList<>();
 
         btnQuayLai.setOnClickListener(v -> finish());
+
         btnTongKet.setOnClickListener(v -> {
             final Intent intent = new Intent(DiemActivity.this, TongKetActivity.class);
             DiemActivity.this.startActivity(intent);
         });
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
+                                                LinearLayoutManager.HORIZONTAL, false);
+        rvHocKy.setLayoutManager(layoutManager);
+
+        rvDiemHp.setLayoutManager(new LinearLayoutManager(this));
+
+        hocKyList = Arrays.asList("Học kỳ 8", "Học kỳ 7", "Học kỳ 6", "Học kỳ 5", "Học kỳ 4", "Học kỳ 3", "Học kỳ 2", "Học kỳ 1");
+        hocKyAdapter = new HocKyAdapter(hocKyList, this, R.id.rvHocKy);
+        rvHocKy.setAdapter(hocKyAdapter);
+
+        hocPhanList.add(new HocPhan());
+        hocPhanList.add(new HocPhan());
+    }
+
+    @Override
+    public void onItemClick(View view, int pos, int id) {
+        switch (id) {
+            case R.id.rvHocKy:
+                String nam = hocKyList.get(pos);
+                diemHpAdapter = new DiemAdapter(hocPhanList, this, R.id.rvDiemHp);
+                rvDiemHp.setAdapter(diemHpAdapter);
+                break;
+            case R.id.rvDiemHp:
+                HocPhan hp = hocPhanList.get(pos);
+                Intent intent = new Intent(DiemActivity.this, DiemChiTietActivity.class);
+                intent.putExtra("DiemChiTiet", hp);
+                DiemActivity.this.startActivity(intent);
+                break;
+        }
     }
 }

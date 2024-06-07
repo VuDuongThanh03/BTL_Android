@@ -2,7 +2,6 @@ package com.example.btl_android.dang_nhap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,12 +24,12 @@ public class TrangChuActivity extends AppCompatActivity {
         btnDiem = findViewById(R.id.btnDiem);
 
         btnCongViec.setOnClickListener(v -> {
-            final Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
+            Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
             TrangChuActivity.this.startActivity(intent);
         });
 
         btnDiem.setOnClickListener(v -> {
-            final Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
+            Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
             TrangChuActivity.this.startActivity(intent);
         });
     }

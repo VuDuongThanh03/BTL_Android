@@ -1,31 +1,50 @@
 package com.example.btl_android;
 
+import java.io.Serializable;
+
 /**
  * @noinspection ALL
  */
-public class HocPhan {
+public class HocPhan implements Serializable {
     private String maHp, tenHp;
-    private int soTinChiLt, soTinChiTh;
-    private String hocKy, hinhThucThi, heSo, lop;
+    private int soTc, soTietLt, soTietTh, hocKy;
+    private String hinhThucThi, heSo, lop;
     private Float tx1, tx2, giuaKy, cuoiKy, diemKyVong;
     private int vangLt, vangTh;
 
     public HocPhan() {
+        this.maHp = "HP000";
+        this.tenHp = "Unknown";
+        this.soTc = 3;
+        this.soTietLt = 30;
+        this.soTietTh = 30;
+        this.hocKy = 1;
+        this.hinhThucThi = "TL";
+        this.heSo = "20-20-60";
+        this.lop = "Class 0";
+        this.tx1 = 0.0f;
+        this.tx2 = 0.0f;
+        this.giuaKy = 0.0f;
+        this.cuoiKy = 0.0f;
+        this.diemKyVong = 0.0f;
+        this.vangLt = 0;
+        this.vangTh = 0;
     }
 
-    public HocPhan(String maHp, String tenHp, int soTinChiLt, String hocKy) {
+    public HocPhan(String maHp, String tenHp, int soTietLt, int hocKy) {
         this.maHp = maHp;
         this.tenHp = tenHp;
-        this.soTinChiLt = soTinChiLt;
+        this.soTietLt = soTietLt;
         this.hocKy = hocKy;
     }
 
-    public HocPhan(String maHp, String tenHp, int soTinChiLt, int soTinChiTh, String hocKy, String hinhThucThi, String heSo,
+    public HocPhan(String maHp, String tenHp, int soTc, int soTietLt, int soTietTh, int hocKy, String hinhThucThi, String heSo,
                    String lop, Float tx1, Float tx2, Float giuaKy, Float cuoiKy, Float diemKyVong, int vangLt, int vangTh) {
         this.maHp = maHp;
         this.tenHp = tenHp;
-        this.soTinChiLt = soTinChiLt;
-        this.soTinChiTh = soTinChiTh;
+        this.soTc = soTc;
+        this.soTietLt = soTietLt;
+        this.soTietTh = soTietTh;
         this.hocKy = hocKy;
         this.hinhThucThi = hinhThucThi;
         this.heSo = heSo;
@@ -55,27 +74,35 @@ public class HocPhan {
         this.tenHp = tenHp;
     }
 
-    public int getSoTinChiLt() {
-        return soTinChiLt;
+    public int getSoTc() {
+        return soTc;
     }
 
-    public void setSoTinChiLt(int soTinChiLt) {
-        this.soTinChiLt = soTinChiLt;
+    public void setSoTc(int soTc) {
+        this.soTc = soTc;
     }
 
-    public int getSoTinChiTh() {
-        return soTinChiTh;
+    public int getSoTietLt() {
+        return soTietLt;
     }
 
-    public void setSoTinChiTh(int soTinChiTh) {
-        this.soTinChiTh = soTinChiTh;
+    public void setSoTietLt(int soTietLt) {
+        this.soTietLt = soTietLt;
     }
 
-    public String getHocKy() {
+    public int getSoTietTh() {
+        return soTietTh;
+    }
+
+    public void setSoTietTh(int soTietTh) {
+        this.soTietTh = soTietTh;
+    }
+
+    public int getHocKy() {
         return hocKy;
     }
 
-    public void setHocKy(String hocKy) {
+    public void setHocKy(int hocKy) {
         this.hocKy = hocKy;
     }
 
@@ -157,5 +184,46 @@ public class HocPhan {
 
     public void setVangTh(int vangTh) {
         this.vangTh = vangTh;
+    }
+
+    public String getDiemTongKet() {
+        String[] heSoList = heSo.trim().split("-");
+        if (heSoList.length == 3) {
+            Float diemBangSo = tx1 * Float.parseFloat(heSoList[0]) +
+                               tx2 * Float.parseFloat(heSoList[1]) + cuoiKy * Float.parseFloat(heSoList[2]);
+            if (diemBangSo < 4) return "F";
+            if (diemBangSo < 4.7) return "D";
+            if (diemBangSo < 5.5) return "D+";
+            if (diemBangSo < 6.2) return "C";
+            if (diemBangSo < 7.0) return "C+";
+            if (diemBangSo < 7.7) return "B";
+            if (diemBangSo < 8.5) return "B+";
+            return "A";
+        }
+        if (heSoList.length == 4) {
+            Float diemBangSo = tx1 * Float.parseFloat(heSoList[0]) + tx2 * Float.parseFloat(heSoList[1]) +
+                               giuaKy * Float.parseFloat(heSoList[2]) + cuoiKy * Float.parseFloat(heSoList[3]);
+            if (diemBangSo < 4) return "F";
+            if (diemBangSo < 4.7) return "D";
+            if (diemBangSo < 5.5) return "D+";
+            if (diemBangSo < 6.2) return "C";
+            if (diemBangSo < 7.0) return "C+";
+            if (diemBangSo < 7.7) return "B";
+            if (diemBangSo < 8.5) return "B+";
+            return "A";
+        }
+        return "-";
+    }
+    public String getDieuKien() {
+        if (soTietLt > 0 && soTietTh == 0) {
+            if (vangLt / soTietLt <= 0.3f) return "Đủ điều kiện";
+            else return "Cấm thi";
+        }
+        if (soTietLt == 0 && soTietTh > 0) {
+            if (vangTh / soTietTh <= 0.3f) return "Đủ điều kiện";
+            else return "Cấm thi";
+        }
+        if (vangLt / soTietLt <= 0.3f && vangTh / soTietTh <= 0.3f) return "Đủ điều kiện";
+        else return "Cấm thi";
     }
 }

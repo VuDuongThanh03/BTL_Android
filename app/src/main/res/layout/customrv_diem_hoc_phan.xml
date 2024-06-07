@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/diemHp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/custom_panel2"
     android:padding="10dp"
     android:layout_margin="10dp">
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tên học phần"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="@color/black"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTenHp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên học phần"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/btnSua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sửa điểm"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="2dp"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:textColor="#5e77ee"/>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,6 +58,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tvTx1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
@@ -46,14 +66,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginStart="30dp"/>
-
-        <TextView
+            android:id="@+id/tvTx2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
@@ -62,14 +75,7 @@
             android:layout_marginStart="60dp"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginStart="90dp"/>
-
-        <TextView
+            android:id="@+id/tvGiuaKy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -91,6 +97,7 @@
             android:textColor="@color/black"/>
 
         <TextView
+            android:id="@+id/tvCuoiKy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -112,6 +119,7 @@
             android:textColor="@color/black"/>
 
         <TextView
+            android:id="@+id/tvTongKet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
