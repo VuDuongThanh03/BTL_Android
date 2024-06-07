@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
+import com.example.btl_android.dang_nhap.TrangChuActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 public class HocPhanDuKien extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
+    private static final int REQUEST_CODE_EDIT_HOCPHAN = 2;
 
     private RecyclerView recyclerView;
     private HocPhanAdapter hocPhanAdapter;
@@ -40,6 +42,18 @@ public class HocPhanDuKien extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backtotrangchu);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HocPhanDuKien.this, TrangChuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         databaseHelper = new DatabaseHelper(this);
         recyclerView = findViewById(R.id.recyclerViewHocPhan);
@@ -93,16 +107,22 @@ public class HocPhanDuKien extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        HocPhan selectedHocPhan = hocPhanAdapter.getSelectedHocPhan();
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent intent = new Intent(this, ThemHocPhan.class);
-                startActivityForResult(intent, REQUEST_CODE_ADD_HOCPHAN);
+                Intent addIntent = new Intent(this, ThemHocPhan.class);
+                startActivityForResult(addIntent, REQUEST_CODE_ADD_HOCPHAN);
                 return true;
             case R.id.action_edit:
-                // Handle edit action
+                if (selectedHocPhan != null) {
+                    Intent editIntent = new Intent(this, ThemHocPhan.class);
+                    editIntent.putExtra("hocPhan", selectedHocPhan);
+                    startActivityForResult(editIntent, REQUEST_CODE_EDIT_HOCPHAN);
+                } else {
+                    Toast.makeText(this, "Vui lòng chọn môn học cần sửa", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_delete:
-                HocPhan selectedHocPhan = hocPhanAdapter.getSelectedHocPhan();
                 if (selectedHocPhan != null) {
                     databaseHelper.deleteHocPhan(selectedHocPhan.getMaHp());
                     hocPhanList.clear();
@@ -120,7 +140,7 @@ public class HocPhanDuKien extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ADD_HOCPHAN && resultCode == RESULT_OK) {
+        if ((requestCode == REQUEST_CODE_ADD_HOCPHAN || requestCode == REQUEST_CODE_EDIT_HOCPHAN) && resultCode == RESULT_OK) {
             hocPhanList.clear();
             loadHocPhanFromDatabase();
             hocPhanAdapter.notifyDataSetChanged();

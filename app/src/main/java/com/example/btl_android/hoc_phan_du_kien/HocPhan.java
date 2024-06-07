@@ -1,6 +1,8 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
-public class HocPhan {
+import java.io.Serializable;
+
+public class HocPhan implements Serializable {
     private String maHp;
     private String tenHp;
     private int soTinChiLyThuyet;

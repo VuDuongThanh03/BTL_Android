@@ -19,6 +19,7 @@ public class ThemHocPhan extends AppCompatActivity {
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;
     private Button buttonSubmit, buttonCancel;
     private DatabaseHelper dbHelper;
+    private HocPhan hocPhanToEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,28 +46,56 @@ public class ThemHocPhan extends AppCompatActivity {
             return insets;
         });
 
+        // Check if editing an existing HocPhan
+        hocPhanToEdit = (HocPhan) getIntent().getSerializableExtra("hocPhan");
+        if (hocPhanToEdit != null) {
+            maHpEditText.setText(hocPhanToEdit.getMaHp());
+            maHpEditText.setEnabled(false); // Không cho phép chỉnh sửa mã học phần
+            tenHpEditText.setText(hocPhanToEdit.getTenHp());
+            soTinChiLyThuyetEditText.setText(String.valueOf(hocPhanToEdit.getSoTinChiLyThuyet()));
+            soTinChiThucHanhEditText.setText(String.valueOf(hocPhanToEdit.getSoTinChiThucHanh()));
+            hocKyEditText.setText(String.valueOf(hocPhanToEdit.getHocKy()));
+            hinhThucThiEditText.setText(hocPhanToEdit.getHinhThucThi());
+            heSoEditText.setText(hocPhanToEdit.getHeSo());
+        }
+
         // Set button listeners
         buttonSubmit.setOnClickListener(view -> {
             if (validateInputs()) {
-                // Create HocPhan object
-                HocPhan hocPhan = new HocPhan(
-                        maHpEditText.getText().toString(),
-                        tenHpEditText.getText().toString(),
-                        Integer.parseInt(soTinChiLyThuyetEditText.getText().toString()),
-                        Integer.parseInt(soTinChiThucHanhEditText.getText().toString()),
-                        Integer.parseInt(hocKyEditText.getText().toString()),
-                        hinhThucThiEditText.getText().toString(),
-                        heSoEditText.getText().toString()
-                );
+                if (hocPhanToEdit == null) {
+                    // Create HocPhan object
+                    HocPhan hocPhan = new HocPhan(
+                            maHpEditText.getText().toString(),
+                            tenHpEditText.getText().toString(),
+                            Integer.parseInt(soTinChiLyThuyetEditText.getText().toString()),
+                            Integer.parseInt(soTinChiThucHanhEditText.getText().toString()),
+                            Integer.parseInt(hocKyEditText.getText().toString()),
+                            hinhThucThiEditText.getText().toString(),
+                            heSoEditText.getText().toString()
+                    );
 
-                // Insert HocPhan into database
-                if (dbHelper.isMaHpUnique(hocPhan.getMaHp())) {
-                    dbHelper.insertHocPhan(hocPhan);
-                    Toast.makeText(this, "Học phần đã được thêm!", Toast.LENGTH_SHORT).show();
+                    // Insert HocPhan into database
+                    if (dbHelper.isMaHpUnique(hocPhan.getMaHp())) {
+                        dbHelper.insertHocPhan(hocPhan);
+                        Toast.makeText(this, "Học phần đã được thêm!", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Mã học phần đã tồn tại!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Update HocPhan
+                    hocPhanToEdit.setTenHp(tenHpEditText.getText().toString());
+                    hocPhanToEdit.setSoTinChiLyThuyet(Integer.parseInt(soTinChiLyThuyetEditText.getText().toString()));
+                    hocPhanToEdit.setSoTinChiThucHanh(Integer.parseInt(soTinChiThucHanhEditText.getText().toString()));
+                    hocPhanToEdit.setHocKy(Integer.parseInt(hocKyEditText.getText().toString()));
+                    hocPhanToEdit.setHinhThucThi(hinhThucThiEditText.getText().toString());
+                    hocPhanToEdit.setHeSo(heSoEditText.getText().toString());
+
+                    dbHelper.updateHocPhan(hocPhanToEdit);
+                    Toast.makeText(this, "Học phần đã được cập nhật!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
-                } else {
-                    Toast.makeText(this, "Mã học phần đã tồn tại!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

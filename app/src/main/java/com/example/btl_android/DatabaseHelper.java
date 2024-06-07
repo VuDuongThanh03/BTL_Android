@@ -184,6 +184,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return isUnique;
     }
 
+    public void updateHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLyThuyet());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiThucHanh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
+    }
+
+
 
 
 
