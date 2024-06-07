@@ -30,12 +30,7 @@
         <activity
             android:name=".diem.DiemActivity"
             android:exported="false" />
-        <activity
-            android:name=".them_hoc_phan.XuLyHocPhanActivity"
-            android:exported="false" />
-        <activity
-            android:name=".them_hoc_phan.HocPhanActivity"
-            android:exported="false" />
+
         <activity
             android:name=".cong_viec.CongViecActivity"
             android:exported="false" />
