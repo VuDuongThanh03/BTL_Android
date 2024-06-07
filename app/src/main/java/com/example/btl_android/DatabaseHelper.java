@@ -17,6 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
     private static final int DATABASE_VERSION = 1;
+    private static DatabaseHelper instance;
 
     // SinhVien table
     private static final String CREATE_TABLE_SINHVIEN =
@@ -57,8 +58,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS HocPhan (" +
                     "maHp TEXT PRIMARY KEY," +
                     "tenHp TEXT NOT NULL," +
-                    "soTinChiLyThuyet INTEGER NOT NULL," +
-                    "soTinChiThucHanh INTEGER NOT NULL," +
+                    "soTinChi INTEGER NOT NULL," +
+                    "soTietLyThuyet INTEGER NOT NULL," +
+                    "soTietThucHanh INTEGER NOT NULL," +
                     "hocKy INTEGER NOT NULL," +
                     "hinhThucThi TEXT NOT NULL," +
                     "heSo TEXT NOT NULL" +
@@ -107,14 +109,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "loai INTEGER," +
                     "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION," +
-                    "FOREIGN KEY (idHp) REFERENCES KetQuaHocPhan(lop)" +
+                    "FOREIGN KEY (idHp) REFERENCES HocPhan(maHp)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
 
     public DatabaseHelper(@Nullable final Context context) {
-        super(context, DatabaseHelper.DATABASE_NAME, null, DatabaseHelper.DATABASE_VERSION);
+        super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
-
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseHelper(context);
+        }
+        return instance;
+    }
     @Override
     public void onCreate(final SQLiteDatabase db) {
         try {
@@ -125,6 +132,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
             db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
             db.execSQL(CREATE_TABLE_DIEMDANH);
+
+            populateInitialData(db);
         } catch (final Exception e) {
             Log.e("Error", "There are some problems in creating database");
         }
@@ -143,6 +152,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    private void populateInitialData(final SQLiteDatabase db) {
+        db.execSQL("INSERT INTO ChuyenNganh (id, tenCn) VALUES (1, 'Computer Science'), (2, 'Physics'), (3, 'Chemistry'), " +
+                "(4, 'Mathematics'), (5, 'Biology')");
+        db.execSQL("INSERT INTO SinhVien (maSv, maCn, tenTk, matKhau, khoa) VALUES " +
+                "('SV001', 1, 'student1', 'password1', 'Engineering'), " +
+                "('SV002', 2, 'student2', 'password2', 'Science'), " +
+                "('SV003', 3, 'student3', 'password3', 'Arts'), " +
+                "('SV004', 4, 'student4', 'password4', 'Mathematics'), " +
+                "('SV005', 5, 'student5', 'password5', 'Biology'), " +
+                "('SV006', 1, 'student6', 'password6', 'Engineering'), " +
+                "('SV007', 2, 'student7', 'password7', 'Science'), " +
+                "('SV008', 3, 'student8', 'password8', 'Arts'), " +
+                "('SV009', 4, 'student9', 'password9', 'Mathematics'), " +
+                "('SV010', 5, 'student10', 'password10', 'Biology')");
+        db.execSQL("INSERT INTO HocPhan (maHp, tenHp, soTinChi, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo) VALUES " +
+                "('HP001', 'Math 101', 3, 30, 15, 1, 'Written', 'A'), " +
+                "('HP002', 'Physics 101', 4, 40, 20, 1, 'Written', 'B'), " +
+                "('HP003', 'Chemistry 101', 3, 30, 15, 1, 'Written', 'C'), " +
+                "('HP004', 'Biology 101', 4, 40, 20, 1, 'Written', 'A'), " +
+                "('HP005', 'Computer Science 101', 3, 30, 15, 1, 'Written', 'B'), " +
+                "('HP006', 'Math 102', 3, 30, 15, 2, 'Written', 'A'), " +
+                "('HP007', 'Physics 102', 4, 40, 20, 2, 'Written', 'B'), " +
+                "('HP008', 'Chemistry 102', 3, 30, 15, 2, 'Written', 'C'), " +
+                "('HP009', 'Biology 102', 4, 40, 20, 2, 'Written', 'A'), " +
+                "('HP010', 'Computer Science 102', 3, 30, 15, 2, 'Written', 'B')");
+        db.execSQL("INSERT INTO KetQuaHocPhan (maHp, maSv, lop, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy, nam) VALUES " +
+                "('HP001', 'SV001', 'Class1', 8.5, 9.0, 7.5, 8.0, 8.0, 1, 2023), " +
+                "('HP002', 'SV002', 'Class2', 7.5, 8.0, 6.5, 7.0, 7.0, 1, 2023), " +
+                "('HP003', 'SV003', 'Class3', 9.0, 9.5, 8.5, 9.0, 9.0, 1, 2023), " +
+                "('HP008', 'SV003', 'Class8', 9.0, 9.5, 8.5, 9.0, 9.0, 1, 2023), " +
+                "('HP004', 'SV004', 'Class4', 8.0, 8.5, 7.0, 8.5, 8.0, 1, 2023), " +
+                ", 'HP005', 'SV005', 'Class5', 7.5, 8.0, 7.5, 7.5, 7.5, 1, 2023), " +
+                "('HP006', 'SV006', 'Class6', 8.5, 9.0, 7.5, 8.0, 8.0, 2, 2023), " +
+                "('HP007', 'SV007', 'Class7', 7.5, 8.0, 6.5, 7.0, 7.0, 2, 2023), " +
+                "('HP008', 'SV008', 'Class8', 9.0, 9.5, 8.5, 9.0, 9.0, 2, 2023), " +
+                "('HP009', 'SV009', 'Class9', 8.0, 8.5, 7.0, 8.5, 8.0, 2, 2023), " +
+                "('HP010', 'SV010', 'Class10', 7.5, 8.0, 7.5, 7.5, 7.5, 2, 2023)");
+        db.execSQL("INSERT INTO DiemDanh (maSv, idHp, ngay, vang, loai) VALUES " +
+                "('SV001', 'HP001', '2023-05-01', 1, 0), " +
+                "('SV002', 'HP002', '2023-05-02', 1, 1), " +
+                "('SV003', 'HP003', '2023-05-03', 0, 0), " +
+                "('SV004', 'HP004', '2023-05-04', 1, 0), " +
+                "('SV005', 'HP005', '2023-05-05', 0, 1), " +
+                "('SV006', 'HP006', '2023-05-06', 1, 0), " +
+                "('SV007', 'HP007', '2023-05-07', 0, 1), " +
+                "('SV008', 'HP008', '2023-05-08', 1, 0), " +
+                "('SV009', 'HP009', '2023-05-09', 0, 1), " +
+                "('SV010', 'HP010', '2023-05-10', 1, 0), " +
+                "('SV001', 'HP006', '2023-05-11', 0, 0), " +
+                "('SV002', 'HP007', '2023-05-12', 1, 1), " +
+                "('SV003', 'HP008', '2023-05-13', 0, 0), " +
+                "('SV004', 'HP009', '2023-05-14', 1, 0), " +
+                "('SV005', 'HP010', '2023-05-15', 0, 1)");
+    }
+
     // CRUD operations for HocPhan
     public void addSubject(final HocPhan hocPhan) {
         final SQLiteDatabase db = getWritableDatabase();
@@ -152,7 +216,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(sql, new Object[]{
                 hocPhan.getTenHp(),
                 hocPhan.getMaHp(),
-                hocPhan.getSoTinChiLt(),
+                hocPhan.getSoTietLt(),
                 hocPhan.getHocKy()
         });
 
@@ -171,8 +235,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 HocPhan hocPhan = new HocPhan();
                 hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
                 hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-                hocPhan.setSoTinChiLt(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-                hocPhan.setHocKy(cursor.getString(cursor.getColumnIndexOrThrow("hocKy")));
+                hocPhan.setSoTietLt(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
+                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
                 hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }
@@ -182,42 +246,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return hocPhanList;
     }
 
-    public List<HocPhan> getSubjectsByYear(String tenTk, int year) {
+    public List<HocPhan> getSubjectsBySemester(String tenTk, String hocKy) {
         List<HocPhan> hocPhanList = new ArrayList<>();
-        String selectQuery = "SELECT hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
-                "hp.hinhThucThi, kq.lop, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, " +
-                "kq.cuoiKy, kq.diemKiVong, " +
-                "SUM(CASE WHEN dd.vang = 1 AND dd.loai = 0 THEN 1 ELSE 0 END) AS vangLt, " +
-                "SUM(CASE WHEN dd.vang = 1 AND dd.loai = 1 THEN 1 ELSE 0 END) AS vangTh " +
-                "FROM KetQuaHocPhan kq " +
-                "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
-                "JOIN SinhVien sv ON sv.maSv = kq.maSv " +
-                "LEFT JOIN DiemDanh dd ON dd.idHp = kq.lop AND dd.maSv = sv.maSv " +
-                "WHERE sv.tenTk = ? AND kq.nam = ? " +
-                "GROUP BY hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
-                "hp.hinhThucThi, kq.lop, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, " +
-                "kq.cuoiKy, kq.diemKiVong";
+        String selectQuery = "SELECT * FROM HocPhan WHERE tenHp = ? AND hocKy = ?";
+//                             "SELECT hp.maHp, hp.tenHp, hp.soTinChi, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+//                             "hp.hinhThucThi, kq.lop, kq.hocKy, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, " +
+//                             "kq.cuoiKy, kq.diemKiVong, " +
+//                             "SUM(CASE WHEN dd.vang = 1 AND dd.loai = 0 THEN 1 ELSE 0 END) AS vangLt, " +
+//                             "SUM(CASE WHEN dd.vang = 1 AND dd.loai = 1 THEN 1 ELSE 0 END) AS vangTh " +
+//                             "FROM KetQuaHocPhan kq " +
+//                             "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
+//                             "JOIN SinhVien sv ON sv.maSv = kq.maSv " +
+//                             "LEFT JOIN DiemDanh dd ON dd.idHp = kq.maHp AND dd.maSv = sv.maSv " +
+//                             "WHERE sv.tenTk = ? AND kq.hocKy = ? " +
+//                             "GROUP BY hp.maHp, hp.tenHp, hp.soTinChi, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+//                             "hp.hinhThucThi, kq.lop, kq.hocKy, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
 
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{tenTk, String.valueOf(year)});
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{tenTk, hocKy});
 
         if (cursor.moveToFirst()) {
             do {
                 HocPhan hocPhan = new HocPhan();
                 hocPhan.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
                 hocPhan.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
-                hocPhan.setSoTinChiLt(cursor.getInt(cursor.getColumnIndex("soTinChiLyThuyet")));
-                hocPhan.setSoTinChiTh(cursor.getInt(cursor.getColumnIndex("soTinChiThucHanh")));
+                hocPhan.setSoTc(cursor.getInt(cursor.getColumnIndex("soTinChi")));
+                hocPhan.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
+                hocPhan.setSoTietTh(cursor.getInt(cursor.getColumnIndex("soTietThucHanh")));
                 hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
                 hocPhan.setLop(cursor.getString(cursor.getColumnIndex("lop")));
+                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
                 hocPhan.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
-                hocPhan.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
-                hocPhan.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
-                hocPhan.setGiuaKy(cursor.getFloat(cursor.getColumnIndex("giuaKy")));
-                hocPhan.setCuoiKy(cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
-                hocPhan.setDiemKyVong(cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
-                hocPhan.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
-                hocPhan.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
+//                hocPhan.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
+//                hocPhan.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
+//                hocPhan.setGiuaKy(cursor.getFloat(cursor.getColumnIndex("giuaKy")));
+//                hocPhan.setCuoiKy(cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
+//                hocPhan.setDiemKyVong(cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
+//                hocPhan.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
+//                hocPhan.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
             } while (cursor.moveToNext());
         }
         return hocPhanList;

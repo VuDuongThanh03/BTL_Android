@@ -26,7 +26,7 @@ public class HocPhanActivity extends AppCompatActivity {
     private TextView tvTongTinChi;
     private List<HocPhan> hocPhanList;
     private HocPhanAdapter adapter;
-    private DatabaseHelper db;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +36,13 @@ public class HocPhanActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        rvHocPhan = findViewById(R.id.rvHocPhan);
+        rvHocPhan = findViewById(R.id.rvDiemHp);
         tvTongTinChi = findViewById(R.id.tvTongTinChi);
 
-        db = new DatabaseHelper(this);
-        hocPhanList = db.getAllSubjects();
+        dbHelper = new DatabaseHelper(this);
+        dbHelper.getWritableDatabase();
+
+        hocPhanList = dbHelper.getAllSubjects();
 
         adapter = new HocPhanAdapter(hocPhanList);
         rvHocPhan.setLayoutManager(new LinearLayoutManager(this));
@@ -74,13 +76,13 @@ public class HocPhanActivity extends AppCompatActivity {
                 final String tenHp = data.getStringExtra("tenHp");
                 final String maHp = data.getStringExtra("maHp");
                 final int soTinChiLyThuyet = data.getIntExtra("soTinChiLyThuyet", 0);
-                final String hocKy = data.getStringExtra("hocKy");
+                final int hocKy = data.getIntExtra("hocKy", 0);
 
                 final HocPhan hocPhan = new HocPhan(tenHp, maHp, soTinChiLyThuyet, hocKy);
-                this.db.addSubject(hocPhan);
+                this.dbHelper.addSubject(hocPhan);
 
                 this.hocPhanList.clear();
-                this.hocPhanList.addAll(this.db.getAllSubjects());
+                this.hocPhanList.addAll(this.dbHelper.getAllSubjects());
                 this.adapter.notifyDataSetChanged();
                 this.updateTotalCredits();
             }
@@ -90,7 +92,7 @@ public class HocPhanActivity extends AppCompatActivity {
     private void updateTotalCredits() {
         int totalCredits = 0;
         for (final HocPhan hocPhan : this.hocPhanList) {
-            totalCredits += hocPhan.getSoTinChiLt();
+            totalCredits += hocPhan.getSoTietLt();
         }
         this.tvTongTinChi.setText("Tổng tín chỉ dự kiến: " + totalCredits);
     }

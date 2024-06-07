@@ -40,46 +40,26 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHocKy"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2024"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="3dp"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2023"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="6dp"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2022"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="6dp"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2021"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="6dp"/>
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="10dp"
+                tools:listitem="@layout/customrv_hoc_ky"/>
 
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerHocPhan"
+            android:id="@+id/rvDiemHp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:listitem="@layout/customrv_hoc_phan_chi_tiet"
+            tools:listitem="@layout/customrv_diem_hoc_phan"
             android:padding="8dp"/>
     </LinearLayout>
 </LinearLayout>

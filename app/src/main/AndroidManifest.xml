@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
-
+        <activity
+            android:name=".diem.CapNhatDiemActivity"
+            android:exported="false" />
         <activity
             android:name=".diem.TongKetActivity"
             android:exported="false" />

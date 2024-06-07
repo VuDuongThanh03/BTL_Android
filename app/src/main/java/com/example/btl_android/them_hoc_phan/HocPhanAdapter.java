@@ -52,7 +52,7 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.SubjectV
         public void bind(final HocPhan hocPhan) {
             this.tvTenHp.setText("Môn: " + hocPhan.getTenHp());
             this.tvMaHp.setText("Mã học phần: " + hocPhan.getMaHp());
-            this.tvTongTinChi.setText("Số tín chỉ: " + hocPhan.getSoTinChiLt());
+            this.tvTongTinChi.setText("Số tín chỉ: " + hocPhan.getSoTietLt());
         }
     }
 }

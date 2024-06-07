@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageButton
-            android:id="@+id/imageBack"
+            android:id="@+id/imageQuayLai"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/back"/>
@@ -28,7 +28,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tvHocPhan"
+        android:id="@+id/tvTenHp"
         android:text="Tiếng nhật 2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvMaHp"
                 android:text="FL6338"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
@@ -84,6 +85,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvSoTc"
                 android:text="5"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
@@ -102,11 +104,12 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:text="40"
-                android:textSize="16sp"
+                android:id="@+id/tvSoTietLt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true"
+                android:text="40"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -120,6 +123,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvSoTietTh"
                 android:text="0"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
@@ -138,6 +142,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvHinhThucThi"
                 android:text="Kết hợp (100%TL + 100%VĐ)"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
@@ -156,6 +161,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvLop"
                 android:text="FL6338.1"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
@@ -174,7 +180,27 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvHeSo"
                 android:text="10(TX1) - 10(TX2) - 20(GK) - 60(CK)"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Học kỳ"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvHocKy"
+                android:text="7"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -212,7 +238,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Điểm giữa kì"
+                android:text="Điểm giữa kỳ"
                 android:layout_alignParentEnd="true"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
@@ -223,6 +249,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tvTx1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-"
@@ -230,14 +257,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginStart="30dp"/>
-
-            <TextView
+                android:id="@+id/tvTx2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-"
@@ -246,14 +266,7 @@
                 android:layout_marginStart="60dp"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginStart="90dp"/>
-
-            <TextView
+                android:id="@+id/tvGiuaKy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-"
@@ -265,7 +278,7 @@
     </LinearLayout>
 
     <TextView
-        android:text="Điểm cuối kì"
+        android:text="Điểm cuối kỳ"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -287,7 +300,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Điểm cuối kì"
+                android:text="Điểm cuối kỳ"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
 
@@ -305,6 +318,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tvCuoiKy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-"
@@ -312,6 +326,7 @@
                 android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/tvKiVong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -333,6 +348,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
+                android:id="@+id/tvTongKet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-"
@@ -371,13 +387,14 @@
                 android:textColor="@color/black"/>
 
             <TextView
+                android:id="@+id/tvNghiLt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
                 android:text="0"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginEnd="10dp"
-                android:layout_alignParentEnd="true"/>
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -392,6 +409,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
+                android:id="@+id/tvNghiTh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -413,6 +431,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
+                android:id="@+id/tvDieuKien"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đủ điều kiện"
