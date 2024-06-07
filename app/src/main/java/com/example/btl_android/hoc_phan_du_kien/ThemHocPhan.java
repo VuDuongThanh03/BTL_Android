@@ -1,6 +1,7 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,22 +12,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 
 public class ThemHocPhan extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;
     private Button buttonSubmit, buttonCancel;
-    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_them_hoc_phan);
-
-        dbHelper = new DatabaseHelper(this);
 
         // Initialize views
         maHpEditText = findViewById(R.id.maHpEditText);
@@ -48,19 +45,8 @@ public class ThemHocPhan extends AppCompatActivity {
         // Set button listeners
         buttonSubmit.setOnClickListener(view -> {
             if (validateInputs()) {
-                // Add HocPhan to database
-                dbHelper.addHocPhan(
-                        maHpEditText.getText().toString(),
-                        tenHpEditText.getText().toString(),
-                        Integer.parseInt(soTinChiLyThuyetEditText.getText().toString()),
-                        Integer.parseInt(soTinChiThucHanhEditText.getText().toString()),
-                        Integer.parseInt(hocKyEditText.getText().toString()),
-                        hinhThucThiEditText.getText().toString(),
-                        heSoEditText.getText().toString()
-                );
-
+                // Handle submission logic here
                 Toast.makeText(this, "Học phần đã được thêm!", Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
 

@@ -1,6 +1,5 @@
 package com.example.btl_android;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +8,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
-    private static final int DATABASE_VERSION = 2; // Tăng phiên bản cơ sở dữ liệu
+    private static final int DATABASE_VERSION = 1;
 
     // SinhVien table
     private static final String CREATE_TABLE_SINHVIEN =
@@ -146,42 +144,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addHocPhan(String maHp, String tenHp, int soTinChiLyThuyet, int soTinChiThucHanh, int hocKy, String hinhThucThi, String heSo) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("maHp", maHp);
-        values.put("tenHp", tenHp);
-        values.put("soTinChiLyThuyet", soTinChiLyThuyet);
-        values.put("soTinChiThucHanh", soTinChiThucHanh);
-        values.put("hocKy", hocKy);
-        values.put("hinhThucThi", hinhThucThi);
-        values.put("heSo", heSo);
 
-        db.insert("HocPhan", null, values);
-        db.close();
-    }
 
-    public List<HocPhan> getAllHocPhan() {
-        List<HocPhan> hocPhanList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan", null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                HocPhan hocPhan = new HocPhan(
-                        cursor.getString(cursor.getColumnIndexOrThrow("maHp")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("tenHp")),
-                        cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")),
-                        cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiThucHanh")),
-                        cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("heSo"))
-                );
-                hocPhanList.add(hocPhan);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return hocPhanList;
-    }
 }
