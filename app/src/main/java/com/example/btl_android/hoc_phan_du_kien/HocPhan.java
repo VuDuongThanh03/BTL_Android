@@ -1,6 +1,5 @@
-package com.example.btl_android.them_hoc_phan;
+package com.example.btl_android.hoc_phan_du_kien;
 
-/** @noinspection ALL*/
 public class HocPhan {
     private String maHp;
     private String tenHp;
@@ -10,12 +9,9 @@ public class HocPhan {
     private String hinhThucThi;
     private String heSo;
 
-    public HocPhan() {
-    }
-
-    public HocPhan(final String tenHp, final String maHp, final int soTinChiLyThuyet, final int soTinChiThucHanh, final int hocKy, final String hinhThucThi, final String heSo) {
-        this.tenHp = tenHp;
+    public HocPhan(String maHp, String tenHp, int soTinChiLyThuyet, int soTinChiThucHanh, int hocKy, String hinhThucThi, String heSo) {
         this.maHp = maHp;
+        this.tenHp = tenHp;
         this.soTinChiLyThuyet = soTinChiLyThuyet;
         this.soTinChiThucHanh = soTinChiThucHanh;
         this.hocKy = hocKy;
@@ -23,59 +19,60 @@ public class HocPhan {
         this.heSo = heSo;
     }
 
+    // Getter và Setter
     public String getMaHp() {
-        return this.maHp;
+        return maHp;
     }
 
-    public void setMaHp(final String maHp) {
+    public void setMaHp(String maHp) {
         this.maHp = maHp;
     }
 
     public String getTenHp() {
-        return this.tenHp;
+        return tenHp;
     }
 
-    public void setTenHp(final String tenHp) {
+    public void setTenHp(String tenHp) {
         this.tenHp = tenHp;
     }
 
     public int getSoTinChiLyThuyet() {
-        return this.soTinChiLyThuyet;
+        return soTinChiLyThuyet;
     }
 
-    public void setSoTinChiLyThuyet(final int soTinChiLyThuyet) {
+    public void setSoTinChiLyThuyet(int soTinChiLyThuyet) {
         this.soTinChiLyThuyet = soTinChiLyThuyet;
     }
 
     public int getSoTinChiThucHanh() {
-        return this.soTinChiThucHanh;
+        return soTinChiThucHanh;
     }
 
-    public void setSoTinChiThucHanh(final int soTinChiThucHanh) {
+    public void setSoTinChiThucHanh(int soTinChiThucHanh) {
         this.soTinChiThucHanh = soTinChiThucHanh;
     }
 
     public int getHocKy() {
-        return this.hocKy;
+        return hocKy;
     }
 
-    public void setHocKy(final int hocKy) {
+    public void setHocKy(int hocKy) {
         this.hocKy = hocKy;
     }
 
     public String getHinhThucThi() {
-        return this.hinhThucThi;
+        return hinhThucThi;
     }
 
-    public void setHinhThucThi(final String hinhThucThi) {
+    public void setHinhThucThi(String hinhThucThi) {
         this.hinhThucThi = hinhThucThi;
     }
 
     public String getHeSo() {
-        return this.heSo;
+        return heSo;
     }
 
-    public void setHeSo(final String heSo) {
+    public void setHeSo(String heSo) {
         this.heSo = heSo;
     }
 }

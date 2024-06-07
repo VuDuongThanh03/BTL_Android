@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffefd5"
+    tools:context=".hoc_phan_du_kien.HocPhanDuKien">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#d8bfd8"
+        android:title="Học Phần Dự Kiến"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_border"
+                android:text="1"
+                android:textColor="#000000"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_border"
+                android:text="2"
+                android:textColor="#000000"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_border"
+                android:text="3"
+                android:textColor="#000000"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_border"
+                android:text="4"
+                android:textColor="#000000"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_border"
+                android:text="5"
+                android:textColor="#000000"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_border"
+                android:text="6"
+                android:textColor="#000000"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_border"
+                android:text="7"
+                android:textColor="#000000"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_border"
+                android:text="8"
+                android:textColor="#000000"
+                app:backgroundTint="@null" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Vùng chứa thông tin môn học -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/infoContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <!-- Các TextView hiển thị thông tin -->
+            <TextView
+                android:id="@+id/maHpTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Mã học phần: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tenHpTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/maHpTextView"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Tên học phần: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/soTinChiLyThuyetTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tenHpTextView"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Số tín chỉ lý thuyết: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/soTinChiThucHanhTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/soTinChiLyThuyetTextView"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Số tín chỉ thực hành: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/hocKyTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/soTinChiThucHanhTextView"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Học kỳ: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/hinhThucThiTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hocKyTextView"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Hình thức thi: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/heSoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hinhThucThiTextView"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Hệ số: "
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

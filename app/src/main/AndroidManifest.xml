@@ -12,7 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
+        <activity
+            android:name=".hoc_phan_du_kien.ThemHocPhan"
+            android:exported="false" />
+        <activity
+            android:name=".hoc_phan_du_kien.HocPhanDuKien"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".diem.DiemChiTietActivity"
             android:exported="false" />
@@ -24,8 +35,7 @@
             android:exported="false" />
         <activity
             android:name=".them_hoc_phan.HocPhanActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".cong_viec.CongViecActivity"
             android:exported="false" />
@@ -37,14 +47,15 @@
             android:exported="false" />
         <activity
             android:name=".dang_nhap.DangNhapActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-
     </application>
 
 </manifest>
