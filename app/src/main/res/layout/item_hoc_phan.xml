@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/maHpTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Mã học phần: "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tenHpTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/maHpTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Tên học phần: "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/soTinChiLyThuyetTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tenHpTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Số tín chỉ lý thuyết: "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/soTinChiThucHanhTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/soTinChiLyThuyetTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Số tín chỉ thực hành: "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/hocKyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/soTinChiThucHanhTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Học kỳ: "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/hinhThucThiTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hocKyTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Hình thức thi: "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/heSoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hinhThucThiTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Hệ số: "
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

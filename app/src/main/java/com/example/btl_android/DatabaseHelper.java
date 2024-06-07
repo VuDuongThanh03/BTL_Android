@@ -1,5 +1,6 @@
 package com.example.btl_android;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 
+import com.example.btl_android.hoc_phan_du_kien.HocPhan;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // SinhVien table
     private static final String CREATE_TABLE_SINHVIEN =
@@ -143,6 +146,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Tạo lại cấu trúc cơ sở dữ liệu
         onCreate(db);
     }
+    public void insertHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maHp", hocPhan.getMaHp());
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLyThuyet());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiThucHanh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        long result = db.insert("HocPhan", null, values);
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Failed to insert HocPhan");
+        } else {
+            Log.i("DatabaseHelper", "HocPhan inserted successfully");
+        }
+    }
+
 
 
 

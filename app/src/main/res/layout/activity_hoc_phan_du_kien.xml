@@ -10,11 +10,10 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:background="#d8bfd8"
-        android:title="Học Phần Dự Kiến"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:title="Học Phần Dự Kiến"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,96 +115,14 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- Vùng chứa thông tin môn học -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/infoContainer"
+    <!-- RecyclerView để hiển thị danh sách môn học -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewHocPhan"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
-
-            <!-- Các TextView hiển thị thông tin -->
-            <TextView
-                android:id="@+id/maHpTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Mã học phần: "
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tenHpTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/maHpTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Tên học phần: "
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/soTinChiLyThuyetTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tenHpTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Số tín chỉ lý thuyết: "
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/soTinChiThucHanhTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/soTinChiLyThuyetTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Số tín chỉ thực hành: "
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/hocKyTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/soTinChiThucHanhTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Học kỳ: "
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/hinhThucThiTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/hocKyTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Hình thức thi: "
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/heSoTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/hinhThucThiTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Hệ số: "
-                android:textSize="16sp" />
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

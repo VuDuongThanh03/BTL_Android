@@ -1,7 +1,6 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,11 +12,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.R;
+import com.example.btl_android.DatabaseHelper;
 
 public class ThemHocPhan extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;
     private Button buttonSubmit, buttonCancel;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,8 @@ public class ThemHocPhan extends AppCompatActivity {
         buttonSubmit = findViewById(R.id.buttonSubmit);
         buttonCancel = findViewById(R.id.buttonCancel);
 
+        dbHelper = new DatabaseHelper(this);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -45,8 +48,23 @@ public class ThemHocPhan extends AppCompatActivity {
         // Set button listeners
         buttonSubmit.setOnClickListener(view -> {
             if (validateInputs()) {
-                // Handle submission logic here
+                // Create HocPhan object
+                HocPhan hocPhan = new HocPhan(
+                        maHpEditText.getText().toString(),
+                        tenHpEditText.getText().toString(),
+                        Integer.parseInt(soTinChiLyThuyetEditText.getText().toString()),
+                        Integer.parseInt(soTinChiThucHanhEditText.getText().toString()),
+                        Integer.parseInt(hocKyEditText.getText().toString()),
+                        hinhThucThiEditText.getText().toString(),
+                        heSoEditText.getText().toString()
+                );
+
+                // Insert HocPhan into database
+                dbHelper.insertHocPhan(hocPhan);
+
                 Toast.makeText(this, "Học phần đã được thêm!", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                finish();
             }
         });
 
