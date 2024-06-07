@@ -32,7 +32,7 @@ public class HocPhanDuKien extends AppCompatActivity {
     private HocPhanAdapter hocPhanAdapter;
     private List<HocPhan> hocPhanList;
     private DatabaseHelper databaseHelper;
-    private int selectedHocKy = -1; // -1 means no specific hocKy selected
+    private int selectedHocKy = -1;
     private Button[] hocKyButtons;
 
     @Override
@@ -90,11 +90,11 @@ public class HocPhanDuKien extends AppCompatActivity {
     private void updateHocKyButtonColors() {
         for (int i = 0; i < hocKyButtons.length; i++) {
             if (i == selectedHocKy - 1) {
-                hocKyButtons[i].setBackgroundResource(R.drawable.button_selected); // Sử dụng drawable khi nút được chọn
-                hocKyButtons[i].setTextColor(0xFFFFFFFF); // Màu chữ trắng
+                hocKyButtons[i].setBackgroundResource(R.drawable.button_selected);
+                hocKyButtons[i].setTextColor(0xFFFFFFFF);
             } else {
-                hocKyButtons[i].setBackgroundResource(R.drawable.button_border); // Sử dụng drawable ban đầu
-                hocKyButtons[i].setTextColor(0xFF000000); // Màu chữ đen
+                hocKyButtons[i].setBackgroundResource(R.drawable.button_border);
+                hocKyButtons[i].setTextColor(0xFF000000);
             }
         }
     }
