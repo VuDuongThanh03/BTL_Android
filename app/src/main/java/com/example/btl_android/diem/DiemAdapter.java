@@ -76,7 +76,7 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
         holder.tvTx2.setText(String.format("%.1f", item.getTx2()));
         holder.tvGiuaKy.setText(String.format("%.1f", item.getGiuaKy()));
         holder.tvCuoiKy.setText(String.format("%.1f", item.getCuoiKy()));
-        holder.tvTongKet.setText(item.getXepLoai());
+        holder.tvTongKet.setText(item.getDiemChu());
         holder.diemHp.setTag(pos);
     }
 
