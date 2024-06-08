@@ -22,7 +22,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".hoc_phan.HocPhanDuKien"
+            android:name=".hoc_phan.HocPhanDuKienActivity"
             android:exported="false" />
 
         <activity

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViecActivity;
 import com.example.btl_android.diem.DiemActivity;
-import com.example.btl_android.hoc_phan.HocPhanDuKien;
+import com.example.btl_android.hoc_phan.HocPhanDuKienActivity;
 
 /** @noinspection ALL*/
 public class TrangChuActivity extends AppCompatActivity {
@@ -36,10 +36,8 @@ public class TrangChuActivity extends AppCompatActivity {
         });
 
         btnHocPhan.setOnClickListener(v -> {
-            final Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKien.class);
+            final Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKienActivity.class);
             TrangChuActivity.this.startActivity(intent);
         });
-
-
     }
 }

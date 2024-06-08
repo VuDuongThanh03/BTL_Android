@@ -358,8 +358,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Log.d("DB",tenTk + ", " + hocKy);
 
-        if (cursor.getCount() == 0) Toast.makeText(context, "No data", Toast.LENGTH_SHORT).show();
-        else Toast.makeText(context, "Has data", Toast.LENGTH_SHORT).show();
+        if (cursor.getCount() == 0) Toast.makeText(context, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
 
         if (cursor.moveToFirst()) {
             do {
