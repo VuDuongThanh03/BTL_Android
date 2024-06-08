@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class HocPhan implements Serializable {
     private String maHp, tenHp;
-    private float soTinChiLt, soTinChiTh;
+    private Float soTinChiLt, soTinChiTh;
     private int soTietLt, soTietTh, hocKy;
     private String hinhThucThi, heSo, lop;
     private Float tx1, tx2, giuaKy, cuoiKy, diemKyVong;
@@ -16,7 +16,7 @@ public class HocPhan implements Serializable {
     public HocPhan() {
         this.maHp = "HP000";
         this.tenHp = "Unknown";
-        this.soTinChiLt = 3;
+        this.soTinChiLt = 3.0f;
         this.soTinChiTh = 0.5f;
         this.soTietLt = 30;
         this.soTietTh = 30;
@@ -66,19 +66,19 @@ public class HocPhan implements Serializable {
         this.tenHp = tenHp;
     }
 
-    public float getSoTinChiLt() {
+    public Float getSoTinChiLt() {
         return soTinChiLt;
     }
 
-    public void setSoTinChiLt(float soTinChiLt) {
+    public void setSoTinChiLt(Float soTinChiLt) {
         this.soTinChiLt = soTinChiLt;
     }
 
-    public float getSoTinChiTh() {
+    public Float getSoTinChiTh() {
         return soTinChiTh;
     }
 
-    public void setSoTinChiTh(float soTinChiTh) {
+    public void setSoTinChiTh(Float soTinChiTh) {
         this.soTinChiTh = soTinChiTh;
     }
 
@@ -186,34 +186,42 @@ public class HocPhan implements Serializable {
         this.vangTh = vangTh;
     }
 
-    public String getDiemTongKet() {
+    public Float getDiem10() {
         String[] heSoList = heSo.trim().split("-");
         if (heSoList.length == 3) {
-            Float diemBangSo = tx1 * Float.parseFloat(heSoList[0]) +
-                    tx2 * Float.parseFloat(heSoList[1]) + cuoiKy * Float.parseFloat(heSoList[2]);
-            if (diemBangSo < 4) return "F";
-            if (diemBangSo < 4.7) return "D";
-            if (diemBangSo < 5.5) return "D+";
-            if (diemBangSo < 6.2) return "C";
-            if (diemBangSo < 7.0) return "C+";
-            if (diemBangSo < 7.7) return "B";
-            if (diemBangSo < 8.5) return "B+";
-            return "A";
+            return tx1 * Float.parseFloat(heSoList[0]) / 100.0f +
+                   tx2 * Float.parseFloat(heSoList[1]) / 100.0f + cuoiKy * Float.parseFloat(heSoList[2]) / 100.0f;
         }
         if (heSoList.length == 4) {
-            Float diemBangSo = tx1 * Float.parseFloat(heSoList[0]) + tx2 * Float.parseFloat(heSoList[1]) +
-                    giuaKy * Float.parseFloat(heSoList[2]) + cuoiKy * Float.parseFloat(heSoList[3]);
-            if (diemBangSo < 4) return "F";
-            if (diemBangSo < 4.7) return "D";
-            if (diemBangSo < 5.5) return "D+";
-            if (diemBangSo < 6.2) return "C";
-            if (diemBangSo < 7.0) return "C+";
-            if (diemBangSo < 7.7) return "B";
-            if (diemBangSo < 8.5) return "B+";
-            return "A";
+            return tx1 * Float.parseFloat(heSoList[0]) / 100.0f + tx2 * Float.parseFloat(heSoList[1]) / 100.0f +
+                   giuaKy * Float.parseFloat(heSoList[2]) / 100.0f + cuoiKy * Float.parseFloat(heSoList[3]) / 100.0f;
         }
-        return "-";
+        return null;
     }
+
+    public String getDiemChu() {
+        Float diem10 = getDiem10();
+        if (diem10 == -1) return "-";
+        if (diem10 < 4.0f) return "F";
+        if (diem10 < 4.7f) return "D";
+        if (diem10 < 5.5f) return "D+";
+        if (diem10 < 6.2f) return "C";
+        if (diem10 < 7.0f) return "C+";
+        if (diem10 < 7.7f) return "B";
+        if (diem10 < 8.5f) return "B+";
+        return "A";
+    }
+
+    public String getXepLoai() {
+        Float diem10 = getDiem10();
+        if (diem10 == -1) return "-";
+        if (diem10 < 4.0f) return "Kém";
+        if (diem10 < 6.2f) return "Yếu";
+        if (diem10 < 7.0f) return "Trung bình";
+        if (diem10 < 8.5f) return "Khá";
+        return "Giỏi";
+    }
+
     public String getDieuKien() {
         if (soTietLt > 0 && soTietTh == 0) {
             if (vangLt / soTietLt <= 0.3f) return "Đủ điều kiện";

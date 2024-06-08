@@ -170,14 +170,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 hocPhan.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
                 hocPhan.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
-                hocPhan.setSoTinChiLt(cursor.getInt(cursor.getColumnIndex("soTinChiLyThuyet")));
-                hocPhan.setSoTinChiTh(cursor.getInt(cursor.getColumnIndex("soTinChiThucHanh")));
                 hocPhan.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
                 hocPhan.setSoTietTh(cursor.getInt(cursor.getColumnIndex("soTietThucHanh")));
-                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
                 hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
+                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
                 hocPhan.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
-                hocPhan.setLop(cursor.getString(cursor.getColumnIndex("lop")));
+                hocPhan.setLop(cursor.getString(cursor.getColumnIndex("maLop")));
                 hocPhan.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
                 hocPhan.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
                 hocPhan.setGiuaKy(cursor.getFloat(cursor.getColumnIndex("giuaKy")));
