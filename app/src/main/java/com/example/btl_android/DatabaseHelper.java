@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.btl_android.diem.DiemActivity;
-import com.example.btl_android.hoc_phan_du_kien.HocPhan;
+//import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -288,94 +288,94 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // CRUD operations for HocPhan
-    public void addHocPhan(final HocPhan hocPhan) {
-        final SQLiteDatabase db = getWritableDatabase();
-
-        String sql = "INSERT INTO HocPhan (maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, hocKy, hinhThucThi, heSo) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        db.execSQL(sql, new Object[]{
-                hocPhan.getMaHp(),
-                hocPhan.getTenHp(),
-                hocPhan.getSoTinChiLyThuyet(),
-                hocPhan.getSoTinChiThucHanh(),
-                hocPhan.getHocKy(),
-                hocPhan.getHinhThucThi(),
-                hocPhan.getHeSo()
-        });
-
-        db.close();
-    }
-
-    public List<HocPhan> getAllHocPhan() {
-        List<HocPhan> hocPhanList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM HocPhan";
-
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                HocPhan hocPhan = new HocPhan();
-                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
-                hocPhan.setSoTinChiLyThuyet(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-                hocPhan.setSoTinChiThucHanh(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiThucHanh")));
-                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
-                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")));
-                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndexOrThrow("heSo")));
-                hocPhanList.add(hocPhan);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return hocPhanList;
-    }
-
-    public List<HocPhan> getHocPhanByHocKy(int hocKy) {
-        List<HocPhan> hocPhanList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM HocPhan WHERE hocKy = ?";
-
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(hocKy)});
-
-        if (cursor.moveToFirst()) {
-            do {
-                HocPhan hocPhan = new HocPhan();
-                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
-                hocPhan.setSoTinChiLyThuyet(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-                hocPhan.setSoTinChiThucHanh(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiThucHanh")));
-                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
-                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")));
-                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndexOrThrow("heSo")));
-                hocPhanList.add(hocPhan);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return hocPhanList;
-    }
-
-    public void AddTimeTable(String mon, String thu, String ngay, String giangvien, String phong, String tiet, String diadiem) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put(COLUMN_MON, mon);
-        values.put(COLUMN_THU, thu);
-        values.put(COLUMN_NGAY, ngay);
-        values.put(COLUMN_GIANGVIEN, giangvien);
-        values.put(COLUMN_PHONG, phong);
-        values.put(COLUMN_TIET, tiet);
-        values.put(COLUMN_DIADIEM, diadiem);
-        long result = db.insert(TABLE_THOIKHOABIEU, null, values);
-        if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    public void addHocPhan(final HocPhan hocPhan) {
+//        final SQLiteDatabase db = getWritableDatabase();
+//
+//        String sql = "INSERT INTO HocPhan (maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, hocKy, hinhThucThi, heSo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+//
+//        db.execSQL(sql, new Object[]{
+//                hocPhan.getMaHp(),
+//                hocPhan.getTenHp(),
+//                hocPhan.getSoTinChiLyThuyet(),
+//                hocPhan.getSoTinChiThucHanh(),
+//                hocPhan.getHocKy(),
+//                hocPhan.getHinhThucThi(),
+//                hocPhan.getHeSo()
+//        });
+//
+//        db.close();
+//    }
+//
+//    public List<HocPhan> getAllHocPhan() {
+//        List<HocPhan> hocPhanList = new ArrayList<>();
+//        String selectQuery = "SELECT * FROM HocPhan";
+//
+//        SQLiteDatabase db = getReadableDatabase();
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                HocPhan hocPhan = new HocPhan();
+//                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
+//                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
+//                hocPhan.setSoTinChiLyThuyet(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
+//                hocPhan.setSoTinChiThucHanh(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiThucHanh")));
+//                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
+//                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")));
+//                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndexOrThrow("heSo")));
+//                hocPhanList.add(hocPhan);
+//            } while (cursor.moveToNext());
+//        }
+//
+//        cursor.close();
+//        db.close();
+//        return hocPhanList;
+//    }
+//
+//    public List<HocPhan> getHocPhanByHocKy(int hocKy) {
+//        List<HocPhan> hocPhanList = new ArrayList<>();
+//        String selectQuery = "SELECT * FROM HocPhan WHERE hocKy = ?";
+//
+//        SQLiteDatabase db = getReadableDatabase();
+//        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(hocKy)});
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                HocPhan hocPhan = new HocPhan();
+//                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
+//                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
+//                hocPhan.setSoTinChiLyThuyet(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
+//                hocPhan.setSoTinChiThucHanh(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiThucHanh")));
+//                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
+//                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")));
+//                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndexOrThrow("heSo")));
+//                hocPhanList.add(hocPhan);
+//            } while (cursor.moveToNext());
+//        }
+//
+//        cursor.close();
+//        db.close();
+//        return hocPhanList;
+//    }
+//
+//    public void AddTimeTable(String mon, String thu, String ngay, String giangvien, String phong, String tiet, String diadiem) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//
+//        values.put(COLUMN_MON, mon);
+//        values.put(COLUMN_THU, thu);
+//        values.put(COLUMN_NGAY, ngay);
+//        values.put(COLUMN_GIANGVIEN, giangvien);
+//        values.put(COLUMN_PHONG, phong);
+//        values.put(COLUMN_TIET, tiet);
+//        values.put(COLUMN_DIADIEM, diadiem);
+//        long result = db.insert(TABLE_THOIKHOABIEU, null, values);
+//        if (result == -1) {
+//            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     public Cursor readAllData() {
         String query = "SELECT * FROM " + TABLE_THOIKHOABIEU;
