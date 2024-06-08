@@ -9,7 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.btl_android.hoc_phan.HocPhan;
+import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 
 import java.util.ArrayList;
 import java.util.List;
