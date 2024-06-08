@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
-import com.example.btl_android.hoc_phan.HocPhan;
+import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 
 import java.util.ArrayList;
 import java.util.Arrays;
