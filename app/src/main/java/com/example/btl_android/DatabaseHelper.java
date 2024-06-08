@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -17,196 +16,6 @@ import java.util.List;
 
 /** @noinspection ALL*/
 public class DatabaseHelper extends SQLiteOpenHelper {
-
-    // Database name and version
-    private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
-    private static final int DATABASE_VERSION = 1;
-
-    // SinhVien table
-    private static final String CREATE_TABLE_SINHVIEN =
-            "CREATE TABLE IF NOT EXISTS SinhVien (" +
-                    "maSv TEXT NOT NULL," +
-                    "maCn INTEGER NOT NULL," +
-                    "tenTk INTEGER NOT NULL UNIQUE," +
-                    "matKhau TEXT NOT NULL," +
-                    "khoa TEXT NOT NULL," +
-                    "PRIMARY KEY(maSv)," +
-                    "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
-    // CongViec table
-    private static final String CREATE_TABLE_CONGVIEC =
-            "CREATE TABLE IF NOT EXISTS CongViec (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "idSv TEXT NOT NULL," +
-                    "tenViec TEXT NOT NULL," +
-                    "mucUuTien INTEGER," +
-                    "thoiHan TEXT NOT NULL," +
-                    "trangThai INTEGER NOT NULL," +
-                    "chiTiet TEXT," +
-                    "FOREIGN KEY (idSv) REFERENCES SinhVien(maSv)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
-    // ChuyenNganh table
-    private static final String CREATE_TABLE_CHUYENNGANH =
-            "CREATE TABLE IF NOT EXISTS ChuyenNganh (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "tenCn TEXT NOT NULL" +
-                    ");";
-
-    // HocPhan table
-    private static final String CREATE_TABLE_HOCPHAN =
-            "CREATE TABLE IF NOT EXISTS HocPhan (" +
-                    "maHp TEXT PRIMARY KEY," +
-                    "tenHp TEXT NOT NULL," +
-                    "soTinChi INTEGER NOT NULL," +
-                    "soTietLyThuyet INTEGER NOT NULL," +
-                    "soTietThucHanh INTEGER NOT NULL," +
-                    "hocKy INTEGER NOT NULL," +
-                    "hinhThucThi TEXT NOT NULL," +
-                    "heSo TEXT NOT NULL" +
-                    ");";
-
-    // LoaiHocPhan table
-    private static final String CREATE_TABLE_LOAIHOCPHAN =
-            "CREATE TABLE IF NOT EXISTS LoaiHocPhan (" +
-                    "maHp TEXT NOT NULL," +
-                    "maCn INTEGER NOT NULL," +
-                    "loai INTEGER NOT NULL," +
-                    "PRIMARY KEY(maHp, maCn)," +
-                    "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
-                    "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
-    // KetQuaHocPhan table
-    private static final String CREATE_TABLE_KETQUAHOCPHAN =
-            "CREATE TABLE IF NOT EXISTS KetQuaHocPhan (" +
-                    "maHp TEXT NOT NULL," +
-                    "maSv TEXT NOT NULL," +
-                    "lop TEXT NOT NULL," +
-                    "tx1 REAL," +
-                    "tx2 REAL," +
-                    "giuaKy REAL," +
-                    "cuoiKy REAL," +
-                    "diemKiVong REAL," +
-                    "hocKy INTEGER NOT NULL," +
-                    "nam INTEGER NOT NULL," +
-                    "PRIMARY KEY(maHp, maSv)," +
-                    "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
-                    "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
-    // DiemDanh table
-    private static final String CREATE_TABLE_DIEMDANH =
-            "CREATE TABLE IF NOT EXISTS DiemDanh (" +
-                    "maSv TEXT NOT NULL," +
-                    "idHp TEXT NOT NULL," +
-                    "ngay TEXT NOT NULL," +
-                    "vang INTEGER," +
-                    "loai INTEGER," +
-                    "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
-                    "FOREIGN KEY (idHp) REFERENCES HocPhan(maHp)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
-    private static final String INSERT_TABLE_SINHVIEN =
-            "INSERT INTO SinhVien (maSv, maCn, tenTk, matKhau, khoa) VALUES " +
-                    "('SV001', 1, 'student1', 'password1', 'Engineering'), " +
-                    "('SV002', 2, 'student2', 'password2', 'Science'), " +
-                    "('SV003', 3, 'student3', 'password3', 'Arts'), " +
-                    "('SV004', 4, 'student4', 'password4', 'Mathematics'), " +
-                    "('SV005', 5, 'student5', 'password5', 'Biology'), " +
-                    "('SV006', 1, 'student6', 'password6', 'Engineering'), " +
-                    "('SV007', 2, 'student7', 'password7', 'Science'), " +
-                    "('SV008', 3, 'student8', 'password8', 'Arts'), " +
-                    "('SV009', 4, 'student9', 'password9', 'Mathematics'), " +
-                    "('SV010', 5, 'student10', 'password10', 'Biology');";
-
-    private static final String INSERT_TABLE_CONGVIEC =
-            "INSERT INTO CongViec (idSv, tenViec, mucUuTien, thoiHan, trangThai, chiTiet) VALUES " +
-                    "('SV001', 'Complete Math Homework', 1, '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
-                    "('SV002', 'Prepare Physics Presentation', 2, '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
-                    "('SV003', 'Chemistry Lab Report', 1, '2023-06-14', 0, 'Lab report on chemical reactions'), " +
-                    "('SV004', 'Biology Field Trip', 3, '2023-06-16', 1, 'Field trip to the botanical garden'), " +
-                    "('SV005', 'Computer Science Project', 1, '2023-06-18', 0, 'Project on data structures'), " +
-                    "('SV006', 'Math Quiz Preparation', 2, '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
-                    "('SV007', 'Physics Assignment', 1, '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
-                    "('SV008', 'Chemistry Homework', 2, '2023-06-24', 0, 'Solve problems from the textbook'), " +
-                    "('SV009', 'Biology Research', 3, '2023-06-26', 1, 'Research on genetic mutations'), " +
-                    "('SV010', 'Computer Science Exam', 1, '2023-06-28', 0, 'Study for final exam');";
-
-    private static final String INSERT_TABLE_CHUYENNGANH =
-            "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
-                    "(1, 'Computer Science'), " +
-                    "(2, 'Physics'), " +
-                    "(3, 'Chemistry'), " +
-                    "(4, 'Mathematics'), " +
-                    "(5, 'Biology');";
-
-    private static final String INSERT_TABLE_HOCPHAN =
-            "INSERT INTO HocPhan (maHp, tenHp, soTinChi, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo) VALUES " +
-                    "('HP001', 'Math 101', 3, 30, 15, 1, 'Written', '15-15-70'), " +
-                    "('HP002', 'Physics 101', 4, 40, 20, 1, 'Written', '20-30-50'), " +
-                    "('HP003', 'Chemistry 101', 3, 30, 15, 1, 'Written', '15-15-70'), " +
-                    "('HP004', 'Biology 101', 4, 40, 20, 1, 'Written', '20-20-60'), " +
-                    "('HP005', 'Computer Science 101', 3, 30, 15, 1, 'Written', '10-10-20-60'), " +
-                    "('HP006', 'Math 102', 3, 30, 15, 2, 'Written', '15-15-70'), " +
-                    "('HP007', 'Physics 102', 4, 40, 20, 2, 'Written', '20-20-60'), " +
-                    "('HP008', 'Chemistry 102', 3, 30, 15, 2, 'Written', '10-10-20-60'), " +
-                    "('HP009', 'Biology 102', 4, 40, 20, 2, 'Written', '20-30-50'), " +
-                    "('HP010', 'Computer Science 102', 3, 30, 15, 2, 'Written', '20-20-60');";
-
-    private static final String INSERT_TABLE_LOAIHOCPHAN =
-            "INSERT INTO LoaiHocPhan (maHp, maCn, loai) VALUES " +
-                    "('HP001', 1, 1), " +
-                    "('HP002', 2, 2), " +
-                    "('HP003', 3, 1), " +
-                    "('HP004', 4, 2), " +
-                    "('HP005', 1, 1), " +
-                    "('HP006', 1, 2), " +
-                    "('HP007', 2, 1), " +
-                    "('HP008', 3, 2), " +
-                    "('HP009', 4, 1), " +
-                    "('HP010', 1, 2);";
-
-    private static final String INSERT_TABLE_KETQUAHOCPHAN =
-            "INSERT INTO KetQuaHocPhan (maHp, maSv, lop, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy, nam) VALUES " +
-                    "('HP001', 'SV001', 'Class1', 8.5, 9.0, 7.5, 8.0, 8.0, 1, 2023), " +
-                    "('HP002', 'SV002', 'Class2', 7.5, 8.0, 6.5, 7.0, 7.0, 1, 2023), " +
-                    "('HP003', 'SV003', 'Class3', 9.0, 9.5, 8.5, 9.0, 9.0, 1, 2023), " +
-                    "('HP008', 'SV003', 'Class8', 9.0, 9.5, 8.5, 9.0, 9.0, 1, 2023), " +
-                    "('HP004', 'SV004', 'Class4', 8.0, 8.5, 7.0, 8.5, 8.0, 1, 2023), " +
-                    "('HP005', 'SV005', 'Class5', 7.5, 8.0, 7.5, 7.5, 7.5, 1, 2023), " +
-                    "('HP006', 'SV006', 'Class6', 8.5, 9.0, 7.5, 8.0, 8.0, 2, 2023), " +
-                    "('HP007', 'SV007', 'Class7', 7.5, 8.0, 6.5, 7.0, 7.0, 2, 2023), " +
-                    "('HP008', 'SV008', 'Class8', 9.0, 9.5, 8.5, 9.0, 9.0, 2, 2023), " +
-                    "('HP009', 'SV009', 'Class9', 8.0, 8.5, 7.0, 8.5, 8.0, 2, 2023), " +
-                    "('HP010', 'SV010', 'Class10', 7.5, 8.0, 7.5, 7.5, 7.5, 2, 2023);";
-
-    private static final String INSERT_TABLE_DIEMDANH =
-            "INSERT INTO DiemDanh (maSv, idHp, ngay, vang, loai) VALUES " +
-                    "('SV001', 'HP001', '2023-05-01', 1, 0), " +
-                    "('SV002', 'HP002', '2023-05-02', 1, 1), " +
-                    "('SV003', 'HP003', '2023-05-03', 0, 0), " +
-                    "('SV004', 'HP004', '2023-05-04', 1, 0), " +
-                    "('SV005', 'HP005', '2023-05-05', 0, 1), " +
-                    "('SV006', 'HP006', '2023-05-06', 1, 0), " +
-                    "('SV007', 'HP007', '2023-05-07', 0, 1), " +
-                    "('SV008', 'HP008', '2023-05-08', 1, 0), " +
-                    "('SV009', 'HP009', '2023-05-09', 0, 1), " +
-                    "('SV010', 'HP010', '2023-05-10', 1, 0), " +
-                    "('SV001', 'HP006', '2023-05-11', 0, 0), " +
-                    "('SV002', 'HP007', '2023-05-12', 1, 1), " +
-                    "('SV003', 'HP008', '2023-05-13', 0, 0), " +
-                    "('SV004', 'HP009', '2023-05-14', 1, 0), " +
-                    "('SV005', 'HP010', '2023-05-15', 0, 1);";
 
     public DatabaseHelper(@Nullable final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -240,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS DiemDanh");
 
-        // Tạo lại cấu trúc cơ sở dữ liệu
+        populateInitialData(db);
         onCreate(db);
     }
 
@@ -338,43 +147,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return hocPhanList;
     }
 
-    public List<HocPhan> getSubjectsBySemester(Context context, String tenTk, String hocKy) {
+    public List<HocPhan> getSubjectsBySemester(String hocKy) {
         List<HocPhan> hocPhanList = new ArrayList<>();
-<<<<<<< Updated upstream
-        String selectQuery = "SELECT hp.maHp, hp.tenHp, hp.soTinChi, hp.soTietLyThuyet, hp.soTietThucHanh, " +
-                             "hp.hinhThucThi, kq.lop, kq.hocKy, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, " +
-                             "kq.cuoiKy, kq.diemKiVong, " +
-                             "SUM(CASE WHEN dd.vang = 1 AND dd.loai = 0 THEN 1 ELSE 0 END) AS vangLt, " +
-                             "SUM(CASE WHEN dd.vang = 1 AND dd.loai = 1 THEN 1 ELSE 0 END) AS vangTh " +
-                             "FROM KetQuaHocPhan kq " +
-                             "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
-                             "JOIN SinhVien sv ON sv.maSv = kq.maSv " +
-                             "LEFT JOIN DiemDanh dd ON dd.idHp = kq.maHp AND dd.maSv = sv.maSv " +
-                             "WHERE sv.tenTk = ? AND kq.hocKy = ? " +
-                             "GROUP BY hp.maHp, hp.tenHp, hp.soTinChi, hp.soTietLyThuyet, hp.soTietThucHanh, " +
-                             "hp.hinhThucThi, kq.lop, kq.hocKy, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
-=======
-        String selectQuery = "SELECT hp.maHp, kq.maLop, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
-                             "hp.hinhThucThi, kq.hocKy, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong,  " +
+        String selectQuery = "SELECT hp.maHp, kq.maLop, hp.tenHp, hp.soTinChiLyThuyet + hp.soTinChiThucHanh AS soTinChi,  " +
+                             "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, kq.hocKy, hp.heSo, " +
+                             "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
                              "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
                              "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
                              "FROM KetQuaHocPhan kq " +
                              "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
                              "LEFT JOIN DiemDanh dd ON dd.maLop = kq.maLop " +
                              "WHERE kq.hocKy = ? " +
-                             "GROUP BY hp.maHp, kq.maLop, hp.tenHp, hp.hinhThucThi, kq.hocKy, " +
-                             "hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
->>>>>>> Stashed changes
+                             "GROUP BY hp.maHp, kq.maLop, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+                             "hp.hinhThucThi, kq.hocKy, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, new String[] {tenTk, hocKy});
-
-        Log.d("DB",tenTk + ", " + hocKy);
-
-        if (cursor.getCount() == 0) Toast.makeText(context, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
-
-        if (cursor.getCount() > 0) Log.d("DB", "HAS DATA");
-        else Log.d("DB", "NO DATA");
+        Cursor cursor = db.rawQuery(selectQuery, new String[] {hocKy});
 
         if (cursor.moveToFirst()) {
             do {
@@ -382,16 +170,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 hocPhan.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
                 hocPhan.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
-<<<<<<< Updated upstream
-                hocPhan.setSoTc(cursor.getInt(cursor.getColumnIndex("soTinChi")));
-=======
->>>>>>> Stashed changes
+                hocPhan.setSoTinChiLt(cursor.getInt(cursor.getColumnIndex("soTinChiLyThuyet")));
+                hocPhan.setSoTinChiTh(cursor.getInt(cursor.getColumnIndex("soTinChiThucHanh")));
                 hocPhan.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
                 hocPhan.setSoTietTh(cursor.getInt(cursor.getColumnIndex("soTietThucHanh")));
-                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
                 hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
+                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
                 hocPhan.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
-                hocPhan.setLop(cursor.getString(cursor.getColumnIndex("maLop")));
+                hocPhan.setLop(cursor.getString(cursor.getColumnIndex("lop")));
                 hocPhan.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
                 hocPhan.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
                 hocPhan.setGiuaKy(cursor.getFloat(cursor.getColumnIndex("giuaKy")));
@@ -407,8 +193,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return hocPhanList;
     }
-<<<<<<< Updated upstream
-=======
 
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
@@ -419,7 +203,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS SinhVien (" +
                     "maSv TEXT NOT NULL," +
                     "maCn INTEGER NOT NULL," +
-                    "hoTen TEXT NOT NULL," +
                     "tenTk INTEGER NOT NULL UNIQUE," +
                     "matKhau TEXT NOT NULL," +
                     "khoa TEXT NOT NULL," +
@@ -493,7 +276,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // DiemDanh table
     private static final String CREATE_TABLE_DIEMDANH =
             "CREATE TABLE IF NOT EXISTS DiemDanh (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id TEXT PRIMARY KEY AUTOINCREMENT," +
                     "maLop TEXT NOT NULL," +
                     "ngay TEXT NOT NULL," +
                     "vang INTEGER," +
@@ -503,27 +286,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ");";
 
     private static final String INSERT_TABLE_SINHVIEN =
-            "INSERT INTO SinhVien (maSv, maCn, hoTen, tenTk, matKhau, khoa) VALUES " +
-                    "('2021606516', 3, 'Phung Duc Can', '2021606516', 'password1', 'Engineering')";
+            "INSERT INTO SinhVien (maSv, maCn, tenTk, matKhau, khoa) VALUES " +
+                    "('SV001', 1, 'student1', 'password1', 'Engineering'), " +
+                    "('SV002', 2, 'student2', 'password2', 'Science'), " +
+                    "('SV003', 3, 'student3', 'password3', 'Arts'), " +
+                    "('SV004', 4, 'student4', 'password4', 'Mathematics'), " +
+                    "('SV005', 5, 'student5', 'password5', 'Biology'), " +
+                    "('SV006', 1, 'student6', 'password6', 'Engineering'), " +
+                    "('SV007', 2, 'student7', 'password7', 'Science'), " +
+                    "('SV008', 3, 'student8', 'password8', 'Arts'), " +
+                    "('SV009', 4, 'student9', 'password9', 'Mathematics'), " +
+                    "('SV010', 5, 'student10', 'password10', 'Biology');";
 
     private static final String INSERT_TABLE_CONGVIEC =
             "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHan, trangThai, chiTiet) VALUES " +
-                    "(1, 'Complete Math Homework', 1, '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
-                    "(2, 'Prepare Physics Presentation', 2, '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
-                    "(3, 'Chemistry Lab Report', 1, '2023-06-14', 0, 'Lab report on chemical reactions'), " +
-                    "(4, 'Biology Field Trip', 3, '2023-06-16', 1, 'Field trip to the botanical garden'), " +
-                    "(5, 'Computer Science Project', 1, '2023-06-18', 0, 'Project on data structures'), " +
-                    "(6, 'Math Quiz Preparation', 2, '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
-                    "(7, 'Physics Assignment', 1, '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
-                    "(8, 'Chemistry Homework', 2, '2023-06-24', 0, 'Solve problems from the textbook'), " +
-                    "(9, 'Biology Research', 3, '2023-06-26', 1, 'Research on genetic mutations'), " +
-                    "(10, 'Computer Science Exam', 1, '2023-06-28', 0, 'Study for final exam');";
+                    "('Complete Math Homework', 1, '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
+                    "('Prepare Physics Presentation', 2, '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
+                    "('Chemistry Lab Report', 1, '2023-06-14', 0, 'Lab report on chemical reactions'), " +
+                    "('Biology Field Trip', 3, '2023-06-16', 1, 'Field trip to the botanical garden'), " +
+                    "('Computer Science Project', 1, '2023-06-18', 0, 'Project on data structures'), " +
+                    "('Math Quiz Preparation', 2, '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
+                    "('Physics Assignment', 1, '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
+                    "('Chemistry Homework', 2, '2023-06-24', 0, 'Solve problems from the textbook'), " +
+                    "('Biology Research', 3, '2023-06-26', 1, 'Research on genetic mutations'), " +
+                    "('Computer Science Exam', 1, '2023-06-28', 0, 'Study for final exam');";
 
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
                     "(1, 'Computer Science'), " +
                     "(2, 'Physics'), " +
-                    "(3, 'CNTT'), " +
+                    "(3, 'Chemistry'), " +
                     "(4, 'Mathematics'), " +
                     "(5, 'Biology');";
 
@@ -584,5 +376,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('13', 'Class8', '2023-05-13', 0, 0), " +
                     "('14', 'Class9', '2023-05-13', 1, 0), " +
                     "('15', 'Class7', '2023-05-15', 0, 1);";
->>>>>>> Stashed changes
 }
