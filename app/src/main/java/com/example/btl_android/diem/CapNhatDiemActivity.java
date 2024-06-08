@@ -1,6 +1,7 @@
 package com.example.btl_android.diem;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.example.btl_android.R;
 /** @noinspection ALL*/
 public class CapNhatDiemActivity extends AppCompatActivity {
 
+    ImageButton btnQuayLai;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,5 +25,9 @@ public class CapNhatDiemActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        btnQuayLai = findViewById(R.id.imageQuayLai);
+
+        btnQuayLai.setOnClickListener(v -> finish());
     }
 }

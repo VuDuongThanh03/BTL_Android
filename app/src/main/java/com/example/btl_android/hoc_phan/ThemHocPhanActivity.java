@@ -15,7 +15,7 @@ import com.example.btl_android.R;
 import com.example.btl_android.DatabaseHelper;
 
 /** @noinspection ALL*/
-public class ThemHocPhan extends AppCompatActivity {
+public class ThemHocPhanActivity extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;
     private Button buttonSubmit, buttonCancel;

@@ -240,7 +240,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS DiemDanh");
 
-        // Tạo lại cấu trúc cơ sở dữ liệu
+        populateInitialData(db);
         onCreate(db);
     }
 
