@@ -1,4 +1,4 @@
-package com.example.btl_android.them_hoc_phan;
+package com.example.btl_android.hoc_phan;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.DatabaseHelper;
-import com.example.btl_android.HocPhan;
 import com.example.btl_android.R;
 
 import java.util.List;
@@ -60,8 +59,8 @@ public class HocPhanActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.them_hoc_phan) {
-            Intent intent = new Intent(this, XuLyHocPhanActivity.class);
+        if (id == R.id.btnThemHp) {
+            Intent intent = new Intent(this, CapNhatHocPhanActivity.class);
             startActivityForResult(intent, THEMHOCPHAN_REQUEST_CODE);
             return true;
         }

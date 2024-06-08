@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="Thêm Môn Học"
-        android:id="@+id/them_hoc_phan"
+        android:title="Thêm Học Phần"
+        android:id="@+id/btnThemHp"
         app:showAsAction="always" />
 </menu>

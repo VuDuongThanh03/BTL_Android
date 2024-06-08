@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.DatabaseHelper;
-import com.example.btl_android.HocPhan;
+import com.example.btl_android.hoc_phan.HocPhan;
 import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
 import com.example.btl_android.dang_nhap.DangNhapActivity;

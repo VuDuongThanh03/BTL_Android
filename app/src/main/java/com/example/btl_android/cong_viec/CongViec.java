@@ -1,4 +1,4 @@
-package com.example.btl_android;
+package com.example.btl_android.cong_viec;
 
 /** @noinspection ALL*/
 public class CongViec {

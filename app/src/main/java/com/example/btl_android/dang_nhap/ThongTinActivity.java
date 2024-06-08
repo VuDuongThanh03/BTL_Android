@@ -27,7 +27,7 @@ public class ThongTinActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_thongtin);
+        this.setContentView(R.layout.activity_thong_tin);
         this.spn_chuyennganh = this.findViewById(R.id.spn_chuyennganh);
         this.spn_khoa = this.findViewById(R.id.spn_khoa);
         this.btn_continue = this.findViewById(R.id.buttoncontinue);

@@ -1,5 +1,6 @@
 package com.example.btl_android;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.example.btl_android.diem.DiemActivity;
+import com.example.btl_android.hoc_phan.HocPhan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -224,12 +225,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             populateInitialData(db);
         } catch (final Exception e) {
-            Log.e("Error", "There are some problems in creating database");
+            Log.e("Error", "There are some problems in creating database", e);
         }
     }
 
     @Override
-    public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Xóa bảng cũ nếu tồn tại
         db.execSQL("DROP TABLE IF EXISTS SinhVien");
         db.execSQL("DROP TABLE IF EXISTS CongViec");
         db.execSQL("DROP TABLE IF EXISTS ChuyenNganh");
@@ -238,8 +240,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS DiemDanh");
 
+        // Tạo lại cấu trúc cơ sở dữ liệu
         onCreate(db);
     }
+
 
     private void populateInitialData(final SQLiteDatabase db) {
         db.execSQL(INSERT_TABLE_SINHVIEN);
@@ -265,6 +269,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         });
 
         db.close();
+    }
+
+    public void insertHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maHp", hocPhan.getMaHp());
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
+        values.put("soTietThucHanh", hocPhan.getSoTietTh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+    }
+
+    public void updateHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
+        values.put("soTietThucHanh", hocPhan.getSoTietTh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
+    }
+
+    public void deleteHocPhan(String maHp) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("HocPhan", "maHp=?", new String[]{maHp});
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Failed to delete HocPhan");
+        } else {
+            Log.i("DatabaseHelper", "HocPhan deleted successfully");
+        }
+        db.close();
+    }
+
+    public boolean isMaHpUnique(String maHp) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE maHp = ?", new String[]{maHp});
+        boolean isUnique = !cursor.moveToFirst();
+        cursor.close();
+        return isUnique;
     }
 
     public List<HocPhan> getAllSubjects() {
@@ -337,7 +385,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
         db.close();
         return hocPhanList;

@@ -6,7 +6,6 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.btl_android.CongViec;
 import com.example.btl_android.R;
 
 import java.util.ArrayList;

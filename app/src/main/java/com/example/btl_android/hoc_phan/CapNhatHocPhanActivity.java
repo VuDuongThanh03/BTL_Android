@@ -1,9 +1,8 @@
-package com.example.btl_android.them_hoc_phan;
+package com.example.btl_android.hoc_phan;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.btl_android.R;
 
 /** @noinspection ALL*/
-public class XuLyHocPhanActivity extends AppCompatActivity {
+public class CapNhatHocPhanActivity extends AppCompatActivity {
     private EditText etTenHp;
     private EditText etMaHp;
     private EditText etSoTinChiLyThuyet;
@@ -24,7 +23,7 @@ public class XuLyHocPhanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_xu_ly_hoc_phan);
+        this.setContentView(R.layout.activity_cap_nhat_hoc_phan);
 
         this.etTenHp = this.findViewById(R.id.etTenHp);
         this.etMaHp = this.findViewById(R.id.etMaHp);
@@ -33,9 +32,9 @@ public class XuLyHocPhanActivity extends AppCompatActivity {
         this.btnThem = this.findViewById(R.id.btnThem);
         this.btnHuy = this.findViewById(R.id.btnHuy);
 
-        this.btnThem.setOnClickListener(v -> XuLyHocPhanActivity.this.handleAddSubject());
+        this.btnThem.setOnClickListener(v -> CapNhatHocPhanActivity.this.handleAddSubject());
 
-        this.btnHuy.setOnClickListener(v -> XuLyHocPhanActivity.this.finish());
+        this.btnHuy.setOnClickListener(v -> CapNhatHocPhanActivity.this.finish());
     }
 
     private void handleAddSubject() {
