@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageButton
-            android:id="@+id/imageBack"
+            android:id="@+id/imageQuayLai"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/back"/>
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/custompanel1"
+                android:background="@drawable/custom_panel1"
                 android:layout_marginTop="10dp"
                 android:padding="10dp">
 
@@ -61,12 +61,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/custompanel1"
+                android:background="@drawable/custom_panel1"
                 android:layout_marginTop="10dp"
                 android:padding="10dp">
 
                 <TextView
-                    android:text="Điểm sô"
+                    android:text="Điểm số"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/custompanel1"
+                android:background="@drawable/custom_panel1"
                 android:layout_marginTop="10dp"
                 android:padding="10dp">
 

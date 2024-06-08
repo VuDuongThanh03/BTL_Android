@@ -14,18 +14,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.DatabaseHelper;
+import com.example.btl_android.HocPhan;
 import com.example.btl_android.R;
 
 import java.util.List;
 
 /** @noinspection ALL*/
 public class HocPhanActivity extends AppCompatActivity {
-    private static final int ADD_SUBJECT_REQUEST_CODE = 1;
-    private RecyclerView rvSubjects;
-    private TextView tvTotalCredits;
+    private static final int THEMHOCPHAN_REQUEST_CODE = 1;
+    private RecyclerView rvHocPhan;
+    private TextView tvTongTinChi;
     private List<HocPhan> hocPhanList;
     private HocPhanAdapter adapter;
-    private DatabaseHelper db;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +36,17 @@ public class HocPhanActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        rvSubjects = findViewById(R.id.rvSubjects);
-        tvTotalCredits = findViewById(R.id.tvTotalCredits);
+        rvHocPhan = findViewById(R.id.rvDiemHp);
+        tvTongTinChi = findViewById(R.id.tvTongTinChi);
 
-        db = new DatabaseHelper(this);
-        hocPhanList = db.getAllSubjects();
+        dbHelper = new DatabaseHelper(this);
+        dbHelper.getWritableDatabase();
+
+        hocPhanList = dbHelper.getAllSubjects();
 
         adapter = new HocPhanAdapter(hocPhanList);
-        rvSubjects.setLayoutManager(new LinearLayoutManager(this));
-        rvSubjects.setAdapter(adapter);
+        rvHocPhan.setLayoutManager(new LinearLayoutManager(this));
+        rvHocPhan.setAdapter(adapter);
 
         updateTotalCredits();
     }
@@ -57,9 +60,9 @@ public class HocPhanActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.add_subject) {
+        if (id == R.id.them_hoc_phan) {
             Intent intent = new Intent(this, XuLyHocPhanActivity.class);
-            startActivityForResult(intent, ADD_SUBJECT_REQUEST_CODE);
+            startActivityForResult(intent, THEMHOCPHAN_REQUEST_CODE);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -68,18 +71,18 @@ public class HocPhanActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_SUBJECT_REQUEST_CODE && RESULT_OK == resultCode) {
+        if (requestCode == THEMHOCPHAN_REQUEST_CODE && RESULT_OK == resultCode) {
             if (null != data) {
-                final String name = data.getStringExtra("name");
-                final String code = data.getStringExtra("code");
-                final int credits = data.getIntExtra("credits", 0);
-                final String semester = data.getStringExtra("semester");
+                final String tenHp = data.getStringExtra("tenHp");
+                final String maHp = data.getStringExtra("maHp");
+                final int soTinChiLyThuyet = data.getIntExtra("soTinChiLyThuyet", 0);
+                final int hocKy = data.getIntExtra("hocKy", 0);
 
-                final HocPhan hocPhan = new HocPhan(name, code, credits, semester);
-                this.db.addSubject(hocPhan);
+                final HocPhan hocPhan = new HocPhan(tenHp, maHp, soTinChiLyThuyet, hocKy);
+                this.dbHelper.addSubject(hocPhan);
 
                 this.hocPhanList.clear();
-                this.hocPhanList.addAll(this.db.getAllSubjects());
+                this.hocPhanList.addAll(this.dbHelper.getAllSubjects());
                 this.adapter.notifyDataSetChanged();
                 this.updateTotalCredits();
             }
@@ -89,8 +92,8 @@ public class HocPhanActivity extends AppCompatActivity {
     private void updateTotalCredits() {
         int totalCredits = 0;
         for (final HocPhan hocPhan : this.hocPhanList) {
-            totalCredits += hocPhan.getCredits();
+            totalCredits += hocPhan.getSoTietLt();
         }
-        this.tvTotalCredits.setText("Tổng tín chỉ dự kiến: " + totalCredits);
+        this.tvTongTinChi.setText("Tổng tín chỉ dự kiến: " + totalCredits);
     }
 }

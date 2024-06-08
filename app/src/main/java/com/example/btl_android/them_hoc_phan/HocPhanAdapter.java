@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.btl_android.HocPhan;
 import com.example.btl_android.R;
 
 import java.util.List;
@@ -39,19 +40,19 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.SubjectV
     }
 
     class SubjectViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvCode, tvCredits;
+        TextView tvTenHp, tvMaHp, tvTongTinChi;
 
         public SubjectViewHolder(@NonNull final View itemView) {
             super(itemView);
-            this.tvName = itemView.findViewById(R.id.tvName);
-            this.tvCode = itemView.findViewById(R.id.tvCode);
-            this.tvCredits = itemView.findViewById(R.id.tvCredits);
+            this.tvTenHp = itemView.findViewById(R.id.tvTenHp);
+            this.tvMaHp = itemView.findViewById(R.id.tvMaHp);
+            this.tvTongTinChi = itemView.findViewById(R.id.tvTongTinChi);
         }
 
         public void bind(final HocPhan hocPhan) {
-            this.tvName.setText("Môn: " + hocPhan.getName());
-            this.tvCode.setText("Mã học phần: " + hocPhan.getCode());
-            this.tvCredits.setText("Số tín chỉ: " + hocPhan.getCredits());
+            this.tvTenHp.setText("Môn: " + hocPhan.getTenHp());
+            this.tvMaHp.setText("Mã học phần: " + hocPhan.getMaHp());
+            this.tvTongTinChi.setText("Số tín chỉ: " + hocPhan.getSoTietLt());
         }
     }
 }

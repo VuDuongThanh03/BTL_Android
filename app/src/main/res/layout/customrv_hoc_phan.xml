@@ -8,7 +8,7 @@
     android:layout_marginTop="8dp">
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvTenHp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Môn: Thiết kế ứng dụng trên thiết bị di động"
@@ -16,7 +16,7 @@
         android:textColor="@android:color/black"/>
 
     <TextView
-        android:id="@+id/tvCode"
+        android:id="@+id/tvMaHp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mã học phần: "
@@ -24,7 +24,7 @@
         android:textColor="@android:color/black"/>
 
     <TextView
-        android:id="@+id/tvCredits"
+        android:id="@+id/tvTongTinChi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Số tín chỉ: "
