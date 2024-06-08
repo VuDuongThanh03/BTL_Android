@@ -11,10 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.btl_android.diem.DiemActivity;
-//import com.example.btl_android.hoc_phan_du_kien.HocPhan;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.btl_android.them_hoc_phan.HocPhan;
 
 /** @noinspection ALL*/
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -264,16 +261,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SINHVIEN);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONGVIEC);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHUYENNGANH);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOCPHAN);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOAIHOCPHAN);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_KETQUAHOCPHAN);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DIEMDANH);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_THOIKHOABIEU);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Xóa bảng cũ nếu tồn tại
+        db.execSQL("DROP TABLE IF EXISTS SinhVien");
+        db.execSQL("DROP TABLE IF EXISTS CongViec");
+        db.execSQL("DROP TABLE IF EXISTS ChuyenNganh");
+        db.execSQL("DROP TABLE IF EXISTS HocPhan");
+        db.execSQL("DROP TABLE IF EXISTS LoaiHocPhan");
+        db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
+        db.execSQL("DROP TABLE IF EXISTS DiemDanh");
+        db.execSQL("DROP TABLE IF EXISTS ThoiKhoaBieu");
 
+        // Tạo lại cấu trúc cơ sở dữ liệu
         onCreate(db);
     }
 
@@ -287,95 +286,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(INSERT_TABLE_DIEMDANH);
     }
 
-    // CRUD operations for HocPhan
-//    public void addHocPhan(final HocPhan hocPhan) {
-//        final SQLiteDatabase db = getWritableDatabase();
-//
-//        String sql = "INSERT INTO HocPhan (maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, hocKy, hinhThucThi, heSo) VALUES (?, ?, ?, ?, ?, ?, ?)";
-//
-//        db.execSQL(sql, new Object[]{
-//                hocPhan.getMaHp(),
-//                hocPhan.getTenHp(),
-//                hocPhan.getSoTinChiLyThuyet(),
-//                hocPhan.getSoTinChiThucHanh(),
-//                hocPhan.getHocKy(),
-//                hocPhan.getHinhThucThi(),
-//                hocPhan.getHeSo()
-//        });
-//
-//        db.close();
-//    }
-//
-//    public List<HocPhan> getAllHocPhan() {
-//        List<HocPhan> hocPhanList = new ArrayList<>();
-//        String selectQuery = "SELECT * FROM HocPhan";
-//
-//        SQLiteDatabase db = getReadableDatabase();
-//        Cursor cursor = db.rawQuery(selectQuery, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                HocPhan hocPhan = new HocPhan();
-//                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-//                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
-//                hocPhan.setSoTinChiLyThuyet(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-//                hocPhan.setSoTinChiThucHanh(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiThucHanh")));
-//                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
-//                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")));
-//                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndexOrThrow("heSo")));
-//                hocPhanList.add(hocPhan);
-//            } while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        db.close();
-//        return hocPhanList;
-//    }
-//
-//    public List<HocPhan> getHocPhanByHocKy(int hocKy) {
-//        List<HocPhan> hocPhanList = new ArrayList<>();
-//        String selectQuery = "SELECT * FROM HocPhan WHERE hocKy = ?";
-//
-//        SQLiteDatabase db = getReadableDatabase();
-//        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(hocKy)});
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                HocPhan hocPhan = new HocPhan();
-//                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-//                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
-//                hocPhan.setSoTinChiLyThuyet(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-//                hocPhan.setSoTinChiThucHanh(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiThucHanh")));
-//                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
-//                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")));
-//                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndexOrThrow("heSo")));
-//                hocPhanList.add(hocPhan);
-//            } while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        db.close();
-//        return hocPhanList;
-//    }
-//
-//    public void AddTimeTable(String mon, String thu, String ngay, String giangvien, String phong, String tiet, String diadiem) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//
-//        values.put(COLUMN_MON, mon);
-//        values.put(COLUMN_THU, thu);
-//        values.put(COLUMN_NGAY, ngay);
-//        values.put(COLUMN_GIANGVIEN, giangvien);
-//        values.put(COLUMN_PHONG, phong);
-//        values.put(COLUMN_TIET, tiet);
-//        values.put(COLUMN_DIADIEM, diadiem);
-//        long result = db.insert(TABLE_THOIKHOABIEU, null, values);
-//        if (result == -1) {
-//            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    public void insertHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maHp", hocPhan.getMaHp());
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLyThuyet());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiThucHanh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        long result = db.insert("HocPhan", null, values);
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Failed to insert HocPhan");
+        } else {
+            Log.i("DatabaseHelper", "HocPhan inserted successfully");
+        }
+    }
+
+    public void deleteHocPhan(String maHp) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("HocPhan", "maHp=?", new String[]{maHp});
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Failed to delete HocPhan");
+        } else {
+            Log.i("DatabaseHelper", "HocPhan deleted successfully");
+        }
+        db.close();
+    }
+
+    public boolean isMaHpUnique(String maHp) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE maHp = ?", new String[]{maHp});
+        boolean isUnique = !cursor.moveToFirst();
+        cursor.close();
+        return isUnique;
+    }
+
+    public void updateHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLyThuyet());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiThucHanh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
+    }
 
     public Cursor readAllData() {
         String query = "SELECT * FROM " + TABLE_THOIKHOABIEU;
