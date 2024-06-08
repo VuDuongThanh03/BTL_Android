@@ -110,12 +110,12 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         HocPhan selectedHocPhan = hocPhanAdapter.getSelectedHocPhan();
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent addIntent = new Intent(this, ThemHocPhan.class);
+                Intent addIntent = new Intent(this, ThemHocPhanActivity.class);
                 startActivityForResult(addIntent, REQUEST_CODE_ADD_HOCPHAN);
                 return true;
             case R.id.action_edit:
                 if (selectedHocPhan != null) {
-                    Intent editIntent = new Intent(this, ThemHocPhan.class);
+                    Intent editIntent = new Intent(this, ThemHocPhanActivity.class);
                     editIntent.putExtra("hocPhan", selectedHocPhan);
                     startActivityForResult(editIntent, REQUEST_CODE_EDIT_HOCPHAN);
                 } else {
