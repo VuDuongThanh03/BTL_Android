@@ -18,7 +18,8 @@ import com.example.btl_android.R;
 public class DiemChiTietActivity extends AppCompatActivity {
     private ImageButton btnQuayLai;
     private TextView tvTenHp, tvMaHp, tvSoTc, tvSoTietLt, tvSoTietTh, tvHinhThucThi, tvLop, tvHeSo, tvHocKy,
-                     tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvKiVong, tvTongKet, tvNghiLt, tvNghiTh, tvDieuKien;
+                     tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvKiVong, tvDiem10, tvDiem4, tvDiemChu,
+                     tvXepLoai, tvNghiLt, tvNghiTh, tvDieuKien;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,10 @@ public class DiemChiTietActivity extends AppCompatActivity {
         tvGiuaKy = findViewById(R.id.tvGiuaKy);
         tvCuoiKy = findViewById(R.id.tvCuoiKy);
         tvKiVong = findViewById(R.id.tvKiVong);
-        tvTongKet = findViewById(R.id.tvTongKet);
+        tvDiem10 = findViewById(R.id.tvDiem10);
+        tvDiem4 = findViewById(R.id.tvDiem4);
+        tvDiemChu = findViewById(R.id.tvDiemChu);
+        tvXepLoai = findViewById(R.id.tvXepLoai);
         tvNghiLt = findViewById(R.id.tvNghiLt);
         tvNghiTh = findViewById(R.id.tvNghiTh);
         tvDieuKien = findViewById(R.id.tvDieuKien);
@@ -63,12 +67,15 @@ public class DiemChiTietActivity extends AppCompatActivity {
         tvLop.setText(hocPhan.getLop());
         tvHeSo.setText(hocPhan.getHeSo());
         tvHocKy.setText(String.valueOf(hocPhan.getHocKy()));
-        tvTx1.setText(hocPhan.getTx1() != null ? String.valueOf(hocPhan.getTx1()) : "N/A");
-        tvTx2.setText(hocPhan.getTx2() != null ? String.valueOf(hocPhan.getTx2()) : "N/A");
-        tvGiuaKy.setText(hocPhan.getGiuaKy() != null ? String.valueOf(hocPhan.getGiuaKy()) : "N/A");
-        tvCuoiKy.setText(hocPhan.getCuoiKy() != null ? String.valueOf(hocPhan.getCuoiKy()) : "N/A");
-        tvKiVong.setText(hocPhan.getDiemKyVong() != null ? String.valueOf(hocPhan.getDiemKyVong()) : "N/A");
-        tvTongKet.setText(hocPhan.getDiemTongKet());
+        tvTx1.setText(hocPhan.getTx1() != null ? String.format("%.1f", hocPhan.getTx1()) : "N/A");
+        tvTx2.setText(hocPhan.getTx2() != null ? String.format("%.1f", hocPhan.getTx2()) : "N/A");
+        tvGiuaKy.setText(hocPhan.getGiuaKy() != null ? String.format("%.1f", hocPhan.getGiuaKy()) : "N/A");
+        tvCuoiKy.setText(hocPhan.getCuoiKy() != null ? String.format("%.1f", hocPhan.getCuoiKy()) : "N/A");
+        tvKiVong.setText(hocPhan.getDiemKyVong() != null ? String.format("%.1f", hocPhan.getDiemKyVong()) : "N/A");
+        tvDiem10.setText(hocPhan.getDiem10() != null ? String.format("%.1f", hocPhan.getDiem10()) : "N/A");
+//        tvDiem4.setText(hocPhan.getDiem4() != null ? String.format("%.1f", hocPhan.getDiem4()) : "N/A");
+        tvDiemChu.setText(hocPhan.getDiemChu() != null ? hocPhan.getDiemChu() : "N/A");
+        tvXepLoai.setText(hocPhan.getXepLoai());
         tvNghiLt.setText(String.valueOf(hocPhan.getVangLt()));
         tvNghiTh.setText(String.valueOf(hocPhan.getVangTh()));
         tvDieuKien.setText(hocPhan.getDieuKien());
