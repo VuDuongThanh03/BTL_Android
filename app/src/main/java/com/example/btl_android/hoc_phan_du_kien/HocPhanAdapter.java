@@ -36,8 +36,8 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
         HocPhan hocPhan = hocPhanList.get(pos);
         holder.maHpTextView.setText(hocPhan.getMaHp());
         holder.tenHpTextView.setText(hocPhan.getTenHp());
-        holder.soTinChiLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTinChiLyThuyet()));
-        holder.soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiThucHanh()));
+        holder.soTinChiLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
+        holder.soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
         holder.hocKyTextView.setText(String.valueOf(hocPhan.getHocKy()));
         holder.hinhThucThiTextView.setText(hocPhan.getHinhThucThi());
         holder.heSoTextView.setText(hocPhan.getHeSo());
