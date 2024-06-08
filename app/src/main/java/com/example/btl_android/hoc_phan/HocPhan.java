@@ -7,7 +7,8 @@ import java.io.Serializable;
  */
 public class HocPhan implements Serializable {
     private String maHp, tenHp;
-    private int soTc, soTietLt, soTietTh, hocKy;
+    private float soTinChiLt, soTinChiTh;
+    private int soTietLt, soTietTh, hocKy;
     private String hinhThucThi, heSo, lop;
     private Float tx1, tx2, giuaKy, cuoiKy, diemKyVong;
     private int vangLt, vangTh;
@@ -15,7 +16,8 @@ public class HocPhan implements Serializable {
     public HocPhan() {
         this.maHp = "HP000";
         this.tenHp = "Unknown";
-        this.soTc = 3;
+        this.soTinChiLt = 3;
+        this.soTinChiTh = 0.5f;
         this.soTietLt = 30;
         this.soTietTh = 30;
         this.hocKy = 1;
@@ -64,12 +66,20 @@ public class HocPhan implements Serializable {
         this.tenHp = tenHp;
     }
 
-    public int getSoTc() {
-        return soTc;
+    public float getSoTinChiLt() {
+        return soTinChiLt;
     }
 
-    public void setSoTc(int soTc) {
-        this.soTc = soTc;
+    public void setSoTinChiLt(float soTinChiLt) {
+        this.soTinChiLt = soTinChiLt;
+    }
+
+    public float getSoTinChiTh() {
+        return soTinChiTh;
+    }
+
+    public void setSoTinChiTh(float soTinChiTh) {
+        this.soTinChiTh = soTinChiTh;
     }
 
     public int getSoTietLt() {

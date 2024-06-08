@@ -56,7 +56,7 @@ public class DiemChiTietActivity extends AppCompatActivity {
         HocPhan hocPhan = (HocPhan) intent.getSerializableExtra("DiemChiTiet");
         tvTenHp.setText(hocPhan.getTenHp());
         tvMaHp.setText(hocPhan.getMaHp());
-        tvSoTc.setText(String.valueOf(hocPhan.getSoTc()));
+        tvSoTc.setText(String.valueOf(hocPhan.getSoTinChiLt() + hocPhan.getSoTinChiTh()));
         tvSoTietLt.setText(String.valueOf(hocPhan.getSoTietLt()));
         tvSoTietTh.setText(String.valueOf(hocPhan.getSoTietTh()));
         tvHinhThucThi.setText(hocPhan.getHinhThucThi());
