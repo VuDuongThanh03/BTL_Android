@@ -72,10 +72,10 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
         HocPhan item = data.get(pos);
         holder.tvTenHp.setText(item.getTenHp());
-        holder.tvTx1.setText(String.format("%.2f", item.getTx1()));
-        holder.tvTx2.setText(String.format("%.2f", item.getTx2()));
-        holder.tvGiuaKy.setText(String.format("%.2f", item.getGiuaKy()));
-        holder.tvCuoiKy.setText(String.format("%.2f", item.getCuoiKy()));
+        holder.tvTx1.setText(String.format("%.1f", item.getTx1()));
+        holder.tvTx2.setText(String.format("%.1f", item.getTx2()));
+        holder.tvGiuaKy.setText(String.format("%.1f", item.getGiuaKy()));
+        holder.tvCuoiKy.setText(String.format("%.1f", item.getCuoiKy()));
         holder.tvTongKet.setText(item.getDiemTongKet());
         holder.diemHp.setTag(pos);
     }

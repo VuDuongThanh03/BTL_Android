@@ -44,8 +44,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
             return insets;
         });
 
-        db = DatabaseHelper.getInstance(this);
-        db.getWritableDatabase();
+        db = new DatabaseHelper(this);
 
         btnQuayLai = findViewById(R.id.imageQuayLai);
         btnTongKet = findViewById(R.id.imageTongKet);
@@ -70,12 +69,6 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
         hocKyList = Arrays.asList("Học kỳ 8", "Học kỳ 7", "Học kỳ 6", "Học kỳ 5", "Học kỳ 4", "Học kỳ 3", "Học kỳ 2", "Học kỳ 1");
         hocKyAdapter = new HocKyAdapter(hocKyList, this, R.id.rvHocKy);
         rvHocKy.setAdapter(hocKyAdapter);
-
-        hocPhanList.add(new HocPhan());
-        hocPhanList.add(new HocPhan());
-
-        diemHpAdapter = new DiemAdapter(hocPhanList, this, R.id.rvDiemHp);
-        rvDiemHp.setAdapter(diemHpAdapter);
     }
 
     @Override
@@ -84,10 +77,12 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
             case R.id.rvHocKy:
                 String hocKy = hocKyList.get(pos);
                 hocKy = Character.toString(hocKy.charAt(hocKy.length() - 1));
-                hocPhanList = db.getSubjectsBySemester(DangNhapActivity.etTenTk.toString(), hocKy);
-                if (hocPhanList.isEmpty()) {
-                    Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
-                } else diemHpAdapter.notifyDataSetChanged();
+                hocPhanList = db.getSubjectsBySemester(this, DangNhapActivity.etTenTk.toString(), hocKy);
+//                if (hocPhanList.isEmpty()) {
+//                    Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+//                }
+                diemHpAdapter = new DiemAdapter(hocPhanList, this, R.id.rvDiemHp);
+                rvDiemHp.setAdapter(diemHpAdapter);
                 break;
             case R.id.rvDiemHp:
                 HocPhan hp = hocPhanList.get(pos);

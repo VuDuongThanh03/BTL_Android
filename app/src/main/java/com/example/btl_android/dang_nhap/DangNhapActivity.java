@@ -18,14 +18,10 @@ public class DangNhapActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_dang_nhap);
-        this.login = this.findViewById(R.id.btnLogin);
-        final Intent intent = new Intent(this, ThongTinActivity.class);
-        this.login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                DangNhapActivity.this.startActivity(intent);
-            }
-        });
+
         etTenTk = findViewById(R.id.etTenTk);
+        login = this.findViewById(R.id.btnLogin);
+        Intent intent = new Intent(this, ThongTinActivity.class);
+        login.setOnClickListener(v -> DangNhapActivity.this.startActivity(intent));
     }
 }
