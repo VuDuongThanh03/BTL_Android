@@ -1,4 +1,4 @@
-package com.example.btl_android.hoc_phan;
+package com.example.btl_android.hoc_phan_du_kien;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** @noinspection ALL*/
-public class HocPhanDuKienActivity extends AppCompatActivity {
+public class HocPhanDuKien extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
     private static final int REQUEST_CODE_EDIT_HOCPHAN = 2;
@@ -50,7 +50,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HocPhanDuKienActivity.this, TrangChuActivity.class);
+                Intent intent = new Intent(HocPhanDuKien.this, TrangChuActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -81,7 +81,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
                     updateHocKyButtonColors();
                     hocPhanList.clear();
                     loadHocPhanFromDatabase();
-                    hocPhanAdapter.notifyDataSetChanged();
+                    hocPhanAdapter.notifyDataSetChanged();  
                 }
             });
         }
