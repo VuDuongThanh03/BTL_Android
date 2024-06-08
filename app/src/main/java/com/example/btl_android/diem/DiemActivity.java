@@ -75,9 +75,9 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     public void onItemClick(View view, int pos, int id) {
         switch (id) {
             case R.id.rvHocKy:
-                String hocKy = hocKyList.get(pos);
+                String tenTk = DangNhapActivity.etTenTk.getText().toString(), hocKy = hocKyList.get(pos);
                 hocKy = Character.toString(hocKy.charAt(hocKy.length() - 1));
-                hocPhanList = db.getSubjectsBySemester(this, DangNhapActivity.etTenTk.toString(), hocKy);
+                hocPhanList = db.getSubjectsBySemester(this, tenTk, hocKy);
 //                if (hocPhanList.isEmpty()) {
 //                    Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
 //                }
