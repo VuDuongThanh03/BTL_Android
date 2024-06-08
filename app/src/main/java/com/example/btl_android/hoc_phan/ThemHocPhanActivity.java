@@ -15,7 +15,7 @@ import com.example.btl_android.R;
 import com.example.btl_android.DatabaseHelper;
 
 /** @noinspection ALL*/
-public class ThemHocPhan extends AppCompatActivity {
+public class ThemHocPhanActivity extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;
     private Button buttonSubmit, buttonCancel;
@@ -26,7 +26,7 @@ public class ThemHocPhan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_them_hoc_phan);
+            setContentView(R.layout.activity_them_hoc_phan);
 
         // Initialize views
         maHpEditText = findViewById(R.id.maHpEditText);
