@@ -1,4 +1,4 @@
-package com.example.btl_android;
+package com.example.btl_android.hoc_phan;
 
 import java.io.Serializable;
 
@@ -38,24 +38,14 @@ public class HocPhan implements Serializable {
         this.hocKy = hocKy;
     }
 
-    public HocPhan(String maHp, String tenHp, int soTc, int soTietLt, int soTietTh, int hocKy, String hinhThucThi, String heSo,
-                   String lop, Float tx1, Float tx2, Float giuaKy, Float cuoiKy, Float diemKyVong, int vangLt, int vangTh) {
+    public HocPhan(String maHp, String tenHp, int soTietLt, int soTietTh, int hocKy, String hinhThucThi, String heSo) {
         this.maHp = maHp;
         this.tenHp = tenHp;
-        this.soTc = soTc;
         this.soTietLt = soTietLt;
         this.soTietTh = soTietTh;
         this.hocKy = hocKy;
         this.hinhThucThi = hinhThucThi;
         this.heSo = heSo;
-        this.lop = lop;
-        this.tx1 = tx1;
-        this.tx2 = tx2;
-        this.giuaKy = giuaKy;
-        this.cuoiKy = cuoiKy;
-        this.diemKyVong = diemKyVong;
-        this.vangLt = vangLt;
-        this.vangTh = vangTh;
     }
 
     public String getMaHp() {
@@ -190,7 +180,7 @@ public class HocPhan implements Serializable {
         String[] heSoList = heSo.trim().split("-");
         if (heSoList.length == 3) {
             Float diemBangSo = tx1 * Float.parseFloat(heSoList[0]) +
-                               tx2 * Float.parseFloat(heSoList[1]) + cuoiKy * Float.parseFloat(heSoList[2]);
+                    tx2 * Float.parseFloat(heSoList[1]) + cuoiKy * Float.parseFloat(heSoList[2]);
             if (diemBangSo < 4) return "F";
             if (diemBangSo < 4.7) return "D";
             if (diemBangSo < 5.5) return "D+";
@@ -202,7 +192,7 @@ public class HocPhan implements Serializable {
         }
         if (heSoList.length == 4) {
             Float diemBangSo = tx1 * Float.parseFloat(heSoList[0]) + tx2 * Float.parseFloat(heSoList[1]) +
-                               giuaKy * Float.parseFloat(heSoList[2]) + cuoiKy * Float.parseFloat(heSoList[3]);
+                    giuaKy * Float.parseFloat(heSoList[2]) + cuoiKy * Float.parseFloat(heSoList[3]);
             if (diemBangSo < 4) return "F";
             if (diemBangSo < 4.7) return "D";
             if (diemBangSo < 5.5) return "D+";

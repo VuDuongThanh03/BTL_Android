@@ -1,4 +1,4 @@
-package com.example.btl_android.them_hoc_phan;
+package com.example.btl_android.hoc_phan;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -23,7 +23,8 @@ import com.example.btl_android.dang_nhap.TrangChuActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HocPhanDuKien extends AppCompatActivity {
+/** @noinspection ALL*/
+public class HocPhanDuKienActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
     private static final int REQUEST_CODE_EDIT_HOCPHAN = 2;
@@ -44,12 +45,12 @@ public class HocPhanDuKien extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backtotrangchu);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_icon);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HocPhanDuKien.this, TrangChuActivity.class);
+                Intent intent = new Intent(HocPhanDuKienActivity.this, TrangChuActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -60,7 +61,6 @@ public class HocPhanDuKien extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         hocPhanList = new ArrayList<>();
-        loadHocPhanFromDatabase();
 
         hocPhanAdapter = new HocPhanAdapter(hocPhanList);
         recyclerView.setAdapter(hocPhanAdapter);

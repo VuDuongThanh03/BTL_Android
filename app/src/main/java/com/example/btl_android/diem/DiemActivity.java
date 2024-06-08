@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.DatabaseHelper;
-import com.example.btl_android.HocPhan;
+import com.example.btl_android.hoc_phan.HocPhan;
 import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
 import com.example.btl_android.dang_nhap.DangNhapActivity;
@@ -75,12 +74,9 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     public void onItemClick(View view, int pos, int id) {
         switch (id) {
             case R.id.rvHocKy:
-                String hocKy = hocKyList.get(pos);
+                String tenTk = DangNhapActivity.etTenTk.getText().toString(), hocKy = hocKyList.get(pos);
                 hocKy = Character.toString(hocKy.charAt(hocKy.length() - 1));
-                hocPhanList = db.getSubjectsBySemester(this, DangNhapActivity.etTenTk.toString(), hocKy);
-//                if (hocPhanList.isEmpty()) {
-//                    Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
-//                }
+                hocPhanList = db.getSubjectsBySemester(this, tenTk, hocKy);
                 diemHpAdapter = new DiemAdapter(hocPhanList, this, R.id.rvDiemHp);
                 rvDiemHp.setAdapter(diemHpAdapter);
                 break;

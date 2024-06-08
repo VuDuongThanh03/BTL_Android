@@ -7,7 +7,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="QLHT_App"
+        android:label="QLHT"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
@@ -18,16 +18,17 @@
             android:exported="false" />
 
         <activity
-            android:name=".them_hoc_phan.ThemHocPhan"
+            android:name=".hoc_phan.ThemHocPhan"
             android:exported="false" />
-        <activity
-            android:name=".them_hoc_phan.HocPhanDuKien"
-            android:exported="false">
 
-        </activity>
+        <activity
+            android:name=".hoc_phan.HocPhanDuKienActivity"
+            android:exported="false" />
+
         <activity
             android:name=".diem.DiemChiTietActivity"
             android:exported="false" />
+
         <activity
             android:name=".diem.DiemActivity"
             android:exported="false" />
@@ -35,21 +36,23 @@
         <activity
             android:name=".cong_viec.CongViecActivity"
             android:exported="false" />
+
         <activity
             android:name=".dang_nhap.TrangChuActivity"
             android:exported="false" />
+
         <activity
             android:name=".dang_nhap.ThongTinActivity"
             android:exported="false" />
+
         <activity
             android:name=".dang_nhap.DangNhapActivity"
             android:exported="true">
 
              <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
+                 <action android:name="android.intent.action.MAIN" />
 
-
-             <category android:name="android.intent.category.LAUNCHER" />
+                 <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
         </activity>
     </application>

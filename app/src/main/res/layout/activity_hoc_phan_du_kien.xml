@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffefd5"
-    tools:context=".them_hoc_phan.HocPhanDuKien">
+    tools:context=".hoc_phan.HocPhanDuKienActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,7 +14,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#d8bfd8"
         app:title="Học Phần Dự Kiến"
-        app:navigationIcon="@drawable/backtotrangchu"
+        app:navigationIcon="@drawable/back_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

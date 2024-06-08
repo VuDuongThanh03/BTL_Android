@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.btl_android.HocPhan;
+import com.example.btl_android.hoc_phan.HocPhan;
 import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
 
