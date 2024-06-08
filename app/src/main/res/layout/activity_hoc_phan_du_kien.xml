@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffefd5"
-    tools:context=".hoc_phan_du_kien.HocPhanDuKienActivity">
+    tools:context=".hoc_phan_du_kien.HocPhanDuKien">
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
