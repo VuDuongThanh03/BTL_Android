@@ -2,7 +2,6 @@ package com.example.btl_android.dang_nhap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViecActivity;
 import com.example.btl_android.diem.DiemActivity;
-import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKien;
+import com.example.btl_android.them_hoc_phan.HocPhanDuKien;
 
 /** @noinspection ALL*/
 public class TrangChuActivity extends AppCompatActivity {

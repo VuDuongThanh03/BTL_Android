@@ -10,10 +10,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 
-import com.example.btl_android.hoc_phan_du_kien.HocPhan;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.btl_android.them_hoc_phan.HocPhan;
 
 /** @noinspection ALL*/
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -196,11 +193,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
     }
-
-
-
-
-
-
 
 }

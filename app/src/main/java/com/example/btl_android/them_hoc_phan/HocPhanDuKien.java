@@ -1,4 +1,4 @@
-package com.example.btl_android.hoc_phan_du_kien;
+package com.example.btl_android.them_hoc_phan;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

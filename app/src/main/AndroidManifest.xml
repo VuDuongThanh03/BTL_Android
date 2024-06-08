@@ -13,10 +13,10 @@
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
         <activity
-            android:name=".hoc_phan_du_kien.ThemHocPhan"
+            android:name=".them_hoc_phan.ThemHocPhan"
             android:exported="false" />
         <activity
-            android:name=".hoc_phan_du_kien.HocPhanDuKien"
+            android:name=".them_hoc_phan.HocPhanDuKien"
             android:exported="false">
 
         </activity>

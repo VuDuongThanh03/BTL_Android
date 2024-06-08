@@ -1,4 +1,4 @@
-package com.example.btl_android.hoc_phan_du_kien;
+package com.example.btl_android.them_hoc_phan;
 
 import android.os.Bundle;
 import android.widget.Button;
