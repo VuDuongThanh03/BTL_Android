@@ -151,27 +151,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("giuaKy", diem.getGiuaKy());
         values.put("diemKiVong", diem.getDiemKiVong());
         values.put("cuoiKy", diem.getCuoiKy());
-        int res = db.update("KetQuaHocPhan", values, "maLop = ?", new String[]{diem.getMaLop()});
+        int res = db.update("KetQuaHocPhan", values, "maLop = ? AND maHp = ?", new String[]{diem.getMaLop(), diem.getMaHp()});
         return res > 0;
     }
 
-    public List<Diem> getModulesBySemester(String hocKy) {
-        List<Diem> diemList = new ArrayList<>();
+    public void getAllScoreModules() {
+        allDiemHpList.clear();
         String selectQuery = "SELECT kq.maLop, hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
-                             "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, " +
-                             "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
-                             "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
-                             "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
-                             "FROM KetQuaHocPhan kq " +
-                             "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
-                             "LEFT JOIN DiemDanh dd ON dd.maLop = kq.maLop " +
-                             "WHERE kq.hocKy = ? " +
-                             "GROUP BY kq.maLop, kq.maHp, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
-                             "hp.hinhThucThi, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
+                "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, kq.hocKy, " +
+                "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
+                "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
+                "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
+                "FROM KetQuaHocPhan kq " +
+                "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
+                "LEFT JOIN DiemDanh dd ON dd.maLop = kq.maLop " +
+                "GROUP BY kq.maLop, kq.maHp, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+                "hp.hinhThucThi, hp.heSo, kq.hocKy, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong " +
+                "ORDER BY hp.tenHp";
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, new String[] {hocKy});
-
+        Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 Diem diem = new Diem();
@@ -184,6 +183,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 diem.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
                 diem.setSoTietTh(cursor.getInt(cursor.getColumnIndex("soTietThucHanh")));
                 diem.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
+                diem.setHocKy(cursor.getInt(cursor.getColumnIndex("hocKy")));
                 diem.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
                 diem.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
                 diem.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
@@ -193,17 +193,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 diem.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
                 diem.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
 
-                diemList.add(diem);
+                allDiemHpList.add(diem);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
+    }
+
+    public List<Diem> getScoreModulesBySemester(String hocKyStr) {
+        int hocKy = Integer.parseInt(hocKyStr);
+        List<Diem> diemList = new ArrayList<>();
+        for (Diem diem : allDiemHpList) {
+            if (diem.getHocKy() == hocKy) diemList.add(diem);
+        }
         return diemList;
     }
 
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
     private static final int DATABASE_VERSION = 1;
+
+    public static List<Diem> allDiemHpList = new ArrayList<>();
 
     // SinhVien table
     private static final String CREATE_TABLE_SINHVIEN =
@@ -274,7 +284,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "cuoiKy REAL," +
                     "diemKiVong REAL," +
                     "hocKy INTEGER NOT NULL," +
-                    "nam INTEGER NOT NULL," +
                     "PRIMARY KEY(maLop, maHp)," +
                     "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
@@ -345,17 +354,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String INSERT_TABLE_KETQUAHOCPHAN =
             "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy, nam) VALUES " +
-                    "('Class7', 'HP003', 8.5, 9.0, 7.5, 8.0, 8.0, 1, 2023), " +
-                    "('Class2', 'HP002', 7.5, 8.0, 6.5, 7.0, 7.0, 1, 2023), " +
-                    "('Class3', 'HP003', 9.0, 9.5, 8.5, 9.0, 9.0, 1, 2023), " +
-                    "('Class8', 'HP008', 9.0, 9.5, 8.5, 9.0, 9.0, 1, 2023), " +
-                    "('Class6', 'HP004', 8.0, 8.5, 7.0, 8.5, 8.0, 1, 2023), " +
-                    "('Class5', 'HP007', 7.5, 8.0, 7.5, 7.5, 7.5, 1, 2023), " +
-                    "('Class6', 'HP006', 8.5, 9.0, 7.5, 8.0, 8.0, 2, 2023), " +
-                    "('Class7', 'HP007', 7.5, 8.0, 6.5, 7.0, 7.0, 2, 2023), " +
-                    "('Class8', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 2, 2023), " +
-                    "('Class9', 'HP009', 8.0, 8.5, 7.0, 8.5, 8.0, 2, 2023), " +
-                    "('Class3', 'HP001', 7.5, 8.0, 7.5, 7.5, 7.5, 2, 2023);";
+                    "('Class7', 'HP003', 8.5, 9.0, 7.5, 8.0, 8.0, 1), " +
+                    "('Class2', 'HP002', 7.5, 8.0, 6.5, 7.0, 7.0, 1), " +
+                    "('Class3', 'HP003', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('Class8', 'HP008', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('Class6', 'HP004', 8.0, 8.5, 7.0, 8.5, 8.0, 1), " +
+                    "('Class5', 'HP007', 7.5, 8.0, 7.5, 7.5, 7.5, 1), " +
+                    "('Class6', 'HP006', 8.5, 9.0, 7.5, 8.0, 8.0, 2), " +
+                    "('Class7', 'HP007', 7.5, 8.0, 6.5, 7.0, 7.0, 2), " +
+                    "('Class8', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
+                    "('Class9', 'HP009', 8.0, 8.5, 7.0, 8.5, 8.0, 2), " +
+                    "('Class3', 'HP001', 7.5, 8.0, 7.5, 7.5, 7.5, 2);";
 
     private static final String INSERT_TABLE_DIEMDANH =
             "INSERT INTO DiemDanh (id, maLop, ngay, vang, loaiTietHoc) VALUES " +

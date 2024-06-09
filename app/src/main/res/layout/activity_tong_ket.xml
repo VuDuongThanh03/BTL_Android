@@ -42,12 +42,13 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/custom_panel1"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
                     android:text="Điểm chữ"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -64,12 +65,13 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/custom_panel1"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:paddingEnd="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
                     android:text="Điểm số"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -77,8 +79,7 @@
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="16dp" />
+                    android:layout_height="300dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -87,12 +88,13 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/custom_panel1"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:paddingEnd="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:layout_marginVertical="10dp"
                     android:text="Đánh giá"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -100,8 +102,7 @@
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="16dp" />
+                    android:layout_height="300dp" />
             </LinearLayout>
         </LinearLayout>
 
