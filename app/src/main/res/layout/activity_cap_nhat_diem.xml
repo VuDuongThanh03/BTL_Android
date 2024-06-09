@@ -35,7 +35,7 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm thường xuyên 1"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
         android:textSize="16sp" />
 
@@ -47,7 +47,7 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm thường xuyên 2"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
         android:textSize="16sp" />
 
@@ -59,7 +59,7 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm giữa kỳ"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
         android:textSize="16sp" />
 
@@ -71,7 +71,7 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm kì vọng"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
         android:textSize="16sp" />
 
@@ -83,7 +83,7 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm cuối kỳ"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
         android:textSize="16sp" />
 
