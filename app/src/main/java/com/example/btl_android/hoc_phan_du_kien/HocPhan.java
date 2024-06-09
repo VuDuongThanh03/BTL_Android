@@ -9,9 +9,7 @@ public class HocPhan implements Serializable {
     private String maHp, tenHp;
     private Float soTinChiLt, soTinChiTh;
     private int soTietLt, soTietTh, hocKy;
-    private String hinhThucThi, heSo, lop;
-    private Float tx1, tx2, giuaKy, cuoiKy, diemKyVong;
-    private int vangLt, vangTh;
+    private String hinhThucThi, heSo;
 
     public HocPhan() {
         this.maHp = "HP000";
@@ -23,14 +21,15 @@ public class HocPhan implements Serializable {
         this.hocKy = 1;
         this.hinhThucThi = "TL";
         this.heSo = "20-20-60";
-        this.lop = "Class 0";
-        this.tx1 = 0.0f;
-        this.tx2 = 0.0f;
-        this.giuaKy = 0.0f;
-        this.cuoiKy = 0.0f;
-        this.diemKyVong = 0.0f;
-        this.vangLt = 0;
-        this.vangTh = 0;
+    }
+
+    public HocPhan(String maLop, String maHp, String tenHp, Float soTinChiLt,
+                   Float soTinChiTh, String hinhThucThi, String heSo) {
+        this.maHp = maHp;
+        this.soTinChiLt = soTinChiLt;
+        this.soTinChiTh = soTinChiTh;
+        this.hinhThucThi = hinhThucThi;
+        this.heSo = heSo;
     }
 
     public HocPhan(String maHp, String tenHp, int soTietLt, int hocKy) {
@@ -120,118 +119,5 @@ public class HocPhan implements Serializable {
 
     public void setHeSo(String heSo) {
         this.heSo = heSo;
-    }
-
-    public String getLop() {
-        return lop;
-    }
-
-    public void setLop(String lop) {
-        this.lop = lop;
-    }
-
-    public Float getTx1() {
-        return tx1;
-    }
-
-    public void setTx1(Float tx1) {
-        this.tx1 = tx1;
-    }
-
-    public Float getTx2() {
-        return tx2;
-    }
-
-    public void setTx2(Float tx2) {
-        this.tx2 = tx2;
-    }
-
-    public Float getGiuaKy() {
-        return giuaKy;
-    }
-
-    public void setGiuaKy(Float giuaKy) {
-        this.giuaKy = giuaKy;
-    }
-
-    public Float getCuoiKy() {
-        return cuoiKy;
-    }
-
-    public void setCuoiKy(Float cuoiKy) {
-        this.cuoiKy = cuoiKy;
-    }
-
-    public Float getDiemKyVong() {
-        return diemKyVong;
-    }
-
-    public void setDiemKyVong(Float diemKyVong) {
-        this.diemKyVong = diemKyVong;
-    }
-
-    public int getVangLt() {
-        return vangLt;
-    }
-
-    public void setVangLt(int vangLt) {
-        this.vangLt = vangLt;
-    }
-
-    public int getVangTh() {
-        return vangTh;
-    }
-
-    public void setVangTh(int vangTh) {
-        this.vangTh = vangTh;
-    }
-
-    public Float getDiem10() {
-        String[] heSoList = heSo.trim().split("-");
-        if (heSoList.length == 3) {
-            return tx1 * Float.parseFloat(heSoList[0]) / 100.0f +
-                   tx2 * Float.parseFloat(heSoList[1]) / 100.0f + cuoiKy * Float.parseFloat(heSoList[2]) / 100.0f;
-        }
-        if (heSoList.length == 4) {
-            return tx1 * Float.parseFloat(heSoList[0]) / 100.0f + tx2 * Float.parseFloat(heSoList[1]) / 100.0f +
-                   giuaKy * Float.parseFloat(heSoList[2]) / 100.0f + cuoiKy * Float.parseFloat(heSoList[3]) / 100.0f;
-        }
-        return null;
-    }
-
-    public String getDiemChu() {
-        Float diem10 = getDiem10();
-        if (diem10 == -1) return "-";
-        if (diem10 < 4.0f) return "F";
-        if (diem10 < 4.7f) return "D";
-        if (diem10 < 5.5f) return "D+";
-        if (diem10 < 6.2f) return "C";
-        if (diem10 < 7.0f) return "C+";
-        if (diem10 < 7.7f) return "B";
-        if (diem10 < 8.5f) return "B+";
-        return "A";
-    }
-
-    public String getXepLoai() {
-        Float diem10 = getDiem10();
-        if (diem10 == -1) return "-";
-        if (diem10 < 4.0f) return "Kém";
-        if (diem10 < 6.2f) return "Yếu";
-        if (diem10 < 7.0f) return "Trung bình";
-        if (diem10 < 8.5f) return "Khá";
-        return "Giỏi";
-    }
-
-    public String getDieuKien() {
-        if (soTietLt > 0 && soTietTh == 0) {
-            if (vangLt / soTietLt <= 0.3f) return "Đủ điều kiện";
-            else return "Cấm thi";
-        }
-        if (soTietLt == 0 && soTietTh > 0) {
-            if (vangTh / soTietTh <= 0.3f) return "Đủ điều kiện";
-            else return "Cấm thi";
-        }
-        if (vangLt / soTietLt <= 0.3f && vangTh / soTietTh <= 0.3f) return "Đủ điều kiện";
-        else return "Cấm thi";
     }
 }

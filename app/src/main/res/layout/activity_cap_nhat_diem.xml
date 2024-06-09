@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -14,17 +13,18 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/imageQuayLai"
+            android:id="@+id/imgQuayLai"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/back"/>
+            android:background="@drawable/back" />
+
         <TextView
-            android:text="Điểm Tổng Kết"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Điểm Tổng Kết"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <EditText
@@ -35,9 +35,9 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm thường xuyên 1"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/etTx2"
@@ -47,7 +47,7 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm thường xuyên 2"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
         android:textSize="16sp" />
 
@@ -59,9 +59,21 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm giữa kỳ"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/etKiVong"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/custom_text_edit"
+        android:ems="10"
+        android:hint="Nhập điểm kì vọng"
+        android:inputType="numberDecimal"
+        android:padding="16dp"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/etCuoiKy"
@@ -71,17 +83,17 @@
         android:background="@drawable/custom_text_edit"
         android:ems="10"
         android:hint="Nhập điểm cuối kỳ"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:padding="16dp"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btnCapNhat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cập nhật"
+        android:layout_gravity="center"
         android:layout_margin="15dp"
-        android:textSize="20sp"
-        android:layout_gravity="center"/>
+        android:text="Cập nhật"
+        android:textSize="20sp" />
 
 </LinearLayout>

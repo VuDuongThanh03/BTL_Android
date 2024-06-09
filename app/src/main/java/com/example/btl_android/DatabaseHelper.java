@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.btl_android.diem.Diem;
 import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 
 import java.util.ArrayList;
@@ -147,10 +148,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return hocPhanList;
     }
 
-    public List<HocPhan> getSubjectsBySemester(String hocKy) {
-        List<HocPhan> hocPhanList = new ArrayList<>();
-        String selectQuery = "SELECT hp.maHp, kq.maLop, hp.tenHp, hp.soTinChiLyThuyet + hp.soTinChiThucHanh AS soTinChi,  " +
-                             "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, kq.hocKy, hp.heSo, " +
+    public boolean updateDiem(Diem diem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("tx1", diem.getTx1());
+        values.put("tx2", diem.getTx2());
+        values.put("giuaKy", diem.getGiuaKy());
+        values.put("diemKiVong", diem.getDiemKiVong());
+        values.put("cuoiKy", diem.getCuoiKy());
+        int res = db.update("KetQuaHocPhan", values, "maLop = ?", new String[]{diem.getMaLop()});
+        return res > 0;
+    }
+
+    public List<Diem> getModulesBySemester(String hocKy) {
+        List<Diem> diemList = new ArrayList<>();
+        String selectQuery = "SELECT kq.maLop, hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
+                             "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, " +
                              "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
                              "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
                              "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
@@ -158,38 +171,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                              "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
                              "LEFT JOIN DiemDanh dd ON dd.maLop = kq.maLop " +
                              "WHERE kq.hocKy = ? " +
-                             "GROUP BY hp.maHp, kq.maLop, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
-                             "hp.hinhThucThi, kq.hocKy, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
+                             "GROUP BY kq.maLop, kq.maHp, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+                             "hp.hinhThucThi, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[] {hocKy});
 
         if (cursor.moveToFirst()) {
             do {
-                HocPhan hocPhan = new HocPhan();
+                Diem diem = new Diem();
 
-                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
-                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
-                hocPhan.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
-                hocPhan.setSoTietTh(cursor.getInt(cursor.getColumnIndex("soTietThucHanh")));
-                hocPhan.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
-                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
-                hocPhan.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
-                hocPhan.setLop(cursor.getString(cursor.getColumnIndex("maLop")));
-                hocPhan.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
-                hocPhan.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
-                hocPhan.setGiuaKy(cursor.getFloat(cursor.getColumnIndex("giuaKy")));
-                hocPhan.setCuoiKy(cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
-                hocPhan.setDiemKyVong(cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
-                hocPhan.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
-                hocPhan.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
+                diem.setMaLop(cursor.getString(cursor.getColumnIndex("maLop")));
+                diem.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
+                diem.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
+                diem.setSoTinChiLt(cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")));
+                diem.setSoTinChiTh(cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")));
+                diem.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
+                diem.setSoTietTh(cursor.getInt(cursor.getColumnIndex("soTietThucHanh")));
+                diem.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
+                diem.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
+                diem.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
+                diem.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
+                diem.setGiuaKy(cursor.getFloat(cursor.getColumnIndex("giuaKy")));
+                diem.setCuoiKy(cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
+                diem.setDiemKiVong(cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
+                diem.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
+                diem.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
 
-                hocPhanList.add(hocPhan);
+                diemList.add(diem);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return hocPhanList;
+        return diemList;
     }
 
     // Database name and version
@@ -202,7 +216,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "maSv TEXT NOT NULL," +
                     "maCn INTEGER NOT NULL," +
                     "tenSv TEXT NOT NULL," +
-                    "tenTk INTEGER NOT NULL UNIQUE," +
+                    "tenTk INTEGER NOT NULL," +
                     "matKhau TEXT NOT NULL," +
                     "PRIMARY KEY(maSv)," +
                     "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
@@ -274,7 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // DiemDanh table
     private static final String CREATE_TABLE_DIEMDANH =
             "CREATE TABLE IF NOT EXISTS DiemDanh (" +
-                    "id TEXT PRIMARY KEY AUTOINCREMENT," +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "maLop TEXT NOT NULL," +
                     "ngay TEXT NOT NULL," +
                     "vang INTEGER," +
@@ -285,21 +299,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String INSERT_TABLE_SINHVIEN =
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
-                    "('2021606516', 3, 'Phung Duc Can','tk01', 'abc123@')";
-       
+                    "('2021606516', 3, 'Phùng Đức Cần', 'Tao là nhất', 'abc123!@#')";
 
     private static final String INSERT_TABLE_CONGVIEC =
             "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHan, trangThai, chiTiet) VALUES " +
-                    "('Complete Math Homework', 1, '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
-                    "('Prepare Physics Presentation', 2, '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
-                    "('Chemistry Lab Report', 1, '2023-06-14', 0, 'Lab report on chemical reactions'), " +
-                    "('Biology Field Trip', 3, '2023-06-16', 1, 'Field trip to the botanical garden'), " +
-                    "('Computer Science Project', 1, '2023-06-18', 0, 'Project on data structures'), " +
-                    "('Math Quiz Preparation', 2, '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
-                    "('Physics Assignment', 1, '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
-                    "('Chemistry Homework', 2, '2023-06-24', 0, 'Solve problems from the textbook'), " +
-                    "('Biology Research', 3, '2023-06-26', 1, 'Research on genetic mutations'), " +
-                    "('Computer Science Exam', 1, '2023-06-28', 0, 'Study for final exam');";
+                    "(1, 'Complete Math Homework', 1, '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
+                    "(2, 'Prepare Physics Presentation', 2, '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
+                    "(3, 'Chemistry Lab Report', 1, '2023-06-14', 0, 'Lab report on chemical reactions'), " +
+                    "(4, 'Biology Field Trip', 3, '2023-06-16', 1, 'Field trip to the botanical garden'), " +
+                    "(5, 'Computer Science Project', 1, '2023-06-18', 0, 'Project on data structures'), " +
+                    "(6, 'Math Quiz Preparation', 2, '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
+                    "(7, 'Physics Assignment', 1, '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
+                    "(8, 'Chemistry Homework', 2, '2023-06-24', 0, 'Solve problems from the textbook'), " +
+                    "(9, 'Biology Research', 3, '2023-06-26', 1, 'Research on genetic mutations'), " +
+                    "(10, 'Computer Science Exam', 1, '2023-06-28', 0, 'Study for final exam');";
 
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +

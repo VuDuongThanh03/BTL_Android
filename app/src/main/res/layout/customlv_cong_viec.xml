@@ -3,98 +3,103 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <CheckBox
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </CheckBox>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"></CheckBox>
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingTop="10px"
             android:paddingBottom="10px">
+
             <TextView
                 android:id="@+id/tv_tenviec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tên công việc"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:textSize="70px"
-                android:textColor="@color/black">
-            </TextView>
+                android:textStyle="bold"></TextView>
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mô tả: "
                     android:textColor="@color/black"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textStyle="bold"></TextView>
+
                 <TextView
                     android:id="@+id/tv_chitietcv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Làm cái gì đó"
                     android:textColor="#0020CF"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textStyle="bold"></TextView>
             </LinearLayout>
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mức ưu tiên: "
                     android:textColor="@color/black"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textStyle="bold"></TextView>
+
                 <TextView
                     android:id="@+id/tv_mucuutien"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Quan trọng"
                     android:textColor="#FF5722"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textStyle="bold"></TextView>
             </LinearLayout>
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Deadline: "
                     android:textColor="@color/black"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textStyle="bold"></TextView>
+
                 <TextView
                     android:id="@+id/tv_hancvgio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="17:00"
                     android:textColor="#A61010"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textStyle="bold"></TextView>
+
                 <TextView
                     android:id="@+id/tv_hancvngay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20px"
                     android:text="22/5/2024"
                     android:textColor="#A61010"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="20px">
-                </TextView>
+                    android:textStyle="bold"></TextView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
