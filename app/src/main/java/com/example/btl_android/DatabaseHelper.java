@@ -215,9 +215,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS SinhVien (" +
                     "maSv TEXT NOT NULL," +
                     "maCn INTEGER NOT NULL," +
-                    "tenSv TEXT NOT NULL," +
-                    "tenTk INTEGER NOT NULL," +
                     "matKhau TEXT NOT NULL," +
+                    "khoa TEXT NOT NULL," +
                     "PRIMARY KEY(maSv)," +
                     "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
@@ -318,7 +317,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
                     "(1, 'Computer Science'), " +
                     "(2, 'Physics'), " +
-                    "(3, 'CNTT'), " +
+                    "(3, 'Chemistry'), " +
                     "(4, 'Mathematics'), " +
                     "(5, 'Biology');";
 
@@ -380,3 +379,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('14', 'Class9', '2023-05-13', 1, 0), " +
                     "('15', 'Class7', '2023-05-15', 0, 1);";
 }
+

@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
-        <activity
-            android:name=".dang_nhap.DangKyActivity"
-            android:exported="false" />
+
         <activity
             android:name=".hoc_phan_du_kien.ThemHocPhan"
             android:exported="false" />
