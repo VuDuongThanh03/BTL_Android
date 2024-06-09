@@ -24,24 +24,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
-        try {
-            db.execSQL(CREATE_TABLE_SINHVIEN);
-            db.execSQL(CREATE_TABLE_CONGVIEC);
-            db.execSQL(CREATE_TABLE_CHUYENNGANH);
-            db.execSQL(CREATE_TABLE_HOCPHAN);
-            db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
-            db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
-            db.execSQL(CREATE_TABLE_DIEMDANH);
+        db.execSQL(CREATE_TABLE_SINHVIEN);
+        db.execSQL(CREATE_TABLE_CONGVIEC);
+        db.execSQL(CREATE_TABLE_CHUYENNGANH);
+        db.execSQL(CREATE_TABLE_HOCPHAN);
+        db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
+        db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
+        db.execSQL(CREATE_TABLE_DIEMDANH);
 
-            populateInitialData(db);
-        } catch (final Exception e) {
-            Log.e("Error", "There are some problems in creating database", e);
-        }
+        populateInitialData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Xóa bảng cũ nếu tồn tại
         db.execSQL("DROP TABLE IF EXISTS SinhVien");
         db.execSQL("DROP TABLE IF EXISTS CongViec");
         db.execSQL("DROP TABLE IF EXISTS ChuyenNganh");
@@ -50,7 +45,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS DiemDanh");
 
-        populateInitialData(db);
         onCreate(db);
     }
 
@@ -63,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(INSERT_TABLE_LOAIHOCPHAN);
         db.execSQL(INSERT_TABLE_KETQUAHOCPHAN);
         db.execSQL(INSERT_TABLE_DIEMDANH);
+
     }
 
     // CRUD operations for HocPhan
@@ -163,16 +158,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Diem> getModulesBySemester(String hocKy) {
         List<Diem> diemList = new ArrayList<>();
         String selectQuery = "SELECT kq.maLop, hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
-                             "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, " +
-                             "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
-                             "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
-                             "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
-                             "FROM KetQuaHocPhan kq " +
-                             "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
-                             "LEFT JOIN DiemDanh dd ON dd.maLop = kq.maLop " +
-                             "WHERE kq.hocKy = ? " +
-                             "GROUP BY kq.maLop, kq.maHp, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
-                             "hp.hinhThucThi, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
+                "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, " +
+                "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
+                "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
+                "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
+                "FROM KetQuaHocPhan kq " +
+                "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
+                "LEFT JOIN DiemDanh dd ON dd.maLop = kq.maLop " +
+                "WHERE kq.hocKy = ? " +
+                "GROUP BY kq.maLop, kq.maHp, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+                "hp.hinhThucThi, hp.heSo, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, new String[] {hocKy});
@@ -215,8 +210,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS SinhVien (" +
                     "maSv TEXT NOT NULL," +
                     "maCn INTEGER NOT NULL," +
+                    "tenSv TEXT NOT NULL," +
+                    "tenTk INTEGER NOT NULL," +
                     "matKhau TEXT NOT NULL," +
-                    "khoa TEXT NOT NULL," +
                     "PRIMARY KEY(maSv)," +
                     "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
@@ -317,7 +313,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
                     "(1, 'Computer Science'), " +
                     "(2, 'Physics'), " +
-                    "(3, 'Chemistry'), " +
+                    "(3, 'CNTT'), " +
                     "(4, 'Mathematics'), " +
                     "(5, 'Biology');";
 
@@ -379,4 +375,3 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('14', 'Class9', '2023-05-13', 1, 0), " +
                     "('15', 'Class7', '2023-05-15', 0, 1);";
 }
-

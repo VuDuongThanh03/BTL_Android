@@ -2,19 +2,21 @@ package com.example.btl_android.dang_nhap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViecActivity;
+import com.example.btl_android.diem.DiemActivity;
 import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKien;
 
 
 /** @noinspection ALL*/
 public class TrangChuActivity extends AppCompatActivity {
 
-    LinearLayout btnCongViec, btnHocPhan;
+    LinearLayout btnCongViec, btnHocPhan, btnDiem;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class TrangChuActivity extends AppCompatActivity {
 
         btnCongViec = findViewById(R.id.btnCongViec);
         btnHocPhan = findViewById(R.id.btnHocPhan);
+        btnDiem = findViewById(R.id.btnDiem);
 
         btnCongViec.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
@@ -32,6 +35,13 @@ public class TrangChuActivity extends AppCompatActivity {
         btnHocPhan.setOnClickListener(v -> {
             final Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKien.class);
             TrangChuActivity.this.startActivity(intent);
+        });
+        btnDiem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
+                TrangChuActivity.this.startActivity(intent);
+            }
         });
     }
 }
