@@ -201,9 +201,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS SinhVien (" +
                     "maSv TEXT NOT NULL," +
                     "maCn INTEGER NOT NULL," +
+                    "tenSv TEXT NOT NULL,"
                     "tenTk INTEGER NOT NULL UNIQUE," +
                     "matKhau TEXT NOT NULL," +
-                    "khoa TEXT NOT NULL," +
                     "PRIMARY KEY(maSv)," +
                     "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
@@ -284,17 +284,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ");";
 
     private static final String INSERT_TABLE_SINHVIEN =
-            "INSERT INTO SinhVien (maSv, maCn, tenTk, matKhau, khoa) VALUES " +
-                    "('SV001', 1, 'student1', 'password1', 'Engineering'), " +
-                    "('SV002', 2, 'student2', 'password2', 'Science'), " +
-                    "('SV003', 3, 'student3', 'password3', 'Arts'), " +
-                    "('SV004', 4, 'student4', 'password4', 'Mathematics'), " +
-                    "('SV005', 5, 'student5', 'password5', 'Biology'), " +
-                    "('SV006', 1, 'student6', 'password6', 'Engineering'), " +
-                    "('SV007', 2, 'student7', 'password7', 'Science'), " +
-                    "('SV008', 3, 'student8', 'password8', 'Arts'), " +
-                    "('SV009', 4, 'student9', 'password9', 'Mathematics'), " +
-                    "('SV010', 5, 'student10', 'password10', 'Biology');";
+            "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
+                    "('2021606516', 3, 'Phung Duc Can', 'abc123@')";
+       
 
     private static final String INSERT_TABLE_CONGVIEC =
             "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHan, trangThai, chiTiet) VALUES " +
@@ -313,7 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
                     "(1, 'Computer Science'), " +
                     "(2, 'Physics'), " +
-                    "(3, 'Chemistry'), " +
+                    "(3, 'CNTT'), " +
                     "(4, 'Mathematics'), " +
                     "(5, 'Biology');";
 
