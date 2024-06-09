@@ -30,6 +30,12 @@ public class DiemChiTietActivity extends AppCompatActivity {
             return insets;
         });
 
+        getWidget();
+        displayDiemChiTiet();
+        btnQuayLai.setOnClickListener(v -> finish());
+    }
+
+    private void getWidget() {
         btnQuayLai = findViewById(R.id.imgQuayLai);
         tvTenHp = findViewById(R.id.tvTenHp);
         tvMaHp = findViewById(R.id.tvMaHp);
@@ -49,9 +55,9 @@ public class DiemChiTietActivity extends AppCompatActivity {
         tvNghiLt = findViewById(R.id.tvNghiLt);
         tvNghiTh = findViewById(R.id.tvNghiTh);
         tvDieuKien = findViewById(R.id.tvDieuKien);
+    }
 
-        btnQuayLai.setOnClickListener(v -> finish());
-
+    private void displayDiemChiTiet() {
         Intent intent = getIntent();
         Diem diem = (Diem) intent.getSerializableExtra("DiemChiTiet");
         tvTenHp.setText(diem.getTenHp());

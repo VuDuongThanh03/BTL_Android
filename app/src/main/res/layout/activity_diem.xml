@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,20 +44,91 @@
         android:background="@drawable/custom_panel1"
         android:orientation="vertical">
 
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:scrollbars="none">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHocKy"
+            <LinearLayout
+                android:id="@+id/btnHocKySet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
                 android:orientation="horizontal"
-                tools:listitem="@layout/customrv_hoc_ky" />
+                android:layout_marginTop="10dp">
 
-        </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Học kỳ 1"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_default"
+                    app:backgroundTint="@null"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Học kỳ 2"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_default"
+                    app:backgroundTint="@null"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Học kỳ 3"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_default"
+                    app:backgroundTint="@null"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Học kỳ 4"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_default"
+                    app:backgroundTint="@null"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Học kỳ 5"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_default"
+                    app:backgroundTint="@null"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Học kỳ 6"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_default"
+                    app:backgroundTint="@null"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Học kỳ 7"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_default"
+                    app:backgroundTint="@null"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Học kỳ 8"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_default"
+                    app:backgroundTint="@null"/>
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDiemHp"

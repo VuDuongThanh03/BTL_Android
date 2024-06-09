@@ -3,7 +3,9 @@ package com.example.btl_android.diem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,19 +21,19 @@ import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /** @noinspection ALL*/
 public class DiemActivity extends AppCompatActivity implements OnItemClickListener {
     private DatabaseHelper db;
     private ImageButton btnQuayLai, btnTongKet;
-    private RecyclerView rvHocKy, rvDiemHp;
+    private LinearLayout btnHocKySet;
+    private Button lastSelectHocKy;
+    private RecyclerView rvDiemHp;
     List<String> hocKyList;
     List<Diem> diemList;
-    private HocKyAdapter hocKyAdapter;
     private DiemAdapter diemHpAdapter;
-    private View lastHocKyBtn = null;
+    private String hocKy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +45,23 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
             return insets;
         });
 
-        db = new DatabaseHelper(this);
+        getWidget();
+        setupButtons();
+    }
 
+    private void getWidget() {
         btnQuayLai = findViewById(R.id.imgQuayLai);
         btnTongKet = findViewById(R.id.imageTongKet);
-        rvHocKy = findViewById(R.id.rvHocKy);
         rvDiemHp = findViewById(R.id.rvDiemHp);
         hocKyList = new ArrayList<>();
         diemList = new ArrayList<>();
+        hocKy = "1";
 
+        db = new DatabaseHelper(this);
+        db.getAllScoreModules();
+    }
+
+    private void setupButtons() {
         btnQuayLai.setOnClickListener(v -> finish());
 
         btnTongKet.setOnClickListener(v -> {
@@ -59,36 +69,55 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
             DiemActivity.this.startActivity(intent);
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
-                                                LinearLayoutManager.HORIZONTAL, false);
-        rvHocKy.setLayoutManager(layoutManager);
+        btnHocKySet = findViewById(R.id.btnHocKySet);
+        btnHocKySet.getChildAt(0).setBackgroundResource(R.drawable.button_selected);
+        lastSelectHocKy = (Button) btnHocKySet.getChildAt(0);
+        setButtonHocKySet(btnHocKySet);
 
         rvDiemHp.setLayoutManager(new LinearLayoutManager(this));
+    }
 
-        hocKyList = Arrays.asList("Học kỳ 8", "Học kỳ 7", "Học kỳ 6", "Học kỳ 5", "Học kỳ 4", "Học kỳ 3", "Học kỳ 2", "Học kỳ 1");
-        hocKyAdapter = new HocKyAdapter(hocKyList, this, R.id.rvHocKy);
-        rvHocKy.setAdapter(hocKyAdapter);
+    private void setButtonHocKySet(LinearLayout btnHocKySet) {
+        for (int i = 0; i < btnHocKySet.getChildCount(); i++) {
+            View view = btnHocKySet.getChildAt(i);
+            if (view instanceof Button) {
+                Button button = (Button) view;
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        button.setBackgroundResource(R.drawable.button_selected);
+                        if (lastSelectHocKy != null && lastSelectHocKy != button) {
+                            lastSelectHocKy.setBackgroundResource(R.drawable.button_default);
+                        }
+                        lastSelectHocKy = button;
+
+                        hocKy = button.getText().toString();
+                        hocKy = String.valueOf(hocKy.charAt(hocKy.length() - 1));
+                        diemList = db.getScoreModulesBySemester(hocKy);
+                        if (diemList.isEmpty()) {
+                            Toast.makeText(DiemActivity.this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                        }
+                        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, R.id.rvDiemHp);
+                        rvDiemHp.setAdapter(diemHpAdapter);
+                    }
+                });
+            }
+        }
     }
 
     @Override
-    public void onItemClick(View view, int pos, int id) {
-        switch (id) {
-            case R.id.rvHocKy:
-                String hocKy = hocKyList.get(pos);
-                hocKy = Character.toString(hocKy.charAt(hocKy.length() - 1));
-                diemList = db.getModulesBySemester(hocKy);
-                if (diemList.isEmpty()) {
-                    Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
-                }
-                diemHpAdapter = new DiemAdapter(diemList, this, R.id.rvDiemHp);
-                rvDiemHp.setAdapter(diemHpAdapter);
-                break;
-            case R.id.rvDiemHp:
-                Diem diem = diemList.get(pos);
-                Intent intent = new Intent(DiemActivity.this, DiemChiTietActivity.class);
-                intent.putExtra("DiemChiTiet", diem);
-                DiemActivity.this.startActivity(intent);
-                break;
-        }
+    protected void onResume() {
+        diemList = db.getScoreModulesBySemester(hocKy);
+        diemHpAdapter = new DiemAdapter(diemList, this, R.id.rvDiemHp);
+        rvDiemHp.setAdapter(diemHpAdapter);
+        super.onResume();
+    }
+
+    @Override
+    public void onItemClick(int pos) {
+        Diem diem = diemList.get(pos);
+        Intent intent = new Intent(DiemActivity.this, DiemChiTietActivity.class);
+        intent.putExtra("DiemChiTiet", diem);
+        DiemActivity.this.startActivity(intent);
     }
 }

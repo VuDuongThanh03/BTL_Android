@@ -57,7 +57,7 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
         public void onClick(View view) {
             if (listener != null) {
                 int pos = (int) view.getTag();
-                listener.onItemClick(view, pos, id);
+                listener.onItemClick(pos);
             }
         }
     }
