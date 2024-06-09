@@ -1,42 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
     android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
     android:layout_marginEnd="10dp"
+    android:orientation="vertical"
     tools:context=".diem.DiemActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageButton
-            android:id="@+id/imageQuayLai"
+            android:id="@+id/imgQuayLai"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/back"/>
+            android:background="@drawable/back" />
+
         <TextView
-            android:text="Điểm Tổng Kết"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Điểm Tổng Kết"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"/>
+            android:textStyle="bold" />
+
         <ImageButton
             android:id="@+id/imageTongKet"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/graph"/>
+            android:background="@drawable/graph" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/custom_panel1"
         android:layout_marginTop="20dp"
+        android:background="@drawable/custom_panel1"
         android:orientation="vertical">
 
         <LinearLayout
@@ -48,9 +52,9 @@
                 android:id="@+id/rvHocKy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginHorizontal="10dp"
-                tools:listitem="@layout/customrv_hoc_ky"/>
+                android:orientation="horizontal"
+                tools:listitem="@layout/customrv_hoc_ky" />
 
         </LinearLayout>
 
@@ -59,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:listitem="@layout/customrv_diem_hoc_phan"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            tools:listitem="@layout/customrv_diem_hoc_phan" />
     </LinearLayout>
 </LinearLayout>

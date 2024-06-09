@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
 
@@ -19,11 +18,11 @@ import java.util.List;
 
 /** @noinspection ALL*/
 public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
-    private List<HocPhan> data;
+    private List<Diem> data;
     private OnItemClickListener listener;
     private int id;
 
-    public DiemAdapter(List<HocPhan> data, OnItemClickListener listener, int id) {
+    public DiemAdapter(List<Diem> data, OnItemClickListener listener, int id) {
         this.data = data;
         this.listener = listener;
         this.id = id;
@@ -48,7 +47,9 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
 
             diemHp.setOnClickListener(this);
             btnSua.setOnClickListener(v -> {
+                Diem diem = data.get((int) view.getTag());
                 Intent intent = new Intent((Context) listener, CapNhatDiemActivity.class);
+                intent.putExtra("Diem", diem);
                 ((Context) listener).startActivity(intent);
             });
         }
@@ -70,7 +71,7 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
-        HocPhan item = data.get(pos);
+        Diem item = data.get(pos);
         holder.tvTenHp.setText(item.getTenHp());
         holder.tvTx1.setText(String.format("%.1f", item.getTx1()));
         holder.tvTx2.setText(String.format("%.1f", item.getTx2()));

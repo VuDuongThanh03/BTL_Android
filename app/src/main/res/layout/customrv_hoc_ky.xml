@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/button_border"
-        app:backgroundTint="@null"
+        android:text="Kỳ 8"
         android:textColor="@color/black"
-        android:text="Kỳ 8"/>
+        app:backgroundTint="@null" />
 </LinearLayout>

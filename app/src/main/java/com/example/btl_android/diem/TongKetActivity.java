@@ -25,7 +25,7 @@ public class TongKetActivity extends AppCompatActivity {
             return insets;
         });
 
-        btnQuayLai = findViewById(R.id.imageQuayLai);
+        btnQuayLai = findViewById(R.id.imgQuayLai);
 
         btnQuayLai.setOnClickListener(v -> finish());
     }

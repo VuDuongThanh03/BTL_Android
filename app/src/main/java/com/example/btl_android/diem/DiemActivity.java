@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
-import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +28,10 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     private ImageButton btnQuayLai, btnTongKet;
     private RecyclerView rvHocKy, rvDiemHp;
     List<String> hocKyList;
-    List<HocPhan> hocPhanList;
+    List<Diem> diemList;
     private HocKyAdapter hocKyAdapter;
     private DiemAdapter diemHpAdapter;
+    private View lastHocKyBtn = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +45,12 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
         db = new DatabaseHelper(this);
 
-        btnQuayLai = findViewById(R.id.imageQuayLai);
+        btnQuayLai = findViewById(R.id.imgQuayLai);
         btnTongKet = findViewById(R.id.imageTongKet);
         rvHocKy = findViewById(R.id.rvHocKy);
         rvDiemHp = findViewById(R.id.rvDiemHp);
         hocKyList = new ArrayList<>();
-        hocPhanList = new ArrayList<>();
+        diemList = new ArrayList<>();
 
         btnQuayLai.setOnClickListener(v -> finish());
 
@@ -76,17 +76,17 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
             case R.id.rvHocKy:
                 String hocKy = hocKyList.get(pos);
                 hocKy = Character.toString(hocKy.charAt(hocKy.length() - 1));
-                hocPhanList = db.getSubjectsBySemester(hocKy);
-                if (hocPhanList.isEmpty()) {
+                diemList = db.getModulesBySemester(hocKy);
+                if (diemList.isEmpty()) {
                     Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                 }
-                diemHpAdapter = new DiemAdapter(hocPhanList, this, R.id.rvDiemHp);
+                diemHpAdapter = new DiemAdapter(diemList, this, R.id.rvDiemHp);
                 rvDiemHp.setAdapter(diemHpAdapter);
                 break;
             case R.id.rvDiemHp:
-                HocPhan hp = hocPhanList.get(pos);
+                Diem diem = diemList.get(pos);
                 Intent intent = new Intent(DiemActivity.this, DiemChiTietActivity.class);
-                intent.putExtra("DiemChiTiet", hp);
+                intent.putExtra("DiemChiTiet", diem);
                 DiemActivity.this.startActivity(intent);
                 break;
         }

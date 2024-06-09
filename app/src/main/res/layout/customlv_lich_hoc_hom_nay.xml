@@ -3,68 +3,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thiết kế web"
-        android:textStyle="bold"
-        android:textSize="17dp"
         android:layout_marginStart="30px"
         android:layout_marginTop="10px"
-        android:textColor="@color/black">
+        android:text="Thiết kế web"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        android:textStyle="bold">
 
     </TextView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10px"
-        android:layout_marginStart="30px">
+        android:layout_marginStart="30px"
+        android:layout_marginTop="10px">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tiết:"
-            android:textStyle="bold"
+            android:textColor="@color/black"
             android:textSize="13dp"
-            android:textColor="@color/black">
+            android:textStyle="bold">
 
         </TextView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20px"
             android:text="7, 8"
-            android:textStyle="bold"
+            android:textColor="#A61010"
             android:textSize="13dp"
-            android:textColor="#A61010">
+            android:textStyle="bold">
 
         </TextView>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10px"
-        android:layout_marginStart="30px">
+        android:layout_marginStart="30px"
+        android:layout_marginTop="10px">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Phòng học:"
-            android:textStyle="bold"
+            android:textColor="@color/black"
             android:textSize="13dp"
-            android:textColor="@color/black">
+            android:textStyle="bold">
 
         </TextView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30px"
             android:text="609 - A9 "
-            android:textStyle="bold"
+            android:textColor="#A61010"
             android:textSize="13dp"
-            android:textColor="#A61010">
+            android:textStyle="bold">
 
         </TextView>
     </LinearLayout>
-
 
 
 </LinearLayout>

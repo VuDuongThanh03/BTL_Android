@@ -19,6 +19,7 @@ public class HocKyAdapter extends RecyclerView.Adapter<HocKyAdapter.ViewHolder> 
     private List<String> data;
     private OnItemClickListener listener;
     private int id;
+    private View lastHocKy;
 
     public HocKyAdapter(List<String> data, OnItemClickListener listener, int id) {
         this.data = data;
@@ -38,6 +39,11 @@ public class HocKyAdapter extends RecyclerView.Adapter<HocKyAdapter.ViewHolder> 
         public void onClick(View view) {
             if (listener != null) {
                 int pos = (int) view.getTag();
+                if (lastHocKy != null) {
+                    lastHocKy.setBackgroundDrawable(view.getResources().getDrawable(R.drawable.button_border));
+                }
+                view.setBackgroundDrawable(view.getResources().getDrawable(R.drawable.button_selected));
+                lastHocKy = view;
                 listener.onItemClick(view, pos, id);
             }
         }

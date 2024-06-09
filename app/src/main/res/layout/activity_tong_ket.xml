@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_margin="10dp"
+    android:orientation="vertical"
     tools:context=".diem.TongKetActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageButton
-            android:id="@+id/imageQuayLai"
+            android:id="@+id/imgQuayLai"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/back"/>
+            android:background="@drawable/back" />
+
         <TextView
-            android:text="Tổng kết"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Tổng kết"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <ScrollView
@@ -38,18 +39,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/custom_panel1"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/custom_panel1"
+                android:orientation="vertical"
                 android:padding="10dp">
 
                 <TextView
-                    android:text="Điểm chữ"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"
+                    android:text="Điểm chữ"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/lineChart"
@@ -60,18 +61,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/custom_panel1"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/custom_panel1"
+                android:orientation="vertical"
                 android:padding="10dp">
 
                 <TextView
-                    android:text="Điểm số"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"
+                    android:text="Điểm số"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart"
@@ -83,18 +84,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/custom_panel1"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/custom_panel1"
+                android:orientation="vertical"
                 android:padding="10dp">
 
                 <TextView
-                    android:text="Đánh giá"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"
+                    android:text="Đánh giá"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
                     android:layout_width="match_parent"
