@@ -65,9 +65,13 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
         rvDiemHp.setLayoutManager(new LinearLayoutManager(this));
 
-        hocKyList = Arrays.asList("Học kỳ 8", "Học kỳ 7", "Học kỳ 6", "Học kỳ 5", "Học kỳ 4", "Học kỳ 3", "Học kỳ 2", "Học kỳ 1");
+        hocKyList = Arrays.asList("Học kỳ 1", "Học kỳ 2", "Học kỳ 3", "Học kỳ 4", "Học kỳ 5", "Học kỳ 6", "Học kỳ 7", "Học kỳ 8");
         hocKyAdapter = new HocKyAdapter(hocKyList, this, R.id.rvHocKy);
         rvHocKy.setAdapter(hocKyAdapter);
+
+        diemList = db.getModulesBySemester("1");
+        diemHpAdapter = new DiemAdapter(diemList, this, R.id.rvDiemHp);
+        rvDiemHp.setAdapter(diemHpAdapter);
     }
 
     @Override

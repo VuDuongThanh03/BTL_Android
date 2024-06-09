@@ -24,24 +24,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
-        try {
-            db.execSQL(CREATE_TABLE_SINHVIEN);
-            db.execSQL(CREATE_TABLE_CONGVIEC);
-            db.execSQL(CREATE_TABLE_CHUYENNGANH);
-            db.execSQL(CREATE_TABLE_HOCPHAN);
-            db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
-            db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
-            db.execSQL(CREATE_TABLE_DIEMDANH);
+        db.execSQL(CREATE_TABLE_SINHVIEN);
+        db.execSQL(CREATE_TABLE_CONGVIEC);
+        db.execSQL(CREATE_TABLE_CHUYENNGANH);
+        db.execSQL(CREATE_TABLE_HOCPHAN);
+        db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
+        db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
+        db.execSQL(CREATE_TABLE_DIEMDANH);
 
-            populateInitialData(db);
-        } catch (final Exception e) {
-            Log.e("Error", "There are some problems in creating database", e);
-        }
+        populateInitialData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Xóa bảng cũ nếu tồn tại
         db.execSQL("DROP TABLE IF EXISTS SinhVien");
         db.execSQL("DROP TABLE IF EXISTS CongViec");
         db.execSQL("DROP TABLE IF EXISTS ChuyenNganh");
@@ -50,7 +45,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS DiemDanh");
 
-        populateInitialData(db);
         onCreate(db);
     }
 
@@ -63,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(INSERT_TABLE_LOAIHOCPHAN);
         db.execSQL(INSERT_TABLE_KETQUAHOCPHAN);
         db.execSQL(INSERT_TABLE_DIEMDANH);
+
     }
 
     // CRUD operations for HocPhan

@@ -21,7 +21,7 @@ public class CapNhatDiemActivity extends AppCompatActivity {
 
     ImageButton btnQuayLai;
     Button btnCapNhat;
-    EditText etTx1, etTx2, etGiuaKy, etCuoiKy;
+    EditText etTx1, etTx2, etGiuaKy, etKiVong, etCuoiKy;
 
     DatabaseHelper db;
     @Override
@@ -42,12 +42,19 @@ public class CapNhatDiemActivity extends AppCompatActivity {
         etTx1 = findViewById(R.id.etTx1);
         etTx2 = findViewById(R.id.etTx2);
         etGiuaKy = findViewById(R.id.etGiuaKy);
+        etKiVong = findViewById(R.id.etKiVong);
         etCuoiKy = findViewById(R.id.etCuoiKy);
 
         btnQuayLai.setOnClickListener(v -> finish());
         btnCapNhat.setOnClickListener(v -> {
             Intent intent = getIntent();
             Diem diem = (Diem) intent.getSerializableExtra("Diem");
+            diem.setTx1(Float.parseFloat(etTx1.getText().toString()));
+            diem.setTx2(Float.parseFloat(etTx2.getText().toString()));
+            diem.setGiuaKy(Float.parseFloat(etGiuaKy.getText().toString()));
+            diem.setDiemKiVong(Float.parseFloat(etKiVong.getText().toString()));
+            diem.setCuoiKy(Float.parseFloat(etCuoiKy.getText().toString()));
+
             boolean res = db.updateDiem(diem);
             if (res) {
                 Toast.makeText(this, "Cập nhật điểm thành công", Toast.LENGTH_LONG).show();
