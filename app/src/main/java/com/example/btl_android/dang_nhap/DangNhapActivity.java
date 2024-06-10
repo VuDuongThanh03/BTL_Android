@@ -23,10 +23,8 @@ public class DangNhapActivity extends AppCompatActivity {
 
     private Button dangnhap,dangky;
     private EditText edtusername, edtpassword;
-
-    private DatabaseHelper dbHelper;
     List<Diem> diemList;
-
+    private DatabaseHelper dbHelper;
     SQLiteDatabase db;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
