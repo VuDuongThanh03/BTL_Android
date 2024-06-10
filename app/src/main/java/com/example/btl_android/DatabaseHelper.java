@@ -57,7 +57,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(INSERT_TABLE_LOAIHOCPHAN);
         db.execSQL(INSERT_TABLE_KETQUAHOCPHAN);
         db.execSQL(INSERT_TABLE_DIEMDANH);
-
     }
 
     // CRUD operations for HocPhan
@@ -185,11 +184,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 diem.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
                 diem.setHocKy(cursor.getInt(cursor.getColumnIndex("hocKy")));
                 diem.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
-                diem.setTx1(cursor.getFloat(cursor.getColumnIndex("tx1")));
-                diem.setTx2(cursor.getFloat(cursor.getColumnIndex("tx2")));
-                diem.setGiuaKy(cursor.getFloat(cursor.getColumnIndex("giuaKy")));
-                diem.setCuoiKy(cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
-                diem.setDiemKiVong(cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
+                diem.setTx1(cursor.isNull(cursor.getColumnIndex("tx1")) ? null : cursor.getFloat(cursor.getColumnIndex("tx1")));
+                diem.setTx2(cursor.isNull(cursor.getColumnIndex("tx2")) ? null : cursor.getFloat(cursor.getColumnIndex("tx2")));
+                diem.setGiuaKy(cursor.isNull(cursor.getColumnIndex("giuaKy")) ? null : cursor.getFloat(cursor.getColumnIndex("giuaKy")));
+                diem.setCuoiKy(cursor.isNull(cursor.getColumnIndex("cuoiKy")) ? null : cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
+                diem.setDiemKiVong(cursor.isNull(cursor.getColumnIndex("diemKiVong")) ? null : cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
                 diem.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
                 diem.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
 
@@ -284,7 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "cuoiKy REAL," +
                     "diemKiVong REAL," +
                     "hocKy INTEGER NOT NULL," +
-                    "PRIMARY KEY(maLop, maHp)," +
+                    "PRIMARY KEY(maLop)," +
                     "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
@@ -353,34 +352,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('HP010', 1, 2);";
 
     private static final String INSERT_TABLE_KETQUAHOCPHAN =
-            "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy, nam) VALUES " +
-                    "('Class7', 'HP003', 8.5, 9.0, 7.5, 8.0, 8.0, 1), " +
-                    "('Class2', 'HP002', 7.5, 8.0, 6.5, 7.0, 7.0, 1), " +
-                    "('Class3', 'HP003', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
-                    "('Class8', 'HP008', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
-                    "('Class6', 'HP004', 8.0, 8.5, 7.0, 8.5, 8.0, 1), " +
-                    "('Class5', 'HP007', 7.5, 8.0, 7.5, 7.5, 7.5, 1), " +
-                    "('Class6', 'HP006', 8.5, 9.0, 7.5, 8.0, 8.0, 2), " +
-                    "('Class7', 'HP007', 7.5, 8.0, 6.5, 7.0, 7.0, 2), " +
-                    "('Class8', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
-                    "('Class9', 'HP009', 8.0, 8.5, 7.0, 8.5, 8.0, 2), " +
-                    "('Class3', 'HP001', 7.5, 8.0, 7.5, 7.5, 7.5, 2);";
+            "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
+                    "('2021HP003.1', 'HP003', 8.5, 9.0, null, null, null, 1), " +
+                    "('2021HP002.3', 'HP002', 7.5, 8.0, 6.5, null, 7.0, 1), " +
+                    "('2021HP003.3', 'HP001', 3.5, 2.5, null, 5.0, null, 1), " +
+                    "('2021HP003.1', 'HP008', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('2021HP003.5', 'HP004', 8.0, 8.5, null, null, null, 1), " +
+                    "('2022HP003.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 2), " +
+                    "('2022HP003.1', 'HP006', 8.5, 9.0, null, null, 8.0, 2), " +
+                    "('2022HP003.1', 'HP007', 7.5, 8.0, null, null, 7.0, 2), " +
+                    "('2022HP003.1', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
+                    "('2022HP003.4', 'HP009', 8.0, 8.5, 7.0, null, null, 2), " +
+                    "('2022HP003.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 2);";
 
     private static final String INSERT_TABLE_DIEMDANH =
             "INSERT INTO DiemDanh (id, maLop, ngay, vang, loaiTietHoc) VALUES " +
-                    "('1', 'Class2', '2023-05-01', 1, 0), " +
-                    "('2', 'Class2', '2023-05-02', 1, 1), " +
-                    "('3', 'Class6', '2023-05-03', 0, 0), " +
-                    "('4', 'Class1', '2023-05-03', 1, 0), " +
-                    "('5', 'Class4', '2023-05-05', 0, 1), " +
-                    "('6', 'Class8', '2023-05-06', 1, 0), " +
-                    "('7', 'Class7', '2023-05-07', 0, 1), " +
-                    "('8', 'Class7', '2023-05-07', 1, 0), " +
-                    "('9', 'Class9', '2023-05-09', 0, 1), " +
-                    "('10', 'Class3', '2023-05-10', 1, 0), " +
-                    "('11', 'Class6', '2023-05-11', 0, 0), " +
-                    "('12', 'Class7', '2023-05-11', 1, 1), " +
-                    "('13', 'Class8', '2023-05-13', 0, 0), " +
-                    "('14', 'Class9', '2023-05-13', 1, 0), " +
-                    "('15', 'Class7', '2023-05-15', 0, 1);";
+                    "('1', '2021HP003.1', '2023-05-01', 1, 0), " +
+                    "('2', '2021HP002.3', '2023-05-02', 1, 1), " +
+                    "('3', '2021HP003.3', '2023-05-03', 0, 0), " +
+                    "('4', '2021HP003.1', '2023-05-03', 1, 0), " +
+                    "('5', '2022HP003.9', '2023-05-05', 0, 1), " +
+                    "('6', '2022HP003.1', '2023-05-06', 1, 0), " +
+                    "('7', '2022HP003.1', '2023-05-07', 0, 1), " +
+                    "('8', '2022HP003.1', '2023-05-07', 1, 0), " +
+                    "('9', '2022HP003.1', '2023-05-09', 0, 1), " +
+                    "('10', '2022HP003.1', '2023-05-10', 1, 0), " +
+                    "('11', '2021HP003.1', '2023-05-11', 0, 0), " +
+                    "('12', '2021HP003.3', '2023-05-11', 1, 1), " +
+                    "('13', '2022HP003.2', '2023-05-13', 0, 0), " +
+                    "('14', '2022HP003.4', '2023-05-13', 1, 0), " +
+                    "('15', '2022HP003.1', '2023-05-15', 0, 1);";
 }
