@@ -12,7 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
-
+        <activity
+            android:name=".thoi_khoa_bieu.Update_Timetable"
+            android:exported="false" />
+        <activity
+            android:name=".thoi_khoa_bieu.Add_Timetable"
+            android:exported="false" />
+        <activity
+            android:name=".thoi_khoa_bieu.TimeTable"
+            android:exported="false" />
         <activity
             android:name=".diem.TongKetActivity"
             android:exported="false" />
@@ -27,12 +35,14 @@
             android:exported="false" />
         <activity
             android:name=".them_hoc_phan.HocPhanActivity"
-            android:exported="false" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="false">
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".cong_viec.CongViecActivity"

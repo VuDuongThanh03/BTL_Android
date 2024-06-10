@@ -10,11 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViecActivity;
 import com.example.btl_android.diem.DiemActivity;
+import com.example.btl_android.thoi_khoa_bieu.TimeTable;
 
 /** @noinspection ALL*/
 public class TrangChuActivity extends AppCompatActivity {
 
-    LinearLayout btnCongViec, btnDiem;
+    LinearLayout btnCongViec, btnDiem,btnLichHoc;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class TrangChuActivity extends AppCompatActivity {
 
         btnCongViec = findViewById(R.id.btnCongViec);
         btnDiem = findViewById(R.id.btnDiem);
+        btnLichHoc=findViewById(R.id.btnLichHoc);
 
         btnCongViec.setOnClickListener(v -> {
             final Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
@@ -31,6 +33,10 @@ public class TrangChuActivity extends AppCompatActivity {
 
         btnDiem.setOnClickListener(v -> {
             final Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
+            TrangChuActivity.this.startActivity(intent);
+        });
+        btnLichHoc.setOnClickListener(v -> {
+            final Intent intent = new Intent(TrangChuActivity.this, TimeTable.class);
             TrangChuActivity.this.startActivity(intent);
         });
     }

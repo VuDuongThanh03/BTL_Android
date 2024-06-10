@@ -1,10 +1,12 @@
 package com.example.btl_android;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -13,7 +15,7 @@ import java.util.List;
 
 /** @noinspection ALL*/
 public class DatabaseHelper extends SQLiteOpenHelper {
-
+    private Context context;
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
     private static final int DATABASE_VERSION = 1;
@@ -32,6 +34,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ");";
 
     // CongViec table
+    private static final String TABLE_THOIKHOABIEU="THOIKHOABIEU";
+    // Subject table column names
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_MON = "mon";
+    private static final String COLUMN_THU = "thu";
+    private static final String COLUMN_NGAY = "ngay";
+    private static final String COLUMN_GIANGVIEN = "giangvien";
+    private static final String COLUMN_PHONG = "phong";
+    private static final String COLUMN_TIET = "tiet";
+    private static final String COLUMN_DIADIEM = "diadiem";
     private static final String CREATE_TABLE_CONGVIEC =
             "CREATE TABLE IF NOT EXISTS CongViec (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -125,6 +137,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
             db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
             db.execSQL(CREATE_TABLE_DIEMDANH);
+            String query="CREATE TABLE " + TABLE_THOIKHOABIEU+
+                    "("+  COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_MON + " TEXT,"
+                    + COLUMN_THU + " TEXT,"
+                    + COLUMN_NGAY + " TEXT,"
+                    + COLUMN_GIANGVIEN + " TEXT,"
+                    + COLUMN_PHONG + " TEXT,"
+                    + COLUMN_TIET + " TEXT,"
+                    + COLUMN_DIADIEM + " TEXT" + ")";
+            db.execSQL(query);
         } catch (final Exception e) {
             Log.e("Error", "There are some problems in creating database");
         }
@@ -139,6 +161,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS LoaiHocPhan");
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS DiemDanh");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_THOIKHOABIEU);
 
         onCreate(db);
     }
@@ -222,4 +245,101 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return hocPhanList;
     }
+    public void AddTimeTable(String mon, String thu, String ngay, String giangvien, String phong, String tiet, String diadiem)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues tb=new ContentValues();
+
+        tb.put(COLUMN_MON,mon);
+        tb.put(COLUMN_THU,thu);
+        tb.put(COLUMN_NGAY,ngay);
+        tb.put(COLUMN_GIANGVIEN,giangvien);
+        tb.put(COLUMN_PHONG,phong);
+        tb.put(COLUMN_TIET,tiet);
+        tb.put(COLUMN_DIADIEM,diadiem);
+        long result = db.insert(TABLE_THOIKHOABIEU,null,tb);
+        if(result == -1)
+        {
+            Toast.makeText(context,"Failed",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(context,"Add Thanh Cong",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    public Cursor readAllData()
+    {
+        String query = "SELECT * FROM "+TABLE_THOIKHOABIEU;
+        SQLiteDatabase db= this.getReadableDatabase();
+
+        Cursor cursor=  null;
+        if (db != null);
+        {
+            cursor= db.rawQuery(query,null);
+
+        }
+        return cursor;
+    }
+    public Cursor searchTKB(String keyword) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Xây dựng câu truy vấn SQL
+        String query = "SELECT * FROM " + TABLE_THOIKHOABIEU + " WHERE " + COLUMN_MON + " LIKE ? OR " + COLUMN_PHONG + " LIKE ?";
+        String[] selectionArgs = {"%" + keyword + "%", "%" + keyword + "%"};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        // Trả về con trỏ
+        return cursor;
+    }
+
+    public boolean updateDataTime(Context context, int row_id, String mon, String thu, String ngay, String giangvien, String phong, String tiet, String diadiem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_MON, mon);
+        values.put(COLUMN_THU, thu);
+        values.put(COLUMN_NGAY, ngay);
+        values.put(COLUMN_GIANGVIEN, giangvien);
+        values.put(COLUMN_PHONG, phong);
+        values.put(COLUMN_TIET, tiet);
+        values.put(COLUMN_DIADIEM, diadiem);
+
+        // Log các giá trị đầu vào
+        Log.d("updateDataTime", "Updating row_id: " + row_id + " with values: "
+                + COLUMN_MON + "=" + mon + ", "
+                + COLUMN_THU + "=" + thu + ", "
+                + COLUMN_NGAY + "=" + ngay + ", "
+                + COLUMN_GIANGVIEN + "=" + giangvien + ", "
+                + COLUMN_PHONG + "=" + phong + ", "
+                + COLUMN_TIET + "=" + tiet + ", "
+                + COLUMN_DIADIEM + "=" + diadiem);
+
+        // Cập nhật bảng và lưu số hàng bị ảnh hưởng vào biến result
+        int result = db.update(TABLE_THOIKHOABIEU, values, COLUMN_ID + " = ?", new String[]{String.valueOf(row_id)});
+        db.close();
+
+        // Ghi log kết quả cập nhật
+        if (result > 0) {
+            Log.d("updateDataTime", "Update Successful for row_id: " + row_id);
+            Toast.makeText(context, "Update Successful", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Log.d("updateDataTime", "Update Failed for row_id: " + row_id);
+            Toast.makeText(context, "Update Failed", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+
+    public boolean deleteData(int row_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Xóa hàng dựa trên row_id
+        int result = db.delete(TABLE_THOIKHOABIEU, COLUMN_ID + "=?", new String[]{String.valueOf(row_id)});
+        db.close();
+
+        // Trả về true nếu có ít nhất một hàng đã bị xóa, ngược lại trả về false
+        return result > 0;
+    }
+
+
 }
