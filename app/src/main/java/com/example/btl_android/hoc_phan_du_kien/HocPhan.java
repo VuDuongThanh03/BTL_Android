@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class HocPhan implements Serializable {
     private String maHp, tenHp;
     private Float soTinChiLt, soTinChiTh;
-    private int soTietLt, soTietTh, hocKy;
+    private Integer soTietLt, soTietTh, hocKy;
     private String hinhThucThi, heSo;
 
     public HocPhan() {
@@ -32,14 +32,14 @@ public class HocPhan implements Serializable {
         this.heSo = heSo;
     }
 
-    public HocPhan(String maHp, String tenHp, int soTietLt, int hocKy) {
+    public HocPhan(String maHp, String tenHp, Integer soTietLt, Integer hocKy) {
         this.maHp = maHp;
         this.tenHp = tenHp;
         this.soTietLt = soTietLt;
         this.hocKy = hocKy;
     }
 
-    public HocPhan(String maHp, String tenHp, int soTietLt, int soTietTh, int hocKy, String hinhThucThi, String heSo) {
+    public HocPhan(String maHp, String tenHp, Integer soTietLt, Integer soTietTh, Integer hocKy, String hinhThucThi, String heSo) {
         this.maHp = maHp;
         this.tenHp = tenHp;
         this.soTietLt = soTietLt;
@@ -81,27 +81,27 @@ public class HocPhan implements Serializable {
         this.soTinChiTh = soTinChiTh;
     }
 
-    public int getSoTietLt() {
+    public Integer getSoTietLt() {
         return soTietLt;
     }
 
-    public void setSoTietLt(int soTietLt) {
+    public void setSoTietLt(Integer soTietLt) {
         this.soTietLt = soTietLt;
     }
 
-    public int getSoTietTh() {
+    public Integer getSoTietTh() {
         return soTietTh;
     }
 
-    public void setSoTietTh(int soTietTh) {
+    public void setSoTietTh(Integer soTietTh) {
         this.soTietTh = soTietTh;
     }
 
-    public int getHocKy() {
+    public Integer getHocKy() {
         return hocKy;
     }
 
-    public void setHocKy(int hocKy) {
+    public void setHocKy(Integer hocKy) {
         this.hocKy = hocKy;
     }
 

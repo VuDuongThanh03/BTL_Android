@@ -51,10 +51,17 @@ public class CapNhatDiemActivity extends AppCompatActivity {
 
     private void settupButtons() {
         btnQuayLai.setOnClickListener(v -> finish());
-        btnCapNhat.setOnClickListener(v -> {
-            Intent intent = getIntent();
-            Diem diem = (Diem) intent.getSerializableExtra("Diem");
+        Intent intent = getIntent();
+        Diem diem = (Diem) intent.getSerializableExtra("Diem");
+        if (diem.getHeSo().length() == 8) etGiuaKy.setEnabled(false);
 
+        etTx1.setText(diem.getTx1() == null ? "." : diem.getTx1().toString());
+        etTx2.setText(diem.getTx2() == null ? "." : diem.getTx2().toString());
+        etGiuaKy.setText(diem.getGiuaKy() == null ? "." : diem.getGiuaKy().toString());
+        etKiVong.setText(diem.getDiemKiVong() == null ? "." : diem.getDiemKiVong().toString());
+        etCuoiKy.setText(diem.getCuoiKy() == null ? "." : diem.getCuoiKy().toString());
+
+        btnCapNhat.setOnClickListener(v -> {
             String tx1 = etTx1.getText().toString();
             String tx2 = etTx2.getText().toString();
             String giuaKy = etGiuaKy.getText().toString();
@@ -82,11 +89,11 @@ public class CapNhatDiemActivity extends AppCompatActivity {
                 return;
             }
 
-            diem.setTx1(Float.parseFloat(tx1));
-            diem.setTx2(Float.parseFloat(tx2));
-            diem.setGiuaKy(Float.parseFloat(giuaKy));
-            diem.setDiemKiVong(Float.parseFloat(kiVong));
-            diem.setCuoiKy(Float.parseFloat(cuoiKy));
+            diem.setTx1(tx1.equals(".") ? null : Float.parseFloat(tx1));
+            diem.setTx2(tx2.equals(".") ? null : Float.parseFloat(tx2));
+            diem.setGiuaKy(giuaKy.equals(".") ? null : Float.parseFloat(giuaKy));
+            diem.setDiemKiVong(kiVong.equals(".") ? null : Float.parseFloat(kiVong));
+            diem.setCuoiKy(cuoiKy.equals(".") ? null : Float.parseFloat(cuoiKy));
 
             boolean res = db.updateDiem(diem);
             if (res) {
@@ -98,9 +105,8 @@ public class CapNhatDiemActivity extends AppCompatActivity {
     }
 
     private boolean isValid(String diemStr) {
-        if (diemStr.isEmpty()) {
-            return false;
-        }
+        if (diemStr.equals(".")) return true;
+        if (diemStr.isEmpty()) return false;
         try {
             Float diem = Float.parseFloat(diemStr);
             if (0.0f <= diem && diem <= 10.0f) return true;

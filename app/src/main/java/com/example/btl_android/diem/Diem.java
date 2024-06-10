@@ -6,12 +6,14 @@ import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 public class Diem extends HocPhan {
     private String maLop;
     private Float tx1, tx2, giuaKy, cuoiKy, diemKiVong;
-    private int vangLt, vangTh;
+    private Integer vangLt, vangTh;
 
-    public Diem() {}
+    public Diem() {
+        super();
+    }
 
-    public Diem(String maLop, String maHp, String tenHp, int soTietLt, int soTietTh, int hocKy, String hinhThucThi,
-                String heSo, Float tx1, Float tx2, Float giuaKy, Float cuoiKy, Float diemKiVong, int vangLt, int vangTh) {
+    public Diem(String maLop, String maHp, String tenHp, Integer soTietLt, Integer soTietTh, Integer hocKy, String hinhThucThi,
+                String heSo, Float tx1, Float tx2, Float giuaKy, Float cuoiKy, Float diemKiVong, Integer vangLt, Integer vangTh) {
         super(maHp, tenHp, soTietLt, soTietTh, hocKy, hinhThucThi, heSo);
         this.maLop = maLop;
         this.tx1 = tx1;
@@ -71,19 +73,19 @@ public class Diem extends HocPhan {
         this.diemKiVong = diemKiVong;
     }
 
-    public int getVangLt() {
+    public Integer getVangLt() {
         return vangLt;
     }
 
-    public void setVangLt(int vangLt) {
+    public void setVangLt(Integer vangLt) {
         this.vangLt = vangLt;
     }
 
-    public int getVangTh() {
+    public Integer getVangTh() {
         return vangTh;
     }
 
-    public void setVangTh(int vangTh) {
+    public void setVangTh(Integer vangTh) {
         this.vangTh = vangTh;
     }
 
@@ -91,19 +93,34 @@ public class Diem extends HocPhan {
         String heSo = super.getHeSo();
         String[] heSoList = heSo.trim().split("-");
         if (heSoList.length == 3) {
+            if (tx1 == null || tx2 == null || cuoiKy == null) return null;
             return tx1 * Float.parseFloat(heSoList[0]) / 100.0f +
                     tx2 * Float.parseFloat(heSoList[1]) / 100.0f + cuoiKy * Float.parseFloat(heSoList[2]) / 100.0f;
         }
         if (heSoList.length == 4) {
+            if (tx1 == null || tx2 == null || giuaKy == null || cuoiKy == null) return null;
             return tx1 * Float.parseFloat(heSoList[0]) / 100.0f + tx2 * Float.parseFloat(heSoList[1]) / 100.0f +
                     giuaKy * Float.parseFloat(heSoList[2]) / 100.0f + cuoiKy * Float.parseFloat(heSoList[3]) / 100.0f;
         }
         return null;
     }
 
+    public Float getDiem4() {
+        Float diem10 = getDiem10();
+        if (diem10 == null) return null;
+        if (diem10 < 4.0f) return 0.0f;
+        if (diem10 < 4.7f) return 1.0f;
+        if (diem10 < 5.5f) return 1.5f;
+        if (diem10 < 6.2f) return 2.0f;
+        if (diem10 < 7.0f) return 2.5f;
+        if (diem10 < 7.7f) return 3.0f;
+        if (diem10 < 8.5f) return 3.5f;
+        return 4.0f;
+    }
+
     public String getDiemChu() {
         Float diem10 = getDiem10();
-        if (diem10 == -1) return "-";
+        if (diem10 == null) return "-";
         if (diem10 < 4.0f) return "F";
         if (diem10 < 4.7f) return "D";
         if (diem10 < 5.5f) return "D+";
@@ -116,7 +133,7 @@ public class Diem extends HocPhan {
 
     public String getXepLoai() {
         Float diem10 = getDiem10();
-        if (diem10 == -1) return "-";
+        if (diem10 == null) return "-";
         if (diem10 < 4.0f) return "Kém";
         if (diem10 < 6.2f) return "Yếu";
         if (diem10 < 7.0f) return "Trung bình";
@@ -125,8 +142,8 @@ public class Diem extends HocPhan {
     }
 
     public String getDieuKien() {
-        int soTietLt = super.getSoTietLt(),
-            soTietTh = super.getSoTietTh();
+        Integer soTietLt = super.getSoTietLt(),
+                soTietTh = super.getSoTietTh();
         if (soTietLt > 0 && soTietTh == 0) {
             if (vangLt / soTietLt <= 0.3f) return "Đủ điều kiện";
             else return "Cấm thi";
