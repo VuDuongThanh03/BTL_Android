@@ -98,8 +98,8 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/stackedAreaChart"
+                <com.github.mikephil.charting.charts.CombinedChart
+                    android:id="@+id/combinedChart"
                     android:layout_width="match_parent"
                     android:layout_height="300dp" />
             </LinearLayout>

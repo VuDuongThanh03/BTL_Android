@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.example.btl_android.R;
 import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -75,9 +76,15 @@ public class MyMarkerView extends MarkerView {
                 tvKetQua.setText("Không có\ndữ liệu");
             }
         } else {
-            tvTitle.setText("Điểm tổng kết");
-            if (e.getY() > 0) tvKetQua.setText("Học kỳ " + (xIndex + 1) + ": " + e.getY());
-            else tvKetQua.setText("Không có\ndữ liêu");
+            if (e instanceof BarEntry) {
+                tvTitle.setText("Điểm tổng kết");
+                if (e.getY() > 0) tvKetQua.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
+                else tvKetQua.setText("Không có\ndữ liệu");
+            } else {
+                tvTitle.setText("Số điểm HK" + (xIndex + 1));
+                if (e.getY() > 0) tvKetQua.setText("Điểm " + e.getData().toString() + ": " + (int) e.getY());
+                else tvKetQua.setText("Không có\ndữ liệu");
+            }
         }
         super.refreshContent(e, highlight);
     }
@@ -86,6 +93,5 @@ public class MyMarkerView extends MarkerView {
     public MPPointF getOffset() {
         return new MPPointF(-(getWidth() / 2), -getHeight());
     }
-
 }
 

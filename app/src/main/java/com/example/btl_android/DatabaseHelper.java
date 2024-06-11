@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_HOCPHAN);
         db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
         db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
-        db.execSQL(CREATE_TABLE_DIEMDANH);
+        db.execSQL(CREATE_TABLE_LICHHOC);
 
         populateInitialData(db);
     }
@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS HocPhan");
         db.execSQL("DROP TABLE IF EXISTS LoaiHocPhan");
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
-        db.execSQL("DROP TABLE IF EXISTS DiemDanh");
+        db.execSQL("DROP TABLE IF EXISTS LichHoc");
 
         onCreate(db);
     }
@@ -56,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(INSERT_TABLE_HOCPHAN);
         db.execSQL(INSERT_TABLE_LOAIHOCPHAN);
         db.execSQL(INSERT_TABLE_KETQUAHOCPHAN);
-        db.execSQL(INSERT_TABLE_DIEMDANH);
+        db.execSQL(INSERT_TABLE_LICHHOC);
     }
 
     // CRUD operations for HocPhan
@@ -150,7 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("giuaKy", diem.getGiuaKy());
         values.put("diemKiVong", diem.getDiemKiVong());
         values.put("cuoiKy", diem.getCuoiKy());
-        int res = db.update("KetQuaHocPhan", values, "maLop = ? AND maHp = ?", new String[]{diem.getMaLop(), diem.getMaHp()});
+        int res = db.update("KetQuaHocPhan", values, "maLop = ?", new String[]{diem.getMaLop()});
         return res > 0;
     }
 
@@ -159,11 +159,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT kq.maLop, hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
                 "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, kq.hocKy, " +
                 "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
-                "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
-                "SUM(CASE WHEN dd.vang = 1 AND dd.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
+                "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
+                "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
                 "FROM KetQuaHocPhan kq " +
                 "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
-                "LEFT JOIN DiemDanh dd ON dd.maLop = kq.maLop " +
+                "LEFT JOIN LichHoc lh ON lh.maLop = kq.maLop " +
                 "GROUP BY kq.maLop, kq.maHp, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
                 "hp.hinhThucThi, hp.heSo, kq.hocKy, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong " +
                 "ORDER BY hp.tenHp";
@@ -288,16 +288,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
 
-    // DiemDanh table
-    private static final String CREATE_TABLE_DIEMDANH =
-            "CREATE TABLE IF NOT EXISTS DiemDanh (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "maLop TEXT NOT NULL," +
-                    "ngay TEXT NOT NULL," +
-                    "vang INTEGER," +
-                    "loaiTietHoc INTEGER," +
-                    "FOREIGN KEY (maLop) REFERENCES KetQuaHocPhan(maLop)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+    // LichHoc table
+    private static final String CREATE_TABLE_LICHHOC =
+            "CREATE TABLE IF NOT EXISTS LichHoc (" +
+                    "id INTEGER NOT NULL UNIQUE, " +
+                    "maLop TEXT NOT NULL, " +
+                    "tenHP TEXT NOT NULL, " +
+                    "thu TEXT NOT NULL, " +
+                    "ngay TEXT NOT NULL, " +
+                    "phong INTEGER NOT NULL, " +
+                    "giangVien TEXT NOT NULL, " +
+                    "tiet TEXT NOT NULL, " +
+                    "diaDiem TEXT NOT NULL, " +
+                    "loaiTietHoc INTEGER NOT NULL, " +
+                    "vang INTEGER, " +
+                    "PRIMARY KEY(id), " +
+                    "FOREIGN KEY(maLop) REFERENCES KetQuaHocPhan(maLop) " +
+                    "ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
 
     private static final String INSERT_TABLE_SINHVIEN =
@@ -355,31 +362,73 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
                     "('2021HP003.1', 'HP003', 8.5, 9.0, null, null, null, 1), " +
                     "('2021HP002.3', 'HP002', 7.5, 8.0, 6.5, null, 7.0, 1), " +
-                    "('2021HP003.3', 'HP001', 3.5, 2.5, null, 5.0, null, 1), " +
-                    "('2021HP003.1', 'HP008', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
-                    "('2021HP003.5', 'HP004', 8.0, 8.5, null, null, null, 1), " +
-                    "('2022HP003.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 2), " +
-                    "('2022HP003.1', 'HP006', 8.5, 9.0, null, null, 8.0, 2), " +
-                    "('2022HP003.1', 'HP007', 7.5, 8.0, null, null, 7.0, 2), " +
-                    "('2022HP003.1', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
-                    "('2022HP003.4', 'HP009', 8.0, 8.5, 7.0, null, null, 2), " +
-                    "('2022HP003.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 2);";
+                    "('2021HP001.3', 'HP001', 3.5, 2.5, null, 5.0, null, 1), " +
+                    "('2021HP008.1', 'HP008', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('2021HP004.6', 'HP004', 8.0, 8.5, null, null, null, 1), " +
+                    "('2021HP005.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 2), " +
+                    "('2021HP006.1', 'HP006', 8.5, 9.0, null, null, 8.0, 2), " +
+                    "('2021HP007.3', 'HP007', 7.5, 8.0, null, null, 7.0, 2), " +
+                    "('2021HP002.2', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
+                    "('2021HP009.4', 'HP009', 8.0, 8.5, 7.0, null, null, 2), " +
+                    "('2021HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 2), " +
+                    "('2021HP004.5', 'HP004', 8.0, 8.5, null, null, null, 2), " +
+                    "('2022HP005.1', 'HP005', 7.5, 6.0, 7.5, 7.5, null, 3), " +
+                    "('2022HP006.1', 'HP006', 4.5, 9.0, null, null, 8.0, 3), " +
+                    "('2022HP007.3', 'HP007', 8.5, 8.0, null, null, 7.0, 3), " +
+                    "('2022HP002.2', 'HP002', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
+                    "('2022HP009.4', 'HP009', 8.0, 6.5, 7.0, null, null, 3), " +
+                    "('2022HP001.2', 'HP001', 7.5, 7.0, null, 7.5, 7.5, 3), " +
+                    "('2022HP004.5', 'HP004', 5.0, 8.5, null, null, null, 3), " +
+                    "('2022HP005.9', 'HP005', 7.5, 8.0, 8.5, 4.5, null, 4), " +
+                    "('2022HP006.3', 'HP006', 8.5, 9.0, null, null, 8.0, 4), " +
+                    "('2022HP007.4', 'HP007', 7.5, 8.0, null, null, 7.0, 4), " +
+                    "('2022HP001.1', 'HP001', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
+                    "('2022HP009.7', 'HP009', 8.0, 8.5, 7.0, null, null, 4), " +
+                    "('2022HP001.3', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 4), " +
+                    "('2022HP003.3', 'HP003', 8.0, 8.5, null, null, null, 4), " +
+                    "('2023HP005.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 5), " +
+                    "('2023HP006.1', 'HP006', 8.5, 9.0, null, null, 8.0, 5), " +
+                    "('2023HP008.3', 'HP008', 7.5, 8.0, null, null, 7.0, 5), " +
+                    "('2023HP002.2', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
+                    "('2023HP009.4', 'HP009', 8.0, 8.5, 7.0, null, null, 5), " +
+                    "('2023HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 5), " +
+                    "('2023HP006.5', 'HP006', 8.0, 8.5, null, null, null, 5), " +
+                    "('2023HP005.1', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 6), " +
+                    "('2023HP006.4', 'HP006', 8.5, 9.0, null, null, 8.0, 6), " +
+                    "('2023HP007.2', 'HP007', 7.5, 8.0, null, null, 7.0, 6), " +
+                    "('2023HP002.7', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 6), " +
+                    "('2023HP009.9', 'HP009', 8.0, 8.5, 7.0, null, null, 6), " +
+                    "('2023HP001.3', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 6), " +
+                    "('2023HP004.4', 'HP004', 8.0, 8.5, null, null, null, 6), " +
+                    "('2024HP005.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 7), " +
+                    "('2024HP006.1', 'HP006', 8.5, 9.0, null, null, 8.0, 7), " +
+                    "('2024HP007.3', 'HP007', 7.5, 8.0, null, null, 7.0, 7), " +
+                    "('2024HP002.2', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 7), " +
+                    "('2024HP009.4', 'HP009', 8.0, 8.5, 7.0, null, null, 7), " +
+                    "('2024HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 7), " +
+                    "('2024HP007.5', 'HP007', 8.0, 8.5, null, null, null, 7), " +
+                    "('2025HP005.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 8), " +
+                    "('2025HP006.1', 'HP006', 8.5, 9.0, null, null, 8.0, 8), " +
+                    "('2025HP007.3', 'HP007', 7.5, 8.0, null, null, 7.0, 8), " +
+                    "('2025HP002.2', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 8), " +
+                    "('2025HP009.4', 'HP009', 8.0, 8.5, 7.0, null, null, 8), " +
+                    "('2025HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 8), " +
+                    "('2025HP004.5', 'HP004', 8.0, 8.5, null, null, null, 8)";
 
-    private static final String INSERT_TABLE_DIEMDANH =
-            "INSERT INTO DiemDanh (id, maLop, ngay, vang, loaiTietHoc) VALUES " +
-                    "('1', '2021HP003.1', '2023-05-01', 1, 0), " +
-                    "('2', '2021HP002.3', '2023-05-02', 1, 1), " +
-                    "('3', '2021HP003.3', '2023-05-03', 0, 0), " +
-                    "('4', '2021HP003.1', '2023-05-03', 1, 0), " +
-                    "('5', '2022HP003.9', '2023-05-05', 0, 1), " +
-                    "('6', '2022HP003.1', '2023-05-06', 1, 0), " +
-                    "('7', '2022HP003.1', '2023-05-07', 0, 1), " +
-                    "('8', '2022HP003.1', '2023-05-07', 1, 0), " +
-                    "('9', '2022HP003.1', '2023-05-09', 0, 1), " +
-                    "('10', '2022HP003.1', '2023-05-10', 1, 0), " +
-                    "('11', '2021HP003.1', '2023-05-11', 0, 0), " +
-                    "('12', '2021HP003.3', '2023-05-11', 1, 1), " +
-                    "('13', '2022HP003.2', '2023-05-13', 0, 0), " +
-                    "('14', '2022HP003.4', '2023-05-13', 1, 0), " +
-                    "('15', '2022HP003.1', '2023-05-15', 0, 1);";
+    private static final String INSERT_TABLE_LICHHOC =
+            "INSERT INTO LichHoc " +
+                    "(id, maLop, tenHP, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +
+                    "VALUES " +
+                    "(9, '2021HP003.1', 'Chemistry 101', 'Thursday', '2023-06-20', 109, 'Olivia Taylor', '17-18', 'Room I', 1, 0), " +
+                    "(10, '2021HP002.3', 'Physics 101', 'Friday', '2023-06-21', 110, 'James Anderson', '19-20', 'Room J', 2, 1), " +
+                    "(11, '2021HP003.3', 'Math 101', 'Monday', '2023-06-24', 111, 'Emma Garcia', '21-22', 'Room K', 1, 0), " +
+                    "(12, '2021HP003.1', 'Chemistry 101', 'Tuesday', '2023-06-25', 112, 'William Hernandez', '23-24', 'Room L', 2, 0), " +
+                    "(13, '2021HP002.3', 'Physics 101', 'Wednesday', '2023-06-26', 113, 'Isabella Martinez', '25-26', 'Room M', 1, 1), " +
+                    "(14, '2021HP003.3', 'Math 101', 'Thursday', '2023-06-27', 114, 'Ethan Phillips', '27-28', 'Room N', 2, 0), " +
+                    "(15, '2021HP003.1', 'Chemistry 101', 'Friday', '2023-06-28', 115, 'Amelia Brown', '29-30', 'Room O', 1, 0), " +
+                    "(16, '2021HP002.3', 'Physics 101', 'Monday', '2023-07-01', 116, 'Benjamin Davis', '31-32', 'Room P', 2, 1), " +
+                    "(17, '2021HP003.3', 'Math 101', 'Tuesday', '2023-07-02', 117, 'Mia Miller', '33-34', 'Room Q', 1, 0), " +
+                    "(18, '2021HP003.1', 'Chemistry 101', 'Wednesday', '2023-07-03', 118, 'Logan Wilson', '35-36', 'Room R', 2, 0), " +
+                    "(19, '2021HP002.3', 'Physics 101', 'Thursday', '2023-07-04', 119, 'Harper Garcia', '37-38', 'Room S', 1, 1), " +
+                    "(20, '2021HP003.3', 'Math 101', 'Friday', '2023-07-05', 120, 'Evelyn Rodriguez', '39-40', 'Room T', 2, 0);";
 }
