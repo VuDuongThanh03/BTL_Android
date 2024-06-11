@@ -291,7 +291,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // LichHoc table
     private static final String CREATE_TABLE_LICHHOC =
             "CREATE TABLE IF NOT EXISTS LichHoc (" +
-                    "id INTEGER NOT NULL UNIQUE, " +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "maLop TEXT NOT NULL, " +
                     "tenHP TEXT NOT NULL, " +
                     "thu TEXT NOT NULL, " +
@@ -302,7 +302,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "diaDiem TEXT NOT NULL, " +
                     "loaiTietHoc INTEGER NOT NULL, " +
                     "vang INTEGER, " +
-                    "PRIMARY KEY(id), " +
                     "FOREIGN KEY(maLop) REFERENCES KetQuaHocPhan(maLop) " +
                     "ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";

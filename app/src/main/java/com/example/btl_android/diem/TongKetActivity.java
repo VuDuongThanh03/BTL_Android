@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -33,6 +34,9 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
@@ -341,6 +345,7 @@ public class TongKetActivity extends AppCompatActivity {
             lineDataSet.setLineWidth(3f);
             lineDataSet.setColor(colors[i]);
             lineDataSet.setCircleColor(colors[i]);
+            lineDataSet.setHighLightColor(Color.TRANSPARENT);
             lineDataSet.setValueTextColor(Color.WHITE);
             lineDataSet.setValueTextSize(0f);
             lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
@@ -380,6 +385,8 @@ public class TongKetActivity extends AppCompatActivity {
         yAxis.setLabelCount((int) combinedChart.getData().getYMax());
         yAxis.setTextSize(12f);
         yAxis.setXOffset(12f);
+        yAxis.setAxisMinimum(combinedData.getYMin() - .1f);
+        yAxis.setAxisMaximum(combinedData.getYMax() + .1f);
 
         combinedChart.getAxisRight().setEnabled(false);
 
@@ -413,6 +420,59 @@ public class TongKetActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
+            }
+        });
+        combinedChart.setOnChartGestureListener(new OnChartGestureListener() {
+            @Override
+            public void onChartGestureStart(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {}
+
+            @Override
+            public void onChartGestureEnd(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {}
+
+            @Override
+            public void onChartLongPressed(MotionEvent motionEvent) {}
+
+            @Override
+            public void onChartDoubleTapped(MotionEvent motionEvent) {}
+
+            @Override
+            public void onChartSingleTapped(MotionEvent me) {
+                Highlight highlight = combinedChart.getHighlightByTouchPoint(me.getX(), me.getY());
+                if (highlight != null) {
+                    int selectedIndex = highlight.getDataIndex();
+                    if (selectedIndex == 0) {
+                        LineDataSet selectedLine = (LineDataSet) lineData.getDataSetByIndex(highlight.getDataSetIndex());
+                        selectedLine.setLineWidth(9f);
+
+                        lineData.removeDataSet(selectedLine);
+                        lineData.addDataSet(selectedLine);
+
+                        for (ILineDataSet set : lineData.getDataSets()) {
+                            if (set != selectedLine) {
+                                ((LineDataSet) set).setLineWidth(3f);
+                            }
+                        }
+                    } else {
+                        for (ILineDataSet set : lineData.getDataSets()) {
+                            ((LineDataSet) set).setLineWidth(3f);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChartFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+
+            }
+
+            @Override
+            public void onChartScale(MotionEvent motionEvent, float v, float v1) {
+
+            }
+
+            @Override
+            public void onChartTranslate(MotionEvent motionEvent, float v, float v1) {
+
             }
         });
 
