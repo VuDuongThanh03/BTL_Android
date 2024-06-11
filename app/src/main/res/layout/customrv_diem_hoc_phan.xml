@@ -4,15 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
+    android:padding="10dp"
     android:background="@drawable/custom_panel2"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:elevation="5dp">
 
     <View
         android:layout_width="4dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="16dp"
-        android:background="@android:color/holo_blue_light" />
+        android:background="@android:color/holo_green_light" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                 android:layout_marginTop="2dp"
                 android:gravity="center_vertical"
                 android:text="Sửa điểm"
-                android:textColor="#5e77ee"
+                android:textColor="@android:color/holo_green_light"
                 android:textSize="16sp" />
         </RelativeLayout>
 
@@ -73,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-"
-                android:textColor="#5e77ee"
+                android:textColor="@android:color/holo_green_light"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -83,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:text="-"
-                android:textColor="#5e77ee"
+                android:textColor="@android:color/holo_green_light"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -94,7 +95,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="10dp"
                 android:text="-"
-                android:textColor="#5e77ee"
+                android:textColor="@android:color/holo_green_light"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -117,7 +118,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="10dp"
                 android:text="-"
-                android:textColor="#5e77ee"
+                android:textColor="@android:color/holo_green_light"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -140,7 +141,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="10dp"
                 android:text="-"
-                android:textColor="#5e77ee"
+                android:textColor="@android:color/holo_green_light"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>

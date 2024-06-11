@@ -4,11 +4,21 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.example.btl_android.R;
+import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.MPPointF;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /** @noinspection ALL*/
 public class MyMarkerView extends MarkerView {
@@ -42,35 +52,11 @@ public class MyMarkerView extends MarkerView {
 
             if (!isEmpty) {
                 StringBuilder info = new StringBuilder();
-                if (data[xIndex][0] > 0) info.append("HK1: ").append(data[xIndex][0]);
-                if (data[xIndex][1] > 0) {
-                    if (info.length() > 0) info.append("\nHK2: ").append(data[xIndex][1]);
-                    else info.append("HK2: ").append(data[xIndex][1]);
+                for (int i = 0; i < 8; i++) {
+                    if (data[xIndex][i] > 0) info.append("HK").append(i + 1).append(": ").append(data[xIndex][i]).append("\n");
                 }
-                if (data[xIndex][2] > 0) {
-                    if (info.length() > 0) info.append("\nHK3: ").append(data[xIndex][2]);
-                    else info.append("HK3: ").append(data[xIndex][2]);
-                }
-                if (data[xIndex][3] > 0) {
-                    if (info.length() > 0) info.append("\nHK4: ").append(data[xIndex][3]);
-                    else info.append("HK4: ").append(data[xIndex][3]);
-                }
-                if (data[xIndex][4] > 0) {
-                    if (info.length() > 0) info.append("\nHK5: ").append(data[xIndex][4]);
-                    else info.append("HK5: ").append(data[xIndex][4]);
-                }
-                if (data[xIndex][5] > 0) {
-                    if (info.length() > 0) info.append("\nHK6: ").append(data[xIndex][5]);
-                    else info.append("HK6: ").append(data[xIndex][5]);
-                }
-                if (data[xIndex][6] > 0) {
-                    if (info.length() > 0) info.append("\nHK7: ").append(data[xIndex][6]);
-                    else info.append("HK7: ").append(data[xIndex][6]);
-                }
-                if (data[xIndex][7] > 0) {
-                    if (info.length() > 0) info.append("\nHK8: ").append(data[xIndex][7]);
-                    else info.append("HK8: ").append(data[xIndex][7]);
-                }
+                if (info.charAt(info.length() - 1) == '\n')
+                    info.deleteCharAt(info.length() - 1);
                 tvKetQua.setText(info.toString());
             } else {
                 tvKetQua.setText("Không có\ndữ liệu");
@@ -81,9 +67,33 @@ public class MyMarkerView extends MarkerView {
                 if (e.getY() > 0) tvKetQua.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
                 else tvKetQua.setText("Không có\ndữ liệu");
             } else {
-                tvTitle.setText("Số điểm HK" + (xIndex + 1));
-                if (e.getY() > 0) tvKetQua.setText("Điểm " + e.getData().toString() + ": " + (int) e.getY());
-                else tvKetQua.setText("Không có\ndữ liệu");
+                Chart chart = getChartView();
+                CombinedData combinedData = ((CombinedChart) chart).getCombinedData();
+                StringBuilder info = new StringBuilder();
+                List<ILineDataSet> dataSetList = new ArrayList<>(combinedData.getLineData().getDataSets());
+                Collections.sort(dataSetList, new Comparator<ILineDataSet>() {
+                    @Override
+                    public int compare(ILineDataSet dataSet1, ILineDataSet dataSet2) {
+                        String label1 = dataSet1.getLabel();
+                        String label2 = dataSet2.getLabel();
+                        List<String> desiredOrder = Arrays.asList("A", "B+", "B", "C+", "C", "D+", "D", "F");
+                        int index1 = desiredOrder.indexOf(label1);
+                        int index2 = desiredOrder.indexOf(label2);
+                        return Integer.compare(index1, index2);
+                    }
+                });
+                for (ILineDataSet lineDataSet : dataSetList) {
+                    for (Entry entry : lineDataSet.getEntriesForXValue(e.getX())) {
+                        if (entry.getY() != e.getY()) continue;
+                        info.append("Điểm ").append(lineDataSet.getLabel())
+                                .append(": ").append(String.format("%.0f", entry.getY())).append("\n");
+                    }
+                }
+                if (info.length() > 0 && info.charAt(info.length() - 1) == '\n') {
+                    info.deleteCharAt(info.length() - 1);
+                }
+                tvKetQua.setText(info);
+
             }
         }
         super.refreshContent(e, highlight);

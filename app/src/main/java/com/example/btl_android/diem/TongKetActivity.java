@@ -132,9 +132,9 @@ public class TongKetActivity extends AppCompatActivity {
         lineDataSet.setColor(Color.rgb(104, 241, 175));
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillColor(Color.rgb(104, 241, 175));
-        lineDataSet.setLineWidth(3f);
-        lineDataSet.setValueTextColor(Color.WHITE);
-        lineDataSet.setValueTextSize(0f);
+        lineDataSet.setLineWidth(4f);
+        lineDataSet.setValueTextColor(Color.DKGRAY);
+        lineDataSet.setValueTextSize(12f);
         lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
         lineChart.setData(new LineData(lineDataSet));
@@ -223,8 +223,8 @@ public class TongKetActivity extends AppCompatActivity {
 
         BarDataSet barDataSet = new BarDataSet(diemSoEntries, "Điểm số");
         barDataSet.setColor(Color.rgb(104, 241, 175));
-        barDataSet.setValueTextColor(Color.WHITE);
-        barDataSet.setValueTextSize(0f);
+        barDataSet.setValueTextColor(Color.DKGRAY);
+        barDataSet.setValueTextSize(12f);
         barDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
         barChart.setData(new BarData(barDataSet));
@@ -317,8 +317,9 @@ public class TongKetActivity extends AppCompatActivity {
 
         BarDataSet barDataSet = new BarDataSet(barEntries, null);
         barDataSet.setColor(Color.rgb(104, 241, 175));
-        barDataSet.setValueTextColor(Color.WHITE);
+        barDataSet.setValueTextColor(Color.YELLOW);
         barDataSet.setValueTextSize(12f);
+        barDataSet.setValueTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         barDataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -337,16 +338,14 @@ public class TongKetActivity extends AppCompatActivity {
             }
         }
 
-        int[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
-                        Color.CYAN, Color.LTGRAY, Color.GRAY, Color.BLACK};
+        String[] colors = { "#F50057", "#FF5733", "#FFC300", "#4CAF50", "#673AB7", "#2196F3", "#F45eEf" , "#00BCD4" };
         List<LineDataSet> lineDataSets = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            LineDataSet lineDataSet = new LineDataSet(lineEntriesList.get(i), null);
+            LineDataSet lineDataSet = new LineDataSet(lineEntriesList.get(i), letterScores[i]);
             lineDataSet.setLineWidth(3f);
-            lineDataSet.setColor(colors[i]);
-            lineDataSet.setCircleColor(colors[i]);
+            lineDataSet.setColor(Color.parseColor(colors[i]));
+            lineDataSet.setCircleColor(Color.parseColor(colors[i]));
             lineDataSet.setHighLightColor(Color.TRANSPARENT);
-            lineDataSet.setValueTextColor(Color.WHITE);
             lineDataSet.setValueTextSize(0f);
             lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
             lineDataSets.add(lineDataSet);
@@ -396,12 +395,11 @@ public class TongKetActivity extends AppCompatActivity {
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         legend.setWordWrapEnabled(true);
 
-        List<String> legendLabels = Arrays.asList("F", "D", "D+", "C", "C+", "B", "B+", "A");
         List<LegendEntry> legendEntries = new ArrayList<>();
-        for (int i = 0; i < legendLabels.size(); i++) {
+        for (int i = 0; i < 8; i++) {
             LegendEntry entry = new LegendEntry();
-            entry.label = legendLabels.get(i);
-            entry.formColor = colors[i];
+            entry.label = letterScores[i];
+            entry.formColor = Color.parseColor(colors[i]);
             legendEntries.add(entry);
         }
         legend.setCustom(legendEntries);
@@ -441,23 +439,36 @@ public class TongKetActivity extends AppCompatActivity {
                 if (highlight != null) {
                     int selectedIndex = highlight.getDataIndex();
                     if (selectedIndex == 0) {
-                        LineDataSet selectedLine = (LineDataSet) lineData.getDataSetByIndex(highlight.getDataSetIndex());
-                        selectedLine.setLineWidth(9f);
+                        float x = highlight.getX();
+                        float y = highlight.getY();
 
-                        lineData.removeDataSet(selectedLine);
-                        lineData.addDataSet(selectedLine);
-
-                        for (ILineDataSet set : lineData.getDataSets()) {
-                            if (set != selectedLine) {
-                                ((LineDataSet) set).setLineWidth(3f);
+                        List<LineDataSet> setsToHighlight = new ArrayList<>();
+                        List<LineDataSet> setsToUpdate = new ArrayList<>();
+                        for (ILineDataSet lineDataSet : lineData.getDataSets()) {
+                            for (Entry entry : lineDataSet.getEntriesForXValue(x)) {
+                                if (entry.getY() == y) {
+                                    setsToHighlight.add((LineDataSet) lineDataSet);
+                                } else {
+                                    setsToUpdate.add((LineDataSet) lineDataSet);
+                                }
                             }
                         }
+                        for (LineDataSet lineDataSet : setsToHighlight) {
+                            lineDataSet.setLineWidth(6f);
+                            lineData.removeDataSet(lineDataSet);
+                            lineData.addDataSet(lineDataSet);
+                        }
+                        for (LineDataSet lineDataSet : setsToUpdate) {
+                            lineDataSet.setLineWidth(3f);
+                        }
+                        combinedChart.invalidate();
                     } else {
                         for (ILineDataSet set : lineData.getDataSets()) {
                             ((LineDataSet) set).setLineWidth(3f);
                         }
                     }
                 }
+                combinedChart.invalidate();
             }
 
             @Override

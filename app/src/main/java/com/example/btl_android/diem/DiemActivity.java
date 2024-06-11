@@ -87,7 +87,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
                     public void onClick(View v) {
                         button.setBackgroundResource(R.drawable.button_selected);
                         if (lastSelectHocKy != null && lastSelectHocKy != button) {
-                            lastSelectHocKy.setBackgroundResource(R.drawable.button_default);
+                            lastSelectHocKy.setBackgroundResource(R.drawable.button_default1);
                         }
                         lastSelectHocKy = button;
 
