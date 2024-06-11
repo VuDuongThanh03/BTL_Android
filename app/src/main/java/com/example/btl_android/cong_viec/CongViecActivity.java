@@ -49,15 +49,20 @@ public class CongViecActivity extends AppCompatActivity {
     public void sortCongViecList(ArrayList<CongViec> congViecList) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-        Collections.sort(congViecList, new Comparator<CongViec>() {
-            @Override
-            public int compare(CongViec cv1, CongViec cv2) {
-                // Step 1: Compare by trangThai (1 should go to the end)
-                if (cv1.trangThai != cv2.trangThai) {
-                    return cv1.trangThai - cv2.trangThai;
-                }
+        ArrayList<CongViec> trangThai1List = new ArrayList<>();
+        ArrayList<CongViec> trangThai0List = new ArrayList<>();
 
-                // Combine thoiHanNgay and thoiHanGio into a single Date object for comparison
+        for (CongViec cv : congViecList) {
+            if (cv.trangThai == 1) {
+                trangThai1List.add(cv);
+            } else {
+                trangThai0List.add(cv);
+            }
+        }
+        for (int i = 0; i < trangThai0List.size() - 1; i++) {
+            for (int j = i + 1; j < trangThai0List.size(); j++) {
+                CongViec cv1 = trangThai0List.get(i);
+                CongViec cv2 = trangThai0List.get(j);
                 Date date1 = null;
                 Date date2 = null;
                 try {
@@ -66,20 +71,17 @@ public class CongViecActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-                // Step 2: Compare by date (closest to current date)
                 if (date1 != null && date2 != null) {
-                    int dateComparison = date1.compareTo(date2);
-                    if (dateComparison != 0) {
-                        return dateComparison;
+                    if (date1.after(date2) || (date1.equals(date2) && Integer.parseInt(cv1.mucUuTien) < Integer.parseInt(cv2.mucUuTien))) {
+                        trangThai0List.set(i, cv2);
+                        trangThai0List.set(j, cv1);
                     }
                 }
-
-                // Step 3: Compare by thoiHanGio (largest to smallest) - already included in date comparison
-
-                // Step 4: Compare by mucUuTien (largest to smallest)
-                return Integer.parseInt(cv2.mucUuTien) - Integer.parseInt(cv1.mucUuTien);
             }
-        });
+        }
+
+        congViecList.clear();
+        congViecList.addAll(trangThai0List);
+        congViecList.addAll(trangThai1List);
     }
 }
