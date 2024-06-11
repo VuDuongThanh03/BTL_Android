@@ -16,13 +16,16 @@ import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -41,8 +44,9 @@ import java.util.List;
  */
 public class TongKetActivity extends AppCompatActivity {
     private ImageButton btnQuayLai;
-    private LineChart lineChart, stackedAreaChart;
+    private LineChart lineChart;
     private BarChart barChart;
+    private CombinedChart combinedChart;
     private DatabaseHelper db;
     private int[][] diemChuByHocKy, diemSoByHocKy;
 
@@ -69,7 +73,7 @@ public class TongKetActivity extends AppCompatActivity {
         btnQuayLai = findViewById(R.id.imgQuayLai);
         lineChart = findViewById(R.id.lineChart);
         barChart = findViewById(R.id.barChart);
-        stackedAreaChart = findViewById(R.id.stackedAreaChart);
+        combinedChart = findViewById(R.id.combinedChart);
         db = new DatabaseHelper(this);
     }
 
@@ -120,37 +124,39 @@ public class TongKetActivity extends AppCompatActivity {
             diemChuEntries.add(new Entry(i, diemChu[i]));
         }
 
-        LineDataSet lineData = new LineDataSet(diemChuEntries, "Điểm chữ");
-        lineData.setColor(Color.rgb(104, 241, 175));
-        lineData.setLineWidth(3f);
-        lineData.setValueTextColor(Color.WHITE);
-        lineData.setValueTextSize(0f);
-        lineData.setValueFormatter(new DefaultValueFormatter(0));
-        lineData.setDrawFilled(true);
-        lineData.setFillColor(Color.rgb(100, 240, 170));
+        LineDataSet lineDataSet = new LineDataSet(diemChuEntries, "Điểm chữ");
+        lineDataSet.setColor(Color.rgb(104, 241, 175));
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setFillColor(Color.rgb(104, 241, 175));
+        lineDataSet.setLineWidth(3f);
+        lineDataSet.setValueTextColor(Color.WHITE);
+        lineDataSet.setValueTextSize(0f);
+        lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
-        lineChart.setData(new LineData(lineData));
+        lineChart.setData(new LineData(lineDataSet));
+        
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextSize(12f);
+        xAxis.setTypeface(Typeface.DEFAULT_BOLD);
+        xAxis.setYOffset(3f);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(diemChuLabels));
 
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        lineChart.getXAxis().setDrawAxisLine(false);
-        lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(diemChuLabels));
-        lineChart.getXAxis().setTextSize(12f);
-        lineChart.getXAxis().setTypeface(Typeface.DEFAULT_BOLD);
-        lineChart.getXAxis().setYOffset(3f);
-
-        lineChart.getAxisLeft().setDrawAxisLine(false);
-        lineChart.getAxisLeft().setAxisMinimum(0f);
-        lineChart.getAxisLeft().setValueFormatter(new ValueFormatter() {
+        YAxis yAxis = lineChart.getAxisLeft();
+        yAxis.setDrawAxisLine(false);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return String.valueOf((int) Math.floor(value));
+                return String.valueOf((int) value);
             }
         });
-        lineChart.getAxisLeft().setLabelCount((int) lineChart.getData().getYMax());
-        lineChart.getAxisLeft().setTextSize(12f);
-        lineChart.getAxisLeft().setXOffset(12f);
+        yAxis.setLabelCount((int) lineChart.getData().getYMax());
+        yAxis.setTextSize(12f);
+        yAxis.setXOffset(12f);
         lineChart.getAxisRight().setEnabled(false);
-
+        
         lineChart.getLegend().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.animateY(1000, Easing.EaseInOutQuad);
@@ -211,32 +217,35 @@ public class TongKetActivity extends AppCompatActivity {
             diemSoEntries.add(new BarEntry(i, diemSo[i]));
         }
 
-        BarDataSet barData = new BarDataSet(diemSoEntries, "Điểm số");
-        barData.setColor(Color.rgb(104, 241, 175));
-        barData.setValueTextColor(Color.WHITE);
-        barData.setValueTextSize(0f);
-        barData.setValueFormatter(new DefaultValueFormatter(0));
+        BarDataSet barDataSet = new BarDataSet(diemSoEntries, "Điểm số");
+        barDataSet.setColor(Color.rgb(104, 241, 175));
+        barDataSet.setValueTextColor(Color.WHITE);
+        barDataSet.setValueTextSize(0f);
+        barDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
-        barChart.setData(new BarData(barData));
-        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        barChart.getXAxis().setYOffset(-8f);
-        barChart.getXAxis().setDrawAxisLine(false);
-        barChart.getXAxis().setDrawGridLines(false);
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(diemSoLabels));
-        barChart.getXAxis().setTextSize(12f);
-        barChart.getXAxis().setTypeface(Typeface.DEFAULT_BOLD);
-        barChart.getXAxis().setYOffset(3f);
+        barChart.setData(new BarData(barDataSet));
+        
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setYOffset(-8f);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(diemSoLabels));
+        xAxis.setTextSize(12f);
+        xAxis.setTypeface(Typeface.DEFAULT_BOLD);
+        xAxis.setYOffset(3f);
 
-        barChart.getAxisLeft().setAxisMinimum(0f);
-        barChart.getAxisLeft().setXOffset(12f);
-        barChart.getAxisLeft().setTextSize(12f);
-        barChart.getAxisLeft().setValueFormatter(new ValueFormatter() {
+        YAxis yAxis = barChart.getAxisLeft();
+        yAxis.setAxisMinimum(0f);
+        yAxis.setXOffset(12f);
+        yAxis.setTextSize(12f);
+        yAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return String.valueOf((int) Math.floor(value));
+                return String.valueOf((int) value);
             }
         });
-        barChart.getAxisLeft().setLabelCount((int) barChart.getData().getYMax());
+        yAxis.setLabelCount((int) barChart.getData().getYMax());
         barChart.getAxisRight().setEnabled(false);
 
         barChart.getLegend().setEnabled(false);
@@ -297,67 +306,84 @@ public class TongKetActivity extends AppCompatActivity {
             diemTkByHocKy[i] = (sumOfHpxTc / sumOfTc);
         }
 
-        List<List<Entry>> entriesList = new ArrayList<>();
-
-        List<Entry> entries = new ArrayList<>();
+        List<BarEntry> barEntries = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            entries.add(new Entry(i, diemTkByHocKy[i]));
+            barEntries.add(new BarEntry(i, diemTkByHocKy[i]));
         }
-        entriesList.add(entries);
 
-        for (int i = 1; i <= 8; i++) {
-            entriesList.add(new ArrayList<>());
+        BarDataSet barDataSet = new BarDataSet(barEntries, null);
+        barDataSet.setColor(Color.rgb(104, 241, 175));
+        barDataSet.setValueTextColor(Color.WHITE);
+        barDataSet.setValueTextSize(12f);
+        barDataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return Float.isNaN(value) ? "" : String.format("%.2f", value);
+            }
+        });
+        BarData barData = new BarData(barDataSet);
+
+        List<List<Entry>> lineEntriesList = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            lineEntriesList.add(new ArrayList<>());
             for (int j = 0; j < 8; j++) {
-                Entry entry = new Entry(j, diemChuByHocKy[i - 1][j]);
-                entriesList.get(i).add(entry);
+                Entry entry = new Entry(j, diemChuByHocKy[i][j]);
+                lineEntriesList.get(i).add(entry);
             }
         }
 
         int[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
                         Color.CYAN, Color.LTGRAY, Color.GRAY, Color.BLACK, Color.WHITE};
 
-        List<LineDataSet> dataSets = new ArrayList<>();
-        for (int i = 0; i < entriesList.size(); i++) {
-            LineDataSet dataSet = new LineDataSet(entriesList.get(i), null);
-            dataSet.setLineWidth(2f);
-            dataSet.setColor(colors[i]);
-            dataSet.setDrawFilled(true);
-            dataSet.setFillColor(colors[i]);
-            dataSet.setDrawCircles(false);
-            dataSet.setValueTextColor(Color.WHITE);
-            dataSet.setValueTextSize(12f);
-            dataSet.setValueFormatter(new DefaultValueFormatter(0));
-            dataSets.add(dataSet);
+        List<LineDataSet> lineDataSets = new ArrayList<>();
+        for (int i = 0; i < lineEntriesList.size(); i++) {
+            LineDataSet lineDataSet = new LineDataSet(lineEntriesList.get(i), null);
+            lineDataSet.setLineWidth(3f);
+            lineDataSet.setColor(colors[i]);
+            lineDataSet.setCircleColor(colors[i]);
+            lineDataSet.setValueTextColor(Color.WHITE);
+            lineDataSet.setValueTextSize(0f);
+            lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
+            lineDataSets.add(lineDataSet);
         }
 
-        LineData stackedAreaData = new LineData();
-        for (int i = 0; i < dataSets.size(); i++) {
-            stackedAreaData.addDataSet(dataSets.get(i));
+        LineData lineData = new LineData();
+        for (int i = 0; i < lineDataSets.size(); i++) {
+            lineData.addDataSet(lineDataSets.get(i));
         }
 
-        stackedAreaChart.setData(stackedAreaData);
-        stackedAreaChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        stackedAreaChart.getXAxis().setDrawAxisLine(false);
+        CombinedData combinedData = new CombinedData();
+        combinedData.setData(barData);
+        combinedData.setData(lineData);
+        combinedChart.setData(combinedData);
+
+        XAxis xAxis = combinedChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawAxisLine(false);
         List<String> hocKyLables = new ArrayList<>(Arrays.asList("HK1", "HK2", "HK3", "HK4", "HK5", "HK6", "HK7", "HK8"));
-        stackedAreaChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(hocKyLables));
-        stackedAreaChart.getXAxis().setTextSize(12f);
-        stackedAreaChart.getXAxis().setTypeface(Typeface.DEFAULT_BOLD);
-        stackedAreaChart.getXAxis().setYOffset(3f);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(hocKyLables));
+        xAxis.setTextSize(12f);
+        xAxis.setTypeface(Typeface.DEFAULT_BOLD);
+        xAxis.setYOffset(3f);
+        xAxis.setAxisMinimum(combinedData.getXMin() - .5f);
+        xAxis.setAxisMaximum(combinedData.getXMax() + .5f);
 
-        stackedAreaChart.getAxisLeft().setDrawAxisLine(false);
-        stackedAreaChart.getAxisLeft().setAxisMinimum(0f);
-        stackedAreaChart.getAxisLeft().setValueFormatter(new ValueFormatter() {
+        YAxis yAxis = combinedChart.getAxisLeft();
+        yAxis.setDrawAxisLine(false);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return String.valueOf((int) Math.floor(value));
+                return String.valueOf((int) value);
             }
         });
-        stackedAreaChart.getAxisLeft().setLabelCount((int) stackedAreaChart.getData().getYMax());
-        stackedAreaChart.getAxisLeft().setTextSize(12f);
-        stackedAreaChart.getAxisLeft().setXOffset(12f);
-        stackedAreaChart.getAxisRight().setEnabled(false);
+        yAxis.setLabelCount((int) combinedChart.getData().getYMax());
+        yAxis.setTextSize(12f);
+        yAxis.setXOffset(12f);
 
-        Legend legend = stackedAreaChart.getLegend();
+        combinedChart.getAxisRight().setEnabled(false);
+
+        Legend legend = combinedChart.getLegend();
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -374,15 +400,15 @@ public class TongKetActivity extends AppCompatActivity {
         legend.setCustom(legendEntries);
         legend.setTextColor(Color.BLACK);
         legend.setTextSize(12f);
-        stackedAreaChart.getDescription().setEnabled(false);
+        combinedChart.getDescription().setEnabled(false);
 
         MyMarkerView markerView = new MyMarkerView(this, R.layout.custom_marker_view, 2);
-        markerView.setChartView(stackedAreaChart);
-        stackedAreaChart.setMarker(markerView);
-        stackedAreaChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+        markerView.setChartView(combinedChart);
+        combinedChart.setMarker(markerView);
+        combinedChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry entry, Highlight highlight) {
-                stackedAreaChart.invalidate();
+                combinedChart.invalidate();
             }
 
             @Override
@@ -390,7 +416,7 @@ public class TongKetActivity extends AppCompatActivity {
             }
         });
 
-        stackedAreaChart.invalidate();
+        combinedChart.invalidate();
     }
 
     public int[][] getDiemChuByHocKy() {
