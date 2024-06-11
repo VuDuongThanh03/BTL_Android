@@ -23,7 +23,9 @@ import com.example.btl_android.dang_nhap.TrangChuActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class HocPhanDuKien extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
@@ -81,7 +83,7 @@ public class HocPhanDuKien extends AppCompatActivity {
                     updateHocKyButtonColors();
                     hocPhanList.clear();
                     loadHocPhanFromDatabase();
-                    hocPhanAdapter.notifyDataSetChanged();  
+                    hocPhanAdapter.notifyDataSetChanged();
                 }
             });
         }

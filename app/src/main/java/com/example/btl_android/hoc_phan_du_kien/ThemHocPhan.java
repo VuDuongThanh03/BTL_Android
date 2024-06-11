@@ -11,10 +11,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.btl_android.R;
 import com.example.btl_android.DatabaseHelper;
+import com.example.btl_android.R;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class ThemHocPhan extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;

@@ -23,17 +23,20 @@ import com.example.btl_android.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class DiemActivity extends AppCompatActivity implements OnItemClickListener {
+    List<String> hocKyList;
+    List<Diem> diemList;
     private DatabaseHelper db;
     private ImageButton btnQuayLai, btnTongKet;
     private LinearLayout btnHocKySet;
     private Button lastSelectHocKy;
     private RecyclerView rvDiemHp;
-    List<String> hocKyList;
-    List<Diem> diemList;
     private DiemAdapter diemHpAdapter;
     private String hocKy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

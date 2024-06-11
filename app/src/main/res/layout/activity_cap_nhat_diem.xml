@@ -92,8 +92,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Ghi chú: Gõ . để bỏ qua"
-        android:textStyle="italic"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="italic" />
 
     <Button
         android:id="@+id/btnCapNhat"

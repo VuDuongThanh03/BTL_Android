@@ -10,7 +10,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class MyMarkerView extends MarkerView {
 
     private final TextView tvTitle;
@@ -28,7 +30,7 @@ public class MyMarkerView extends MarkerView {
     public void refreshContent(Entry e, Highlight highlight) {
         int xIndex = (int) e.getX();
         if (chartId <= 1) {
-            int [][] data = new int[8][8];
+            int[][] data = new int[8][8];
             if (chartId == 0) data = ((TongKetActivity) getContext()).getDiemChuByHocKy();
             else if (chartId == 1) data = ((TongKetActivity) getContext()).getDiemSoByHocKy();
 
@@ -78,11 +80,13 @@ public class MyMarkerView extends MarkerView {
         } else {
             if (e instanceof BarEntry) {
                 tvTitle.setText("Điểm tổng kết");
-                if (e.getY() > 0) tvKetQua.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
+                if (e.getY() > 0)
+                    tvKetQua.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
                 else tvKetQua.setText("Không có\ndữ liệu");
             } else {
                 tvTitle.setText("Số điểm HK" + (xIndex + 1));
-                if (e.getY() > 0) tvKetQua.setText("Điểm " + e.getData().toString() + ": " + (int) e.getY());
+                if (e.getY() > 0)
+                    tvKetQua.setText("Điểm " + e.getData().toString() + ": " + (int) e.getY());
                 else tvKetQua.setText("Không có\ndữ liệu");
             }
         }

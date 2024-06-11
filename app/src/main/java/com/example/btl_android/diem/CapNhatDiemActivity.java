@@ -16,13 +16,16 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class CapNhatDiemActivity extends AppCompatActivity {
 
     ImageButton btnQuayLai;
     Button btnCapNhat;
     EditText etTx1, etTx2, etGiuaKy, etKiVong, etCuoiKy;
     DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

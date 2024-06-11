@@ -18,14 +18,17 @@ import com.example.btl_android.diem.Diem;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class DangNhapActivity extends AppCompatActivity {
 
-    private Button dangnhap,dangky;
-    private EditText edtusername, edtpassword;
     List<Diem> diemList;
-    private DatabaseHelper dbHelper;
     SQLiteDatabase db;
+    private Button dangnhap, dangky;
+    private EditText edtusername, edtpassword;
+    private DatabaseHelper dbHelper;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,49 +45,50 @@ public class DangNhapActivity extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
 
         Intent intentDangKy = new Intent(this, DangKyActivity.class);
-        dangky.setOnClickListener(v-> DangNhapActivity.this.startActivity(intentDangKy));
+        dangky.setOnClickListener(v -> DangNhapActivity.this.startActivity(intentDangKy));
         DANG_NHAP();
 
 
     }
-    private void DANG_NHAP(){
+
+    private void DANG_NHAP() {
         dangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                getCount();
 //                Intent intentDangNhap = new Intent(DangNhapActivity.this, TrangChuActivity.class);
 //                startActivity(intentDangNhap);
-                if(edtusername.length() == 0 || edtpassword.length() == 0){
+                if (edtusername.length() == 0 || edtpassword.length() == 0) {
                     Toast.makeText(DangNhapActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     String username = edtusername.getText().toString().trim();
                     String password = edtpassword.getText().toString().trim();
-                    SinhVien sinhVien = CheckLogin(username,password);
-                    if(sinhVien != null){
+                    SinhVien sinhVien = CheckLogin(username, password);
+                    if (sinhVien != null) {
                         Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
                         Intent intentDangNhap = new Intent(DangNhapActivity.this, TrangChuActivity.class);
-                        intentDangNhap.putExtra("maSV",sinhVien.getMaSV()+"");
-                        intentDangNhap.putExtra("maCN",sinhVien.getMaChuyenNganh());
-                        intentDangNhap.putExtra("tenSV",sinhVien.getTenSV());
-                        intentDangNhap.putExtra("tenTK",sinhVien.getTenTK());
-                        intentDangNhap.putExtra("matKhau",sinhVien.getMatKhau());
+                        intentDangNhap.putExtra("maSV", sinhVien.getMaSV() + "");
+                        intentDangNhap.putExtra("maCN", sinhVien.getMaChuyenNganh());
+                        intentDangNhap.putExtra("tenSV", sinhVien.getTenSV());
+                        intentDangNhap.putExtra("tenTK", sinhVien.getTenTK());
+                        intentDangNhap.putExtra("matKhau", sinhVien.getMatKhau());
                         startActivity(intentDangNhap);
                         finish();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(DangNhapActivity.this, "Tài khoản hoặc mật khẩu không chính xác!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
     }
-    private SinhVien CheckLogin(String username, String password){
+
+    private SinhVien CheckLogin(String username, String password) {
         String query = "SELECT * FROM SinhVien WHERE tenTk = ? AND matKhau = ?";
         String[] selectionArgs = {username, password};
 
         // Thực hiện truy vấn
-        Cursor cursor = db.rawQuery(query,selectionArgs);
+        Cursor cursor = db.rawQuery(query, selectionArgs);
 
         if (cursor.moveToFirst()) {
             // Truy cập dữ liệu từ Cursor
@@ -94,7 +98,7 @@ public class DangNhapActivity extends AppCompatActivity {
             String tenTk = cursor.getString(cursor.getColumnIndex("tenTk"));
             String matKhau = cursor.getString(cursor.getColumnIndex("matKhau"));
 
-            SinhVien user = new SinhVien(maSv,maCn, tenSv, tenTk, matKhau);
+            SinhVien user = new SinhVien(maSv, maCn, tenSv, tenTk, matKhau);
             cursor.close();
             return user;
         }

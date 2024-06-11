@@ -13,7 +13,9 @@ import com.example.btl_android.diem.DiemActivity;
 import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKien;
 
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class TrangChuActivity extends AppCompatActivity {
 
     LinearLayout btnCongViec, btnHocPhan, btnDiem;

@@ -14,7 +14,9 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanViewHolder> {
 
     private List<HocPhan> hocPhanList;

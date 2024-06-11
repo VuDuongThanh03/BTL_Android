@@ -1,12 +1,8 @@
 package com.example.btl_android.dang_nhap;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
@@ -25,9 +23,10 @@ public class DangKyActivity extends AppCompatActivity {
     Spinner spn_chuyennganh;
     ArrayList<String> arrchuyennganh = new ArrayList<String>();
     ArrayAdapter<String> Adapterspn;
-    EditText edttentaikhoan,edtmatkhau,edthoten,edtmasinhvien;
-    private DatabaseHelper dbHelper;
+    EditText edttentaikhoan, edtmatkhau, edthoten, edtmasinhvien;
     SQLiteDatabase db;
+    private DatabaseHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +47,15 @@ public class DangKyActivity extends AppCompatActivity {
                 String hoten = edthoten.getText().toString().trim();
                 String masinhvien = edtmasinhvien.getText().toString().trim();
                 int chuyennganh = spn_chuyennganh.getSelectedItemPosition();
-                if(tentaikhoan==""||matkhau==""||hoten==""||masinhvien==""){
+                if (tentaikhoan == "" || matkhau == "" || hoten == "" || masinhvien == "") {
                     Toast.makeText(DangKyActivity.this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                try{
+                try {
 
-                }catch (Exception e){
+                } catch (Exception e) {
                 }
-                String insertquery = "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " + "('"+ masinhvien +"', "+ chuyennganh +", '"+ hoten +"', '"+ tentaikhoan +"', '"+ matkhau +"')";
+                String insertquery = "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " + "('" + masinhvien + "', " + chuyennganh + ", '" + hoten + "', '" + tentaikhoan + "', '" + matkhau + "')";
                 db.execSQL(insertquery);
                 db.close();
                 Toast.makeText(DangKyActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
@@ -66,6 +65,7 @@ public class DangKyActivity extends AppCompatActivity {
         });
         this.SPINNER_CHUYENNGANH();
     }
+
     public void SPINNER_CHUYENNGANH() {
         this.arrchuyennganh.add("Công nghệ thông tin");
         this.arrchuyennganh.add("Khoa học máy tính");

@@ -14,7 +14,9 @@ import com.example.btl_android.R;
 
 import java.util.ArrayList;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class ThongTinActivity extends AppCompatActivity {
 
     Button btn_continue;

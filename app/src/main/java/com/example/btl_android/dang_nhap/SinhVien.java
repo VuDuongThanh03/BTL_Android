@@ -1,7 +1,7 @@
 package com.example.btl_android.dang_nhap;
 
 public class SinhVien {
-    private String  maSV;
+    private String maSV;
     private int maChuyenNganh;
     private String tenSV;
     private String tenTK;

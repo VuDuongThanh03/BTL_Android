@@ -11,12 +11,15 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class CongViecAdapter extends BaseAdapter {
 
     private final Context context;
     private final int layout;
     private final List<CongViec> congvieclist;
+
     public CongViecAdapter(final Context context, final int layout, final List<CongViec> congvieclist) {
         this.context = context;
         this.layout = layout;

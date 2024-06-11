@@ -16,7 +16,9 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
     private List<Diem> data;
     private OnItemClickListener listener;
@@ -26,40 +28,6 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
         this.data = data;
         this.listener = listener;
         this.id = id;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        
-        LinearLayout diemHp;
-        public LinearLayout rvDiemHp;
-        public TextView tvTenHp, btnSua, tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvTongKet;
-
-        public ViewHolder(View view) {
-            super(view);
-            tvTenHp = view.findViewById(R.id.tvTenHp);
-            btnSua = view.findViewById(R.id.btnSua);
-            tvTx1 = view.findViewById(R.id.tvTx1);
-            tvTx2 = view.findViewById(R.id.tvTx2);
-            tvGiuaKy = view.findViewById(R.id.tvGiuaKy);
-            tvCuoiKy = view.findViewById(R.id.tvCuoiKy);
-            tvTongKet = view.findViewById(R.id.tvTongKet);
-            diemHp = view.findViewById(R.id.diemHp);
-
-            diemHp.setOnClickListener(this);
-            btnSua.setOnClickListener(v -> {
-                Diem diem = data.get((int) view.getTag());
-                Intent intent = new Intent((Context) listener, CapNhatDiemActivity.class);
-                intent.putExtra("Diem", diem);
-                ((Context) listener).startActivity(intent);
-            });
-        }
-        @Override
-        public void onClick(View view) {
-            if (listener != null) {
-                int pos = (int) view.getTag();
-                listener.onItemClick(pos);
-            }
-        }
     }
 
     @NonNull
@@ -84,5 +52,40 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public LinearLayout rvDiemHp;
+        public TextView tvTenHp, btnSua, tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvTongKet;
+        LinearLayout diemHp;
+
+        public ViewHolder(View view) {
+            super(view);
+            tvTenHp = view.findViewById(R.id.tvTenHp);
+            btnSua = view.findViewById(R.id.btnSua);
+            tvTx1 = view.findViewById(R.id.tvTx1);
+            tvTx2 = view.findViewById(R.id.tvTx2);
+            tvGiuaKy = view.findViewById(R.id.tvGiuaKy);
+            tvCuoiKy = view.findViewById(R.id.tvCuoiKy);
+            tvTongKet = view.findViewById(R.id.tvTongKet);
+            diemHp = view.findViewById(R.id.diemHp);
+
+            diemHp.setOnClickListener(this);
+            btnSua.setOnClickListener(v -> {
+                Diem diem = data.get((int) view.getTag());
+                Intent intent = new Intent((Context) listener, CapNhatDiemActivity.class);
+                intent.putExtra("Diem", diem);
+                ((Context) listener).startActivity(intent);
+            });
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (listener != null) {
+                int pos = (int) view.getTag();
+                listener.onItemClick(pos);
+            }
+        }
     }
 }

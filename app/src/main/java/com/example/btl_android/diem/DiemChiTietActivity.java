@@ -13,12 +13,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.R;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class DiemChiTietActivity extends AppCompatActivity {
     private ImageButton btnQuayLai;
     private TextView tvTenHp, tvMaHp, tvSoTc, tvHinhThucThi, tvLop, tvHeSo,
-                     tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvKiVong, tvDiem10, tvDiem4, tvDiemChu,
-                     tvXepLoai, tvNghiLt, tvNghiTh, tvDieuKien;
+            tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvKiVong, tvDiem10, tvDiem4, tvDiemChu,
+            tvXepLoai, tvNghiLt, tvNghiTh, tvDieuKien;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

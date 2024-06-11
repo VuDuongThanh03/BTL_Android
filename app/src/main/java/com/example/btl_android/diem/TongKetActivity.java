@@ -134,7 +134,7 @@ public class TongKetActivity extends AppCompatActivity {
         lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
         lineChart.setData(new LineData(lineDataSet));
-        
+
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
@@ -156,7 +156,7 @@ public class TongKetActivity extends AppCompatActivity {
         yAxis.setTextSize(12f);
         yAxis.setXOffset(12f);
         lineChart.getAxisRight().setEnabled(false);
-        
+
         lineChart.getLegend().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.animateY(1000, Easing.EaseInOutQuad);
@@ -224,7 +224,7 @@ public class TongKetActivity extends AppCompatActivity {
         barDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
         barChart.setData(new BarData(barDataSet));
-        
+
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setYOffset(-8f);
@@ -334,7 +334,7 @@ public class TongKetActivity extends AppCompatActivity {
         }
 
         int[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
-                        Color.CYAN, Color.LTGRAY, Color.GRAY, Color.BLACK};
+                Color.CYAN, Color.LTGRAY, Color.GRAY, Color.BLACK};
         List<LineDataSet> lineDataSets = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             LineDataSet lineDataSet = new LineDataSet(lineEntriesList.get(i), null);
