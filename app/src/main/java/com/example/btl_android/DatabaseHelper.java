@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.btl_android.cong_viec.CongViec;
 import com.example.btl_android.diem.Diem;
 import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 
@@ -41,7 +42,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "tenViec TEXT NOT NULL," +
                     "mucUuTien INTEGER," +
-                    "thoiHan TEXT NOT NULL," +
+                    "thoiHanGio TEXT NOT NULL," +
+                    "thoiHanNgay TEXT NOT NULL," +
                     "trangThai INTEGER NOT NULL," +
                     "chiTiet TEXT" +
                     ");";
@@ -113,17 +115,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
                     "('2021606516', 3, 'Phùng Đức Cần', 'Tao là nhất', 'abc123!@#')";
     private static final String INSERT_TABLE_CONGVIEC =
-            "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHan, trangThai, chiTiet) VALUES " +
-                    "(1, 'Complete Math Homework', 1, '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
-                    "(2, 'Prepare Physics Presentation', 2, '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
-                    "(3, 'Chemistry Lab Report', 1, '2023-06-14', 0, 'Lab report on chemical reactions'), " +
-                    "(4, 'Biology Field Trip', 3, '2023-06-16', 1, 'Field trip to the botanical garden'), " +
-                    "(5, 'Computer Science Project', 1, '2023-06-18', 0, 'Project on data structures'), " +
-                    "(6, 'Math Quiz Preparation', 2, '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
-                    "(7, 'Physics Assignment', 1, '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
-                    "(8, 'Chemistry Homework', 2, '2023-06-24', 0, 'Solve problems from the textbook'), " +
-                    "(9, 'Biology Research', 3, '2023-06-26', 1, 'Research on genetic mutations'), " +
-                    "(10, 'Computer Science Exam', 1, '2023-06-28', 0, 'Study for final exam');";
+            "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHanGio, thoiHanNgay, trangThai, chiTiet) VALUES " +
+                    "(1, 'Complete Math Homework', 1, '9:30', '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
+                    "(2, 'Prepare Physics Presentation', 2, '15:10', '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
+                    "(3, 'Chemistry Lab Report', 1, '8:00', '2023-06-14', 0, 'Lab report on chemical reactions'), " +
+                    "(4, 'Biology Field Trip', 3, '11:15', '2023-06-16', 1, 'Field trip to the botanical garden'), " +
+                    "(5, 'Computer Science Project', 1, '16:30', '2023-06-18', 0, 'Project on data structures'), " +
+                    "(6, 'Math Quiz Preparation', 2, '10:30', '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
+                    "(7, 'Physics Assignment', 1, '6:50', '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
+                    "(8, 'Chemistry Homework', 2, '20:40', '2023-06-24', 0, 'Solve problems from the textbook'), " +
+                    "(9, 'Biology Research', 3, '22:00', '2023-06-26', 1, 'Research on genetic mutations'), " +
+                    "(10, 'Computer Science Exam', 1, '23:30', '2023-06-28', 0, 'Study for final exam');";
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
                     "(1, 'Computer Science'), " +
@@ -416,5 +418,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (diem.getHocKy() == hocKy) diemList.add(diem);
         }
         return diemList;
+    }
+    public ArrayList<CongViec> getAllCongViec() {
+        ArrayList<CongViec> congViecList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM CongViec", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tencongviec = cursor.getString(cursor.getColumnIndex("tenViec"));
+                String chitietcongviec = cursor.getString(cursor.getColumnIndex("chiTiet"));
+                String mucuutien = cursor.getString(cursor.getColumnIndex("mucUuTien"));
+                String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
+                String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
+                int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
+                CongViec congViec = new CongViec(tencongviec,chitietcongviec,mucuutien,thoihangio,thoihanngay,trangthai);
+
+                congViecList.add(congViec);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return congViecList;
     }
 }

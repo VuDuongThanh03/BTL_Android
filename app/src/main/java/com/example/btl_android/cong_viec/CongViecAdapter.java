@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.btl_android.R;
@@ -50,6 +51,7 @@ public class CongViecAdapter extends BaseAdapter {
         final TextView uutien = convertView.findViewById(R.id.tv_mucuutien);
         final TextView gio = convertView.findViewById(R.id.tv_hancvgio);
         final TextView ngay = convertView.findViewById(R.id.tv_hancvngay);
+        final CheckBox trangthai = convertView.findViewById(R.id.cb_trangthai);
 
         final CongViec congViecx = this.congvieclist.get(i);
         tt.setText(congViecx.getTenCongViec());
@@ -57,6 +59,9 @@ public class CongViecAdapter extends BaseAdapter {
         uutien.setText(congViecx.getMucUuTien());
         gio.setText(congViecx.getThoiHanGio());
         ngay.setText(congViecx.getThoiHanNgay());
+        if(congViecx.trangThai==1){
+            trangthai.setChecked(true);
+        }
         return convertView;
     }
 }
