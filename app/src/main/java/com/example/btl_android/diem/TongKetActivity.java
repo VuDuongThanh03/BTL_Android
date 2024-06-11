@@ -323,20 +323,20 @@ public class TongKetActivity extends AppCompatActivity {
         });
         BarData barData = new BarData(barDataSet);
 
+        String[] letterScores = {"F", "D", "D+", "C", "C+", "B", "B+", "A"};
         List<List<Entry>> lineEntriesList = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             lineEntriesList.add(new ArrayList<>());
             for (int j = 0; j < 8; j++) {
-                Entry entry = new Entry(j, diemChuByHocKy[i][j]);
+                Entry entry = new Entry(j, diemChuByHocKy[i][j], letterScores[i]);
                 lineEntriesList.get(i).add(entry);
             }
         }
 
         int[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
-                        Color.CYAN, Color.LTGRAY, Color.GRAY, Color.BLACK, Color.WHITE};
-
+                        Color.CYAN, Color.LTGRAY, Color.GRAY, Color.BLACK};
         List<LineDataSet> lineDataSets = new ArrayList<>();
-        for (int i = 0; i < lineEntriesList.size(); i++) {
+        for (int i = 0; i < 8; i++) {
             LineDataSet lineDataSet = new LineDataSet(lineEntriesList.get(i), null);
             lineDataSet.setLineWidth(3f);
             lineDataSet.setColor(colors[i]);

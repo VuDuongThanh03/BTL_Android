@@ -82,7 +82,7 @@ public class MyMarkerView extends MarkerView {
                 else tvKetQua.setText("Không có\ndữ liệu");
             } else {
                 tvTitle.setText("Số điểm HK" + (xIndex + 1));
-                if (e.getY() > 0) tvKetQua.setText(String.format("%.0f", e.getY()));
+                if (e.getY() > 0) tvKetQua.setText("Điểm " + e.getData().toString() + ": " + (int) e.getY());
                 else tvKetQua.setText("Không có\ndữ liệu");
             }
         }
@@ -93,6 +93,5 @@ public class MyMarkerView extends MarkerView {
     public MPPointF getOffset() {
         return new MPPointF(-(getWidth() / 2), -getHeight());
     }
-
 }
 
