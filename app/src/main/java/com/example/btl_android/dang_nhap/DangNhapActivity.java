@@ -3,7 +3,6 @@ package com.example.btl_android.dang_nhap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
