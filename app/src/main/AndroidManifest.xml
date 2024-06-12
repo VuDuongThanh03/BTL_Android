@@ -26,7 +26,7 @@
             android:name=".hoc_phan_du_kien.ThemHocPhan"
             android:exported="false" />
         <activity
-            android:name=".hoc_phan_du_kien.HocPhanDuKien"
+            android:name=".hoc_phan_du_kien.HocPhanDuKienActivity"
             android:exported="false" />
         <activity
             android:name=".diem.CapNhatDiemActivity"

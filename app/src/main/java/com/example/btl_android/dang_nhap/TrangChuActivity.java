@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViecActivity;
 import com.example.btl_android.diem.DiemActivity;
-import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKien;
+import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKienActivity;
 import com.example.btl_android.thong_bao.ThongBaoActivity;
 
 /**
@@ -49,7 +49,7 @@ public class TrangChuActivity extends AppCompatActivity {
         });
 
         btnHocPhan.setOnClickListener(v -> {
-            final Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKien.class);
+            final Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKienActivity.class);
             TrangChuActivity.this.startActivity(intent);
         });
         btnDiem.setOnClickListener(new View.OnClickListener() {
