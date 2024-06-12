@@ -155,11 +155,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COLUMN_PHONG + ", "
                     + COLUMN_TIET + ", "
                     + COLUMN_DIADIEM + ") VALUES " +
-                    "('Thiết kế Web','Thứ 2','10/6/2024','Nguyễn Trung Phú(0902131386 - CNTT)','Phòng máy số 1-A1','Cơ sở 1','1,2,3')," +
-                    "('Tiếng Anh Công Nghệ Thông Tin 2','Thứ 3','11/6/2024','Bùi Phương Thảo(0389937161 - Trường NN-DL)','508-A9','Cơ sở 1','7,8')," +
-                    "('Phát triển ứng dụng trên thiết bị di động','Thứ 6','14/6/2024','Vũ Thị Dương(0904755919 - CNTT)','402-A9','Cơ sở 1','3,4,5')," +
-                    "('Thiết kế đồ hoạ 2D','Thứ 5','13/6/2024','Đỗ Mạnh Hùng(0916113319 - CNTT)','609-A9','Cơ sở 1','9,10,11')," +
-                    "('Đồ án chuyên ngành','Chủ nhật','16/6/2024','Nguyễn Bá Nghiễn (0358218310 - CNTT)','Phòng thực hành Khoa CNTT 06','Cơ sở 1','1,2,3,4,5,7,8,9,10,11');";
+                    "('Thiết kế Web','Thứ 2','10/6/2024','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1')," +
+                    "('Tiếng Anh Công Nghệ Thông Tin 2','Thứ 3','11/6/2024','Bùi Phương Thảo(0389937161 - Trường NN-DL)','508','7,8','A9')," +
+                    "('Phát triển ứng dụng trên thiết bị di động','Thứ 6','14/6/2024','Vũ Thị Dương(0904755919 - CNTT)','402','3,4,5','A8')," +
+                    "('Thiết kế đồ hoạ 2D','Thứ 5','13/6/2024','Đỗ Mạnh Hùng(0916113319 - CNTT)','609','9,10,11','A9')," +
+                    "('Đồ án chuyên ngành','Chủ nhật','16/6/2024','Nguyễn Bá Nghiễn (0358218310 - CNTT)','Phòng thực hành Khoa CNTT 06','1,2,3,4,5,7,8,9,10,11','A1');";
             db.execSQL(insertData);
         } catch (final Exception e) {
             Log.e("Error", "There are some problems in creating database");
