@@ -26,7 +26,7 @@ import java.util.List;
 /** @noinspection ALL*/
 public class DiemActivity extends AppCompatActivity implements OnItemClickListener {
     private DatabaseHelper db;
-    private ImageButton btnQuayLai, btnTongKet;
+    private ImageButton btnQuayLai, btnThongKe;
     private LinearLayout btnHocKySet;
     private Button lastSelectHocKy;
     private RecyclerView rvDiemHp;
@@ -51,7 +51,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
     private void getWidget() {
         btnQuayLai = findViewById(R.id.imgQuayLai);
-        btnTongKet = findViewById(R.id.imageTongKet);
+        btnThongKe = findViewById(R.id.imgThongKe);
         rvDiemHp = findViewById(R.id.rvDiemHp);
         hocKyList = new ArrayList<>();
         diemList = new ArrayList<>();
@@ -64,8 +64,8 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     private void setupButtons() {
         btnQuayLai.setOnClickListener(v -> finish());
 
-        btnTongKet.setOnClickListener(v -> {
-            final Intent intent = new Intent(DiemActivity.this, TongKetActivity.class);
+        btnThongKe.setOnClickListener(v -> {
+            final Intent intent = new Intent(DiemActivity.this, ThongKeActivity.class);
             DiemActivity.this.startActivity(intent);
         });
 

@@ -32,7 +32,7 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
         
         LinearLayout diemHp;
         public LinearLayout rvDiemHp;
-        public TextView tvTenHp, btnSua, tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvTongKet;
+        public TextView tvTenHp, btnSua, tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvTongKet, tvLoai;
 
         public ViewHolder(View view) {
             super(view);
@@ -43,6 +43,7 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
             tvGiuaKy = view.findViewById(R.id.tvGiuaKy);
             tvCuoiKy = view.findViewById(R.id.tvCuoiKy);
             tvTongKet = view.findViewById(R.id.tvTongKet);
+            tvLoai = view.findViewById(R.id.tvLoai);
             diemHp = view.findViewById(R.id.diemHp);
 
             diemHp.setOnClickListener(this);
@@ -78,6 +79,7 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
         holder.tvGiuaKy.setText(item.getGiuaKy() == null ? "-" : String.format("%.1f", item.getGiuaKy()));
         holder.tvCuoiKy.setText(item.getCuoiKy() == null ? "-" : String.format("%.1f", item.getCuoiKy()));
         holder.tvTongKet.setText(item.getDiemChu());
+        holder.tvLoai.setText(item.getLoai() == 0 ? "Tự chọn" : "Bắt buộc");
         holder.diemHp.setTag(pos);
     }
 

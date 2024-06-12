@@ -145,5 +145,13 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+        <TextView
+            android:id="@+id/tvLoai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Bắt buộc"
+            android:textColor="#a6a8aa"
+            android:textStyle="italic"/>
     </LinearLayout>
 </LinearLayout>

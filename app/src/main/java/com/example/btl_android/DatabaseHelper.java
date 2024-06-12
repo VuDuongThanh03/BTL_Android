@@ -156,20 +156,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void getAllScoreModules() {
         allDiemHpList.clear();
-        String selectQuery = "SELECT kq.maLop, hp.maHp, hp.tenHp, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "";
+        Cursor cursor;
+
+        query = "SELECT maCn FROM SinhVien";
+        cursor = db.rawQuery(query, null);
+        int id = 0;
+        if (cursor.moveToFirst()) {
+            id = cursor.getInt(cursor.getColumnIndex("maCn"));
+        }
+
+        query = "SELECT kq.maLop, hp.maHp, hp.tenHp, lhp.loai, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
                 "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, kq.hocKy, " +
                 "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
                 "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
                 "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
                 "FROM KetQuaHocPhan kq " +
                 "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
+                "JOIN LoaiHocPhan lhp ON lhp.maHp = hp.maHp " +
                 "LEFT JOIN LichHoc lh ON lh.maLop = kq.maLop " +
-                "GROUP BY kq.maLop, kq.maHp, hp.tenHp, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+                "WHERE lhp.maCn = ? " +
+                "GROUP BY kq.maLop, kq.maHp, hp.tenHp, lhp.loai, hp.soTietLyThuyet, hp.soTietThucHanh, " +
                 "hp.hinhThucThi, hp.heSo, kq.hocKy, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong " +
                 "ORDER BY hp.tenHp";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        cursor = db.rawQuery(query, new String[]{id + ""});
         if (cursor.moveToFirst()) {
             do {
                 Diem diem = new Diem();
@@ -177,6 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 diem.setMaLop(cursor.getString(cursor.getColumnIndex("maLop")));
                 diem.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
                 diem.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
+                diem.setLoai(cursor.getInt(cursor.getColumnIndex("loai")));
                 diem.setSoTinChiLt(cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")));
                 diem.setSoTinChiTh(cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")));
                 diem.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
@@ -346,16 +359,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String INSERT_TABLE_LOAIHOCPHAN =
             "INSERT INTO LoaiHocPhan (maHp, maCn, loai) VALUES " +
-                    "('HP001', 1, 1), " +
-                    "('HP002', 2, 2), " +
-                    "('HP003', 3, 1), " +
-                    "('HP004', 4, 2), " +
-                    "('HP005', 1, 1), " +
-                    "('HP006', 1, 2), " +
-                    "('HP007', 2, 1), " +
-                    "('HP008', 3, 2), " +
-                    "('HP009', 4, 1), " +
-                    "('HP010', 1, 2);";
+                    "('HP001', 3, 0), " +
+                    "('HP002', 3, 1), " +
+                    "('HP003', 3, 0), " +
+                    "('HP004', 4, 1), " +
+                    "('HP005', 3, 0), " +
+                    "('HP006', 1, 1), " +
+                    "('HP007', 2, 0), " +
+                    "('HP008', 3, 0), " +
+                    "('HP009', 3, 1), " +
+                    "('HP010', 3, 0);";
 
     private static final String INSERT_TABLE_KETQUAHOCPHAN =
             "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
@@ -393,26 +406,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('2023HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 5), " +
                     "('2023HP006.5', 'HP006', 8.0, 8.5, null, null, null, 5), " +
                     "('2023HP005.1', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 6), " +
-                    "('2023HP006.4', 'HP006', 8.5, 9.0, null, null, 8.0, 6), " +
-                    "('2023HP007.2', 'HP007', 7.5, 8.0, null, null, 7.0, 6), " +
-                    "('2023HP002.7', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 6), " +
-                    "('2023HP009.9', 'HP009', 8.0, 8.5, 7.0, null, null, 6), " +
+                    "('2023HP004.4', 'HP004', 8.5, 9.0, null, null, 8.0, 6), " +
+                    "('2023HP008.2', 'HP008', 7.5, 6.0, null, null, 7.0, 6), " +
+                    "('2023HP002.7', 'HP002', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
+                    "('2023HP003.3', 'HP003', 8.0, 8.5, 7.0, null, null, 6), " +
                     "('2023HP001.3', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 6), " +
-                    "('2023HP004.4', 'HP004', 8.0, 8.5, null, null, null, 6), " +
-                    "('2024HP005.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 7), " +
-                    "('2024HP006.1', 'HP006', 8.5, 9.0, null, null, 8.0, 7), " +
-                    "('2024HP007.3', 'HP007', 7.5, 8.0, null, null, 7.0, 7), " +
-                    "('2024HP002.2', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 7), " +
-                    "('2024HP009.4', 'HP009', 8.0, 8.5, 7.0, null, null, 7), " +
-                    "('2024HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 7), " +
-                    "('2024HP007.5', 'HP007', 8.0, 8.5, null, null, null, 7), " +
-                    "('2025HP005.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 8), " +
-                    "('2025HP006.1', 'HP006', 8.5, 9.0, null, null, 8.0, 8), " +
-                    "('2025HP007.3', 'HP007', 7.5, 8.0, null, null, 7.0, 8), " +
-                    "('2025HP002.2', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 8), " +
-                    "('2025HP009.4', 'HP009', 8.0, 8.5, 7.0, null, null, 8), " +
-                    "('2025HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 8), " +
-                    "('2025HP004.5', 'HP004', 8.0, 8.5, null, null, null, 8)";
+                    "('2023HP004.3', 'HP004', 8.0, 8.5, null, null, null, 6), " +
+                    "('2024HP006.9', 'HP006', 7.5, 8.0, 7.5, 7.5, null, 7), " +
+                    "('2024HP008.1', 'HP008', 8.5, 7.0, null, null, 8.0, 7), " +
+                    "('2024HP007.3', 'HP007', 6.5, 8.0, null, null, 7.0, 7), " +
+                    "('2024HP001.2', 'HP001', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
+                    "('2024HP009.4', 'HP009', 8.0, 9.5, 9.0, null, null, 7), " +
+                    "('2024HP001.6', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 7), " +
+                    "('2024HP005.5', 'HP005', 8.0, 8.5, null, null, null, 7), " +
+                    "('2025HP003.9', 'HP003', 7.5, 8.0, 7.5, 7.5, null, 8), " +
+                    "('2025HP008.1', 'HP008', 8.5, 9.0, null, null, 8.0, 8), " +
+                    "('2025HP006.3', 'HP006', 7.5, 10.0, null, null, 7.0, 8), " +
+                    "('2025HP002.2', 'HP002', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
+                    "('2025HP001.4', 'HP001', 9.0, 8.5, 7.0, null, null, 8), " +
+                    "('2025HP001.2', 'HP001', 7.5, 7.0, null, 7.5, 7.5, 8), " +
+                    "('2025HP005.5', 'HP005', 8.0, 6.5, null, null, null, 8)";
 
     private static final String INSERT_TABLE_LICHHOC =
             "INSERT INTO LichHoc " +

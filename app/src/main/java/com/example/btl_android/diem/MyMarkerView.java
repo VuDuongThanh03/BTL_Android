@@ -37,10 +37,11 @@ public class MyMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
         int xIndex = (int) e.getX();
+        int yIndex = (int) e.getY();
         if (chartId <= 1) {
             int [][] data = new int[8][8];
-            if (chartId == 0) data = ((TongKetActivity) getContext()).getDiemChuByHocKy();
-            else if (chartId == 1) data = ((TongKetActivity) getContext()).getDiemSoByHocKy();
+            if (chartId == 0) data = ((ThongKeActivity) getContext()).getDiemChuByHocKy();
+            else data = ((ThongKeActivity) getContext()).getDiemSoByHocKy();
 
             boolean isEmpty = true;
             for (int count : data[xIndex]) {
@@ -64,9 +65,10 @@ public class MyMarkerView extends MarkerView {
         } else {
             if (e instanceof BarEntry) {
                 tvTitle.setText("Điểm tổng kết");
-                if (e.getY() > 0) tvKetQua.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
+                if (yIndex > 0) tvKetQua.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
                 else tvKetQua.setText("Không có\ndữ liệu");
             } else {
+                tvTitle.setText("Số lượng\nđiểm HK" + (xIndex + 1));
                 Chart chart = getChartView();
                 CombinedData combinedData = ((CombinedChart) chart).getCombinedData();
                 StringBuilder info = new StringBuilder();
@@ -84,16 +86,15 @@ public class MyMarkerView extends MarkerView {
                 });
                 for (ILineDataSet lineDataSet : dataSetList) {
                     for (Entry entry : lineDataSet.getEntriesForXValue(e.getX())) {
-                        if (entry.getY() != e.getY()) continue;
+                        if (entry.getY() != yIndex) continue;
                         info.append("Điểm ").append(lineDataSet.getLabel())
-                                .append(": ").append(String.format("%.0f", entry.getY())).append("\n");
+                                .append(": ").append(yIndex).append("\n");
                     }
                 }
                 if (info.length() > 0 && info.charAt(info.length() - 1) == '\n') {
                     info.deleteCharAt(info.length() - 1);
                 }
                 tvKetQua.setText(info);
-
             }
         }
         super.refreshContent(e, highlight);
