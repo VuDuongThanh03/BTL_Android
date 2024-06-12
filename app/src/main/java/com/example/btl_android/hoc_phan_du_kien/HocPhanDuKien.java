@@ -95,7 +95,7 @@ public class HocPhanDuKien extends AppCompatActivity {
                 hocKyButtons[i].setBackgroundResource(R.drawable.button_selected);
                 hocKyButtons[i].setTextColor(0xFFFFFFFF);
             } else {
-                hocKyButtons[i].setBackgroundResource(R.drawable.button_default);
+                hocKyButtons[i].setBackgroundResource(R.drawable.button_default1);
                 hocKyButtons[i].setTextColor(0xFF000000);
             }
         }

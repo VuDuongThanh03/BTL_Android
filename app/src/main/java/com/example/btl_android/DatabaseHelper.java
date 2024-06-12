@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.btl_android.cong_viec.CongViec;
 import com.example.btl_android.diem.Diem;
 import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 import com.example.btl_android.thong_bao.ThongBao;
@@ -252,6 +253,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();;
         db.close();
         return thongBaoList;
+    }
+
+    public ArrayList<CongViec> getAllCongViec() {
+        ArrayList<CongViec> congViecList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM CongViec", null);
+        if (cursor.moveToFirst()) {
+            do {
+                String tencongviec = cursor.getString(cursor.getColumnIndex("tenViec"));
+                String chitietcongviec = cursor.getString(cursor.getColumnIndex("chiTiet"));
+                String mucuutien = cursor.getString(cursor.getColumnIndex("mucUuTien"));
+                String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
+                String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
+                int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
+                CongViec congViec = new CongViec(tencongviec,chitietcongviec,mucuutien,thoihangio,thoihanngay,trangthai);
+
+                congViecList.add(congViec);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return congViecList;
     }
 
     // Database name and version

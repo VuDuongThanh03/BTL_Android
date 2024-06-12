@@ -13,8 +13,6 @@ import com.example.btl_android.R;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -23,7 +21,7 @@ import java.util.Date;
 public class CongViecActivity extends AppCompatActivity {
 
     ListView lvcongviec;
-    ArrayList<CongViec> listcongviec = new ArrayList<>();
+    ArrayList<CongViec> congViecArrayList = new ArrayList<>();
     CongViecAdapter cvAdapter;
     SQLiteDatabase db;
     private DatabaseHelper dbHelper;
@@ -34,8 +32,8 @@ public class CongViecActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cong_viec);
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
-        listcongviec = dbHelper.getAllCongViec();
-        sortCongViecList(listcongviec);
+        congViecArrayList = dbHelper.getAllCongViec();
+        sortCongViecList(congViecArrayList);
         showlvCongViec();
     }
 
@@ -43,7 +41,7 @@ public class CongViecActivity extends AppCompatActivity {
         Context x = this;
         lvcongviec = findViewById(R.id.lvcongviec);
 
-        cvAdapter = new CongViecAdapter(x, R.layout.customlv_cong_viec, listcongviec);
+        cvAdapter = new CongViecAdapter(x, R.layout.customlv_cong_viec, congViecArrayList);
         lvcongviec.setAdapter(cvAdapter);
     }
     public void sortCongViecList(ArrayList<CongViec> congViecList) {
