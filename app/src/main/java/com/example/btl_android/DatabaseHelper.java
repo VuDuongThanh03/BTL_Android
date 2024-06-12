@@ -52,7 +52,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
     private void populateInitialData(final SQLiteDatabase db) {
         db.execSQL(INSERT_TABLE_SINHVIEN);
         db.execSQL(INSERT_TABLE_CONGVIEC);
@@ -89,6 +88,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("hocKy", hocPhan.getHocKy());
         values.put("hinhThucThi", hocPhan.getHinhThucThi());
         values.put("heSo", hocPhan.getHeSo());
+        db.insert("HocPhan", null, values);
+        db.close();
     }
 
     public void updateHocPhan(HocPhan hocPhan) {
@@ -102,6 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("heSo", hocPhan.getHeSo());
 
         db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
+        db.close();
     }
 
     public void deleteHocPhan(String maHp) {
@@ -120,6 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE maHp = ?", new String[]{maHp});
         boolean isUnique = !cursor.moveToFirst();
         cursor.close();
+        db.close();
         return isUnique;
     }
 
@@ -146,6 +149,382 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return hocPhanList;
     }
 
+    public void themDuLieuHocPhanMoiLan() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Xóa dữ liệu cũ để tránh trùng lặp, nếu không muốn xóa thì bỏ qua bước này
+        db.execSQL("DELETE FROM HocPhan");
+
+        // Thêm dữ liệu mới
+        themHocPhanMau(db);
+
+        db.close();
+    }
+
+    private void themHocPhanMau(SQLiteDatabase db) {
+        ContentValues cv = new ContentValues();
+
+        // Thêm môn học cho Học kỳ 1
+        cv.put("maHp", "LP6010");
+        cv.put("tenHp", "Triết học Mác-Lênin");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "BS6002");
+        cv.put("tenHp", "Giải tích");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 0);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        // Thêm các môn học khác tương tự cho Học kỳ 1
+        cv.put("maHp", "BS6001");
+        cv.put("tenHp", "Đại số tuyến tính");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6016");
+        cv.put("tenHp", "Vật lý đại cương");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6015");
+        cv.put("tenHp", "Kỹ thuật lập trình");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6017");
+        cv.put("tenHp", "Cấu trúc dữ liệu");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6018");
+        cv.put("tenHp", "Lý thuyết thông tin");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6019");
+        cv.put("tenHp", "Mạng máy tính");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6020");
+        cv.put("tenHp", "Hệ điều hành");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6021");
+        cv.put("tenHp", "Nhập môn AI");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 1);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        // Thêm môn học cho Học kỳ 2
+        cv.put("maHp", "MH2_01");
+        cv.put("tenHp", "Toán cao cấp");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_02");
+        cv.put("tenHp", "Xác suất thống kê");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 0);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_03");
+        cv.put("tenHp", "Phân tích thiết kế hệ thống");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_04");
+        cv.put("tenHp", "An ninh mạng");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_05");
+        cv.put("tenHp", "Kiến trúc máy tính");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_06");
+        cv.put("tenHp", "Phát triển phần mềm");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_07");
+        cv.put("tenHp", "Trí tuệ nhân tạo nâng cao");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_08");
+        cv.put("tenHp", "Khoa học dữ liệu");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_09");
+        cv.put("tenHp", "Phát triển game");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "MH2_10");
+        cv.put("tenHp", "Blockchain");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 2);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        // Học kỳ 3
+        cv.put("maHp", "LP6012");
+        cv.put("tenHp", "Chủ nghĩa xã hội khoa học");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 3);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6035");
+        cv.put("tenHp", "Toán rời rạc");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 0);
+        cv.put("hocKy", 3);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6126");
+        cv.put("tenHp", "Hệ thống cơ sở dữ liệu");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 3);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6067");
+        cv.put("tenHp", "Kiến trúc máy tính và hệ điều hành");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 3);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6120");
+        cv.put("tenHp", "Lập trình hướng đối tượng");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 3);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        // Học kỳ 4
+        cv.put("maHp", "LP6013");
+        cv.put("tenHp", "Lịch sử Đảng Cộng sản Việt Nam");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 4);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6001");
+        cv.put("tenHp", "An toàn và bảo mật thông tin");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 0);
+        cv.put("hocKy", 4);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6002");
+        cv.put("tenHp", "Cấu trúc dữ liệu và giải thuật");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 4);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        // Học kỳ 5
+        cv.put("maHp", "LP6004");
+        cv.put("tenHp", "Tư tưởng Hồ Chí Minh");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 5);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6071");
+        cv.put("tenHp", "Phát triển dự án công nghệ thông tin");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 0);
+        cv.put("hocKy", 5);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6100");
+        cv.put("tenHp", "Thiết kế đồ họa 2D");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 5);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        // Học kỳ 6
+        cv.put("maHp", "IT6047");
+        cv.put("tenHp", "Học máy");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 6);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6057");
+        cv.put("tenHp", "Phát triển ứng dụng thương mại điện tử");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 0);
+        cv.put("hocKy", 6);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6125");
+        cv.put("tenHp", "Thiết kế web nâng cao");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 6);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        // Học kỳ 7
+        cv.put("maHp", "IT6122");
+        cv.put("tenHp", "Đồ án chuyên ngành");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 0);
+        cv.put("hocKy", 7);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6013");
+        cv.put("tenHp", "Kiểm thử phần mềm");
+        cv.put("soTinChiLyThuyet", 2);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 7);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "25-25-50");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6029");
+        cv.put("tenHp", "Phát triển ứng dụng trên thiết bị di động");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 1);
+        cv.put("hocKy", 7);
+        cv.put("hinhThucThi", "Thi trên máy tính");
+        cv.put("heSo", "20-20-60");
+        db.insert("HocPhan", null, cv);
+
+        // Học kỳ 8
+        cv.put("maHp", "IT6129");
+        cv.put("tenHp", "Đồ án tốt nghiệp");
+        cv.put("soTinChiLyThuyet", 4);
+        cv.put("soTinChiThucHanh", 5);
+        cv.put("hocKy", 8);
+        cv.put("hinhThucThi", "Tự luận");
+        cv.put("heSo", "30-30-40");
+        db.insert("HocPhan", null, cv);
+
+        cv.put("maHp", "IT6128");
+        cv.put("tenHp", "Thực tập doanh nghiệp");
+        cv.put("soTinChiLyThuyet", 3);
+        cv.put("soTinChiThucHanh", 3);
+        cv.put("hocKy", 8);
+        cv.put("hinhThucThi", "Bài tập lớn");
+        cv.put("heSo", "20-30-50");
+        db.insert("HocPhan", null, cv);
+    }
+
     public boolean updateDiem(Diem diem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -155,6 +534,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("diemKiVong", diem.getDiemKiVong());
         values.put("cuoiKy", diem.getCuoiKy());
         long res = db.update("KetQuaHocPhan", values, "maLop = ?", new String[]{diem.getMaLop()});
+        db.close();
         return res > 0;
     }
 
@@ -232,6 +612,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("noiDung", noiDung);
         values.put("thoiGian", thoiGian);
         long res = db.insert("ThongBao", null, values);
+        db.close();
         return res > 0;
     }
 
@@ -250,7 +631,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 thongBaoList.add(thongBao);
             } while (cursor.moveToNext());
         }
-        cursor.close();;
+        cursor.close();
         db.close();
         return thongBaoList;
     }
@@ -267,7 +648,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
                 String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
                 int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
-                CongViec congViec = new CongViec(tencongviec,chitietcongviec,mucuutien,thoihangio,thoihanngay,trangthai);
+                CongViec congViec = new CongViec(tencongviec,chitietcongviec,mucuutien,thoihanngay,thoihanngay,trangthai);
 
                 congViecList.add(congViec);
             } while (cursor.moveToNext());
@@ -375,7 +756,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
 
-    // LichHoc table
+    // ThongBao table
     private static final String CREATE_TABLE_THONGBAO =
             "CREATE TABLE IF NOT EXISTS ThongBao (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -516,33 +897,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "(34, '2022HP001.1', 'Tuesday', '2023-08-13', 142, 'Charlotte Wright', '83-84', 'Room PP', 0, 0), " +
                     "(35, '2022HP009.7', 'Wednesday', '2023-08-14', 143, 'Alexander Scott', '85-86', 'Room QQ', 1, 0), " +
                     "(36, '2022HP001.3', 'Thursday', '2023-08-15', 144, 'Sofia Green', '87-88', 'Room RR', 0, 1), " +
-                    "(37, '2022HP003.3', 'Friday', '2023-08-16', 145, 'Lucas Nelson', '89-90', 'Room SS', 1, 0), " +
-                    "(38, '2023HP005.9', 'Monday', '2023-08-19', 146, 'Ava Carter', '91-92', 'Room TT', 0, 0), " +
-                    "(39, '2023HP006.1', 'Tuesday', '2023-08-20', 147, 'Logan Hill', '93-94', 'Room UU', 1, 1), " +
-                    "(40, '2023HP008.3', 'Wednesday', '2023-08-21', 148, 'Sophie Foster', '95-96', 'Room VV', 0, 0), " +
-                    "(41, '2023HP002.2', 'Thursday', '2023-08-22', 149, 'Henry Reed', '97-98', 'Room WW', 1, 0), " +
-                    "(42, '2023HP009.4', 'Friday', '2023-08-23', 150, 'Aiden Gray', '99-100', 'Room XX', 0, 1), " +
-                    "(43, '2023HP001.2', 'Monday', '2023-08-26', 151, 'Ella Brooks', '101-102', 'Room YY', 1, 0), " +
-                    "(44, '2023HP006.5', 'Tuesday', '2023-08-27', 152, 'Leo Wood', '103-104', 'Room ZZ', 0, 0), " +
-                    "(45, '2023HP005.1', 'Wednesday', '2023-08-28', 153, 'Stella Cook', '105-106', 'Room AAA', 1, 1), " +
-                    "(46, '2023HP004.4', 'Thursday', '2023-08-29', 154, 'Zoe Murphy', '107-108', 'Room BBB', 0, 0), " +
-                    "(47, '2023HP008.2', 'Friday', '2023-08-30', 155, 'David Price', '109-110', 'Room CCC', 1, 0), " +
-                    "(48, '2023HP002.7', 'Monday', '2023-09-02', 156, 'Luna Rivera', '111-112', 'Room DDD', 0, 1), " +
-                    "(49, '2023HP003.3', 'Tuesday', '2023-09-03', 157, 'Hudson Ward', '113-114', 'Room EEE', 1, 0), " +
-                    "(50, '2023HP001.3', 'Wednesday', '2023-09-04', 158, 'Mila Brooks', '115-116', 'Room FFF', 0, 0), " +
-                    "(51, '2023HP004.3', 'Thursday', '2023-09-05', 159, 'Owen Watson', '117-118', 'Room GGG', 1, 1), " +
-                    "(52, '2024HP006.9', 'Friday', '2023-09-06', 160, 'Ruby Long', '119-120', 'Room HHH', 0, 0), " +
-                    "(53, '2024HP008.1', 'Monday', '2023-09-09', 161, 'Carter Hughes', '121-122', 'Room III', 1, 0), " +
-                    "(54, '2024HP007.3', 'Tuesday', '2023-09-10', 162, 'Samantha Price', '123-124', 'Room JJJ', 0, 1), " +
-                    "(55, '2024HP001.2', 'Wednesday', '2023-09-11', 163, 'Xavier Evans', '125-126', 'Room KKK', 1, 0), " +
-                    "(56, '2024HP009.4', 'Thursday', '2023-09-12', 164, 'Layla Ward', '127-128', 'Room LLL', 0, 0), " +
-                    "(57, '2024HP001.6', 'Friday', '2023-09-13', 165, 'Gabriel Bryant', '129-130', 'Room MMM', 1, 1), " +
-                    "(58, '2024HP005.5', 'Monday', '2023-09-16', 166, 'Molly Perry', '131-132', 'Room NNN', 0, 0), " +
-                    "(59, '2025HP003.9', 'Tuesday', '2023-09-17', 167, 'Anthony Lopez', '133-134', 'Room OOO', 1, 0), " +
-                    "(60, '2025HP008.1', 'Wednesday', '2023-09-18', 168, 'Nathan Ward', '135-136', 'Room PPP', 0, 1), " +
-                    "(61, '2025HP006.3', 'Thursday', '2023-09-19', 169, 'Aria Griffin', '137-138', 'Room QQQ', 1, 0), " +
-                    "(62, '2025HP002.2', 'Friday', '2023-09-20', 170, 'Eliana Rivera', '139-140', 'Room RRR', 0, 0), " +
-                    "(63, '2025HP001.4', 'Monday', '2023-09-23', 171, 'Riley Torres', '141-142', 'Room SSS', 1, 1), " +
-                    "(64, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
-                    "(65, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
+                    "(37, '2023HP005.9', 'Monday', '2023-08-19', 146, 'Ava Carter', '91-92', 'Room TT', 0, 0), " +
+                    "(38, '2023HP006.1', 'Tuesday', '2023-08-20', 147, 'Logan Hill', '93-94', 'Room UU', 1, 1), " +
+                    "(39, '2023HP008.3', 'Wednesday', '2023-08-21', 148, 'Sophie Foster', '95-96', 'Room VV', 0, 0), " +
+                    "(40, '2023HP002.2', 'Thursday', '2023-08-22', 149, 'Henry Reed', '97-98', 'Room WW', 1, 0), " +
+                    "(41, '2023HP009.4', 'Friday', '2023-08-23', 150, 'Aiden Gray', '99-100', 'Room XX', 0, 1), " +
+                    "(42, '2023HP001.2', 'Monday', '2023-08-26', 151, 'Ella Brooks', '101-102', 'Room YY', 1, 0), " +
+                    "(43, '2023HP006.5', 'Tuesday', '2023-08-27', 152, 'Leo Wood', '103-104', 'Room ZZ', 0, 0), " +
+                    "(44, '2023HP005.1', 'Wednesday', '2023-08-28', 153, 'Stella Cook', '105-106', 'Room AAA', 1, 1), " +
+                    "(45, '2023HP004.4', 'Thursday', '2023-08-29', 154, 'Zoe Murphy', '107-108', 'Room BBB', 0, 0), " +
+                    "(46, '2023HP008.2', 'Friday', '2023-08-30', 155, 'David Price', '109-110', 'Room CCC', 1, 0), " +
+                    "(47, '2023HP002.7', 'Monday', '2023-09-02', 156, 'Luna Rivera', '111-112', 'Room DDD', 0, 1), " +
+                    "(48, '2023HP003.3', 'Tuesday', '2023-09-03', 157, 'Hudson Ward', '113-114', 'Room EEE', 1, 0), " +
+                    "(49, '2023HP001.3', 'Wednesday', '2023-09-04', 158, 'Mila Brooks', '115-116', 'Room FFF', 0, 0), " +
+                    "(50, '2023HP004.3', 'Thursday', '2023-09-05', 159, 'Owen Watson', '117-118', 'Room GGG', 1, 1), " +
+                    "(51, '2024HP006.9', 'Friday', '2023-09-06', 160, 'Ruby Long', '119-120', 'Room HHH', 0, 0), " +
+                    "(52, '2024HP008.1', 'Monday', '2023-09-09', 161, 'Carter Hughes', '121-122', 'Room III', 1, 0), " +
+                    "(53, '2024HP007.3', 'Tuesday', '2023-09-10', 162, 'Samantha Price', '123-124', 'Room JJJ', 0, 1), " +
+                    "(54, '2024HP001.2', 'Wednesday', '2023-09-11', 163, 'Xavier Evans', '125-126', 'Room KKK', 1, 0), " +
+                    "(55, '2024HP009.4', 'Thursday', '2023-09-12', 164, 'Layla Ward', '127-128', 'Room LLL', 0, 0), " +
+                    "(56, '2024HP001.6', 'Friday', '2023-09-13', 165, 'Gabriel Bryant', '129-130', 'Room MMM', 1, 1), " +
+                    "(57, '2024HP005.5', 'Monday', '2023-09-16', 166, 'Molly Perry', '131-132', 'Room NNN', 0, 0), " +
+                    "(58, '2025HP003.9', 'Tuesday', '2023-09-17', 167, 'Anthony Lopez', '133-134', 'Room OOO', 1, 0), " +
+                    "(59, '2025HP008.1', 'Wednesday', '2023-09-18', 168, 'Nathan Ward', '135-136', 'Room PPP', 0, 1), " +
+                    "(60, '2025HP006.3', 'Thursday', '2023-09-19', 169, 'Aria Griffin', '137-138', 'Room QQQ', 1, 0), " +
+                    "(61, '2025HP002.2', 'Friday', '2023-09-20', 170, 'Eliana Rivera', '139-140', 'Room RRR', 0, 0), " +
+                    "(62, '2025HP001.4', 'Monday', '2023-09-23', 171, 'Riley Torres', '141-142', 'Room SSS', 1, 1), " +
+                    "(63, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
+                    "(64, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
 }
