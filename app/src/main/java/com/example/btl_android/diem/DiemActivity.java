@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -122,5 +123,13 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
         Intent intent = new Intent(DiemActivity.this, DiemChiTietActivity.class);
         intent.putExtra("DiemChiTiet", diem);
         DiemActivity.this.startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 1) {
+            setResult(1, null);
+        }
     }
 }

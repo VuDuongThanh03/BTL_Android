@@ -44,6 +44,8 @@ public class ThongBaoActivity extends AppCompatActivity {
         thongBaoAdapter = new ThongBaoAdapter(thongBaoList);
         rvThongBao.setAdapter(thongBaoAdapter);
 
+        setResult(1, null);
+
         btnQuayLai.setOnClickListener(v -> finish());
     }
 }

@@ -1,5 +1,8 @@
 package com.example.btl_android.diem;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -32,12 +35,12 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
         
         public LinearLayout diemHp;
         public LinearLayout rvDiemHp;
-        public TextView tvTenHp, btnSua, tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvTongKet, tvLoai;
+        public TextView tvTenHp, btnCapNhat, tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvTongKet, tvLoai;
 
         public ViewHolder(View view) {
             super(view);
             tvTenHp = view.findViewById(R.id.tvTenHp);
-            btnSua = view.findViewById(R.id.btnSua);
+            btnCapNhat = view.findViewById(R.id.btnCapNhat);
             tvTx1 = view.findViewById(R.id.tvTx1);
             tvTx2 = view.findViewById(R.id.tvTx2);
             tvGiuaKy = view.findViewById(R.id.tvGiuaKy);
@@ -47,11 +50,12 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
             diemHp = view.findViewById(R.id.diemHp);
 
             diemHp.setOnClickListener(this);
-            btnSua.setOnClickListener(v -> {
+            btnCapNhat.setOnClickListener(v -> {
                 Diem diem = data.get((int) view.getTag());
+
                 Intent intent = new Intent((Context) listener, CapNhatDiemActivity.class);
                 intent.putExtra("Diem", diem);
-                ((Context) listener).startActivity(intent);
+                startActivityForResult((Activity) listener, intent, 1, null);
             });
         }
         @Override
