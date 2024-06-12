@@ -78,8 +78,8 @@ public class DiemChiTietActivity extends AppCompatActivity {
         tvDiem4.setText(diem.getDiem4() != null ? String.format("%.1f", diem.getDiem4()) : "-");
         tvDiemChu.setText(diem.getDiemChu() != null ? diem.getDiemChu() : "-");
         tvXepLoai.setText(diem.getXepLoai());
-        tvNghiLt.setText(String.valueOf(diem.getVangLt()));
-        tvNghiTh.setText(String.valueOf(diem.getVangTh()));
+        tvNghiLt.setText(String.valueOf(diem.getVangLt() * 2));
+        tvNghiTh.setText(String.valueOf(diem.getVangTh() * 3));
         tvDieuKien.setText(diem.getDieuKien());
     }
 }
