@@ -4,12 +4,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,9 +48,10 @@ public class Update_Timetable extends AppCompatActivity {
         btnXoa = findViewById(R.id.btnXoa);
         toolbar=findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ActionBar actionBar=getSupportActionBar();
         String tab="";
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 10; i++) {
             tab += "\t";
         }
         actionBar.setTitle(tab+"Cập Nhật Lịch Học");
@@ -138,12 +141,12 @@ public class Update_Timetable extends AppCompatActivity {
                 boolean isDeleted = myDB.deleteData(id);
                 if (isDeleted) {
                     // Xóa thành công, thực hiện các hành động phù hợp ở đây
-                    Toast.makeText(Update_Timetable.this, "Data deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Update_Timetable.this, "Dữ Liệu Đã Được Xóa Thành Công !", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Update_Timetable.this, TimeTable.class);
                     startActivity(intent);
                 } else {
                     // Không thể xóa hoặc không tìm thấy hàng để xóa
-                    Toast.makeText(Update_Timetable.this, "Failed to delete data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Update_Timetable.this, "Không Tìm Thấy Dữ Liệu Để Xóa !", Toast.LENGTH_SHORT).show();
                 }
 
             }

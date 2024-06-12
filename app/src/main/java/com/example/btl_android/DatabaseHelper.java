@@ -137,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
             db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
             db.execSQL(CREATE_TABLE_DIEMDANH);
-            String query="CREATE TABLE " + TABLE_THOIKHOABIEU+
+            String query="CREATE TABLE " + TABLE_THOIKHOABIEU +
                     "("+  COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_MON + " TEXT,"
                     + COLUMN_THU + " TEXT,"
@@ -147,10 +147,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COLUMN_TIET + " TEXT,"
                     + COLUMN_DIADIEM + " TEXT" + ")";
             db.execSQL(query);
+            String insertData = "INSERT INTO " + TABLE_THOIKHOABIEU + " ("
+                    + COLUMN_MON + ", "
+                    + COLUMN_THU + ", "
+                    + COLUMN_NGAY + ", "
+                    + COLUMN_GIANGVIEN + ", "
+                    + COLUMN_PHONG + ", "
+                    + COLUMN_TIET + ", "
+                    + COLUMN_DIADIEM + ") VALUES " +
+                    "('Thiết kế Web','Thứ 2','10/6/2024','Nguyễn Trung Phú(0902131386 - CNTT)','Phòng máy số 1-A1','Cơ sở 1','1,2,3')," +
+                    "('Tiếng Anh Công Nghệ Thông Tin 2','Thứ 3','11/6/2024','Bùi Phương Thảo(0389937161 - Trường NN-DL)','508-A9','Cơ sở 1','7,8')," +
+                    "('Phát triển ứng dụng trên thiết bị di động','Thứ 6','14/6/2024','Vũ Thị Dương(0904755919 - CNTT)','402-A9','Cơ sở 1','3,4,5')," +
+                    "('Thiết kế đồ hoạ 2D','Thứ 5','13/6/2024','Đỗ Mạnh Hùng(0916113319 - CNTT)','609-A9','Cơ sở 1','9,10,11')," +
+                    "('Đồ án chuyên ngành','Chủ nhật','16/6/2024','Nguyễn Bá Nghiễn (0358218310 - CNTT)','Phòng thực hành Khoa CNTT 06','Cơ sở 1','1,2,3,4,5,7,8,9,10,11');";
+            db.execSQL(insertData);
         } catch (final Exception e) {
             Log.e("Error", "There are some problems in creating database");
         }
     }
+
 
     @Override
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
@@ -245,6 +260,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return hocPhanList;
     }
+
     public void AddTimeTable(String mon, String thu, String ngay, String giangvien, String phong, String tiet, String diadiem)
     {
         SQLiteDatabase db=this.getWritableDatabase();
@@ -321,11 +337,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Ghi log kết quả cập nhật
         if (result > 0) {
             Log.d("updateDataTime", "Update Successful for row_id: " + row_id);
-            Toast.makeText(context, "Update Successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Cập Nhật Thành Công !!", Toast.LENGTH_SHORT).show();
             return true;
         } else {
             Log.d("updateDataTime", "Update Failed for row_id: " + row_id);
-            Toast.makeText(context, "Update Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Cập Nhật Không Thành Công !!", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
