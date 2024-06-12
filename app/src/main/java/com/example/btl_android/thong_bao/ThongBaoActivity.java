@@ -1,6 +1,7 @@
 package com.example.btl_android.thong_bao;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +19,8 @@ import java.util.List;
 /** @noinspection ALL*/
 public class ThongBaoActivity extends AppCompatActivity {
 
-    DatabaseHelper db;
+    private DatabaseHelper db;
+    private ImageView btnQuayLai;
     private RecyclerView rvThongBao;
     private List<ThongBao> thongBaoList;
     private ThongBaoAdapter thongBaoAdapter;
@@ -34,11 +36,14 @@ public class ThongBaoActivity extends AppCompatActivity {
         });
 
         db = new DatabaseHelper(this);
+        btnQuayLai = findViewById(R.id.imgQuayLai);
         rvThongBao = findViewById(R.id.rvThongBao);
         rvThongBao.setLayoutManager(new LinearLayoutManager(this));
 
         thongBaoList = db.getThongBao();
         thongBaoAdapter = new ThongBaoAdapter(thongBaoList);
         rvThongBao.setAdapter(thongBaoAdapter);
+
+        btnQuayLai.setOnClickListener(v -> finish());
     }
 }
