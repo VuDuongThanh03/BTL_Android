@@ -65,7 +65,12 @@ public class DiemChiTietActivity extends AppCompatActivity {
         tvSoTc.setText(String.valueOf(diem.getSoTinChiLt() + diem.getSoTinChiTh()));
         tvHinhThucThi.setText(diem.getHinhThucThi());
         tvLop.setText(diem.getMaLop());
-        tvHeSo.setText(diem.getHeSo());
+
+        String[] heSo = diem.getHeSo().split("-");
+        if (heSo.length <= 3) {
+            tvHeSo.setText(heSo[0] + "(TX1)-" + heSo[1] + "(TX2)-" + heSo[2] + "(CK)");
+        } else tvHeSo.setText(heSo[0] + "(TX1)-" + heSo[1] + "(TX2)-" + heSo[2] + "(GK)-" + heSo[3] + "(CK)");
+
         tvTx1.setText(diem.getTx1() != null ? String.format("%.1f", diem.getTx1()) : "-");
         tvTx2.setText(diem.getTx2() != null ? String.format("%.1f", diem.getTx2()) : "-");
         tvGiuaKy.setText(diem.getGiuaKy() != null ? String.format("%.1f", diem.getGiuaKy()) : "-");
