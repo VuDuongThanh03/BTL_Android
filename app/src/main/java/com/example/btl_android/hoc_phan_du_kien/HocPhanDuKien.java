@@ -43,6 +43,11 @@ public class HocPhanDuKien extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        databaseHelper = new DatabaseHelper(this);
+        // Gọi phương thức để luôn thêm dữ liệu
+        databaseHelper.themDuLieuHocPhanMoiLan();
+
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backtotrangchu);
 
