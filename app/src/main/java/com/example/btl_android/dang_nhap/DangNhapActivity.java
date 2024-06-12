@@ -62,9 +62,6 @@ public class DangNhapActivity extends AppCompatActivity {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getCount();
-//                Intent intentDangNhap = new Intent(DangNhapActivity.this, TrangChuActivity.class);
-//                startActivity(intentDangNhap);
                 if (etTenTk.length() == 0 || etMatKhau.length() == 0) {
                     Toast.makeText(DangNhapActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 } else {
@@ -80,6 +77,7 @@ public class DangNhapActivity extends AppCompatActivity {
                         Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
                         Intent intentDangNhap = new Intent(DangNhapActivity.this, TrangChuActivity.class);
+                        intentDangNhap.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intentDangNhap.putExtra("maSV", sinhVien.getMaSV() + "");
                         intentDangNhap.putExtra("maCN", sinhVien.getMaChuyenNganh());
                         intentDangNhap.putExtra("tenSV", sinhVien.getTenSV());

@@ -33,7 +33,7 @@ public class ThongTinActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         this.setContentView(R.layout.activity_thong_tin);
 
-        this.spn_chuyennganh = this.findViewById(R.id.spn_chuyennganh);
+        this.spn_chuyennganh = this.findViewById(R.id.spChuyenNganh);
         this.spn_khoa = this.findViewById(R.id.spn_khoa);
         this.btn_continue = this.findViewById(R.id.buttoncontinue);
         this.SPINNER_CHUYENNGANH();

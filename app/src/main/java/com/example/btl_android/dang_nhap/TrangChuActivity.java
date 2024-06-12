@@ -3,8 +3,6 @@ package com.example.btl_android.dang_nhap;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -48,7 +46,8 @@ public class TrangChuActivity extends AppCompatActivity {
 
         btnCongViec.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
-            TrangChuActivity.this.startActivity(intent);
+            startActivity(intent);
+        });
 
         btnDiem.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
@@ -57,17 +56,10 @@ public class TrangChuActivity extends AppCompatActivity {
 
         btnHocPhan.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKienActivity.class);
-            TrangChuActivity.this.startActivity(intent);
+            startActivity(intent);
         });
-        btnDiem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
-                TrangChuActivity.this.startActivity(intent);
-            }
-        });
+
         btnThongBao.setOnClickListener(v -> {
-            btnThongBao.setBackgroundResource(R.drawable.bell);
             Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
             startActivityForResult(intent, 1);
         });
