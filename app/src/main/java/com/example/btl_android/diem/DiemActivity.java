@@ -58,7 +58,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
         hocKy = "1";
 
         db = new DatabaseHelper(this);
-        db.getAllScoreModules();
+        db.getTatCaDiemHp();
     }
 
     private void setupButtons() {
@@ -93,7 +93,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
                         hocKy = button.getText().toString();
                         hocKy = String.valueOf(hocKy.charAt(hocKy.length() - 1));
-                        diemList = db.getScoreModulesBySemester(hocKy);
+                        diemList = db.getDiemHpTheoKy(hocKy);
                         if (diemList.isEmpty()) {
                             Toast.makeText(DiemActivity.this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                         }
@@ -107,7 +107,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     protected void onResume() {
-        diemList = db.getScoreModulesBySemester(hocKy);
+        diemList = db.getDiemHpTheoKy(hocKy);
         diemHpAdapter = new DiemAdapter(diemList, this, R.id.rvDiemHp);
         rvDiemHp.setAdapter(diemHpAdapter);
         super.onResume();

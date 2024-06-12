@@ -138,7 +138,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Ghi chú: Gõ . để bỏ qua"
+        android:text="Ghi chú: Gõ . để xóa điểm"
         android:textStyle="italic"
         android:textSize="16sp" />
 

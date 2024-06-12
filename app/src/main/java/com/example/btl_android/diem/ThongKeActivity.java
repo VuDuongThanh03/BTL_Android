@@ -207,7 +207,7 @@ public class ThongKeActivity extends AppCompatActivity {
         lineChart.getDescription().setEnabled(false);
         lineChart.animateY(1000, Easing.EaseInOutQuad);
 
-        MyMarkerView markerView = new MyMarkerView(this, R.layout.custommv_chu_thich, 0);
+        ChuThichMarkerView markerView = new ChuThichMarkerView(this, R.layout.custommv_chu_thich, 0);
         markerView.setChartView(lineChart);
         lineChart.setMarker(markerView);
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -299,7 +299,7 @@ public class ThongKeActivity extends AppCompatActivity {
         barChart.getDescription().setEnabled(false);
         barChart.animateY(1000, Easing.EaseInOutQuad);
 
-        MyMarkerView markerView = new MyMarkerView(this, R.layout.custommv_chu_thich, 1);
+        ChuThichMarkerView markerView = new ChuThichMarkerView(this, R.layout.custommv_chu_thich, 1);
         markerView.setChartView(barChart);
         barChart.setMarker(markerView);
         barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -451,7 +451,7 @@ public class ThongKeActivity extends AppCompatActivity {
         legend.setTextSize(12f);
         combinedChart.getDescription().setEnabled(false);
 
-        MyMarkerView markerView = new MyMarkerView(this, R.layout.custommv_chu_thich, 2);
+        ChuThichMarkerView markerView = new ChuThichMarkerView(this, R.layout.custommv_chu_thich, 2);
         markerView.setChartView(combinedChart);
         combinedChart.setMarker(markerView);
         combinedChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {

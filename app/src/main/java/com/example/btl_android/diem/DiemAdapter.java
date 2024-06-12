@@ -30,7 +30,7 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         
-        LinearLayout diemHp;
+        public LinearLayout diemHp;
         public LinearLayout rvDiemHp;
         public TextView tvTenHp, btnSua, tvTx1, tvTx2, tvGiuaKy, tvCuoiKy, tvTongKet, tvLoai;
 

@@ -15,52 +15,44 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
-
+        <activity
+            android:name=".thong_bao.ThongBaoActivity"
+            android:exported="false" />
         <activity
             android:name=".hoc_phan_du_kien.ThemHocPhanActivity"
             android:exported="false" />
-
         <activity
             android:name=".hoc_phan_du_kien.HocPhanDuKienActivity"
             android:exported="false" />
-
         <activity
             android:name=".diem.CapNhatDiemActivity"
             android:exported="false" />
-
         <activity
             android:name=".diem.ThongKeActivity"
             android:exported="false" />
-
         <activity
             android:name=".diem.DiemChiTietActivity"
             android:exported="false" />
-
         <activity
             android:name=".diem.DiemActivity"
             android:exported="false" />
-
         <activity
             android:name=".cong_viec.CongViecActivity"
             android:exported="false" />
-
         <activity
             android:name=".dang_nhap.TrangChuActivity"
             android:exported="false" />
-
         <activity
             android:name=".dang_nhap.ThongTinActivity"
             android:exported="false" />
-
         <activity
             android:name=".dang_nhap.DangNhapActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <receiver

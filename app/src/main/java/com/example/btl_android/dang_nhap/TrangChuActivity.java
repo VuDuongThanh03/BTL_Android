@@ -2,6 +2,7 @@ package com.example.btl_android.dang_nhap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -12,11 +13,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.R;
 import com.example.btl_android.diem.DiemActivity;
+import com.example.btl_android.thong_bao.ThongBaoActivity;
 
 /** @noinspection ALL*/
 public class TrangChuActivity extends AppCompatActivity {
 
     LinearLayout btnDiem;
+    ImageView btnThongBao;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -30,9 +33,15 @@ public class TrangChuActivity extends AppCompatActivity {
         });
 
         btnDiem = findViewById(R.id.btnDiem);
+        btnThongBao = findViewById(R.id.imgThongBao);
 
         btnDiem.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
+            TrangChuActivity.this.startActivity(intent);
+        });
+
+        btnThongBao.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
             TrangChuActivity.this.startActivity(intent);
         });
     }

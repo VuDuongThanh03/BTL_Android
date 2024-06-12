@@ -16,6 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /** @noinspection ALL*/
 public class CapNhatDiemActivity extends AppCompatActivity {
 
@@ -97,7 +100,19 @@ public class CapNhatDiemActivity extends AppCompatActivity {
 
             boolean res = db.updateDiem(diem);
             if (res) {
-                db.getAllScoreModules();
+                db.getTatCaDiemHp();
+                String tieuDe = "Bạn đã cập nhật điểm học phần " + diem.getTenHp() + " thành công!";
+
+                StringBuilder builder = new StringBuilder();
+                builder.append(diem.getTx1() == null ? "Bạn đã xóa điểm TX1\n" : "Bạn đã cập nhật điểm TX1 thành " + diem.getTx1() + "\n");
+                builder.append(diem.getTx2() == null ? "Bạn đã xóa điểm TX2\n" : "Bạn đã cập nhật điểm TX2 thành " + diem.getTx2() + "\n");
+                builder.append(diem.getGiuaKy() == null ? "Bạn đã xóa điểm Giữa kỳ\n" : "Bạn đã cập nhật điểm Giữa kỳ thành " + diem.getGiuaKy() + "\n");
+                builder.append(diem.getDiemKiVong() == null ? "Bạn đã xóa Điểm kì vọng\n" : "Bạn đã cập nhật điểm Điểm kì vọng thành " + diem.getDiemKiVong() + "\n");
+                builder.append(diem.getCuoiKy() == null ? "Bạn đã xóa điểm Cuối kỳ\n" : "Bạn đã cập nhật điểm Cuối kỳ thành " + diem.getCuoiKy());
+                String noiDung = builder.toString();
+
+                String thoiGian = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy"));
+                db.updateThongBao(tieuDe, noiDung, thoiGian);
                 Toast.makeText(this, "Cập nhật điểm thành công", Toast.LENGTH_LONG).show();
                 finish();
             }

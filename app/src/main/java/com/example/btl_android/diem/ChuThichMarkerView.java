@@ -21,16 +21,16 @@ import java.util.Comparator;
 import java.util.List;
 
 /** @noinspection ALL*/
-public class MyMarkerView extends MarkerView {
+public class ChuThichMarkerView extends MarkerView {
 
-    private final TextView tvTitle;
-    private final TextView tvKetQua;
+    private final TextView tvTieuDe;
+    private final TextView tvNoiDung;
     private int chartId;
 
-    public MyMarkerView(Context context, int layoutResource, int chartId) {
+    public ChuThichMarkerView(Context context, int layoutResource, int chartId) {
         super(context, layoutResource);
-        tvTitle = findViewById(R.id.tvTitle);
-        tvKetQua = findViewById(R.id.tvKetQua);
+        tvTieuDe = findViewById(R.id.tvTieuDe);
+        tvNoiDung = findViewById(R.id.tvNoiDung);
         this.chartId = chartId;
     }
 
@@ -58,17 +58,17 @@ public class MyMarkerView extends MarkerView {
                 }
                 if (info.charAt(info.length() - 1) == '\n')
                     info.deleteCharAt(info.length() - 1);
-                tvKetQua.setText(info.toString());
+                tvNoiDung.setText(info.toString());
             } else {
-                tvKetQua.setText("Không có\ndữ liệu");
+                tvNoiDung.setText("Không có\ndữ liệu");
             }
         } else {
             if (e instanceof BarEntry) {
-                tvTitle.setText("Điểm tổng kết");
-                if (yIndex > 0) tvKetQua.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
-                else tvKetQua.setText("Không có\ndữ liệu");
+                tvTieuDe.setText("Điểm tổng kết");
+                if (yIndex > 0) tvNoiDung.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
+                else tvNoiDung.setText("Không có\ndữ liệu");
             } else {
-                tvTitle.setText("Số lượng\nđiểm HK" + (xIndex + 1));
+                tvTieuDe.setText("Số lượng\nđiểm HK" + (xIndex + 1));
                 Chart chart = getChartView();
                 CombinedData combinedData = ((CombinedChart) chart).getCombinedData();
                 StringBuilder info = new StringBuilder();
@@ -94,7 +94,7 @@ public class MyMarkerView extends MarkerView {
                 if (info.length() > 0 && info.charAt(info.length() - 1) == '\n') {
                     info.deleteCharAt(info.length() - 1);
                 }
-                tvKetQua.setText(info);
+                tvNoiDung.setText(info);
             }
         }
         super.refreshContent(e, highlight);
