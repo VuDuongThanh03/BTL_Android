@@ -160,13 +160,15 @@
 
         <Button
             android:id="@+id/buttoncontinue"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60px"
-            android:layout_marginBottom="60px"
+            android:layout_marginVertical="60px"
+            android:layout_gravity="center"
+            android:background="@drawable/button_login"
+            app:backgroundTint="@null"
+            android:textStyle="bold"
+            android:textSize="14sp"
             android:text="Tiếp theo" />
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

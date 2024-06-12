@@ -30,7 +30,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     List<String> hocKyList;
     List<Diem> diemList;
     private DatabaseHelper db;
-    private ImageButton btnQuayLai, btnTongKet;
+    private ImageButton btnQuayLai, btnThongKe;
     private LinearLayout btnHocKySet;
     private Button lastSelectHocKy;
     private RecyclerView rvDiemHp;
@@ -54,21 +54,21 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
     private void getWidget() {
         btnQuayLai = findViewById(R.id.imgQuayLai);
-        btnTongKet = findViewById(R.id.imageTongKet);
+        btnThongKe = findViewById(R.id.imgThongKe);
         rvDiemHp = findViewById(R.id.rvDiemHp);
         hocKyList = new ArrayList<>();
         diemList = new ArrayList<>();
         hocKy = "1";
 
         db = new DatabaseHelper(this);
-        db.getAllScoreModules();
+        db.getTatCaDiemHp();
     }
 
     private void setupButtons() {
         btnQuayLai.setOnClickListener(v -> finish());
 
-        btnTongKet.setOnClickListener(v -> {
-            final Intent intent = new Intent(DiemActivity.this, TongKetActivity.class);
+        btnThongKe.setOnClickListener(v -> {
+            final Intent intent = new Intent(DiemActivity.this, ThongKeActivity.class);
             DiemActivity.this.startActivity(intent);
         });
 
@@ -90,13 +90,13 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
                     public void onClick(View v) {
                         button.setBackgroundResource(R.drawable.button_selected);
                         if (lastSelectHocKy != null && lastSelectHocKy != button) {
-                            lastSelectHocKy.setBackgroundResource(R.drawable.button_default);
+                            lastSelectHocKy.setBackgroundResource(R.drawable.button_default1);
                         }
                         lastSelectHocKy = button;
 
                         hocKy = button.getText().toString();
                         hocKy = String.valueOf(hocKy.charAt(hocKy.length() - 1));
-                        diemList = db.getScoreModulesBySemester(hocKy);
+                        diemList = db.getDiemHpTheoKy(hocKy);
                         if (diemList.isEmpty()) {
                             Toast.makeText(DiemActivity.this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                         }
@@ -110,7 +110,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     protected void onResume() {
-        diemList = db.getScoreModulesBySemester(hocKy);
+        diemList = db.getDiemHpTheoKy(hocKy);
         diemHpAdapter = new DiemAdapter(diemList, this, R.id.rvDiemHp);
         rvDiemHp.setAdapter(diemHpAdapter);
         super.onResume();

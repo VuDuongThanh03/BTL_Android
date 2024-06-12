@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +35,9 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
@@ -42,19 +47,22 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class TongKetActivity extends AppCompatActivity {
+public class ThongKeActivity extends AppCompatActivity {
+    private TextView tvXepLoai, tvTbc;
     private ImageButton btnQuayLai;
     private LineChart lineChart;
     private BarChart barChart;
     private CombinedChart combinedChart;
     private DatabaseHelper db;
     private int[][] diemChuByHocKy, diemSoByHocKy;
+    private float[] diemTkByHocKy;
+    private int maxCnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        this.setContentView(R.layout.activity_tong_ket);
+        this.setContentView(R.layout.activity_thong_ke);
         ViewCompat.setOnApplyWindowInsetsListener(this.findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -65,47 +73,83 @@ public class TongKetActivity extends AppCompatActivity {
         setupLineChart();
         setupBarChart();
         setupStackedAreaChart();
-
+        setXepLoaiVaTbc();
         btnQuayLai.setOnClickListener(v -> finish());
     }
 
     private void getWidget() {
+        tvXepLoai = findViewById(R.id.tvXepLoai);
+        tvTbc = findViewById(R.id.tvTbc);
         btnQuayLai = findViewById(R.id.imgQuayLai);
         lineChart = findViewById(R.id.lineChart);
         barChart = findViewById(R.id.barChart);
         combinedChart = findViewById(R.id.combinedChart);
+        maxCnt = 0;
         db = new DatabaseHelper(this);
+    }
+
+    private void setXepLoaiVaTbc() {
+        String xepLoai = "";
+        float tbc = 0.0f, sumOfDiemTk = 0.0f;
+        float cnt = 0.0f;
+        for (int i = 0; i < 8; i++) {
+            if (diemTkByHocKy[i] > 0.0f) {
+                cnt += 1.0f;
+                sumOfDiemTk += diemTkByHocKy[i];
+            }
+        }
+        if (cnt != 0.0f) tbc = sumOfDiemTk / cnt;
+
+        if (tbc == 0.0f) xepLoai = "-";
+        else if (tbc < 1.0f) xepLoai = "Kém";
+        else if (tbc < 2.0f) xepLoai = "Yếu";
+        else if (tbc < 2.5f) xepLoai = "Trung bình";
+        else if (tbc < 3.2f) xepLoai = "Khá";
+        else if (tbc < 3.6f) xepLoai = "Giỏi";
+        else xepLoai = "Xuất sắc";
+
+        tvXepLoai.setText(xepLoai);
+        tvTbc.setText(tbc == 0.0f ? "-" : String.format("%.2f", tbc));
     }
 
     private void setupLineChart() {
         diemChuByHocKy = new int[8][8];
         for (Diem diem : db.allDiemHpList) {
             int hocKy = diem.getHocKy() - 1;
-            if (diem.getDiemChu().equals("-")) continue;
-            switch (diem.getDiemChu()) {
+            String diemChu = diem.getDiemChu();
+            if (diemChu.equals("-")) continue;
+            switch (diemChu) {
                 case "F":
                     diemChuByHocKy[0][hocKy]++;
+                    maxCnt = Math.max(maxCnt, diemChuByHocKy[0][hocKy]);
                     break;
                 case "D":
                     diemChuByHocKy[1][hocKy]++;
+                    maxCnt = Math.max(maxCnt, diemChuByHocKy[1][hocKy]);
                     break;
                 case "D+":
                     diemChuByHocKy[2][hocKy]++;
+                    maxCnt = Math.max(maxCnt, diemChuByHocKy[2][hocKy]);
                     break;
                 case "C":
                     diemChuByHocKy[3][hocKy]++;
+                    maxCnt = Math.max(maxCnt, diemChuByHocKy[3][hocKy]);
                     break;
                 case "C+":
                     diemChuByHocKy[4][hocKy]++;
+                    maxCnt = Math.max(maxCnt, diemChuByHocKy[4][hocKy]);
                     break;
                 case "B":
                     diemChuByHocKy[5][hocKy]++;
+                    maxCnt = Math.max(maxCnt, diemChuByHocKy[5][hocKy]);
                     break;
                 case "B+":
                     diemChuByHocKy[6][hocKy]++;
+                    maxCnt = Math.max(maxCnt, diemChuByHocKy[6][hocKy]);
                     break;
                 case "A":
                     diemChuByHocKy[7][hocKy]++;
+                    maxCnt = Math.max(maxCnt, diemChuByHocKy[7][hocKy]);
                     break;
             }
         }
@@ -125,16 +169,17 @@ public class TongKetActivity extends AppCompatActivity {
         }
 
         LineDataSet lineDataSet = new LineDataSet(diemChuEntries, "Điểm chữ");
-        lineDataSet.setColor(Color.rgb(104, 241, 175));
+        lineDataSet.setColor(Color.parseColor("#4CAF50"));
         lineDataSet.setDrawFilled(true);
-        lineDataSet.setFillColor(Color.rgb(104, 241, 175));
-        lineDataSet.setLineWidth(3f);
-        lineDataSet.setValueTextColor(Color.WHITE);
-        lineDataSet.setValueTextSize(0f);
+        lineDataSet.setFillColor(Color.parseColor("#4CAF50"));
+        lineDataSet.setLineWidth(4f);
+        lineDataSet.setValueTextColor(Color.DKGRAY);
+        lineDataSet.setValueTextSize(12f);
+        lineDataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
         lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
         lineChart.setData(new LineData(lineDataSet));
-
+        
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
@@ -146,6 +191,7 @@ public class TongKetActivity extends AppCompatActivity {
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setDrawAxisLine(false);
         yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(lineChart.getYMax() + 1.0f);
         yAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -156,12 +202,12 @@ public class TongKetActivity extends AppCompatActivity {
         yAxis.setTextSize(12f);
         yAxis.setXOffset(12f);
         lineChart.getAxisRight().setEnabled(false);
-
+        
         lineChart.getLegend().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.animateY(1000, Easing.EaseInOutQuad);
 
-        MyMarkerView markerView = new MyMarkerView(this, R.layout.custom_marker_view, 0);
+        ChuThichMarkerView markerView = new ChuThichMarkerView(this, R.layout.custommv_chu_thich, 0);
         markerView.setChartView(lineChart);
         lineChart.setMarker(markerView);
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -218,13 +264,13 @@ public class TongKetActivity extends AppCompatActivity {
         }
 
         BarDataSet barDataSet = new BarDataSet(diemSoEntries, "Điểm số");
-        barDataSet.setColor(Color.rgb(104, 241, 175));
-        barDataSet.setValueTextColor(Color.WHITE);
-        barDataSet.setValueTextSize(0f);
+        barDataSet.setColor(Color.parseColor("#68F1AF"));
+        barDataSet.setValueTextColor(Color.DKGRAY);
+        barDataSet.setValueTextSize(12f);
         barDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
         barChart.setData(new BarData(barDataSet));
-
+        
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setYOffset(-8f);
@@ -237,6 +283,7 @@ public class TongKetActivity extends AppCompatActivity {
 
         YAxis yAxis = barChart.getAxisLeft();
         yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(barChart.getYMax() + 1.0f);
         yAxis.setXOffset(12f);
         yAxis.setTextSize(12f);
         yAxis.setValueFormatter(new ValueFormatter() {
@@ -252,7 +299,7 @@ public class TongKetActivity extends AppCompatActivity {
         barChart.getDescription().setEnabled(false);
         barChart.animateY(1000, Easing.EaseInOutQuad);
 
-        MyMarkerView markerView = new MyMarkerView(this, R.layout.custom_marker_view, 1);
+        ChuThichMarkerView markerView = new ChuThichMarkerView(this, R.layout.custommv_chu_thich, 1);
         markerView.setChartView(barChart);
         barChart.setMarker(markerView);
         barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -296,7 +343,8 @@ public class TongKetActivity extends AppCompatActivity {
                 diemHpByHocKy.get(hocKy).add(new Pair<>(diem4, soTc));
             }
         }
-        float[] diemTkByHocKy = new float[8];
+
+        diemTkByHocKy = new float[8];
         for (int i = 0; i < 8; i++) {
             Float sumOfHpxTc = 0.0f, sumOfTc = 0.0f;
             for (Pair<Float, Float> hp : diemHpByHocKy.get(i)) {
@@ -312,9 +360,10 @@ public class TongKetActivity extends AppCompatActivity {
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, null);
-        barDataSet.setColor(Color.rgb(104, 241, 175));
-        barDataSet.setValueTextColor(Color.WHITE);
+        barDataSet.setColor(Color.parseColor("#68F1AF"));
+        barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(12f);
+        barDataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
         barDataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -333,15 +382,14 @@ public class TongKetActivity extends AppCompatActivity {
             }
         }
 
-        int[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
-                Color.CYAN, Color.LTGRAY, Color.GRAY, Color.BLACK};
+        String[] colors = { "#F50057", "#FF5733", "#FFC300", "#4CAF50", "#673AB7", "#2196F3", "#F45eEf" , "#00BCD4" };
         List<LineDataSet> lineDataSets = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            LineDataSet lineDataSet = new LineDataSet(lineEntriesList.get(i), null);
+            LineDataSet lineDataSet = new LineDataSet(lineEntriesList.get(i), letterScores[i]);
             lineDataSet.setLineWidth(3f);
-            lineDataSet.setColor(colors[i]);
-            lineDataSet.setCircleColor(colors[i]);
-            lineDataSet.setValueTextColor(Color.WHITE);
+            lineDataSet.setColor(Color.parseColor(colors[i]));
+            lineDataSet.setCircleColor(Color.parseColor(colors[i]));
+            lineDataSet.setHighLightColor(Color.TRANSPARENT);
             lineDataSet.setValueTextSize(0f);
             lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
             lineDataSets.add(lineDataSet);
@@ -380,6 +428,8 @@ public class TongKetActivity extends AppCompatActivity {
         yAxis.setLabelCount((int) combinedChart.getData().getYMax());
         yAxis.setTextSize(12f);
         yAxis.setXOffset(12f);
+        yAxis.setAxisMinimum(combinedData.getYMin() - .1f);
+        yAxis.setAxisMaximum(maxCnt < 4 ? 4.0f : (float) maxCnt + 1.0f);
 
         combinedChart.getAxisRight().setEnabled(false);
 
@@ -389,12 +439,11 @@ public class TongKetActivity extends AppCompatActivity {
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         legend.setWordWrapEnabled(true);
 
-        List<String> legendLabels = Arrays.asList("F", "D", "D+", "C", "C+", "B", "B+", "A");
         List<LegendEntry> legendEntries = new ArrayList<>();
-        for (int i = 0; i < legendLabels.size(); i++) {
+        for (int i = 0; i < 8; i++) {
             LegendEntry entry = new LegendEntry();
-            entry.label = legendLabels.get(i);
-            entry.formColor = colors[i];
+            entry.label = letterScores[i];
+            entry.formColor = Color.parseColor(colors[i]);
             legendEntries.add(entry);
         }
         legend.setCustom(legendEntries);
@@ -402,7 +451,7 @@ public class TongKetActivity extends AppCompatActivity {
         legend.setTextSize(12f);
         combinedChart.getDescription().setEnabled(false);
 
-        MyMarkerView markerView = new MyMarkerView(this, R.layout.custom_marker_view, 2);
+        ChuThichMarkerView markerView = new ChuThichMarkerView(this, R.layout.custommv_chu_thich, 2);
         markerView.setChartView(combinedChart);
         combinedChart.setMarker(markerView);
         combinedChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -413,6 +462,71 @@ public class TongKetActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
+            }
+        });
+        combinedChart.setOnChartGestureListener(new OnChartGestureListener() {
+            @Override
+            public void onChartGestureStart(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {}
+
+            @Override
+            public void onChartGestureEnd(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {}
+
+            @Override
+            public void onChartLongPressed(MotionEvent motionEvent) {}
+
+            @Override
+            public void onChartDoubleTapped(MotionEvent motionEvent) {}
+
+            @Override
+            public void onChartSingleTapped(MotionEvent me) {
+                Highlight highlight = combinedChart.getHighlightByTouchPoint(me.getX(), me.getY());
+                if (highlight == null) return;
+                int selectedIndex = highlight.getDataIndex();
+                if (selectedIndex == 0) {
+                    float x = highlight.getX();
+                    float y = highlight.getY();
+
+                    List<LineDataSet> setsToHighlight = new ArrayList<>();
+                    List<LineDataSet> setsToUpdate = new ArrayList<>();
+                    for (ILineDataSet lineDataSet : lineData.getDataSets()) {
+                        for (Entry entry : lineDataSet.getEntriesForXValue(x)) {
+                            if (entry.getY() == y) {
+                                setsToHighlight.add((LineDataSet) lineDataSet);
+                            } else {
+                                setsToUpdate.add((LineDataSet) lineDataSet);
+                            }
+                        }
+                    }
+                    for (LineDataSet lineDataSet : setsToHighlight) {
+                        lineDataSet.setLineWidth(6f);
+                        lineData.removeDataSet(lineDataSet);
+                        lineData.addDataSet(lineDataSet);
+                    }
+                    for (LineDataSet lineDataSet : setsToUpdate) {
+                        lineDataSet.setLineWidth(3f);
+                    }
+                    combinedChart.invalidate();
+                    return;
+                }
+                for (ILineDataSet set : lineData.getDataSets()) {
+                    ((LineDataSet) set).setLineWidth(3f);
+                }
+                combinedChart.invalidate();
+            }
+
+            @Override
+            public void onChartFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+
+            }
+
+            @Override
+            public void onChartScale(MotionEvent motionEvent, float v, float v1) {
+
+            }
+
+            @Override
+            public void onChartTranslate(MotionEvent motionEvent, float v, float v1) {
+
             }
         });
 

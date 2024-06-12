@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.DatabaseHelper;
@@ -32,6 +33,8 @@ public class DangNhapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+
         this.setContentView(R.layout.activity_dang_nhap);
 
         dangnhap = this.findViewById(R.id.btnDangNhap);

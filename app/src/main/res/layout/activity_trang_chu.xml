@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DEFCF9"
@@ -43,7 +44,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageBell"
+                    android:id="@+id/imgThongBao"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
@@ -57,7 +58,8 @@
                     android:id="@+id/imageUser"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="40dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +71,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
                     android:background="@drawable/custom_panel1"
-                    android:elevation="4dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -113,10 +114,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="14dp"
                         android:layout_weight="4"
                         android:orientation="horizontal">
 
@@ -124,9 +123,11 @@
                             android:id="@+id/btnLichHoc"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="20px"
                             android:layout_weight="1"
-                            android:background="@drawable/custom_text_edit"
+                            android:layout_marginVertical="7dp"
+                            android:elevation="5dp"
+                            android:layout_marginHorizontal="20px"
+                            android:background="@drawable/button_default2"
                             android:orientation="vertical">
 
                             <ImageView
@@ -150,11 +151,11 @@
                             android:id="@+id/btnHocPhan"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="20px"
                             android:layout_weight="1"
-                            android:background="@drawable/custom_text_edit"
-                            android:clickable="true"
-                            android:focusable="true"
+                            android:layout_marginVertical="7dp"
+                            android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
+                            android:background="@drawable/button_default2"
                             android:orientation="vertical">
 
                             <ImageView
@@ -179,9 +180,11 @@
                             android:id="@+id/btnDiem"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="20px"
                             android:layout_weight="1"
-                            android:background="@drawable/custom_text_edit"
+                            android:layout_marginVertical="7dp"
+                            android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
+                            android:background="@drawable/button_default2"
                             android:orientation="vertical">
 
                             <ImageView
@@ -205,9 +208,11 @@
                             android:id="@+id/btnCongViec"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="20px"
                             android:layout_weight="1"
-                            android:background="@drawable/custom_text_edit"
+                            android:layout_marginVertical="7dp"
+                            android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
+                            android:background="@drawable/button_default2"
                             android:orientation="vertical">
 
                             <ImageView
@@ -230,11 +235,9 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginHorizontal="10dp"
                         android:orientation="horizontal"
                         android:weightSum="4">
 
@@ -242,9 +245,11 @@
                             android:id="@+id/btnKhac"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="20px"
                             android:layout_weight="1"
-                            android:background="@drawable/custom_text_edit"
+                            android:layout_marginVertical="7dp"
+                            android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
+                            android:background="@drawable/button_default2"
                             android:orientation="vertical">
 
                             <ImageView
@@ -267,8 +272,10 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="20px"
                             android:layout_weight="1"
+                            android:layout_marginVertical="7dp"
+                            android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
                             android:orientation="vertical">
 
                             <ImageView
@@ -290,16 +297,20 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="20px"
                             android:layout_weight="1"
-                            android:orientation="vertical" />
+                            android:layout_marginVertical="7dp"
+                            android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
+                            android:orientation="vertical"/>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="20px"
                             android:layout_weight="1"
-                            android:orientation="vertical" />
+                            android:layout_marginVertical="7dp"
+                            android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
+                            android:orientation="vertical"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -358,7 +369,7 @@
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_cong_viec_can_lam" />
+                        tools:listitem="@layout/customlv_cong_viec_can_lam"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

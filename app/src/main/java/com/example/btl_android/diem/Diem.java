@@ -8,16 +8,17 @@ import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 public class Diem extends HocPhan {
     private String maLop;
     private Float tx1, tx2, giuaKy, cuoiKy, diemKiVong;
-    private Integer vangLt, vangTh;
+    private Integer loai, vangLt, vangTh;
 
     public Diem() {
         super();
     }
 
-    public Diem(String maLop, String maHp, String tenHp, Integer soTietLt, Integer soTietTh, Integer hocKy, String hinhThucThi,
+    public Diem(String maLop, String maHp, String tenHp, Integer loai, Integer soTietLt, Integer soTietTh, Integer hocKy, String hinhThucThi,
                 String heSo, Float tx1, Float tx2, Float giuaKy, Float cuoiKy, Float diemKiVong, Integer vangLt, Integer vangTh) {
         super(maHp, tenHp, soTietLt, soTietTh, hocKy, hinhThucThi, heSo);
         this.maLop = maLop;
+        this.loai = loai;
         this.tx1 = tx1;
         this.tx2 = tx2;
         this.giuaKy = giuaKy;
@@ -73,6 +74,14 @@ public class Diem extends HocPhan {
 
     public void setDiemKiVong(Float diemKiVong) {
         this.diemKiVong = diemKiVong;
+    }
+
+    public Integer getLoai() {
+        return loai;
+    }
+
+    public void setLoai(Integer loai) {
+        this.loai = loai;
     }
 
     public Integer getVangLt() {
