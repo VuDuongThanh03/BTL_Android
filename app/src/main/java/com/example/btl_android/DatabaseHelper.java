@@ -238,7 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<ThongBao> thongBaoList = new ArrayList<>();
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT tieuDe, noiDung, thoiGian FROM ThongBao", null);
+        Cursor cursor = db.rawQuery("SELECT tieuDe, noiDung, thoiGian FROM ThongBao ORDER BY id DESC", null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -391,7 +391,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('HP002', 'Physics 101', 2.5, 0.5, 40, 20, 1, 'Written', '20-30-50'), " +
                     "('HP003', 'Chemistry 101', 3, 0, 30, 15, 1, 'Written', '15-15-70'), " +
                     "('HP004', 'Biology 101', 4, 1, 40, 20, 1, 'Written', '20-20-60'), " +
-                    "('HP005', 'Computer Science 101', 0, 3, 30, 15, 1, 'Written', '10-10-20-60'), " +
+                    "('HP005', 'Ứng dụng trên thiết bị di động', 0, 3, 30, 15, 1, 'Written', '10-10-20-60'), " +
                     "('HP006', 'Math 102', 2, 1, 30, 15, 2, 'Written', '15-15-70'), " +
                     "('HP007', 'Physics 102', 1, 2, 40, 20, 2, 'Written', '20-20-60'), " +
                     "('HP008', 'Chemistry 102', 3, 0, 30, 15, 2, 'Written', '10-10-20-60'), " +

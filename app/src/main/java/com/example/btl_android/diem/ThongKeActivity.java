@@ -178,7 +178,8 @@ public class ThongKeActivity extends AppCompatActivity {
         lineDataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
         lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
-        lineChart.setData(new LineData(lineDataSet));
+        LineData lineData = new LineData(lineDataSet);
+        lineChart.setData(lineData);
         
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);

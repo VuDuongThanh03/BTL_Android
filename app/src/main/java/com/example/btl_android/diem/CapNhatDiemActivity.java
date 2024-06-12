@@ -22,16 +22,16 @@ import java.time.format.DateTimeFormatter;
 /** @noinspection ALL*/
 public class CapNhatDiemActivity extends AppCompatActivity {
 
-    ImageButton btnQuayLai;
-    Button btnCapNhat;
-    EditText etTx1, etTx2, etGiuaKy, etKiVong, etCuoiKy;
-    DatabaseHelper db;
+    private ImageButton btnQuayLai;
+    private Button btnCapNhat;
+    private EditText etTx1, etTx2, etGiuaKy, etKiVong, etCuoiKy;
+    private DatabaseHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cap_nhat_diem);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.capNhatDiemActivity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -113,6 +113,9 @@ public class CapNhatDiemActivity extends AppCompatActivity {
 
                 String thoiGian = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy"));
                 db.updateThongBao(tieuDe, noiDung, thoiGian);
+
+                setResult(1, null);
+
                 Toast.makeText(this, "Cập nhật điểm thành công", Toast.LENGTH_LONG).show();
                 finish();
             }
