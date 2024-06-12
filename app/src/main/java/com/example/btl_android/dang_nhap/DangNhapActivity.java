@@ -1,11 +1,14 @@
 package com.example.btl_android.dang_nhap;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,8 +29,9 @@ public class DangNhapActivity extends AppCompatActivity {
 
     List<Diem> diemList;
     SQLiteDatabase db;
-    private Button dangnhap, dangky;
-    private EditText edtusername, edtpassword;
+    private Button btnDangNhap, btnDangKy;
+    private EditText etTenTk, etMatKhau;
+    private CheckBox cbLuuThongTin;
     private DatabaseHelper dbHelper;
 
     @Override
@@ -37,37 +41,42 @@ public class DangNhapActivity extends AppCompatActivity {
 
         this.setContentView(R.layout.activity_dang_nhap);
 
-        dangnhap = this.findViewById(R.id.btnDangNhap);
-        dangky = this.findViewById(R.id.btnDangKy);
-        edtusername = this.findViewById(R.id.editTenTk);
-        edtpassword = this.findViewById(R.id.editPassword);
+        btnDangNhap = this.findViewById(R.id.btnDangNhap);
+        btnDangKy = this.findViewById(R.id.btnDangKy);
+        etTenTk = this.findViewById(R.id.editTenTk);
+        etMatKhau = this.findViewById(R.id.editPassword);
+        cbLuuThongTin = findViewById(R.id.chkLuuThongTin);
         diemList = new ArrayList<>();
-
 
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 
+        loadCredentials();
+
         Intent intentDangKy = new Intent(this, DangKyActivity.class);
-        dangky.setOnClickListener(v -> DangNhapActivity.this.startActivity(intentDangKy));
+        btnDangKy.setOnClickListener(v -> DangNhapActivity.this.startActivity(intentDangKy));
         DANG_NHAP();
-
-
     }
 
     private void DANG_NHAP() {
-        dangnhap.setOnClickListener(new View.OnClickListener() {
+        btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                getCount();
 //                Intent intentDangNhap = new Intent(DangNhapActivity.this, TrangChuActivity.class);
 //                startActivity(intentDangNhap);
-                if (edtusername.length() == 0 || edtpassword.length() == 0) {
+                if (etTenTk.length() == 0 || etMatKhau.length() == 0) {
                     Toast.makeText(DangNhapActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 } else {
-                    String username = edtusername.getText().toString().trim();
-                    String password = edtpassword.getText().toString().trim();
+                    String username = etTenTk.getText().toString().trim();
+                    String password = etMatKhau.getText().toString().trim();
                     SinhVien sinhVien = CheckLogin(username, password);
                     if (sinhVien != null) {
+                        if (cbLuuThongTin.isChecked()) {
+                            saveCredentials(username, password);
+                        } else {
+                            clearCredentials();
+                        }
                         Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
                         Intent intentDangNhap = new Intent(DangNhapActivity.this, TrangChuActivity.class);
@@ -108,5 +117,36 @@ public class DangNhapActivity extends AppCompatActivity {
         // Đóng Cursor
         cursor.close();
         return null;
+    }
+
+    private void loadCredentials() {
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
+        String password = sharedPreferences.getString("password", "");
+        boolean rememberMe = sharedPreferences.getBoolean("remember_me", false);
+
+        if (rememberMe) {
+            etTenTk.setText(username);
+            etMatKhau.setText(password);
+            cbLuuThongTin.setChecked(true);
+        }
+    }
+
+    private void saveCredentials(String username, String password) {
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.putBoolean("remember_me", true);
+        editor.apply();
+    }
+
+    private void clearCredentials() {
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("username");
+        editor.remove("password");
+        editor.remove("remember_me");
+        editor.apply();
     }
 }
