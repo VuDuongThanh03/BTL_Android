@@ -8,13 +8,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.R;
 
 import java.util.ArrayList;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class ThongTinActivity extends AppCompatActivity {
 
     Button btn_continue;
@@ -27,7 +30,9 @@ public class ThongTinActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_thongtin);
+        EdgeToEdge.enable(this);
+        this.setContentView(R.layout.activity_thong_tin);
+
         this.spn_chuyennganh = this.findViewById(R.id.spn_chuyennganh);
         this.spn_khoa = this.findViewById(R.id.spn_khoa);
         this.btn_continue = this.findViewById(R.id.buttoncontinue);

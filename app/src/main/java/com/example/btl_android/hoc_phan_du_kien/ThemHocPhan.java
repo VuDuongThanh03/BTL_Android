@@ -11,9 +11,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.btl_android.R;
 import com.example.btl_android.DatabaseHelper;
+import com.example.btl_android.R;
 
+/**
+ * @noinspection ALL
+ */
 public class ThemHocPhan extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;
@@ -52,8 +55,8 @@ public class ThemHocPhan extends AppCompatActivity {
             maHpEditText.setText(hocPhanToEdit.getMaHp());
             maHpEditText.setEnabled(false); // Không cho phép chỉnh sửa mã học phần
             tenHpEditText.setText(hocPhanToEdit.getTenHp());
-            soTinChiLyThuyetEditText.setText(String.valueOf(hocPhanToEdit.getSoTinChiLyThuyet()));
-            soTinChiThucHanhEditText.setText(String.valueOf(hocPhanToEdit.getSoTinChiThucHanh()));
+            soTinChiLyThuyetEditText.setText(String.valueOf(hocPhanToEdit.getSoTinChiLt()));
+            soTinChiThucHanhEditText.setText(String.valueOf(hocPhanToEdit.getSoTinChiTh()));
             hocKyEditText.setText(String.valueOf(hocPhanToEdit.getHocKy()));
             hinhThucThiEditText.setText(hocPhanToEdit.getHinhThucThi());
             heSoEditText.setText(hocPhanToEdit.getHeSo());
@@ -86,8 +89,8 @@ public class ThemHocPhan extends AppCompatActivity {
                 } else {
                     // Update HocPhan
                     hocPhanToEdit.setTenHp(tenHpEditText.getText().toString());
-                    hocPhanToEdit.setSoTinChiLyThuyet(Integer.parseInt(soTinChiLyThuyetEditText.getText().toString()));
-                    hocPhanToEdit.setSoTinChiThucHanh(Integer.parseInt(soTinChiThucHanhEditText.getText().toString()));
+                    hocPhanToEdit.setSoTinChiLt(Float.parseFloat(soTinChiLyThuyetEditText.getText().toString()));
+                    hocPhanToEdit.setSoTinChiTh(Float.parseFloat(soTinChiThucHanhEditText.getText().toString()));
                     hocPhanToEdit.setHocKy(Integer.parseInt(hocKyEditText.getText().toString()));
                     hocPhanToEdit.setHinhThucThi(hinhThucThiEditText.getText().toString());
                     hocPhanToEdit.setHeSo(heSoEditText.getText().toString());

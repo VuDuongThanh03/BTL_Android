@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +24,10 @@ import com.example.btl_android.dang_nhap.TrangChuActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HocPhanDuKien extends AppCompatActivity {
+/**
+ * @noinspection ALL
+ */
+public class HocPhanDuKienActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
     private static final int REQUEST_CODE_EDIT_HOCPHAN = 2;
@@ -49,12 +53,12 @@ public class HocPhanDuKien extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backtotrangchu);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_icon);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HocPhanDuKien.this, TrangChuActivity.class);
+                Intent intent = new Intent(HocPhanDuKienActivity.this, TrangChuActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -65,7 +69,6 @@ public class HocPhanDuKien extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         hocPhanList = new ArrayList<>();
-        loadHocPhanFromDatabase();
 
         hocPhanAdapter = new HocPhanAdapter(hocPhanList);
         recyclerView.setAdapter(hocPhanAdapter);
@@ -98,7 +101,7 @@ public class HocPhanDuKien extends AppCompatActivity {
                 hocKyButtons[i].setBackgroundResource(R.drawable.button_selected);
                 hocKyButtons[i].setTextColor(0xFFFFFFFF);
             } else {
-                hocKyButtons[i].setBackgroundResource(R.drawable.button_border);
+                hocKyButtons[i].setBackgroundResource(R.drawable.button_default1);
                 hocKyButtons[i].setTextColor(0xFF000000);
             }
         }
@@ -159,6 +162,7 @@ public class HocPhanDuKien extends AppCompatActivity {
         }
 
         Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(query, null);
+        Log.d("HocPhanDuKienActivity", cursor.getCount() + "");
         if (cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") String maHp = cursor.getString(cursor.getColumnIndex("maHp"));

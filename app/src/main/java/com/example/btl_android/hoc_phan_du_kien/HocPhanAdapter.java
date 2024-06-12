@@ -14,6 +14,9 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanViewHolder> {
 
     private List<HocPhan> hocPhanList;
@@ -26,22 +29,22 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
     @NonNull
     @Override
     public HocPhanViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hoc_phan, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.customrv_hoc_phan, parent, false);
         return new HocPhanViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HocPhanViewHolder holder, int position) {
-        HocPhan hocPhan = hocPhanList.get(position);
+    public void onBindViewHolder(@NonNull HocPhanAdapter.HocPhanViewHolder holder, int pos) {
+        HocPhan hocPhan = hocPhanList.get(pos);
         holder.maHpTextView.setText(hocPhan.getMaHp());
         holder.tenHpTextView.setText(hocPhan.getTenHp());
-        holder.soTinChiLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTinChiLyThuyet()));
-        holder.soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiThucHanh()));
+        holder.soTinChiLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
+        holder.soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
         holder.hocKyTextView.setText(String.valueOf(hocPhan.getHocKy()));
         holder.hinhThucThiTextView.setText(hocPhan.getHinhThucThi());
         holder.heSoTextView.setText(hocPhan.getHeSo());
 
-        holder.cardView.setCardBackgroundColor(selectedPosition == position ? Color.LTGRAY : Color.WHITE);
+        holder.cardView.setCardBackgroundColor(selectedPosition == pos ? Color.LTGRAY : Color.WHITE);
 
         holder.itemView.setOnClickListener(v -> {
             notifyItemChanged(selectedPosition);
@@ -59,12 +62,17 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
         return selectedPosition != RecyclerView.NO_POSITION ? hocPhanList.get(selectedPosition) : null;
     }
 
-    public static class HocPhanViewHolder extends RecyclerView.ViewHolder {
-        TextView maHpTextView, tenHpTextView, soTinChiLyThuyetTextView, soTinChiThucHanhTextView, hocKyTextView, hinhThucThiTextView, heSoTextView;
+    public class HocPhanViewHolder extends RecyclerView.ViewHolder {
+
+        TextView maHpTextView, tenHpTextView, soTinChiLyThuyetTextView,
+                soTinChiThucHanhTextView, hocKyTextView, hinhThucThiTextView, heSoTextView;
         CardView cardView;
 
         public HocPhanViewHolder(@NonNull View itemView) {
             super(itemView);
+        }
+
+        public void bind(final HocPhan hocPhan) {
             maHpTextView = itemView.findViewById(R.id.maHpTextView);
             tenHpTextView = itemView.findViewById(R.id.tenHpTextView);
             soTinChiLyThuyetTextView = itemView.findViewById(R.id.soTinChiLyThuyetTextView);

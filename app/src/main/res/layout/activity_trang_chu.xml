@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".dang_nhap.TrangChuActivity"
-    android:background="#DEFCF9">
+    android:background="#DEFCF9"
+    tools:context=".dang_nhap.TrangChuActivity">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -38,28 +39,29 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/dots"
+                    android:backgroundTint="#000000"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:backgroundTint="#000000"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageBell"
+                    android:id="@+id/imgThongBao"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/bell"
+                    android:backgroundTint="#FFC107"
                     app:layout_constraintEnd_toStartOf="@+id/imageDot"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:backgroundTint="#FFC107"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageUser"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="40dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/avatar" />
@@ -67,11 +69,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginHorizontal="12dp"
                     android:background="@drawable/custom_panel1"
-                    android:elevation="4dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -114,12 +113,10 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="14dp"
                         android:layout_weight="4"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="16dp"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -127,9 +124,11 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:orientation="vertical"
+                            android:layout_marginVertical="7dp"
+                            android:elevation="5dp"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/custom_text_edit">
+                            android:background="@drawable/button_default2"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -153,27 +152,28 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:orientation="vertical"
+                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/custom_text_edit"
-                            android:clickable="true"
-                            android:focusable="true">
+                            android:elevation="5dp"
+                            android:background="@drawable/button_default2"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="60dp"
                                 android:layout_gravity="center"
                                 android:paddingTop="20px"
-                                app:srcCompat="@drawable/planning"/>
+                                app:srcCompat="@drawable/planning" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
+                                android:layout_marginBottom="5dp"
                                 android:text="Học phần\n dự kiến"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -181,8 +181,10 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/custom_text_edit"
+                            android:elevation="5dp"
+                            android:background="@drawable/button_default2"
                             android:orientation="vertical">
 
                             <ImageView
@@ -207,9 +209,11 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:orientation="vertical"
+                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:background="@drawable/custom_text_edit">
+                            android:elevation="5dp"
+                            android:background="@drawable/button_default2"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -231,11 +235,9 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginHorizontal="10dp"
                         android:orientation="horizontal"
                         android:weightSum="4">
 
@@ -244,8 +246,10 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@drawable/custom_text_edit"
+                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
+                            android:background="@drawable/button_default2"
                             android:orientation="vertical">
 
                             <ImageView
@@ -269,8 +273,11 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
+                            android:elevation="5dp"
                             android:orientation="vertical">
+
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="59dp"
@@ -291,17 +298,19 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:orientation="vertical">
-                        </LinearLayout>
+                            android:elevation="5dp"
+                            android:orientation="vertical"/>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:orientation="vertical">
-                        </LinearLayout>
+                            android:elevation="5dp"
+                            android:orientation="vertical"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -320,7 +329,7 @@
                     android:text="Lịch học hôm nay"
                     android:textColor="@color/black"
                     android:textSize="20dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -331,7 +340,7 @@
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_lich_hoc_hom_nay"/>
+                        tools:listitem="@layout/customlv_lich_hoc_hom_nay" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -339,30 +348,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Công việc cần làm"
-                    android:textSize="20dp"
                     android:textColor="@color/black"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="600px"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginVertical="16dp"
                     android:background="@drawable/custom_panel1">
 
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_cong_viec_can_lam">
-                    </ListView>
+                        tools:listitem="@layout/customlv_cong_viec_can_lam"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
