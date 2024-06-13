@@ -28,7 +28,6 @@ public class TrangChuActivity extends AppCompatActivity {
     LinearLayout btnCongViec, btnHocPhan, btnDiem;
     ImageView btnThongBao;
     BroadcastReceiver receiver;
-    DatabaseHelper db;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -41,7 +40,6 @@ public class TrangChuActivity extends AppCompatActivity {
             return insets;
         });
 
-        db = new DatabaseHelper(this);
         btnCongViec = findViewById(R.id.btnCongViec);
         btnHocPhan = findViewById(R.id.btnHocPhan);
         btnDiem = findViewById(R.id.btnDiem);
