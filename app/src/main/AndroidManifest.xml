@@ -15,7 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
-
+        <activity
+            android:name=".thoi_khoa_bieu.Update_Timetable"
+            android:parentActivityName=".thoi_khoa_bieu.TimeTable"
+            android:exported="false" />
+        <activity
+            android:name=".thoi_khoa_bieu.Add_Timetable"
+            android:exported="false" />
+        <activity
+            android:name=".thoi_khoa_bieu.TimeTable"
+            android:exported="false" />
         <activity
             android:name=".thong_bao.ThongBaoActivity"
             android:exported="false" />
@@ -45,20 +54,21 @@
             android:exported="false" />
         <activity
             android:name=".dang_nhap.TrangChuActivity"
-            android:exported="false" />
-        <activity
-            android:name=".dang_nhap.ThongTinActivity"
-            android:exported="false" />
-        <activity
-            android:name=".dang_nhap.DangNhapActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".dang_nhap.ThongTinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dang_nhap.DangNhapActivity"
+            android:exported="false">
 
+        </activity>
     </application>
 
 </manifest>
