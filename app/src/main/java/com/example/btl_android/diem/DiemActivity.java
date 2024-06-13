@@ -28,13 +28,13 @@ import java.util.List;
  * @noinspection ALL
  */
 public class DiemActivity extends AppCompatActivity implements OnItemClickListener {
-    List<String> hocKyList;
-    List<Diem> diemList;
     private DatabaseHelper db;
     private ImageButton btnQuayLai, btnThongKe;
     private LinearLayout btnHocKySet;
     private Button lastSelectHocKy;
     private RecyclerView rvDiemHp;
+    private List<String> hocKyList;
+    private List<Diem> diemList;
     private DiemAdapter diemHpAdapter;
     private String hocKy;
 

@@ -40,7 +40,6 @@ public class DangNhapActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         this.setContentView(R.layout.activity_dang_nhap);
 
-        deleteDatabase("QuanLyHocTapCaNhan.db");
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 

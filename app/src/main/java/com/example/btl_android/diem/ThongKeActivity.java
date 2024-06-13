@@ -430,7 +430,7 @@ public class ThongKeActivity extends AppCompatActivity {
         yAxis.setTextSize(12f);
         yAxis.setXOffset(12f);
         yAxis.setAxisMinimum(combinedData.getYMin() - .1f);
-        yAxis.setAxisMaximum(maxCnt <= 4 ? 4.2f : (float) maxCnt + 1.0f);
+        yAxis.setAxisMaximum(combinedData.getYMax() + .3f);
 
         combinedChart.getAxisRight().setEnabled(false);
 
