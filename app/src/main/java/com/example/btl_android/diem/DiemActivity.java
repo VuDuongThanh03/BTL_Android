@@ -33,7 +33,6 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     private LinearLayout btnHocKySet;
     private Button lastSelectHocKy;
     private RecyclerView rvDiemHp;
-    private List<String> hocKyList;
     private List<Diem> diemList;
     private DiemAdapter diemHpAdapter;
     private String hocKy;
@@ -57,7 +56,6 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
         btnQuayLai = findViewById(R.id.imgQuayLai);
         btnThongKe = findViewById(R.id.imgThongKe);
         rvDiemHp = findViewById(R.id.rvDiemHp);
-        hocKyList = new ArrayList<>();
         diemList = new ArrayList<>();
         hocKy = "1";
 
@@ -112,7 +110,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     protected void onResume() {
         diemList = db.getDiemHpTheoKy(hocKy);
-        diemHpAdapter = new DiemAdapter(diemList, this, R.id.rvDiemHp);
+        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, R.id.rvDiemHp);
         rvDiemHp.setAdapter(diemHpAdapter);
         super.onResume();
     }

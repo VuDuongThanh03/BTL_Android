@@ -35,7 +35,9 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
 
     @Override
     public void onBindViewHolder(@NonNull HocPhanAdapter.HocPhanViewHolder holder, int pos) {
+        //Chạy đc rồi đấy boi :)
         HocPhan hocPhan = hocPhanList.get(pos);
+        holder.bind(hocPhan);
         holder.maHpTextView.setText(hocPhan.getMaHp());
         holder.tenHpTextView.setText(hocPhan.getTenHp());
         holder.soTinChiLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));

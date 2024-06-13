@@ -57,6 +57,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        databaseHelper = new DatabaseHelper(this);
         // Gọi phương thức để luôn thêm dữ liệu
         databaseHelper.themDuLieuHocPhanMoiLan();
 
@@ -72,7 +73,6 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
             }
         });
 
-        databaseHelper = new DatabaseHelper(this);
         recyclerView = findViewById(R.id.recyclerViewHocPhan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -97,8 +97,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
                     updateHocKyButtonColors();
                     hocPhanList.clear();
                     loadHocPhanFromDatabase();
-                    hocPhanAdapter = new HocPhanAdapter(hocPhanList);
-                    recyclerView.setAdapter(hocPhanAdapter);
+                    hocPhanAdapter.notifyDataSetChanged();
                 }
             });
         }
@@ -144,8 +143,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
                     databaseHelper.deleteHocPhan(selectedHocPhan.getMaHp());
                     hocPhanList.clear();
                     loadHocPhanFromDatabase();
-                    hocPhanAdapter = new HocPhanAdapter(hocPhanList);
-                    recyclerView.setAdapter(hocPhanAdapter);
+                    hocPhanAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(this, "Vui lòng chọn môn học cần xóa", Toast.LENGTH_SHORT).show();
                 }
@@ -161,15 +159,15 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         if ((requestCode == REQUEST_CODE_ADD_HOCPHAN || requestCode == REQUEST_CODE_EDIT_HOCPHAN) && resultCode == RESULT_OK) {
             hocPhanList.clear();
             loadHocPhanFromDatabase();
-            hocPhanAdapter = new HocPhanAdapter(hocPhanList);
-            recyclerView.setAdapter(hocPhanAdapter);
+            hocPhanAdapter.notifyDataSetChanged();
         }
     }
 
     private void loadHocPhanFromDatabase() {
+        //T sửa trên master cho m query đc r, cơ mà thấy còn nhiều lỗi lắm :)
         String query = "SELECT * FROM HocPhan";
         if (selectedHocKy == -1) return;
-        query += " WHERE hocKy = ?" + selectedHocKy;
+        query += " WHERE hocKy = " + selectedHocKy;
         Cursor cursor = databaseHelper.getWritableDatabase().rawQuery(query, null);
         Log.d("HocPhanDuKienActivity", cursor.getCount() + ", " + selectedHocKy);
         if (cursor.moveToFirst()) {

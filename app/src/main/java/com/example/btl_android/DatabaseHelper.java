@@ -152,9 +152,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void themDuLieuHocPhanMoiLan() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Xóa dữ liệu cũ để tránh trùng lặp, nếu không muốn xóa thì bỏ qua bước này
-        db.execSQL("DELETE FROM HocPhan");
-
         // Thêm dữ liệu mới
         themHocPhanMau(db);
 
