@@ -43,7 +43,9 @@
             android:id="@+id/lvcongviec"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/customlv_cong_viec"></ListView>
+            tools:listitem="@layout/customlv_cong_viec">
+
+        </ListView>
     </LinearLayout>
 
 </LinearLayout>
