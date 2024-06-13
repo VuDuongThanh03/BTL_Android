@@ -3,7 +3,12 @@ package com.example.btl_android.cong_viec;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +30,7 @@ public class CongViecActivity extends AppCompatActivity {
     CongViecAdapter cvAdapter;
     SQLiteDatabase db;
     private DatabaseHelper dbHelper;
+    int selectedItemPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,16 @@ public class CongViecActivity extends AppCompatActivity {
         congViecArrayList = dbHelper.getAllCongViec();
         sortCongViecList(congViecArrayList);
         showlvCongViec();
+//        registerForContextMenu(lvcongviec);
+        lvcongviec.setClickable(true);
+        lvcongviec.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedItemPosition = i;
+                Toast.makeText(CongViecActivity.this, "a", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 
     void showlvCongViec() {
@@ -43,7 +59,31 @@ public class CongViecActivity extends AppCompatActivity {
 
         cvAdapter = new CongViecAdapter(x, R.layout.customlv_cong_viec, congViecArrayList);
         lvcongviec.setAdapter(cvAdapter);
+
+//        registerForContextMenu(lvcongviec);
+//        lvcongviec.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                selectedItemPosition = i;
+//                Toast.makeText(x, ""+i, Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
+        lvcongviec.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(x, ""+i, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu_congviec, menu);
+    }
+
     public void sortCongViecList(ArrayList<CongViec> congViecList) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
