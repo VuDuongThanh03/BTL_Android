@@ -10,8 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,21 +36,35 @@ import java.util.Date;
 public class CongViecActivity extends AppCompatActivity {
 
     ListView lvcongviec;
+    ImageButton btnmenu;
     ArrayList<CongViec> congViecArrayList = new ArrayList<>();
     CongViecAdapter cvAdapter;
     SQLiteDatabase db;
     private DatabaseHelper dbHelper;
     int selectedItemPosition;
+    Spinner spinner_mucuutien;
+    ArrayList<String> mucuutienList = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cong_viec);
+        btnmenu = findViewById(R.id.btn_menu);
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
         congViecArrayList = dbHelper.getAllCongViec();
         sortCongViecList(congViecArrayList);
         showlvCongViec();
+        btnmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddEditDialog(null,0);
+            }
+        });
+        mucuutienList.add("Không quan trọng");
+        mucuutienList.add("Quan trọng");
+        mucuutienList.add("Rất quan trọng");
     }
 
     void showlvCongViec() {
@@ -138,7 +156,9 @@ public class CongViecActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.diaglog_congviec, null);
         builder.setView(dialogView);
-
+        spinner_mucuutien = dialogView.findViewById(R.id.spn_mucuutien);
+        SPINER();
+        final TextView texttitle = dialogView.findViewById(R.id.dialog_title);
         final EditText etTenCongViec = dialogView.findViewById(R.id.edt_tenviec);
         final EditText etChiTietCongViec = dialogView.findViewById(R.id.edt_chitiet);
 //        final EditText etMucUuTien = dialogView.findViewById(R.id.et_mucuutien);
@@ -146,11 +166,14 @@ public class CongViecActivity extends AppCompatActivity {
         final EditText etThoiHanNgay = dialogView.findViewById(R.id.edt_hanngay);
 
         if (congViec != null) {
+            texttitle.setText("Sửa công việc");
             etTenCongViec.setText(congViec.getTenCongViec());
             etChiTietCongViec.setText(congViec.getChiTietCongViec());
-//            etMucUuTien.setText(congViec.getMucUuTien());
+            spinner_mucuutien.setSelection(Integer.parseInt(congViec.mucUuTien)-1);
             etThoiHanGio.setText(congViec.getThoiHanGio());
             etThoiHanNgay.setText(congViec.getThoiHanNgay());
+        }else {
+            texttitle.setText("Thêm công việc");
         }
 
         builder.setPositiveButton(congViec == null ? "Thêm" : "Lưu", new DialogInterface.OnClickListener() {
@@ -185,5 +208,23 @@ public class CongViecActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+    private void SPINER() {
+        this.adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                this.mucuutienList);
+        this.spinner_mucuutien.setAdapter(this.adapter);
+
+        this.spinner_mucuutien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(final AdapterView<?> adapterView, final View view, final int i, final long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(final AdapterView<?> parent) {
+
+            }
+        });
     }
 }
