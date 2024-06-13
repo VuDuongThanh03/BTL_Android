@@ -51,7 +51,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
     private void populateInitialData(final SQLiteDatabase db) {
         db.execSQL(INSERT_TABLE_SINHVIEN);
         db.execSQL(INSERT_TABLE_CONGVIEC);
@@ -88,6 +87,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("hocKy", hocPhan.getHocKy());
         values.put("hinhThucThi", hocPhan.getHinhThucThi());
         values.put("heSo", hocPhan.getHeSo());
+        db.insert("HocPhan", null, values);
+        db.close();
     }
 
     public void updateHocPhan(HocPhan hocPhan) {
@@ -101,15 +102,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("heSo", hocPhan.getHeSo());
 
         db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
+        db.close();
     }
 
     public void deleteHocPhan(String maHp) {
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete("HocPhan", "maHp=?", new String[]{maHp});
         if (result == -1) {
-            Log.e("DatabaseHelper", "Failed to delete HocPhan");
+            Log.e("DatabaseHelper", "Xóa học phần thất bại");
         } else {
-            Log.i("DatabaseHelper", "HocPhan deleted successfully");
+            Log.i("DatabaseHelper", "Xóa học phần thành công");
         }
         db.close();
     }
@@ -119,6 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE maHp = ?", new String[]{maHp});
         boolean isUnique = !cursor.moveToFirst();
         cursor.close();
+        db.close();
         return isUnique;
     }
 
@@ -145,6 +148,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return hocPhanList;
     }
 
+    public void themDuLieuHocPhanMoiLan() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("DELETE FROM HocPhan");
+        db.close();
+    }
+
     public boolean updateDiem(Diem diem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -154,6 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("diemKiVong", diem.getDiemKiVong());
         values.put("cuoiKy", diem.getCuoiKy());
         long res = db.update("KetQuaHocPhan", values, "maLop = ?", new String[]{diem.getMaLop()});
+        db.close();
         return res > 0;
     }
 
@@ -231,6 +242,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("noiDung", noiDung);
         values.put("thoiGian", thoiGian);
         long res = db.insert("ThongBao", null, values);
+        db.close();
         return res > 0;
     }
 
@@ -249,7 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 thongBaoList.add(thongBao);
             } while (cursor.moveToNext());
         }
-        cursor.close();;
+        cursor.close();
         db.close();
         return thongBaoList;
     }
@@ -351,7 +363,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
 
-    // LichHoc table
+    // ThongBao table
     private static final String CREATE_TABLE_THONGBAO =
             "CREATE TABLE IF NOT EXISTS ThongBao (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -362,7 +374,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String INSERT_TABLE_SINHVIEN =
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
-                    "('2021606516', 3, 'Phùng Đức Cần', 'Tao là nhất', 'abc123!@#')";
+                    "('2021606516', 1, 'Phùng Đức Cần', 'Tao là nhất', 'abc123!@#')";
 
     private static final String INSERT_TABLE_CONGVIEC =
             "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHan, trangThai, chiTiet) VALUES " +
@@ -379,78 +391,135 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
-                    "(1, 'Computer Science'), " +
-                    "(2, 'Physics'), " +
-                    "(3, 'CNTT'), " +
-                    "(4, 'Mathematics'), " +
-                    "(5, 'Biology');";
+                    "(1, 'Công nghệ thông tin'), " +
+                    "(2, 'Khoa học máy tính'), " +
+                    "(3, 'Hệ thống thông tin'), " +
+                    "(4, 'Kỹ thuật phần mềm');";
 
     private static final String INSERT_TABLE_HOCPHAN =
             "INSERT INTO HocPhan (maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo) VALUES " +
-                    "('HP001', 'Math 101', 2, 1, 30, 15, 1, 'Written', '15-15-70'), " +
-                    "('HP002', 'Physics 101', 2.5, 0.5, 40, 20, 1, 'Written', '20-30-50'), " +
-                    "('HP003', 'Chemistry 101', 3, 0, 30, 15, 1, 'Written', '15-15-70'), " +
-                    "('HP004', 'Biology 101', 4, 1, 40, 20, 1, 'Written', '20-20-60'), " +
-                    "('HP005', 'Ứng dụng trên thiết bị di động', 0, 3, 30, 15, 1, 'Written', '10-10-20-60'), " +
-                    "('HP006', 'Math 102', 2, 1, 30, 15, 2, 'Written', '15-15-70'), " +
-                    "('HP007', 'Physics 102', 1, 2, 40, 20, 2, 'Written', '20-20-60'), " +
-                    "('HP008', 'Chemistry 102', 3, 0, 30, 15, 2, 'Written', '10-10-20-60'), " +
-                    "('HP009', 'Biology 102', 2, 1, 40, 20, 2, 'Written', '20-30-50'), " +
-                    "('HP010', 'Computer Science 102', 1.5, 1.5, 30, 15, 2, 'Written', '20-20-60');";
+                    "('LP6010', 'Triết học Mác-Lênin', 2, 0, 20, 0, 1, 'Tự luận', '20-20-60'), " +
+                    "('BS6002', 'Giải tích', 3, 0, 30, 0, 1, 'Bài tập lớn', '25-25-50'), " +
+                    "('BS6001', 'Đại số tuyến tính', 3, 0, 30, 0, 1, 'Tự luận', '20-20-60'), " +
+                    "('IT6016', 'Vật lý đại cương', 2, 1, 40, 30, 1, 'Tự luận', '25-25-50'), " +
+                    "('IT6015', 'Kỹ thuật lập trình', 3, 1, 30, 30, 1, 'Thi trên máy tính', '20-20-60'), " +
+                    "('IT6017', 'Cấu trúc dữ liệu', 3, 1, 30, 30, 1, 'Tự luận', '25-25-50'), " +
+                    "('IT6018', 'Lý thuyết thông tin', 2, 1, 20, 30, 1, 'Bài tập lớn', '20-20-60'), " +
+                    "('IT6019', 'Mạng máy tính', 2, 1, 20, 30, 1, 'Thi trên máy tính', '25-25-50'), " +
+                    "('IT6020', 'Hệ điều hành', 3, 1, 30, 30, 1, 'Tự luận', '20-20-60'), " +
+                    "('IT6021', 'Nhập môn AI', 2, 1, 20, 30, 1, 'Bài tập lớn', '25-25-50'), " +
+                    "('MH2_01', 'Toán cao cấp', 3, 0, 40, 0, 2, 'Tự luận', '20-20-60'), " +
+                    "('MH2_02', 'Xác suất thống kê', 3, 0, 30, 0, 2, 'Bài tập lớn', '25-25-50'), " +
+                    "('MH2_03', 'Phân tích thiết kế hệ thống', 2, 1, 20, 30, 2, 'Thi trên máy tính', '20-20-60'), " +
+                    "('MH2_04', 'An ninh mạng', 2, 1, 30, 30, 2, 'Tự luận', '25-25-50'), " +
+                    "('MH2_05', 'Kiến trúc máy tính', 3, 1, 30, 30, 2, 'Thi trên máy tính', '20-20-60'), " +
+                    "('MH2_06', 'Phát triển phần mềm', 3, 1, 30, 30, 2, 'Tự luận', '25-25-50'), " +
+                    "('MH2_07', 'Trí tuệ nhân tạo nâng cao', 2, 1, 30, 30, 2, 'Bài tập lớn', '20-20-60'), " +
+                    "('MH2_08', 'Khoa học dữ liệu', 2, 1, 20, 30, 2, 'Thi trên máy tính', '25-25-50'), " +
+                    "('MH2_09', 'Phát triển game', 3, 1, 30, 30, 2, 'Tự luận', '20-20-60'), " +
+                    "('MH2_10', 'Blockchain', 2, 1, 20, 30, 2, 'Bài tập lớn', '25-25-50'), " +
+                    "('LP6012', 'Chủ nghĩa xã hội khoa học', 2, 0, 20, 0, 3, 'Tự luận', '20-20-60'), " +
+                    "('IT6035', 'Toán rời rạc', 3, 0, 30, 0, 3, 'Bài tập lớn', '25-25-50'), " +
+                    "('IT6126', 'Hệ thống cơ sở dữ liệu', 2, 1, 20, 30, 3, 'Thi trên máy tính', '20-20-60'), " +
+                    "('IT6067', 'Kiến trúc máy tính và hệ điều hành', 2, 1, 20, 30, 3, 'Tự luận', '25-25-50'), " +
+                    "('IT6120', 'Lập trình hướng đối tượng', 3, 1, 30, 30, 3, 'Thi trên máy tính', '20-20-60'), " +
+                    "('LP6013', 'Lịch sử Đảng Cộng sản Việt Nam', 2, 1, 20, 30, 4, 'Tự luận', '20-20-60'), " +
+                    "('IT6001', 'An toàn và bảo mật thông tin', 3, 0, 30, 0, 4, 'Bài tập lớn', '25-25-50'), " +
+                    "('IT6002', 'Cấu trúc dữ liệu và giải thuật', 2, 1, 20, 30, 4, 'Thi trên máy tính', '20-20-60'), " +
+                    "('LP6004', 'Tư tưởng Hồ Chí Minh', 2, 0, 20, 0, 5, 'Tự luận', '20-20-60'), " +
+                    "('IT6071', 'Phát triển dự án công nghệ thông tin', 3, 0, 30, 0, 5, 'Bài tập lớn', '25-25-50'), " +
+                    "('IT6100', 'Thiết kế đồ họa 2D', 2, 1, 20, 30, 5, 'Thi trên máy tính', '20-20-60'), " +
+                    "('IT6047', 'Học máy', 2, 1, 20, 30, 6, 'Tự luận', '20-20-60'), " +
+                    "('IT6057', 'Phát triển ứng dụng thương mại điện tử', 2, 1, 30, 30, 6, 'Bài tập lớn', '25-25-50'), " +
+                    "('IT6125', 'Thiết kế web nâng cao', 2, 1, 20, 30, 6, 'Thi trên máy tính', '20-20-60'), " +
+                    "('IT6122', 'Đồ án chuyên ngành', 3, 0, 30, 0, 7, 'Tự luận', '20-20-60'), " +
+                    "('IT6013', 'Kiểm thử phần mềm', 2, 1, 20, 30, 7, 'Bài tập lớn', '25-25-50'), " +
+                    "('IT6029', 'Phát triển ứng dụng trên thiết bị di động', 3, 1, 30, 30, 7, 'Thi trên máy tính', '20-20-60'), " +
+                    "('IT6129', 'Đồ án tốt nghiệp', 4, 5, 40, 45, 8, 'Tự luận', '30-30-40'), " +
+                    "('IT6128', 'Thực tập doanh nghiệp', 3, 3, 30, 45, 8, 'Bài tập lớn', '20-30-50');";
 
     private static final String INSERT_TABLE_LOAIHOCPHAN =
             "INSERT INTO LoaiHocPhan (maHp, maCn, loai) VALUES " +
-                    "('HP001', 3, 1), " +
-                    "('HP002', 3, 1), " +
-                    "('HP003', 3, 0), " +
-                    "('HP003', 4, 1), " +
-                    "('HP005', 3, 0), " +
-                    "('HP006', 1, 1), " +
-                    "('HP007', 2, 0), " +
-                    "('HP008', 3, 1), " +
-                    "('HP009', 3, 1), " +
-                    "('HP09', 2, 0);";
+                    "('LP6010', 1, 0), " +
+                    "('BS6002', 1, 1), " +
+                    "('BS6001', 1, 1), " +
+                    "('IT6016', 1, 1), " +
+                    "('IT6015', 1, 1), " +
+                    "('IT6017', 1, 1), " +
+                    "('IT6018', 1, 1), " +
+                    "('IT6019', 1, 1), " +
+                    "('IT6020', 1, 1), " +
+                    "('IT6021', 1, 1), " +
+                    "('MH2_01', 2, 0), " +
+                    "('MH2_02', 2, 0), " +
+                    "('MH2_03', 2, 1), " +
+                    "('MH2_04', 2, 1), " +
+                    "('MH2_05', 2, 1), " +
+                    "('MH2_06', 2, 1), " +
+                    "('MH2_07', 2, 1), " +
+                    "('MH2_08', 2, 1), " +
+                    "('MH2_09', 2, 1), " +
+                    "('MH2_10', 2, 1), " +
+                    "('LP6012', 3, 0), " +
+                    "('IT6035', 3, 1), " +
+                    "('IT6126', 3, 1), " +
+                    "('IT6067', 3, 1), " +
+                    "('IT6120', 3, 1), " +
+                    "('LP6013', 4, 1), " +
+                    "('IT6001', 4, 0), " +
+                    "('IT6002', 4, 1), " +
+                    "('LP6004', 5, 0), " +
+                    "('IT6071', 5, 0), " +
+                    "('IT6100', 5, 1), " +
+                    "('IT6047', 6, 1), " +
+                    "('IT6057', 6, 1), " +
+                    "('IT6125', 6, 1), " +
+                    "('IT6122', 7, 0), " +
+                    "('IT6013', 7, 1), " +
+                    "('IT6029', 7, 1), " +
+                    "('IT6129', 8, 0), " +
+                    "('IT6128', 8, 1);";
 
     private static final String INSERT_TABLE_KETQUAHOCPHAN =
             "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
-                    "('2021HP003.1', 'HP003', 8.5, 9.0, null, null, null, 1), " +
-                    "('2021HP002.3', 'HP002', 7.5, 8.0, 6.5, null, 7.0, 1), " +
-                    "('2021HP001.3', 'HP001', 3.5, 2.5, null, 5.0, null, 1), " +
-                    "('2021HP008.1', 'HP008', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
-                    "('2021HP005.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 2), " +
-                    "('2021HP002.2', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
-                    "('2021HP009.4', 'HP009', 8.0, 8.5, 7.0, null, null, 2), " +
-                    "('2021HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 2), " +
-                    "('2022HP005.1', 'HP005', 7.5, 6.0, 7.5, 7.5, null, 3), " +
-                    "('2022HP002.2', 'HP002', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
-                    "('2022HP009.4', 'HP009', 8.0, 6.5, 7.0, null, null, 3), " +
-                    "('2022HP001.2', 'HP001', 7.5, 7.0, null, 7.5, 7.5, 3), " +
-                    "('2022HP005.9', 'HP005', 7.5, 8.0, 8.5, 4.5, null, 4), " +
-                    "('2022HP001.1', 'HP001', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
-                    "('2022HP009.7', 'HP009', 8.0, 8.5, 7.0, null, null, 4), " +
-                    "('2022HP001.3', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 4), " +
-                    "('2022HP003.3', 'HP003', 8.0, 8.5, null, null, null, 4), " +
-                    "('2023HP005.9', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 5), " +
-                    "('2023HP008.3', 'HP008', 7.5, 8.0, null, null, 7.0, 5), " +
-                    "('2023HP002.2', 'HP002', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
-                    "('2023HP009.4', 'HP009', 8.0, 8.5, 7.0, null, null, 5), " +
-                    "('2023HP001.2', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 5), " +
-                    "('2023HP005.1', 'HP005', 7.5, 8.0, 7.5, 7.5, null, 6), " +
-                    "('2023HP008.2', 'HP008', 7.5, 6.0, null, null, 7.0, 6), " +
-                    "('2023HP002.7', 'HP002', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
-                    "('2023HP003.3', 'HP003', 8.0, 8.5, 7.0, null, null, 6), " +
-                    "('2023HP001.3', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 6), " +
-                    "('2024HP008.1', 'HP008', 8.5, 7.0, null, null, 8.0, 7), " +
-                    "('2024HP001.2', 'HP001', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
-                    "('2024HP009.4', 'HP009', 8.0, 9.5, 9.0, null, null, 7), " +
-                    "('2024HP001.6', 'HP001', 7.5, 8.0, null, 7.5, 7.5, 7), " +
-                    "('2024HP005.5', 'HP005', 8.0, 8.5, null, null, null, 7), " +
-                    "('2025HP003.9', 'HP003', 7.5, 8.0, 7.5, 7.5, null, 8), " +
-                    "('2025HP008.1', 'HP008', 8.5, 9.0, null, null, 8.0, 8), " +
-                    "('2025HP002.2', 'HP002', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
-                    "('2025HP001.4', 'HP001', 9.0, 8.5, 7.0, null, null, 8), " +
-                    "('2025HP001.2', 'HP001', 7.5, 7.0, null, 7.5, 7.5, 8), " +
-                    "('2025HP005.5', 'HP005', 8.0, 6.5, null, null, null, 8)";
+                    "('2021HP003.1', 'IT6016', 8.5, 9.0, null, null, null, 1), " +
+                    "('2021HP002.3', 'IT6015', 7.5, 8.0, 6.5, null, 7.0, 1), " +
+                    "('2021HP001.3', 'BS6002', 3.5, 2.5, null, 5.0, null, 1), " +
+                    "('2021HP008.1', 'IT6017', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('2021HP005.9', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 2), " +
+                    "('2021HP002.2', 'IT6015', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
+                    "('2021HP009.4', 'IT6018', 8.0, 8.5, 7.0, null, null, 2), " +
+                    "('2021HP001.2', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 2), " +
+                    "('2022HP005.1', 'BS6001', 7.5, 6.0, 7.5, 7.5, null, 3), " +
+                    "('2022HP002.2', 'IT6015', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
+                    "('2022HP009.4', 'IT6018', 8.0, 6.5, 7.0, null, null, 3), " +
+                    "('2022HP001.2', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 3), " +
+                    "('2022HP005.9', 'BS6001', 7.5, 8.0, 8.5, 4.5, null, 4), " +
+                    "('2022HP001.1', 'BS6002', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
+                    "('2022HP009.7', 'IT6018', 8.0, 8.5, 7.0, null, null, 4), " +
+                    "('2022HP001.3', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 4), " +
+                    "('2022HP003.3', 'IT6016', 8.0, 8.5, null, null, null, 4), " +
+                    "('2023HP005.9', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 5), " +
+                    "('2023HP008.3', 'IT6017', 7.5, 8.0, null, null, 7.0, 5), " +
+                    "('2023HP002.2', 'IT6015', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
+                    "('2023HP009.4', 'IT6018', 8.0, 8.5, 7.0, null, null, 5), " +
+                    "('2023HP001.2', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 5), " +
+                    "('2023HP005.1', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 6), " +
+                    "('2023HP008.2', 'IT6017', 7.5, 6.0, null, null, 7.0, 6), " +
+                    "('2023HP002.7', 'IT6015', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
+                    "('2023HP003.3', 'IT6016', 8.0, 8.5, 7.0, null, null, 6), " +
+                    "('2023HP001.3', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 6), " +
+                    "('2024HP008.1', 'IT6017', 8.5, 7.0, null, null, 8.0, 7), " +
+                    "('2024HP001.2', 'BS6002', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
+                    "('2024HP009.4', 'IT6018', 8.0, 9.5, 9.0, null, null, 7), " +
+                    "('2024HP001.6', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 7), " +
+                    "('2024HP005.5', 'BS6001', 8.0, 8.5, null, null, null, 7), " +
+                    "('2025HP003.9', 'IT6016', 7.5, 8.0, 7.5, 7.5, null, 8), " +
+                    "('2025HP008.1', 'IT6017', 8.5, 9.0, null, null, 8.0, 8), " +
+                    "('2025HP002.2', 'IT6015', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
+                    "('2025HP001.4', 'BS6002', 9.0, 8.5, 7.0, null, null, 8), " +
+                    "('2025HP001.2', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 8), " +
+                    "('2025HP005.5', 'BS6001', 8.0, 6.5, null, null, null, 8);";
 
     private static final String INSERT_TABLE_LICHHOC =
             "INSERT INTO LichHoc " +
@@ -492,33 +561,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "(34, '2022HP001.1', 'Tuesday', '2023-08-13', 142, 'Charlotte Wright', '83-84', 'Room PP', 0, 0), " +
                     "(35, '2022HP009.7', 'Wednesday', '2023-08-14', 143, 'Alexander Scott', '85-86', 'Room QQ', 1, 0), " +
                     "(36, '2022HP001.3', 'Thursday', '2023-08-15', 144, 'Sofia Green', '87-88', 'Room RR', 0, 1), " +
-                    "(37, '2022HP003.3', 'Friday', '2023-08-16', 145, 'Lucas Nelson', '89-90', 'Room SS', 1, 0), " +
-                    "(38, '2023HP005.9', 'Monday', '2023-08-19', 146, 'Ava Carter', '91-92', 'Room TT', 0, 0), " +
-                    "(39, '2023HP006.1', 'Tuesday', '2023-08-20', 147, 'Logan Hill', '93-94', 'Room UU', 1, 1), " +
-                    "(40, '2023HP008.3', 'Wednesday', '2023-08-21', 148, 'Sophie Foster', '95-96', 'Room VV', 0, 0), " +
-                    "(41, '2023HP002.2', 'Thursday', '2023-08-22', 149, 'Henry Reed', '97-98', 'Room WW', 1, 0), " +
-                    "(42, '2023HP009.4', 'Friday', '2023-08-23', 150, 'Aiden Gray', '99-100', 'Room XX', 0, 1), " +
-                    "(43, '2023HP001.2', 'Monday', '2023-08-26', 151, 'Ella Brooks', '101-102', 'Room YY', 1, 0), " +
-                    "(44, '2023HP006.5', 'Tuesday', '2023-08-27', 152, 'Leo Wood', '103-104', 'Room ZZ', 0, 0), " +
-                    "(45, '2023HP005.1', 'Wednesday', '2023-08-28', 153, 'Stella Cook', '105-106', 'Room AAA', 1, 1), " +
-                    "(46, '2023HP004.4', 'Thursday', '2023-08-29', 154, 'Zoe Murphy', '107-108', 'Room BBB', 0, 0), " +
-                    "(47, '2023HP008.2', 'Friday', '2023-08-30', 155, 'David Price', '109-110', 'Room CCC', 1, 0), " +
-                    "(48, '2023HP002.7', 'Monday', '2023-09-02', 156, 'Luna Rivera', '111-112', 'Room DDD', 0, 1), " +
-                    "(49, '2023HP003.3', 'Tuesday', '2023-09-03', 157, 'Hudson Ward', '113-114', 'Room EEE', 1, 0), " +
-                    "(50, '2023HP001.3', 'Wednesday', '2023-09-04', 158, 'Mila Brooks', '115-116', 'Room FFF', 0, 0), " +
-                    "(51, '2023HP004.3', 'Thursday', '2023-09-05', 159, 'Owen Watson', '117-118', 'Room GGG', 1, 1), " +
-                    "(52, '2024HP006.9', 'Friday', '2023-09-06', 160, 'Ruby Long', '119-120', 'Room HHH', 0, 0), " +
-                    "(53, '2024HP008.1', 'Monday', '2023-09-09', 161, 'Carter Hughes', '121-122', 'Room III', 1, 0), " +
-                    "(54, '2024HP007.3', 'Tuesday', '2023-09-10', 162, 'Samantha Price', '123-124', 'Room JJJ', 0, 1), " +
-                    "(55, '2024HP001.2', 'Wednesday', '2023-09-11', 163, 'Xavier Evans', '125-126', 'Room KKK', 1, 0), " +
-                    "(56, '2024HP009.4', 'Thursday', '2023-09-12', 164, 'Layla Ward', '127-128', 'Room LLL', 0, 0), " +
-                    "(57, '2024HP001.6', 'Friday', '2023-09-13', 165, 'Gabriel Bryant', '129-130', 'Room MMM', 1, 1), " +
-                    "(58, '2024HP005.5', 'Monday', '2023-09-16', 166, 'Molly Perry', '131-132', 'Room NNN', 0, 0), " +
-                    "(59, '2025HP003.9', 'Tuesday', '2023-09-17', 167, 'Anthony Lopez', '133-134', 'Room OOO', 1, 0), " +
-                    "(60, '2025HP008.1', 'Wednesday', '2023-09-18', 168, 'Nathan Ward', '135-136', 'Room PPP', 0, 1), " +
-                    "(61, '2025HP006.3', 'Thursday', '2023-09-19', 169, 'Aria Griffin', '137-138', 'Room QQQ', 1, 0), " +
-                    "(62, '2025HP002.2', 'Friday', '2023-09-20', 170, 'Eliana Rivera', '139-140', 'Room RRR', 0, 0), " +
-                    "(63, '2025HP001.4', 'Monday', '2023-09-23', 171, 'Riley Torres', '141-142', 'Room SSS', 1, 1), " +
-                    "(64, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
-                    "(65, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
+                    "(37, '2023HP005.9', 'Monday', '2023-08-19', 146, 'Ava Carter', '91-92', 'Room TT', 0, 0), " +
+                    "(38, '2023HP006.1', 'Tuesday', '2023-08-20', 147, 'Logan Hill', '93-94', 'Room UU', 1, 1), " +
+                    "(39, '2023HP008.3', 'Wednesday', '2023-08-21', 148, 'Sophie Foster', '95-96', 'Room VV', 0, 0), " +
+                    "(40, '2023HP002.2', 'Thursday', '2023-08-22', 149, 'Henry Reed', '97-98', 'Room WW', 1, 0), " +
+                    "(41, '2023HP009.4', 'Friday', '2023-08-23', 150, 'Aiden Gray', '99-100', 'Room XX', 0, 1), " +
+                    "(42, '2023HP001.2', 'Monday', '2023-08-26', 151, 'Ella Brooks', '101-102', 'Room YY', 1, 0), " +
+                    "(43, '2023HP006.5', 'Tuesday', '2023-08-27', 152, 'Leo Wood', '103-104', 'Room ZZ', 0, 0), " +
+                    "(44, '2023HP005.1', 'Wednesday', '2023-08-28', 153, 'Stella Cook', '105-106', 'Room AAA', 1, 1), " +
+                    "(45, '2023HP004.4', 'Thursday', '2023-08-29', 154, 'Zoe Murphy', '107-108', 'Room BBB', 0, 0), " +
+                    "(46, '2023HP008.2', 'Friday', '2023-08-30', 155, 'David Price', '109-110', 'Room CCC', 1, 0), " +
+                    "(47, '2023HP002.7', 'Monday', '2023-09-02', 156, 'Luna Rivera', '111-112', 'Room DDD', 0, 1), " +
+                    "(48, '2023HP003.3', 'Tuesday', '2023-09-03', 157, 'Hudson Ward', '113-114', 'Room EEE', 1, 0), " +
+                    "(49, '2023HP001.3', 'Wednesday', '2023-09-04', 158, 'Mila Brooks', '115-116', 'Room FFF', 0, 0), " +
+                    "(50, '2023HP004.3', 'Thursday', '2023-09-05', 159, 'Owen Watson', '117-118', 'Room GGG', 1, 1), " +
+                    "(51, '2024HP006.9', 'Friday', '2023-09-06', 160, 'Ruby Long', '119-120', 'Room HHH', 0, 0), " +
+                    "(52, '2024HP008.1', 'Monday', '2023-09-09', 161, 'Carter Hughes', '121-122', 'Room III', 1, 0), " +
+                    "(53, '2024HP007.3', 'Tuesday', '2023-09-10', 162, 'Samantha Price', '123-124', 'Room JJJ', 0, 1), " +
+                    "(54, '2024HP001.2', 'Wednesday', '2023-09-11', 163, 'Xavier Evans', '125-126', 'Room KKK', 1, 0), " +
+                    "(55, '2024HP009.4', 'Thursday', '2023-09-12', 164, 'Layla Ward', '127-128', 'Room LLL', 0, 0), " +
+                    "(56, '2024HP001.6', 'Friday', '2023-09-13', 165, 'Gabriel Bryant', '129-130', 'Room MMM', 1, 1), " +
+                    "(57, '2024HP005.5', 'Monday', '2023-09-16', 166, 'Molly Perry', '131-132', 'Room NNN', 0, 0), " +
+                    "(58, '2025HP003.9', 'Tuesday', '2023-09-17', 167, 'Anthony Lopez', '133-134', 'Room OOO', 1, 0), " +
+                    "(59, '2025HP008.1', 'Wednesday', '2023-09-18', 168, 'Nathan Ward', '135-136', 'Room PPP', 0, 1), " +
+                    "(60, '2025HP006.3', 'Thursday', '2023-09-19', 169, 'Aria Griffin', '137-138', 'Room QQQ', 1, 0), " +
+                    "(61, '2025HP002.2', 'Friday', '2023-09-20', 170, 'Eliana Rivera', '139-140', 'Room RRR', 0, 0), " +
+                    "(62, '2025HP001.4', 'Monday', '2023-09-23', 171, 'Riley Torres', '141-142', 'Room SSS', 1, 1), " +
+                    "(63, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
+                    "(64, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
 }
