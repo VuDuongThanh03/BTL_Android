@@ -24,17 +24,19 @@ import com.example.btl_android.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class DiemActivity extends AppCompatActivity implements OnItemClickListener {
     private DatabaseHelper db;
     private ImageButton btnQuayLai, btnThongKe;
     private LinearLayout btnHocKySet;
     private Button lastSelectHocKy;
     private RecyclerView rvDiemHp;
-    List<String> hocKyList;
-    List<Diem> diemList;
+    private List<Diem> diemList;
     private DiemAdapter diemHpAdapter;
     private String hocKy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,6 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
         btnQuayLai = findViewById(R.id.imgQuayLai);
         btnThongKe = findViewById(R.id.imgThongKe);
         rvDiemHp = findViewById(R.id.rvDiemHp);
-        hocKyList = new ArrayList<>();
         diemList = new ArrayList<>();
         hocKy = "1";
 
@@ -109,7 +110,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     protected void onResume() {
         diemList = db.getDiemHpTheoKy(hocKy);
-        diemHpAdapter = new DiemAdapter(diemList, this, R.id.rvDiemHp);
+        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, R.id.rvDiemHp);
         rvDiemHp.setAdapter(diemHpAdapter);
         super.onResume();
     }

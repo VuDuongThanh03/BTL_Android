@@ -58,7 +58,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/edt_hoten"
+            android:id="@+id/etHoTen"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="12dp"
@@ -84,7 +84,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/edt_masv"
+            android:id="@+id/etMaSv"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="12dp"
@@ -117,7 +117,7 @@
             android:background="@drawable/custom_text_edit">
 
             <Spinner
-                android:id="@+id/spn_chuyennganh"
+                android:id="@+id/spChuyenNganh"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:ems="10"

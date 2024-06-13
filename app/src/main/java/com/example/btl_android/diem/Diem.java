@@ -2,7 +2,9 @@ package com.example.btl_android.diem;
 
 import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class Diem extends HocPhan {
     private String maLop;
     private Float tx1, tx2, giuaKy, cuoiKy, diemKiVong;

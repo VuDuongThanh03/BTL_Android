@@ -14,13 +14,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.R;
+import com.example.btl_android.cong_viec.CongViecActivity;
 import com.example.btl_android.diem.DiemActivity;
+import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKienActivity;
 import com.example.btl_android.thong_bao.ThongBaoActivity;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class TrangChuActivity extends AppCompatActivity {
 
-    LinearLayout btnDiem;
+    LinearLayout btnCongViec, btnHocPhan, btnDiem;
     ImageView btnThongBao;
     BroadcastReceiver receiver;
 
@@ -35,20 +39,30 @@ public class TrangChuActivity extends AppCompatActivity {
             return insets;
         });
 
+        btnCongViec = findViewById(R.id.btnCongViec);
+        btnHocPhan = findViewById(R.id.btnHocPhan);
         btnDiem = findViewById(R.id.btnDiem);
         btnThongBao = findViewById(R.id.imgThongBao);
+
+        btnCongViec.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
+            startActivity(intent);
+        });
 
         btnDiem.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
             startActivityForResult(intent, 0);
         });
 
+        btnHocPhan.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKienActivity.class);
+            startActivity(intent);
+        });
+
         btnThongBao.setOnClickListener(v -> {
-            btnThongBao.setBackgroundResource(R.drawable.bell);
             Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
             startActivityForResult(intent, 1);
         });
-        deleteDatabase("QuanLyHocTapCaNhan.db");
     }
 
     @Override
