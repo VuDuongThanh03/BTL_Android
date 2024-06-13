@@ -70,8 +70,8 @@ public class ThemHocPhan extends AppCompatActivity {
                     HocPhan hocPhan = new HocPhan(
                             maHpEditText.getText().toString(),
                             tenHpEditText.getText().toString(),
-                            Integer.parseInt(soTinChiLyThuyetEditText.getText().toString()),
-                            Integer.parseInt(soTinChiThucHanhEditText.getText().toString()),
+                            Float.parseFloat(soTinChiLyThuyetEditText.getText().toString()),
+                            Float.parseFloat(soTinChiThucHanhEditText.getText().toString()),
                             Integer.parseInt(hocKyEditText.getText().toString()),
                             hinhThucThiEditText.getText().toString(),
                             heSoEditText.getText().toString()
@@ -125,11 +125,11 @@ public class ThemHocPhan extends AppCompatActivity {
             return false;
         }
 
-        int soTinChiLyThuyetInt = Integer.parseInt(soTinChiLyThuyet);
-        int soTinChiThucHanhInt = Integer.parseInt(soTinChiThucHanh);
+        float soTinChiLyThuyetFloat = Float.parseFloat(soTinChiLyThuyet);
+        float soTinChiThucHanhFloat = Float.parseFloat(soTinChiThucHanh);
         int hocKyInt = Integer.parseInt(hocKy);
 
-        if (soTinChiLyThuyetInt < 0 || soTinChiThucHanhInt < 0) {
+        if (soTinChiLyThuyetFloat < 0 || soTinChiThucHanhFloat < 0) {
             Toast.makeText(this, "Số tín chỉ không hợp lệ", Toast.LENGTH_SHORT).show();
             return false;
         }

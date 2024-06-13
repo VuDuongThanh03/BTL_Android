@@ -54,6 +54,7 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
         });
     }
 
+
     @Override
     public int getItemCount() {
         return hocPhanList.size();
@@ -80,6 +81,8 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
             heSoTextView = itemView.findViewById(R.id.heSoTextView);
             cardView = itemView.findViewById(R.id.cardView);
         }
+
+
 
         public void bind(final HocPhan hocPhan) {
             maHpTextView.setText(hocPhan.getMaHp());
