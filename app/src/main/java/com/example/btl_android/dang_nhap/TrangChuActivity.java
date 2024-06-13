@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViecActivity;
 import com.example.btl_android.diem.DiemActivity;
@@ -27,6 +28,7 @@ public class TrangChuActivity extends AppCompatActivity {
     LinearLayout btnCongViec, btnHocPhan, btnDiem;
     ImageView btnThongBao;
     BroadcastReceiver receiver;
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class TrangChuActivity extends AppCompatActivity {
             return insets;
         });
 
+        db = new DatabaseHelper(this);
         btnCongViec = findViewById(R.id.btnCongViec);
         btnHocPhan = findViewById(R.id.btnHocPhan);
         btnDiem = findViewById(R.id.btnDiem);
