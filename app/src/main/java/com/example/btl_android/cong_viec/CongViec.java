@@ -4,6 +4,7 @@ package com.example.btl_android.cong_viec;
  * @noinspection ALL
  */
 public class CongViec {
+    int maCongViec;
     String tenCongViec;
     String chiTietCongViec;
     String mucUuTien;
@@ -11,7 +12,8 @@ public class CongViec {
     String thoiHanNgay;
     int trangThai;
 
-    public CongViec(final String tenCongViec, final String chiTietCongViec, final String mucUuTien, final String thoiHanGio, final String thoiHanNgay, final int trangThai) {
+    public CongViec(final int maCongViec,final String tenCongViec, final String chiTietCongViec, final String mucUuTien, final String thoiHanGio, final String thoiHanNgay, final int trangThai) {
+        this.maCongViec = maCongViec;
         this.tenCongViec = tenCongViec;
         this.chiTietCongViec = chiTietCongViec;
         this.mucUuTien = mucUuTien;
@@ -68,4 +70,11 @@ public class CongViec {
         this.trangThai = trangThai;
     }
 
+    public int getMaCongViec() {
+        return maCongViec;
+    }
+
+    public void setMaCongViec(int maCongViec) {
+        this.maCongViec = maCongViec;
+    }
 }

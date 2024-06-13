@@ -640,13 +640,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM CongViec", null);
         if (cursor.moveToFirst()) {
             do {
+                int macongviec = cursor.getInt(cursor.getColumnIndex("id"));
                 String tencongviec = cursor.getString(cursor.getColumnIndex("tenViec"));
                 String chitietcongviec = cursor.getString(cursor.getColumnIndex("chiTiet"));
                 String mucuutien = cursor.getString(cursor.getColumnIndex("mucUuTien"));
                 String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
                 String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
                 int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
-                CongViec congViec = new CongViec(tencongviec,chitietcongviec,mucuutien,thoihanngay,thoihanngay,trangthai);
+                CongViec congViec = new CongViec(macongviec,tencongviec,chitietcongviec,mucuutien,thoihangio,thoihanngay,trangthai);
 
                 congViecList.add(congViec);
             } while (cursor.moveToNext());
