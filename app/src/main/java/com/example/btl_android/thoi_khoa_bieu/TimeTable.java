@@ -24,6 +24,7 @@ import com.example.btl_android.R;
 
 import java.util.ArrayList;
 
+/** @noinspection ALL*/
 public class TimeTable extends AppCompatActivity {
 
     DatabaseHelper myDB;
