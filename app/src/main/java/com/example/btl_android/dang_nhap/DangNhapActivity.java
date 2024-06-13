@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -41,7 +40,7 @@ public class DangNhapActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         this.setContentView(R.layout.activity_dang_nhap);
 
-        Log.d("Delete db", "123456");
+        deleteDatabase("QuanLyHocTapCaNhan.db");
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 

@@ -51,7 +51,7 @@ public class DangKyActivity extends AppCompatActivity {
                 String matKhau = etMatKhau.getText().toString().trim();
                 String hoTen = etHoTen.getText().toString().trim();
                 String maSv = etMaSv.getText().toString().trim();
-                int chuyenNganh = spChuyenNganh.getSelectedItemPosition();
+                int chuyenNganh = spChuyenNganh.getSelectedItemPosition() + 1;
 
                 if (tenTk.isEmpty() || matKhau.isEmpty() || hoTen.isEmpty() || maSv.isEmpty()) {
                     Toast.makeText(DangKyActivity.this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
