@@ -1,15 +1,21 @@
 package com.example.btl_android.cong_viec;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_android.DatabaseHelper;
@@ -41,16 +47,6 @@ public class CongViecActivity extends AppCompatActivity {
         congViecArrayList = dbHelper.getAllCongViec();
         sortCongViecList(congViecArrayList);
         showlvCongViec();
-//        registerForContextMenu(lvcongviec);
-        lvcongviec.setClickable(true);
-        lvcongviec.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedItemPosition = i;
-                Toast.makeText(CongViecActivity.this, "a", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
     }
 
     void showlvCongViec() {
@@ -59,22 +55,7 @@ public class CongViecActivity extends AppCompatActivity {
 
         cvAdapter = new CongViecAdapter(x, R.layout.customlv_cong_viec, congViecArrayList);
         lvcongviec.setAdapter(cvAdapter);
-
-//        registerForContextMenu(lvcongviec);
-//        lvcongviec.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                selectedItemPosition = i;
-//                Toast.makeText(x, ""+i, Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//        });
-        lvcongviec.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(x, ""+i, Toast.LENGTH_SHORT).show();
-            }
-        });
+        registerForContextMenu(lvcongviec);
     }
 
     @Override
@@ -82,6 +63,36 @@ public class CongViecActivity extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_congviec, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.congviec_edit:
+                // Xử lý sự kiện chỉnh sửa
+                Toast.makeText(this, "Chỉnh sửa " + congViecArrayList.get(selectedItemPosition).tenCongViec, Toast.LENGTH_SHORT).show();
+                showAddEditDialog(congViecArrayList.get(selectedItemPosition),selectedItemPosition);
+                return true;
+            case R.id.congviec_delete:
+                // Xử lý sự kiện xóa
+                new AlertDialog.Builder(this)
+                        .setTitle("Xác nhận")
+                        .setMessage("Bạn có chắc chắn muốn xóa công việc này không?")
+                        .setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Toast.makeText(CongViecActivity.this, "Đã xóa", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Hủy", null)
+                        .show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+    public void setSelectedItemPosition(int position){
+        selectedItemPosition = position;
     }
 
     public void sortCongViecList(ArrayList<CongViec> congViecList) {
@@ -121,5 +132,58 @@ public class CongViecActivity extends AppCompatActivity {
         congViecList.clear();
         congViecList.addAll(trangThai0List);
         congViecList.addAll(trangThai1List);
+    }
+    private void showAddEditDialog(final CongViec congViec, final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.diaglog_congviec, null);
+        builder.setView(dialogView);
+
+        final EditText etTenCongViec = dialogView.findViewById(R.id.edt_tenviec);
+        final EditText etChiTietCongViec = dialogView.findViewById(R.id.edt_chitiet);
+//        final EditText etMucUuTien = dialogView.findViewById(R.id.et_mucuutien);
+        final EditText etThoiHanGio = dialogView.findViewById(R.id.edt_hangio);
+        final EditText etThoiHanNgay = dialogView.findViewById(R.id.edt_hanngay);
+
+        if (congViec != null) {
+            etTenCongViec.setText(congViec.getTenCongViec());
+            etChiTietCongViec.setText(congViec.getChiTietCongViec());
+//            etMucUuTien.setText(congViec.getMucUuTien());
+            etThoiHanGio.setText(congViec.getThoiHanGio());
+            etThoiHanNgay.setText(congViec.getThoiHanNgay());
+        }
+
+        builder.setPositiveButton(congViec == null ? "Thêm" : "Lưu", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String tenCongViec = etTenCongViec.getText().toString();
+                String chiTietCongViec = etChiTietCongViec.getText().toString();
+//                String mucUuTien = etMucUuTien.getText().toString();
+                String thoiHanGio = etThoiHanGio.getText().toString();
+                String thoiHanNgay = etThoiHanNgay.getText().toString();
+
+                if (congViec == null) {
+                    // Thêm mới công việc
+//                    items.add(new CongViec(tenCongViec, chiTietCongViec, mucUuTien, thoiHanGio, thoiHanNgay, 0));
+
+                } else {
+                    // Chỉnh sửa công việc
+//                    congViec.setTenCongViec(tenCongViec);
+//                    congViec.setChiTietCongViec(chiTietCongViec);
+//                    congViec.setMucUuTien(mucUuTien);
+//                    congViec.setThoiHanGio(thoiHanGio);
+//                    congViec.setThoiHanNgay(thoiHanNgay);
+//                    items.set(position, congViec);
+                }
+                cvAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }
