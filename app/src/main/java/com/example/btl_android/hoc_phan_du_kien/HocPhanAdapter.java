@@ -35,13 +35,12 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
 
     @Override
     public void onBindViewHolder(@NonNull HocPhanAdapter.HocPhanViewHolder holder, int pos) {
-        //Chạy đc rồi đấy boi :)
         HocPhan hocPhan = hocPhanList.get(pos);
         holder.bind(hocPhan);
         holder.maHpTextView.setText(hocPhan.getMaHp());
         holder.tenHpTextView.setText(hocPhan.getTenHp());
         holder.soTinChiLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
-        holder.soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
+        holder.soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiTh()));
         holder.hocKyTextView.setText(String.valueOf(hocPhan.getHocKy()));
         holder.hinhThucThiTextView.setText(hocPhan.getHinhThucThi());
         holder.heSoTextView.setText(hocPhan.getHeSo());
@@ -72,9 +71,6 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
 
         public HocPhanViewHolder(@NonNull View itemView) {
             super(itemView);
-        }
-
-        public void bind(final HocPhan hocPhan) {
             maHpTextView = itemView.findViewById(R.id.maHpTextView);
             tenHpTextView = itemView.findViewById(R.id.tenHpTextView);
             soTinChiLyThuyetTextView = itemView.findViewById(R.id.soTinChiLyThuyetTextView);
@@ -83,6 +79,16 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
             hinhThucThiTextView = itemView.findViewById(R.id.hinhThucThiTextView);
             heSoTextView = itemView.findViewById(R.id.heSoTextView);
             cardView = itemView.findViewById(R.id.cardView);
+        }
+
+        public void bind(final HocPhan hocPhan) {
+            maHpTextView.setText(hocPhan.getMaHp());
+            tenHpTextView.setText(hocPhan.getTenHp());
+            soTinChiLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
+            soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiTh()));
+            hocKyTextView.setText(String.valueOf(hocPhan.getHocKy()));
+            hinhThucThiTextView.setText(hocPhan.getHinhThucThi());
+            heSoTextView.setText(hocPhan.getHeSo());
         }
     }
 }

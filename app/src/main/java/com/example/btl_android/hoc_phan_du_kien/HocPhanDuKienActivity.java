@@ -33,9 +33,6 @@ import java.util.List;
  */
 public class HocPhanDuKienActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
-    private static final int REQUEST_CODE_EDIT_HOCPHAN = 2;
-
     private RecyclerView recyclerView;
     private HocPhanAdapter hocPhanAdapter;
     private List<HocPhan> hocPhanList;
@@ -58,30 +55,26 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         databaseHelper = new DatabaseHelper(this);
-        // Gọi phương thức để luôn thêm dữ liệu
         databaseHelper.themDuLieuHocPhanMoiLan();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_icon);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HocPhanDuKienActivity.this, TrangChuActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(HocPhanDuKienActivity.this, TrangChuActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         recyclerView = findViewById(R.id.recyclerViewHocPhan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         hocPhanList = new ArrayList<>();
-
         hocPhanAdapter = new HocPhanAdapter(hocPhanList);
         recyclerView.setAdapter(hocPhanAdapter);
 
         setupHocKyButtons();
+        loadHocPhanFromDatabase(); // Load dữ liệu ngay khi khởi tạo
     }
 
     private void setupHocKyButtons() {
@@ -90,15 +83,12 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
             int buttonId = getResources().getIdentifier("button" + i, "id", getPackageName());
             hocKyButtons[i - 1] = findViewById(buttonId);
             int hocKy = i;
-            hocKyButtons[i - 1].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedHocKy = hocKy;
-                    updateHocKyButtonColors();
-                    hocPhanList.clear();
-                    loadHocPhanFromDatabase();
-                    hocPhanAdapter.notifyDataSetChanged();
-                }
+            hocKyButtons[i - 1].setOnClickListener(v -> {
+                selectedHocKy = hocKy;
+                updateHocKyButtonColors();
+                hocPhanList.clear();
+                loadHocPhanFromDatabase();
+                hocPhanAdapter.notifyDataSetChanged();
             });
         }
     }
@@ -115,61 +105,13 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        HocPhan selectedHocPhan = hocPhanAdapter.getSelectedHocPhan();
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                Intent addIntent = new Intent(this, ThemHocPhan.class);
-                startActivityForResult(addIntent, REQUEST_CODE_ADD_HOCPHAN);
-                return true;
-            case R.id.action_edit:
-                if (selectedHocPhan != null) {
-                    Intent editIntent = new Intent(this, ThemHocPhan.class);
-                    editIntent.putExtra("hocPhan", selectedHocPhan);
-                    startActivityForResult(editIntent, REQUEST_CODE_EDIT_HOCPHAN);
-                } else {
-                    Toast.makeText(this, "Vui lòng chọn môn học cần sửa", Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            case R.id.action_delete:
-                if (selectedHocPhan != null) {
-                    databaseHelper.deleteHocPhan(selectedHocPhan.getMaHp());
-                    hocPhanList.clear();
-                    loadHocPhanFromDatabase();
-                    hocPhanAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(this, "Vui lòng chọn môn học cần xóa", Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == REQUEST_CODE_ADD_HOCPHAN || requestCode == REQUEST_CODE_EDIT_HOCPHAN) && resultCode == RESULT_OK) {
-            hocPhanList.clear();
-            loadHocPhanFromDatabase();
-            hocPhanAdapter.notifyDataSetChanged();
-        }
-    }
-
     private void loadHocPhanFromDatabase() {
-        //T sửa trên master cho m query đc r, cơ mà thấy còn nhiều lỗi lắm :)
+        hocPhanList.clear();
         String query = "SELECT * FROM HocPhan";
-        if (selectedHocKy == -1) return;
-        query += " WHERE hocKy = " + selectedHocKy;
+        if (selectedHocKy != -1) {
+            query += " WHERE hocKy = " + selectedHocKy;
+        }
         Cursor cursor = databaseHelper.getWritableDatabase().rawQuery(query, null);
-        Log.d("HocPhanDuKienActivity", cursor.getCount() + ", " + selectedHocKy);
         if (cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") String maHp = cursor.getString(cursor.getColumnIndex("maHp"));
@@ -185,5 +127,6 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        hocPhanAdapter.notifyDataSetChanged();
     }
 }
