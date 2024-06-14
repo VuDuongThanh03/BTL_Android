@@ -784,6 +784,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return congViecList;
     }
+    public void addCongViec(CongViec congViec) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", congViec.getMaCongViec());
+        values.put("tenViec", congViec.getTenCongViec());
+        values.put("chiTiet", congViec.getChiTietCongViec());
+        values.put("mucUuTien", congViec.getMucUuTien());
+        values.put("thoiHanNgay", congViec.getThoiHanNgay());
+        values.put("thoiHanGio", congViec.getThoiHanGio());
+        values.put("trangThai", congViec.getTrangThai());
+
+        db.insert("CongViec", null, values);
+        db.close();
+    }
+    public void updateCongViec(CongViec congViec) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", congViec.getMaCongViec());
+        values.put("tenViec", congViec.getTenCongViec());
+        values.put("chiTiet", congViec.getChiTietCongViec());
+        values.put("mucUuTien", congViec.getMucUuTien());
+        values.put("thoiHanNgay", congViec.getThoiHanNgay());
+        values.put("thoiHanGio", congViec.getThoiHanGio());
+        values.put("trangThai", congViec.getTrangThai());
+
+        // Cập nhật công việc dựa trên ID
+        db.update("CongViec", values, "id" + " = ?", new String[]{String.valueOf(congViec.getMaCongViec())});
+        db.close();
+    }
+    public void deleteCongViec(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("CongViec", "id = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
 
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";

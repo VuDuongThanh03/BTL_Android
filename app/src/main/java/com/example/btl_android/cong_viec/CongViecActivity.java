@@ -54,7 +54,7 @@ public class CongViecActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
         congViecArrayList = dbHelper.getAllCongViec();
-        sortCongViecList(congViecArrayList);
+        softCongViecList(congViecArrayList);
         showlvCongViec();
         btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +88,7 @@ public class CongViecActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.congviec_edit:
                 // Xử lý sự kiện chỉnh sửa
-                Toast.makeText(this, "Chỉnh sửa " + congViecArrayList.get(selectedItemPosition).tenCongViec, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Chỉnh sửa " + congViecArrayList.get(selectedItemPosition).tenCongViec, Toast.LENGTH_SHORT).show();
                 showAddEditDialog(congViecArrayList.get(selectedItemPosition),selectedItemPosition);
                 return true;
             case R.id.congviec_delete:
@@ -98,8 +98,10 @@ public class CongViecActivity extends AppCompatActivity {
                         .setMessage("Bạn có chắc chắn muốn xóa công việc này không?")
                         .setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
-                                Toast.makeText(CongViecActivity.this, "Đã xóa", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CongViecActivity.this, "Đã xóa công việc", Toast.LENGTH_SHORT).show();
+                                dbHelper.deleteCongViec(congViecArrayList.get(selectedItemPosition).maCongViec);
+                                congViecArrayList.remove(congViecArrayList.get(selectedItemPosition));
+                                cvAdapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("Hủy", null)
@@ -113,7 +115,7 @@ public class CongViecActivity extends AppCompatActivity {
         selectedItemPosition = position;
     }
 
-    public void sortCongViecList(ArrayList<CongViec> congViecList) {
+    public void softCongViecList(ArrayList<CongViec> congViecList) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         ArrayList<CongViec> trangThai1List = new ArrayList<>();
@@ -161,7 +163,6 @@ public class CongViecActivity extends AppCompatActivity {
         final TextView texttitle = dialogView.findViewById(R.id.dialog_title);
         final EditText etTenCongViec = dialogView.findViewById(R.id.edt_tenviec);
         final EditText etChiTietCongViec = dialogView.findViewById(R.id.edt_chitiet);
-//        final EditText etMucUuTien = dialogView.findViewById(R.id.et_mucuutien);
         final EditText etThoiHanGio = dialogView.findViewById(R.id.edt_hangio);
         final EditText etThoiHanNgay = dialogView.findViewById(R.id.edt_hanngay);
 
@@ -181,22 +182,26 @@ public class CongViecActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String tenCongViec = etTenCongViec.getText().toString();
                 String chiTietCongViec = etChiTietCongViec.getText().toString();
-//                String mucUuTien = etMucUuTien.getText().toString();
+                int mucUuTien = spinner_mucuutien.getSelectedItemPosition()+1;
                 String thoiHanGio = etThoiHanGio.getText().toString();
                 String thoiHanNgay = etThoiHanNgay.getText().toString();
 
                 if (congViec == null) {
-                    // Thêm mới công việc
-//                    items.add(new CongViec(tenCongViec, chiTietCongViec, mucUuTien, thoiHanGio, thoiHanNgay, 0));
+                    CongViec x = new CongViec(congViecArrayList.size()+1,tenCongViec,chiTietCongViec,mucUuTien+"",thoiHanGio,thoiHanNgay,0);
+                    congViecArrayList.add(x);
+                    dbHelper.addCongViec(x);
+                    softCongViecList(congViecArrayList);
 
                 } else {
-                    // Chỉnh sửa công việc
-//                    congViec.setTenCongViec(tenCongViec);
-//                    congViec.setChiTietCongViec(chiTietCongViec);
-//                    congViec.setMucUuTien(mucUuTien);
-//                    congViec.setThoiHanGio(thoiHanGio);
-//                    congViec.setThoiHanNgay(thoiHanNgay);
-//                    items.set(position, congViec);
+//                     Chỉnh sửa công việc
+                    congViec.setTenCongViec(tenCongViec);
+                    congViec.setChiTietCongViec(chiTietCongViec);
+                    congViec.setMucUuTien(mucUuTien+"");
+                    congViec.setThoiHanGio(thoiHanGio);
+                    congViec.setThoiHanNgay(thoiHanNgay);
+                    dbHelper.updateCongViec(congViec);
+                    congViecArrayList.set(position, congViec);
+                    softCongViecList(congViecArrayList);
                 }
                 cvAdapter.notifyDataSetChanged();
             }
