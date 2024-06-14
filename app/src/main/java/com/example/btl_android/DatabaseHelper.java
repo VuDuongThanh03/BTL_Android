@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -17,7 +18,9 @@ import com.example.btl_android.thong_bao.ThongBao;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(@Nullable final Context context) {
@@ -35,6 +38,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_LICHHOC);
         db.execSQL(CREATE_TABLE_THONGBAO);
 
+//        String insertData = "INSERT INTO " + TABLE_THOIKHOABIEU + " ("
+//                + COLUMN_MON + ", "
+//                + COLUMN_THU + ", "
+//                + COLUMN_NGAY + ", "
+//                + COLUMN_GIANGVIEN + ", "
+//                + COLUMN_PHONG + ", "
+//                + COLUMN_TIET + ", "
+//                + COLUMN_DIADIEM + ") VALUES " +
+//                "('Thiết kế Web','Thứ 2','10/6/2024','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1')," +
+//                "('Tiếng Anh Công Nghệ Thông Tin 2','Thứ 3','11/6/2024','Bùi Phương Thảo(0389937161 - Trường NN-DL)','508','7,8','A9')," +
+//                "('Phát triển ứng dụng trên thiết bị di động','Thứ 6','14/6/2024','Vũ Thị Dương(0904755919 - CNTT)','402','3,4,5','A8')," +
+//                "('Thiết kế đồ hoạ 2D','Thứ 5','13/6/2024','Đỗ Mạnh Hùng(0916113319 - CNTT)','609','9,10,11','A9')," +
+//                "('Đồ án chuyên ngành','Chủ nhật','16/6/2024','Nguyễn Bá Nghiễn (0358218310 - CNTT)','Phòng thực hành Khoa CNTT 06','1,2,3,4,5,7,8,9,10,11','A1');";
+//        db.execSQL(insertData);
         populateInitialData(db);
     }
 
@@ -48,7 +65,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS LichHoc");
         db.execSQL("DROP TABLE IF EXISTS ThongBao");
-
         onCreate(db);
     }
 
@@ -63,21 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // CRUD operations for HocPhan
-    public void addSubject(final HocPhan hocPhan) {
-        final SQLiteDatabase db = getWritableDatabase();
-
-        String sql = "INSERT INTO HocPhan (tenHp, maHp, soTinChiLyThuyet, hocKy) VALUES (?, ?, ?, ?)";
-
-        db.execSQL(sql, new Object[]{
-                hocPhan.getTenHp(),
-                hocPhan.getMaHp(),
-                hocPhan.getSoTietLt(),
-                hocPhan.getHocKy()
-        });
-
-        db.close();
-    }
-
     public void insertHocPhan(HocPhan hocPhan) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -126,28 +127,105 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return isUnique;
     }
 
-    public List<HocPhan> getAllSubjects() {
+    public List<HocPhan> getAllHocPhan() {
         List<HocPhan> hocPhanList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM HocPhan";
-
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan", null);
 
         if (cursor.moveToFirst()) {
             do {
-                HocPhan hocPhan = new HocPhan();
-                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
-                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-                hocPhan.setSoTietLt(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
+                HocPhan hocPhan = new HocPhan(
+                        cursor.getString(cursor.getColumnIndexOrThrow("maHp")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("tenHp")),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiThucHanh")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("soTietLyThuyet")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("soTietThucHanh")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("heSo"))
+                );
                 hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
         db.close();
         return hocPhanList;
     }
+
+    public void insertLichHoc(String maLop, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues tb = new ContentValues();
+
+        tb.put("maLop", maLop);
+        tb.put("thu", thu);
+        tb.put("ngay", ngay);
+        tb.put("giangVien", giangVien);
+        tb.put("phong", phong);
+        tb.put("tiet", tiet);
+        tb.put("diaDiem", diaDiem);
+        tb.put("loaiTietHoc", 0);
+        tb.put("vang", 0);
+        long result = db.insert("LichHoc", null, tb);
+        if (result == -1) {
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Add Thanh Cong", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Cursor getLichHoc() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM LichHoc";
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public Cursor searchLichHoc(String keyword) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM LichHoc WHERE maLop LIKE ? OR phong LIKE ?";
+        String[] selectionArgs = {"%" + keyword + "%", "%" + keyword + "%"};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        return cursor;
+    }
+
+    public boolean updateDataTime(Context context, int row_id, String maLop, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maLop", maLop);
+        values.put("thu", thu);
+        values.put("ngay", ngay);
+        values.put("giangVien", giangVien);
+        values.put("phong", phong);
+        values.put("tiet", tiet);
+        values.put("diaDiem", diaDiem);
+        values.put("loaiTietHoc", 0);
+        values.put("vang", 0);
+
+        int result = db.update("LichHoc", values, "id = ?", new String[]{String.valueOf(row_id)});
+        db.close();
+
+        if (result > 0) {
+            Log.d("updateDataTime", "Update Successful for row_id: " + row_id);
+            Toast.makeText(context, "Cập Nhật Thành Công !!", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Log.d("updateDataTime", "Update Failed for row_id: " + row_id);
+            Toast.makeText(context, "Cập Nhật Không Thành Công !!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    public boolean deleteLichHoc(int row_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete("LichHoc", "id=?", new String[]{String.valueOf(row_id)});
+        db.close();
+        return result > 0;
+    }
+
 
     public boolean updateDiem(Diem diem) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -162,7 +240,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res > 0;
     }
 
-    public void getTatCaDiemHp() {
+    public void getDiemHp() {
         allDiemHpList.clear();
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "";
@@ -229,11 +307,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return diemList;
     }
 
-    public void deleteThongBao() {
-        SQLiteDatabase db = this.getWritableDatabase();
-    }
-
-    public boolean updateThongBao(String tieuDe, String noiDung, String thoiGian) {
+    public boolean insertThongBao(String tieuDe, String noiDung, String thoiGian) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("tieuDe", tieuDe);
@@ -277,7 +351,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
                 String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
                 int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
-                CongViec congViec = new CongViec(macongviec,tencongviec,chitietcongviec,mucuutien,thoihangio,thoihanngay,trangthai);
+                CongViec congViec = new CongViec(macongviec, tencongviec, chitietcongviec, mucuutien, thoihangio, thoihanngay, trangthai);
 
                 congViecList.add(congViec);
             } while (cursor.moveToNext());
@@ -288,12 +362,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return congViecList;
     }
 
+    public void addCongViec(CongViec congViec) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", congViec.getMaCongViec());
+        values.put("tenViec", congViec.getTenCongViec());
+        values.put("chiTiet", congViec.getChiTietCongViec());
+        values.put("mucUuTien", congViec.getMucUuTien());
+        values.put("thoiHanNgay", congViec.getThoiHanNgay());
+        values.put("thoiHanGio", congViec.getThoiHanGio());
+        values.put("trangThai", congViec.getTrangThai());
+
+        db.insert("CongViec", null, values);
+        db.close();
+    }
+
+    public void updateCongViec(CongViec congViec) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", congViec.getMaCongViec());
+        values.put("tenViec", congViec.getTenCongViec());
+        values.put("chiTiet", congViec.getChiTietCongViec());
+        values.put("mucUuTien", congViec.getMucUuTien());
+        values.put("thoiHanNgay", congViec.getThoiHanNgay());
+        values.put("thoiHanGio", congViec.getThoiHanGio());
+        values.put("trangThai", congViec.getTrangThai());
+
+        // Cập nhật công việc dựa trên ID
+        db.update("CongViec", values, "id" + " = ?", new String[]{String.valueOf(congViec.getMaCongViec())});
+        db.close();
+    }
+
+    public void deleteCongViec(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("CongViec", "id = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    // ThongBao table
+    public List<HocPhan> getHocPhanByHocKy(int hocKy) {
+        List<HocPhan> hocPhanList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE hocKy = ?", new String[]{String.valueOf(hocKy)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                HocPhan hocPhan = new HocPhan(
+                        cursor.getString(cursor.getColumnIndex("maHp")),
+                        cursor.getString(cursor.getColumnIndex("tenHp")),
+                        cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")),
+                        cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")),
+                        cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")),
+                        cursor.getInt(cursor.getColumnIndex("soTietThucHanh")),
+                        cursor.getInt(cursor.getColumnIndex("hocKy")),
+                        cursor.getString(cursor.getColumnIndex("hinhThucThi")),
+                        cursor.getString(cursor.getColumnIndex("heSo"))
+                );
+                hocPhanList.add(hocPhan);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return hocPhanList;
+    }
+
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
     private static final int DATABASE_VERSION = 1;
-
     public static List<Diem> allDiemHpList = new ArrayList<>();
-
+    private Context context;
     // SinhVien table
     private static final String CREATE_TABLE_SINHVIEN =
             "CREATE TABLE IF NOT EXISTS SinhVien (" +
@@ -306,7 +443,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
-
     // CongViec table
     private static final String CREATE_TABLE_CONGVIEC =
             "CREATE TABLE IF NOT EXISTS CongViec (" +
@@ -318,14 +454,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "trangThai INTEGER NOT NULL," +
                     "chiTiet TEXT" +
                     ");";
-
     // ChuyenNganh table
     private static final String CREATE_TABLE_CHUYENNGANH =
             "CREATE TABLE IF NOT EXISTS ChuyenNganh (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "tenCn TEXT NOT NULL" +
                     ");";
-
     // HocPhan table
     private static final String CREATE_TABLE_HOCPHAN =
             "CREATE TABLE IF NOT EXISTS HocPhan (" +
@@ -339,7 +473,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "hinhThucThi TEXT NOT NULL," +
                     "heSo TEXT NOT NULL" +
                     ");";
-
     // LoaiHocPhan table
     private static final String CREATE_TABLE_LOAIHOCPHAN =
             "CREATE TABLE IF NOT EXISTS LoaiHocPhan (" +
@@ -352,7 +485,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
-
     // KetQuaHocPhan table
     private static final String CREATE_TABLE_KETQUAHOCPHAN =
             "CREATE TABLE IF NOT EXISTS KetQuaHocPhan (" +
@@ -368,7 +500,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
-
     // LichHoc table
     private static final String CREATE_TABLE_LICHHOC =
             "CREATE TABLE IF NOT EXISTS LichHoc (" +
@@ -385,8 +516,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(maLop) REFERENCES KetQuaHocPhan(maLop) " +
                     "ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
-
-    // ThongBao table
     private static final String CREATE_TABLE_THONGBAO =
             "CREATE TABLE IF NOT EXISTS ThongBao (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -394,11 +523,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "noiDung TEXT NOT NULL, " +
                     "thoiGian TEXT NOT NULL" +
                     ");";
-
     private static final String INSERT_TABLE_SINHVIEN =
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
                     "('2021606516', 1, 'Phùng Đức Cần', 'Tao là nhất', 'abc123!@#')";
-
     private static final String INSERT_TABLE_CONGVIEC =
             "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHanGio, thoiHanNgay, trangThai, chiTiet) VALUES " +
                     "(1, 'Complete Math Homework', 1, '9:30', '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
@@ -411,14 +538,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "(8, 'Chemistry Homework', 2, '20:40', '2023-06-24', 0, 'Solve problems from the textbook'), " +
                     "(9, 'Biology Research', 3, '22:00', '2023-06-26', 1, 'Research on genetic mutations'), " +
                     "(10, 'Computer Science Exam', 1, '23:30', '2023-06-28', 0, 'Study for final exam');";
-
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
                     "(1, 'Công nghệ thông tin'), " +
                     "(2, 'Khoa học máy tính'), " +
                     "(3, 'Hệ thống thông tin'), " +
                     "(4, 'Kỹ thuật phần mềm');";
-
     private static final String INSERT_TABLE_HOCPHAN =
             "INSERT INTO HocPhan (maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo) VALUES " +
                     "('LP6010', 'Triết học Mác-Lênin', 2, 0, 20, 0, 1, 'Tự luận', '20-20-60'), " +
@@ -460,7 +585,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('IT6029', 'Phát triển ứng dụng trên thiết bị di động', 3, 1, 30, 30, 7, 'Thi trên máy tính', '20-20-60'), " +
                     "('IT6129', 'Đồ án tốt nghiệp', 4, 5, 40, 45, 8, 'Tự luận', '30-30-40'), " +
                     "('IT6128', 'Thực tập doanh nghiệp', 3, 3, 30, 45, 8, 'Bài tập lớn', '20-30-50');";
-
     private static final String INSERT_TABLE_LOAIHOCPHAN =
             "INSERT INTO LoaiHocPhan (maHp, maCn, loai) VALUES " +
                     "('LP6010', 1, 0), " +
@@ -599,7 +723,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('IT6029', 4, 1), " +
                     "('IT6129', 4, 0), " +
                     "('IT6128', 4, 1)";
-
     private static final String INSERT_TABLE_KETQUAHOCPHAN =
             "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
                     "('2021HP003.1', 'IT6016', 8.5, 9.0, null, null, null, 1), " +
@@ -640,7 +763,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('2025HP001.4', 'BS6002', 9.0, 8.5, 7.0, null, null, 8), " +
                     "('2025HP001.2', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 8), " +
                     "('2025HP005.5', 'BS6001', 8.0, 6.5, null, null, null, 8);";
-
     private static final String INSERT_TABLE_LICHHOC =
             "INSERT INTO LichHoc " +
                     "(id, maLop, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +

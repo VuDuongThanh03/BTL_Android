@@ -1,26 +1,19 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.R;
 
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanViewHolder> {
-
     private List<HocPhan> hocPhanList;
-    private int selectedPosition = RecyclerView.NO_POSITION;
 
     public HocPhanAdapter(List<HocPhan> hocPhanList) {
         this.hocPhanList = hocPhanList;
@@ -34,25 +27,17 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HocPhanAdapter.HocPhanViewHolder holder, int pos) {
-        //Chạy đc rồi đấy boi :)
-        HocPhan hocPhan = hocPhanList.get(pos);
-        holder.bind(hocPhan);
+    public void onBindViewHolder(@NonNull HocPhanViewHolder holder, int position) {
+        HocPhan hocPhan = hocPhanList.get(position);
         holder.maHpTextView.setText(hocPhan.getMaHp());
         holder.tenHpTextView.setText(hocPhan.getTenHp());
         holder.soTinChiLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
-        holder.soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiLt()));
+        holder.soTinChiThucHanhTextView.setText(String.valueOf(hocPhan.getSoTinChiTh()));
+        holder.soTietLyThuyetTextView.setText(String.valueOf(hocPhan.getSoTietLt()));
+        holder.soTietThucHanhTextView.setText(String.valueOf(hocPhan.getSoTietTh()));
         holder.hocKyTextView.setText(String.valueOf(hocPhan.getHocKy()));
         holder.hinhThucThiTextView.setText(hocPhan.getHinhThucThi());
         holder.heSoTextView.setText(hocPhan.getHeSo());
-
-        holder.cardView.setCardBackgroundColor(selectedPosition == pos ? Color.LTGRAY : Color.WHITE);
-
-        holder.itemView.setOnClickListener(v -> {
-            notifyItemChanged(selectedPosition);
-            selectedPosition = holder.getAdapterPosition();
-            notifyItemChanged(selectedPosition);
-        });
     }
 
     @Override
@@ -60,29 +45,20 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
         return hocPhanList.size();
     }
 
-    public HocPhan getSelectedHocPhan() {
-        return selectedPosition != RecyclerView.NO_POSITION ? hocPhanList.get(selectedPosition) : null;
-    }
-
-    public class HocPhanViewHolder extends RecyclerView.ViewHolder {
-
-        TextView maHpTextView, tenHpTextView, soTinChiLyThuyetTextView,
-                soTinChiThucHanhTextView, hocKyTextView, hinhThucThiTextView, heSoTextView;
-        CardView cardView;
+    public static class HocPhanViewHolder extends RecyclerView.ViewHolder {
+        TextView maHpTextView, tenHpTextView, soTinChiLyThuyetTextView, soTinChiThucHanhTextView, soTietLyThuyetTextView, soTietThucHanhTextView, hocKyTextView, hinhThucThiTextView, heSoTextView;
 
         public HocPhanViewHolder(@NonNull View itemView) {
             super(itemView);
-        }
-
-        public void bind(final HocPhan hocPhan) {
             maHpTextView = itemView.findViewById(R.id.maHpTextView);
             tenHpTextView = itemView.findViewById(R.id.tenHpTextView);
             soTinChiLyThuyetTextView = itemView.findViewById(R.id.soTinChiLyThuyetTextView);
             soTinChiThucHanhTextView = itemView.findViewById(R.id.soTinChiThucHanhTextView);
+            soTietLyThuyetTextView = itemView.findViewById(R.id.soTietLyThuyetTextView);
+            soTietThucHanhTextView = itemView.findViewById(R.id.soTietThucHanhTextView);
             hocKyTextView = itemView.findViewById(R.id.hocKyTextView);
             hinhThucThiTextView = itemView.findViewById(R.id.hinhThucThiTextView);
             heSoTextView = itemView.findViewById(R.id.heSoTextView);
-            cardView = itemView.findViewById(R.id.cardView);
         }
     }
 }

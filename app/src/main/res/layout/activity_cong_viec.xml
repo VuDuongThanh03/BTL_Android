@@ -34,21 +34,13 @@
             android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/dots" />
+            android:background="@drawable/plus" />
     </RelativeLayout>
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/lvcongviec"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/custom_panel1">
-
-        <ListView
-            android:id="@+id/lvcongviec"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/customlv_cong_viec">
-
-        </ListView>
-    </LinearLayout>
-
+        android:background="@drawable/custom_panel1"
+        tools:listitem="@layout/customlv_cong_viec"/>
 </LinearLayout>

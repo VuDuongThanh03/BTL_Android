@@ -17,6 +17,7 @@ import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViecActivity;
 import com.example.btl_android.diem.DiemActivity;
 import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKienActivity;
+import com.example.btl_android.thoi_khoa_bieu.TimeTable;
 import com.example.btl_android.thong_bao.ThongBaoActivity;
 
 /**
@@ -24,7 +25,7 @@ import com.example.btl_android.thong_bao.ThongBaoActivity;
  */
 public class TrangChuActivity extends AppCompatActivity {
 
-    LinearLayout btnCongViec, btnHocPhan, btnDiem;
+    LinearLayout btnCongViec, btnHocPhan, btnDiem ,btnLichHoc;
     ImageView btnThongBao;
     BroadcastReceiver receiver;
 
@@ -43,6 +44,7 @@ public class TrangChuActivity extends AppCompatActivity {
         btnHocPhan = findViewById(R.id.btnHocPhan);
         btnDiem = findViewById(R.id.btnDiem);
         btnThongBao = findViewById(R.id.imgThongBao);
+        btnLichHoc =findViewById(R.id.btnLichHoc);
 
         btnCongViec.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
@@ -56,6 +58,10 @@ public class TrangChuActivity extends AppCompatActivity {
 
         btnHocPhan.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKienActivity.class);
+            startActivity(intent);
+        });
+        btnLichHoc.setOnClickListener(v -> {
+            Intent intent = new Intent(TrangChuActivity.this, TimeTable.class);
             startActivity(intent);
         });
 
