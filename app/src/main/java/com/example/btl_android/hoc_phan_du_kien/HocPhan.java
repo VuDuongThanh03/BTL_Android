@@ -120,4 +120,15 @@ public class HocPhan implements Serializable {
     public void setHeSo(String heSo) {
         this.heSo = heSo;
     }
+
+    public HocPhan(String maHp, String tenHp, float soTinChiLyThuyet, float soTinChiThucHanh, int hocKy, String hinhThucThi, String heSo) {
+        this.maHp = maHp;
+        this.tenHp = tenHp;
+        this.soTinChiLt = soTinChiLyThuyet;
+        this.soTinChiTh = soTinChiThucHanh;
+        this.hocKy = hocKy;
+        this.hinhThucThi = hinhThucThi;
+        this.heSo = heSo;
+    }
+
 }
