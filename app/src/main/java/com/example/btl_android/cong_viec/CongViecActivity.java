@@ -2,6 +2,8 @@ package com.example.btl_android.cong_viec;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
+import com.example.btl_android.dang_nhap.TrangChuActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,20 +51,20 @@ public class CongViecActivity extends AppCompatActivity {
     Spinner spMucUuTien;
     ArrayList<String> mucUuTienList = new ArrayList<String>();
     ArrayAdapter<String> adapter;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cong_viec);
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        btnMenu = findViewById(R.id.imgMenu);
+        btnMenu = findViewById(R.id.btn_menu);
+        back = findViewById(R.id.btn_backtrangchu);
         dbHelper = new DatabaseHelper(this);
         congViecList = dbHelper.getAllCongViec();
         softCongViecList(congViecList);
@@ -69,6 +73,13 @@ public class CongViecActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showAddEditDialog(null,0);
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CongViecActivity.this, TrangChuActivity.class);
+                startActivity(intent);
             }
         });
         mucUuTienList.add("Không quan trọng");
@@ -220,6 +231,21 @@ public class CongViecActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+    void savetrangthai(CongViec congViec,boolean b){
+        int stt = congViecList.indexOf(congViec);
+        if(b){
+            congViec.trangThai = 1;
+            Toast.makeText(this, "Hoàn thành "+congViec.tenCongViec, Toast.LENGTH_SHORT).show();
+        }else{
+            congViec.trangThai = 0;
+        }
+        dbHelper.updateCongViec(congViec);
+        congViecList.set(stt,congViec);
+        softCongViecList(congViecList);
+        cvAdapter.notifyDataSetChanged();
+
+
     }
     private void spinner() {
         this.adapter = new ArrayAdapter<String>(this,

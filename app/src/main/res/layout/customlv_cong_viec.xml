@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:focusable="false"
-    android:focusableInTouchMode="false">
+    android:focusableInTouchMode="false"
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp">
 
     <LinearLayout
+        android:paddingTop="20px"
+        android:paddingBottom="20px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -34,31 +40,26 @@
                 android:textColor="@color/black"
                 android:textSize="70px"
                 android:textStyle="bold"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mô tả: "
+                android:layout_marginTop="20px"
+                android:textColor="@color/black"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:id="@+id/tv_chitietcv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Làm cái gì đó"
+                android:textColor="#0020CF"
+                android:textStyle="bold"></TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mô tả: "
-                    android:textColor="@color/black"
-                    android:textStyle="bold"></TextView>
-
-                <TextView
-                    android:id="@+id/tv_chitietcv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Làm cái gì đó"
-                    android:textColor="#0020CF"
-                    android:textStyle="bold"></TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
                 android:orientation="horizontal">
 
                 <TextView
@@ -80,6 +81,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
                 android:orientation="horizontal">
 
                 <TextView
@@ -108,4 +110,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>
