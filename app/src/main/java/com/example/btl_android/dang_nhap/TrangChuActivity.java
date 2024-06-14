@@ -41,8 +41,11 @@ public class TrangChuActivity extends AppCompatActivity {
     BroadcastReceiver receiver;
     ListView lvCongViec;
     ArrayList<CongViec> congViecList = new ArrayList<>();
+    ListView lvLichHoc;
+    ArrayList<MiniTimeTable> lichHocList = new ArrayList<>();
     TextView txtUserName;
     MiniCongViecAdapter cvAdapter;
+    MiniTimeTableAdapter miniTimeTableAdapter;
     private DatabaseHelper dbHelper;
 
     @Override
@@ -68,6 +71,9 @@ public class TrangChuActivity extends AppCompatActivity {
         txtUserName.setText(tenSV);
 
         dbHelper = new DatabaseHelper(this);
+
+        lichHocList = dbHelper.getLichHocLite("2024-06-19");
+        showlvLichHoc();
         congViecList = dbHelper.getAllCongViec(dangNhapIntent.getStringExtra("maSV"));
         softCongViecList(congViecList);
         showlvCongViec();
@@ -115,6 +121,12 @@ public class TrangChuActivity extends AppCompatActivity {
         lvCongViec = findViewById(R.id.lv_minicongviec);
         cvAdapter = new MiniCongViecAdapter(x, R.layout.customlv_cong_viec_can_lam, congViecList);
         lvCongViec.setAdapter(cvAdapter);
+    }
+    void showlvLichHoc() {
+        Context x = this;
+        lvLichHoc = findViewById(R.id.lv_minilichhoc);
+        miniTimeTableAdapter = new MiniTimeTableAdapter(x, R.layout.customlv_lich_hoc_hom_nay, lichHocList);
+        lvLichHoc.setAdapter(miniTimeTableAdapter);
     }
 
     public void softCongViecList(ArrayList<CongViec> congViecList) {

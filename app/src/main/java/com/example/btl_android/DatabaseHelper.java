@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.btl_android.cong_viec.CongViec;
+import com.example.btl_android.dang_nhap.MiniTimeTable;
 import com.example.btl_android.diem.Diem;
 import com.example.btl_android.hoc_phan_du_kien.HocPhan;
 import com.example.btl_android.thong_bao.ThongBao;
@@ -176,6 +177,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(query, null);
         }
         return cursor;
+    }
+    public ArrayList<MiniTimeTable> getLichHocLite(String date){
+        ArrayList<MiniTimeTable> lichHocList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM LichHoc WHERE ngay = ?", new String[]{date});
+        if (cursor.moveToFirst()) {
+            do {
+                String tenmonhoc = cursor.getString(cursor.getColumnIndex("mon"));
+                String tiethoc = cursor.getString(cursor.getColumnIndex("tiet"));
+                String diadiem = cursor.getString(cursor.getColumnIndex("diaDiem"));
+                MiniTimeTable miniTimeTable = new MiniTimeTable(tenmonhoc,tiethoc,diadiem);
+
+                lichHocList.add(miniTimeTable);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return lichHocList;
     }
 
     public Cursor searchLichHoc(String keyword) {

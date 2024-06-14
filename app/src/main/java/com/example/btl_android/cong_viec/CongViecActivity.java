@@ -1,5 +1,7 @@
 package com.example.btl_android.cong_viec;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,6 +38,7 @@ import com.example.btl_android.dang_nhap.TrangChuActivity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -53,6 +57,7 @@ public class CongViecActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ImageView back;
     String maSV;
+    EditText etThoiHanGio,etThoiHanNgay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,8 +190,22 @@ public class CongViecActivity extends AppCompatActivity {
         final TextView texttitle = dialogView.findViewById(R.id.dialog_title);
         final EditText etTenCongViec = dialogView.findViewById(R.id.edt_tenviec);
         final EditText etChiTietCongViec = dialogView.findViewById(R.id.edt_chitiet);
-        final EditText etThoiHanGio = dialogView.findViewById(R.id.edt_hangio);
-        final EditText etThoiHanNgay = dialogView.findViewById(R.id.edt_hanngay);
+        etThoiHanGio = dialogView.findViewById(R.id.edt_hangio);
+        etThoiHanNgay = dialogView.findViewById(R.id.edt_hanngay);
+        final Button daypick = dialogView.findViewById(R.id.btn_daypick);
+        final Button timepick = dialogView.findViewById(R.id.btn_timepick);
+        daypick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog();
+            }
+        });
+        timepick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog();
+            }
+        });
 
         if (congViec != null) {
             texttitle.setText("Sửa công việc");
@@ -266,5 +285,43 @@ public class CongViecActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void showDatePickerDialog() {
+        // Lấy ngày hiện tại
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Tạo DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
+                        // Cập nhật TextView với ngày được chọn
+                        String selectedDate = year + "-" + (month + 1) + "-" + day;
+                        etThoiHanNgay.setText(selectedDate);
+                    }
+                }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void showTimePickerDialog() {
+        // Lấy giờ hiện tại
+        final Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Tạo TimePickerDialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(android.widget.TimePicker timePicker, int hourOfDay, int minute) {
+                        // Cập nhật TextView với giờ được chọn
+                        String selectedTime = hourOfDay + ":" + String.format("%02d", minute);
+                        etThoiHanGio.setText(selectedTime);
+                    }
+                }, hour, minute, true);
+        timePickerDialog.show();
     }
 }
