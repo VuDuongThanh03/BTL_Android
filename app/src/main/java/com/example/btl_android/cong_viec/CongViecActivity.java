@@ -81,6 +81,8 @@ public class CongViecActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CongViecActivity.this, TrangChuActivity.class);
+                intent.putExtra("maSV",getIntent().getStringExtra("maSV"));
+                intent.putExtra("tenSV", getIntent().getStringExtra("tenSV"));
                 startActivity(intent);
             }
         });
@@ -207,7 +209,7 @@ public class CongViecActivity extends AppCompatActivity {
                 String thoiHanNgay = etThoiHanNgay.getText().toString();
 
                 if (congViec == null) {
-                    CongViec x = new CongViec(congViecList.size()+1,maSV,tenCongViec,chiTietCongViec,mucUuTien+"",thoiHanGio,thoiHanNgay,0);
+                    CongViec x = new CongViec(dbHelper.getMaxId()+1,maSV,tenCongViec,chiTietCongViec,mucUuTien+"",thoiHanGio,thoiHanNgay,0);
                     congViecList.add(x);
                     dbHelper.addCongViec(x);
                     softCongViecList(congViecList);
