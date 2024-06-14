@@ -108,10 +108,10 @@ public class ThemHocPhan extends AppCompatActivity {
         }
 
         if (result) {
-            Toast.makeText(this, hocPhan == null ? "Thêm học phần thành công" : "Sửa học phần thành công", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, hocPhan == null ? "Thực hiện thành công" : "Thực hiện thành công", Toast.LENGTH_LONG).show();
             finish();
         } else {
-            Toast.makeText(this, hocPhan == null ? "Không thể thêm học phần" : "Không thể sửa học phần", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, hocPhan == null ? "Có lỗi xảy ra" : "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
         }
     }
 }
