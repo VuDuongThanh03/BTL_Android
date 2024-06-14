@@ -769,11 +769,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "INSERT INTO LichHoc " +
                     "(id, maLop, mon,thu, ngay,giangVien, phong, tiet, diaDiem, loaiTietHoc, vang) " +
                     "VALUES " +
-                    "(1,'CS101','Thiết kế Web','Thứ 2','10/6/2024','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1',2,0), " +
-                    "(2, 'CS102', 'Cơ Sở Dữ Liệu', 'Thứ Ba', '2024-06-18', 'Trần Thị B', 102, '4-6', 'Tòa nhà B, Phòng 102', 2, 2), " +
-                    "(3, 'CS103', 'Lập Trình C', 'Thứ Tư', '2024-06-19', 'Lê Văn C', 103, '7-9', 'Tòa nhà C, Phòng 103', 1, 1), " +
-                    "(4, 'CS104', 'Hệ Điều Hành', 'Thứ Năm', '2024-06-20', 'Phạm Thị D', 104, '10-12', 'Tòa nhà D, Phòng 104', 2, 0), " +
-                    "(5, 'CS105', 'Mạng Máy Tính', 'Thứ Sáu', '2024-06-21', 'Ngô Văn E', 105, '1-3', 'Tòa nhà E, Phòng 105', 1, 3);";
+                    "(1,'CS101','Thiết kế Web','Thứ Hai','2024-06-17','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1',2,0), " +
+                    "(2, 'CS102', 'Tiếng Anh CNTT 2', 'Thứ Ba', '2024-06-18', 'Trần Thị Bình', 502, '1,2,3', 'A9', 2, 2), " +
+                    "(3, 'CS103', 'Phát Triển Ứng Dụng Trên Thiết Bị Di Động', 'Thứ Tư', '2024-06-19', 'Vũ Thị Dương', 103, '7-9', 'Tòa nhà C, Phòng 103', 1, 1), " +
+                    "(4, 'CS104', 'Hệ Điều Hành', 'Thứ Năm', '2024-06-20', 'Phạm Thị Dung', 104, '10-12', 'Tòa nhà D, Phòng 104', 2, 0), " +
+                    "(5, 'CS105', 'Mạng Máy Tính', 'Thứ Sáu', '2024-06-21', 'Ngô Văn Em', 105, '1-3', 'Tòa nhà E, Phòng 105', 1, 3);";
 
     public boolean addHocPhan(HocPhan hocPhan) {
         SQLiteDatabase db = this.getWritableDatabase();
