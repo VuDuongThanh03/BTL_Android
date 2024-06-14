@@ -366,9 +366,10 @@
                     android:background="@drawable/custom_panel1">
 
                     <ListView
+                        android:id="@+id/lv_minicongviec"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:listitem="@layout/customlv_cong_viec_can_lam"/>
+                        tools:listitem="@layout/customlv_cong_viec_can_lam" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

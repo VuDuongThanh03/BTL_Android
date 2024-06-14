@@ -244,8 +244,6 @@ public class CongViecActivity extends AppCompatActivity {
         congViecList.set(stt,congViec);
         softCongViecList(congViecList);
         cvAdapter.notifyDataSetChanged();
-
-
     }
     private void spinner() {
         this.adapter = new ArrayAdapter<String>(this,
