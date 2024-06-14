@@ -14,9 +14,16 @@ import java.util.List;
 
 public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanViewHolder> {
     private List<HocPhan> hocPhanList;
+    private OnItemClickListener onItemClickListener;
+    private HocPhan selectedHocPhan;
 
-    public HocPhanAdapter(List<HocPhan> hocPhanList) {
+    public interface OnItemClickListener {
+        void onItemClick(HocPhan hocPhan);
+    }
+
+    public HocPhanAdapter(List<HocPhan> hocPhanList, OnItemClickListener onItemClickListener) {
         this.hocPhanList = hocPhanList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -38,11 +45,27 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
         holder.hocKyTextView.setText(String.valueOf(hocPhan.getHocKy()));
         holder.hinhThucThiTextView.setText(hocPhan.getHinhThucThi());
         holder.heSoTextView.setText(hocPhan.getHeSo());
+
+        holder.itemView.setOnClickListener(v -> {
+            onItemClickListener.onItemClick(hocPhan);
+            notifyDataSetChanged();
+        });
+
+        if (hocPhan == selectedHocPhan) {
+            holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.teal_200));
+        } else {
+            holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.white));
+        }
     }
 
     @Override
     public int getItemCount() {
         return hocPhanList.size();
+    }
+
+    public void setSelectedHocPhan(HocPhan hocPhan) {
+        selectedHocPhan = hocPhan;
+        notifyDataSetChanged();
     }
 
     public static class HocPhanViewHolder extends RecyclerView.ViewHolder {

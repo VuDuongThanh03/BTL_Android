@@ -125,19 +125,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateHocPhan(HocPhan hocPhan) {
+    public boolean updateHocPhan(HocPhan hocPhan) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
         values.put("soTietLyThuyet", hocPhan.getSoTietLt());
         values.put("soTietThucHanh", hocPhan.getSoTietTh());
         values.put("hocKy", hocPhan.getHocKy());
         values.put("hinhThucThi", hocPhan.getHinhThucThi());
         values.put("heSo", hocPhan.getHeSo());
 
-        db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
+        int result = db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
         db.close();
+        return result > 0;
     }
+
+
 
     public void deleteHocPhan(String maHp) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -159,31 +164,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return isUnique;
     }
 
-//    public List<HocPhan> getAllHocPhan() {
-//        List<HocPhan> hocPhanList = new ArrayList<>();
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery("SELECT maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo FROM HocPhan", null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                String maHp = cursor.getString(cursor.getColumnIndexOrThrow("maHp"));
-//                String tenHp = cursor.getString(cursor.getColumnIndexOrThrow("tenHp"));
-//                float soTinChiLyThuyet = cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiLyThuyet"));
-//                float soTinChiThucHanh = cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiThucHanh"));
-//                int soTietLyThuyet = cursor.getInt(cursor.getColumnIndexOrThrow("soTietLyThuyet"));
-//                int soTietThucHanh = cursor.getInt(cursor.getColumnIndexOrThrow("soTietThucHanh"));
-//                int hocKy = cursor.getInt(cursor.getColumnIndexOrThrow("hocKy"));
-//                String hinhThucThi = cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi"));
-//                String heSo = cursor.getString(cursor.getColumnIndexOrThrow("heSo"));
-//
-//                HocPhan hocPhan = new HocPhan(maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo);
-//                hocPhanList.add(hocPhan);
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        db.close();
-//        return hocPhanList;
-//    }
 public List<HocPhan> getAllHocPhan() {
     List<HocPhan> hocPhanList = new ArrayList<>();
     SQLiteDatabase db = this.getReadableDatabase();
@@ -993,6 +973,7 @@ public List<HocPhan> getAllHocPhan() {
                 hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }
+
         cursor.close();
         db.close();
         return hocPhanList;
@@ -1321,6 +1302,8 @@ public List<HocPhan> getAllHocPhan() {
                     "(63, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
                     "(64, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
 
+
+
     public boolean addHocPhan(HocPhan hocPhan) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -1334,12 +1317,10 @@ public List<HocPhan> getAllHocPhan() {
         values.put("hinhThucThi", hocPhan.getHinhThucThi());
         values.put("heSo", hocPhan.getHeSo());
 
-        // Thêm học phần vào bảng HocPhan
         long result = db.insert("HocPhan", null, values);
-        db.close(); // Đóng cơ sở dữ liệu sau khi hoàn thành
+        db.close();
 
-        // Kiểm tra kết quả thêm mới
-        return result != -1; // Nếu result khác -1 thì thêm mới thành công
+        return result != -1;
     }
 
 }

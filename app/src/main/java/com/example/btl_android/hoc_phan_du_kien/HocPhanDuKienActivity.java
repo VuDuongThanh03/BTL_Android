@@ -19,7 +19,7 @@ import com.example.btl_android.dang_nhap.TrangChuActivity;
 
 import java.util.List;
 
-public class HocPhanDuKienActivity extends AppCompatActivity {
+public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanAdapter.OnItemClickListener {
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
     private static final int REQUEST_CODE_EDIT_HOCPHAN = 2;
@@ -28,7 +28,8 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
     private HocPhanAdapter hocPhanAdapter;
     private List<HocPhan> hocPhanList;
     private DatabaseHelper databaseHelper;
-    private Button selectedButton = null; // Biến lưu nút hiện tại được chọn
+    private Button selectedButton = null;
+    private HocPhan selectedHocPhan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,24 +39,21 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Thiết lập nút navigation quay về TrangChuActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Quay lại TrangChuActivity
                 Intent intent = new Intent(HocPhanDuKienActivity.this, TrangChuActivity.class);
                 startActivity(intent);
-                finish();  // Kết thúc activity hiện tại để người dùng không quay lại bằng nút back
+                finish();
             }
         });
 
-        // Các thiết lập khác cho RecyclerView và các thành phần khác
         recyclerView = findViewById(R.id.recyclerViewHocPhan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         databaseHelper = new DatabaseHelper(this);
 
-        hocPhanList = databaseHelper.getAllHocPhan(); // Load all data initially
-        hocPhanAdapter = new HocPhanAdapter(hocPhanList);
+        hocPhanList = databaseHelper.getAllHocPhan();
+        hocPhanAdapter = new HocPhanAdapter(hocPhanList, this);
         recyclerView.setAdapter(hocPhanAdapter);
 
         setupSemesterButtons();
@@ -63,7 +61,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);  // Đảm bảo tên file menu đúng
+        getMenuInflater().inflate(R.menu.options_menu, menu);
         return true;
     }
 
@@ -74,11 +72,29 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ThemHocPhan.class);
             startActivityForResult(intent, REQUEST_CODE_ADD_HOCPHAN);
             return true;
+        } else if (id == R.id.action_edit) {
+            if (selectedHocPhan != null) {
+                Intent intent = new Intent(this, ThemHocPhan.class);
+                intent.putExtra("HOC_PHAN", selectedHocPhan);
+                startActivityForResult(intent, REQUEST_CODE_EDIT_HOCPHAN);
+            } else {
+                Toast.makeText(this, "Vui lòng chọn một học phần để sửa", Toast.LENGTH_LONG).show();
+            }
+            return true;
+        } else if (id == R.id.action_delete) {
+            if (selectedHocPhan != null) {
+                databaseHelper.deleteHocPhan(selectedHocPhan.getMaHp());
+                hocPhanList.remove(selectedHocPhan);
+                hocPhanAdapter.notifyDataSetChanged();
+                selectedHocPhan = null;
+                Toast.makeText(this, "Xóa học phần thành công", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Vui lòng chọn một học phần để xóa", Toast.LENGTH_LONG).show();
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     private void setupSemesterButtons() {
         int[] buttonIds = {R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8};
@@ -91,16 +107,20 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
 
     private void filterBySemester(int semester, Button button) {
         if (selectedButton != null) {
-            // Đặt lại background cho nút trước đó
             selectedButton.setBackground(getResources().getDrawable(R.drawable.button_default1));
         }
-        // Cập nhật nút mới được chọn
+
         selectedButton = button;
         selectedButton.setBackground(getResources().getDrawable(R.drawable.button_selected));
 
-        // Lọc danh sách học phần theo học kỳ được chọn
         hocPhanList = databaseHelper.getHocPhanByHocKy(semester);
-        hocPhanAdapter = new HocPhanAdapter(hocPhanList);
+        hocPhanAdapter = new HocPhanAdapter(hocPhanList, this);
         recyclerView.setAdapter(hocPhanAdapter);
+    }
+
+    @Override
+    public void onItemClick(HocPhan hocPhan) {
+        selectedHocPhan = hocPhan;
+        hocPhanAdapter.setSelectedHocPhan(hocPhan);
     }
 }
