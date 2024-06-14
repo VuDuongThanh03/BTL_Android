@@ -1,16 +1,21 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
+import com.example.btl_android.dang_nhap.TrangChuActivity;
 
 import java.util.List;
 
@@ -30,6 +35,21 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hoc_phan_du_kien);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Thiết lập nút navigation quay về TrangChuActivity
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Quay lại TrangChuActivity
+                Intent intent = new Intent(HocPhanDuKienActivity.this, TrangChuActivity.class);
+                startActivity(intent);
+                finish();  // Kết thúc activity hiện tại để người dùng không quay lại bằng nút back
+            }
+        });
+
+        // Các thiết lập khác cho RecyclerView và các thành phần khác
         recyclerView = findViewById(R.id.recyclerViewHocPhan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         databaseHelper = new DatabaseHelper(this);
@@ -40,6 +60,25 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
 
         setupSemesterButtons();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);  // Đảm bảo tên file menu đúng
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_add) {
+            Intent intent = new Intent(this, ThemHocPhan.class);
+            startActivityForResult(intent, REQUEST_CODE_ADD_HOCPHAN);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     private void setupSemesterButtons() {
         int[] buttonIds = {R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8};
