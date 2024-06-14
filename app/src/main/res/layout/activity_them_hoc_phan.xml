@@ -46,7 +46,8 @@
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="#000000"
                 android:hint="Mã học phần"
-                android:inputType="text" />
+                android:inputType="text"
+                />
 
             <EditText
                 android:id="@+id/tenHpEditText"
@@ -141,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#DCA4DC"
-                    android:text="Thêm" />
+                    android:text="Thêm/Sửa" />
 
             </LinearLayout>
 

@@ -15,19 +15,17 @@ public class ThemHocPhan extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;
     private Button buttonCancel, buttonSubmit;
-
     private EditText soTietLyThuyetEditText, soTietThucHanhEditText;
     private DatabaseHelper databaseHelper;
+    private HocPhan hocPhan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_them_hoc_phan);
 
-        // Khởi tạo database helper
         databaseHelper = new DatabaseHelper(this);
 
-        // Ánh xạ các view
         maHpEditText = findViewById(R.id.maHpEditText);
         tenHpEditText = findViewById(R.id.tenHpEditText);
         soTinChiLyThuyetEditText = findViewById(R.id.soTinChiLyThuyetEditText);
@@ -40,15 +38,30 @@ public class ThemHocPhan extends AppCompatActivity {
         buttonCancel = findViewById(R.id.buttonCancel);
         buttonSubmit = findViewById(R.id.buttonSubmit);
 
-        // Thiết lập sự kiện click cho nút Hủy
         buttonCancel.setOnClickListener(v -> finish());
 
-        // Thiết lập sự kiện click cho nút Thêm
         buttonSubmit.setOnClickListener(v -> submitForm());
+
+        hocPhan = (HocPhan) getIntent().getSerializableExtra("HOC_PHAN");
+        if (hocPhan != null) {
+            loadHocPhanData();
+            maHpEditText.setEnabled(false); // Disable editing Ma Hoc Phan
+        }
+    }
+
+    private void loadHocPhanData() {
+        maHpEditText.setText(hocPhan.getMaHp());
+        tenHpEditText.setText(hocPhan.getTenHp());
+        soTinChiLyThuyetEditText.setText(String.valueOf(hocPhan.getSoTinChiLt()));
+        soTinChiThucHanhEditText.setText(String.valueOf(hocPhan.getSoTinChiTh()));
+        soTietLyThuyetEditText.setText(String.valueOf(hocPhan.getSoTietLt()));
+        soTietThucHanhEditText.setText(String.valueOf(hocPhan.getSoTietTh()));
+        hocKyEditText.setText(String.valueOf(hocPhan.getHocKy()));
+        hinhThucThiEditText.setText(hocPhan.getHinhThucThi());
+        heSoEditText.setText(hocPhan.getHeSo());
     }
 
     private void submitForm() {
-        // Lấy dữ liệu từ các EditText
         String maHp = maHpEditText.getText().toString();
         String tenHp = tenHpEditText.getText().toString();
         String soTinChiLt = soTinChiLyThuyetEditText.getText().toString();
@@ -59,44 +72,46 @@ public class ThemHocPhan extends AppCompatActivity {
         String hinhThucThi = hinhThucThiEditText.getText().toString();
         String heSo = heSoEditText.getText().toString();
 
-        // Kiểm tra trường bỏ trống
         if (maHp.isEmpty() || tenHp.isEmpty() || soTinChiLt.isEmpty() || soTinChiTh.isEmpty() ||
                 soTietLt.isEmpty() || soTietTh.isEmpty() || hocKy.isEmpty() || hinhThucThi.isEmpty() || heSo.isEmpty()) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Kiểm tra mã học phần chưa tồn tại
-        if (!databaseHelper.isMaHpUnique(maHp)) {
-            Toast.makeText(this, "Mã học phần đã tồn tại", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        // Kiểm tra học kỳ hợp lệ
         int hocKyInt = Integer.parseInt(hocKy);
         if (hocKyInt < 1 || hocKyInt > 8) {
             Toast.makeText(this, "Học kỳ phải nằm trong khoảng từ 1 đến 8", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Kiểm tra định dạng hệ số
         if (!heSo.matches("\\d+-\\d+-\\d+")) {
             Toast.makeText(this, "Hệ số phải theo dạng x-y-z (x, y, z là các số nguyên dương)", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Thêm vào cơ sở dữ liệu
-        boolean result = databaseHelper.addHocPhan(new HocPhan(maHp, tenHp, Float.parseFloat(soTinChiLt), Float.parseFloat(soTinChiTh),
-                Integer.parseInt(soTietLt), Integer.parseInt(soTietTh), hocKyInt,
-                hinhThucThi, heSo));
+        boolean result;
+        if (hocPhan == null) {
+            hocPhan = new HocPhan(maHp, tenHp, Float.parseFloat(soTinChiLt), Float.parseFloat(soTinChiTh),
+                    Integer.parseInt(soTietLt), Integer.parseInt(soTietTh), hocKyInt,
+                    hinhThucThi, heSo);
+            result = databaseHelper.addHocPhan(hocPhan);
+        } else {
+            hocPhan.setTenHp(tenHp);
+            hocPhan.setSoTinChiLt(Float.parseFloat(soTinChiLt));
+            hocPhan.setSoTinChiTh(Float.parseFloat(soTinChiTh));
+            hocPhan.setSoTietLt(Integer.parseInt(soTietLt));
+            hocPhan.setSoTietTh(Integer.parseInt(soTietTh));
+            hocPhan.setHocKy(hocKyInt);
+            hocPhan.setHinhThucThi(hinhThucThi);
+            hocPhan.setHeSo(heSo);
+            result = databaseHelper.updateHocPhan(hocPhan);
+        }
 
         if (result) {
-            Toast.makeText(this, "Thêm học phần thành công", Toast.LENGTH_LONG).show();
-            finish(); // Đóng activity nếu thêm thành công
+            Toast.makeText(this, hocPhan == null ? "Thực hiện thành công" : "Thực hiện thành công", Toast.LENGTH_LONG).show();
+            finish();
         } else {
-            Toast.makeText(this, "Không thể thêm học phần", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, hocPhan == null ? "Có lỗi xảy ra" : "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
         }
     }
-
-
 }
