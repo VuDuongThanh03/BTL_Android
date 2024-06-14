@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -40,6 +41,7 @@ public class TrangChuActivity extends AppCompatActivity {
     BroadcastReceiver receiver;
     ListView lvCongViec;
     ArrayList<CongViec> congViecList = new ArrayList<>();
+    TextView txtUserName;
     MiniCongViecAdapter cvAdapter;
     private DatabaseHelper dbHelper;
 
@@ -53,12 +55,17 @@ public class TrangChuActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Intent dangNhapIntent = getIntent();
+        String tenSV = dangNhapIntent.getStringExtra("tenSV");
 
         btnCongViec = findViewById(R.id.btnCongViec);
         btnHocPhan = findViewById(R.id.btnHocPhan);
         btnDiem = findViewById(R.id.btnDiem);
         btnThongBao = findViewById(R.id.imgThongBao);
         btnLichHoc = findViewById(R.id.btnLichHoc);
+        txtUserName = findViewById(R.id.txtUsername);
+
+        txtUserName.setText(tenSV);
 
         dbHelper = new DatabaseHelper(this);
         congViecList = dbHelper.getAllCongViec();
