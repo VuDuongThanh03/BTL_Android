@@ -47,10 +47,11 @@ public class TimeTable extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             String tab = "";
-            for (int i = 0; i < 17; i++) {
+            for (int i = 0; i < 15; i++) {
                 tab += "\t";
             }
             actionBar.setTitle(tab + "Lịch Học");
