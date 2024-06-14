@@ -71,6 +71,7 @@
             android:name=".dang_nhap.DangNhapActivity"
             android:exported="false">
 
+
         </activity>
     </application>
 

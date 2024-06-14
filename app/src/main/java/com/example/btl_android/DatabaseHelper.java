@@ -1320,4 +1320,26 @@ public List<HocPhan> getAllHocPhan() {
                     "(62, '2025HP001.4', 'Monday', '2023-09-23', 171, 'Riley Torres', '141-142', 'Room SSS', 1, 1), " +
                     "(63, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
                     "(64, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
+
+    public boolean addHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maHp", hocPhan.getMaHp());
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
+        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
+        values.put("soTietThucHanh", hocPhan.getSoTietTh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        // Thêm học phần vào bảng HocPhan
+        long result = db.insert("HocPhan", null, values);
+        db.close(); // Đóng cơ sở dữ liệu sau khi hoàn thành
+
+        // Kiểm tra kết quả thêm mới
+        return result != -1; // Nếu result khác -1 thì thêm mới thành công
+    }
+
 }
