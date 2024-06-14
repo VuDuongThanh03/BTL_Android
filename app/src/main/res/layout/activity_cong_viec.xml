@@ -8,38 +8,51 @@
     android:orientation="vertical"
     tools:context=".cong_viec.CongViecActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp">
+        android:orientation="horizontal"
+        android:weightSum="6">
+        <ImageView
+            android:id="@+id/btn_backtrangchu"
+            android:layout_marginLeft="20px"
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:layout_gravity="center"
+            android:background="@drawable/back">
 
-        <ImageButton
-            android:id="@+id/imgQuayLai"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/back" />
-
+        </ImageView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Công Việc"
+            android:layout_weight="6"
             android:textSize="30sp"
             android:textStyle="bold" />
 
         <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
+            android:id="@+id/btn_menu"
+            android:layout_marginRight="20px"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_gravity="center"
             android:layout_alignParentEnd="true"
             android:background="@drawable/plus" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <ListView
-        android:id="@+id/lvcongviec"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/custom_panel1"
-        tools:listitem="@layout/customlv_cong_viec"/>
+            android:id="@+id/lvcongviec"
+            android:layout_marginTop="30px"
+            android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/customlv_cong_viec"
+            android:dividerHeight="50px"
+            android:divider="@drawable/divider"
+            android:scrollbars="none">
+
+    </ListView>
+
 </LinearLayout>

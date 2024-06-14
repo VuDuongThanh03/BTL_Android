@@ -532,19 +532,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ");";
     private static final String INSERT_TABLE_SINHVIEN =
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
-                    "('2021606516', 1, 'Phùng Đức Cần', 'Tao là nhất', 'abc123!@#')";
+                    "('2021606516', 1, 'Phùng Đức Cần', 'phungduccan', 'abc123!@#'),"+
+                    "('2021607252', 1, 'Vũ Dương Thành', 'vuduongthanh', 'abc123!@#')";
+
     private static final String INSERT_TABLE_CONGVIEC =
             "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHanGio, thoiHanNgay, trangThai, chiTiet) VALUES " +
-                    "(1, 'Complete Math Homework', 1, '9:30', '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
-                    "(2, 'Prepare Physics Presentation', 2, '15:10', '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
-                    "(3, 'Chemistry Lab Report', 1, '8:00', '2023-06-14', 0, 'Lab report on chemical reactions'), " +
-                    "(4, 'Biology Field Trip', 3, '11:15', '2023-06-16', 1, 'Field trip to the botanical garden'), " +
-                    "(5, 'Computer Science Project', 1, '16:30', '2023-06-18', 0, 'Project on data structures'), " +
-                    "(6, 'Math Quiz Preparation', 2, '10:30', '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
-                    "(7, 'Physics Assignment', 1, '6:50', '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
-                    "(8, 'Chemistry Homework', 2, '20:40', '2023-06-24', 0, 'Solve problems from the textbook'), " +
-                    "(9, 'Biology Research', 3, '22:00', '2023-06-26', 1, 'Research on genetic mutations'), " +
-                    "(10, 'Computer Science Exam', 1, '23:30', '2023-06-28', 0, 'Study for final exam');";
+                    "(1, 'Nộp báo cáo Android', 2, '8:00', '2024-06-15', 0, 'Nộp báo cáo bài tập lớn môn Android gồm các file word và video giới thiệu'), " +
+                    "(2, 'Bảo vệ bài tập lớn Android', 3, '14:00', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 802-A1'), " +
+                    "(3, 'Bảo vệ bài tập lớn Kiểm thử phần mềm', 3, '14:30', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 701-A1'), " +
+                    "(4, 'Ôn tập Quản trị mạng', 2, '8:35', '2024-06-20', 0, 'Ôn tập trước ngày thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
+                    "(5, 'Thi Quản trị mạng', 3, '11:15', '2024-06-21', 0, 'Đi thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
+                    "(6, 'Hoàn thành bài tập lớn Web nâng cao', 2, '8:00', '2023-06-10', 1, 'Hoàn thiện bài tập lớn sau đó đi in cho buổi vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
+                    "(7, 'Bảo vệ bài tập lớn Web nâng cao', 3, '8:00', '2023-06-12', 1, 'Đi bảo vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
+                    "(8, 'Thi cuối kỳ môn Tiếng Anh 2', 3, '13:30', '2023-05-26', 1, 'Đi thi cuối kỳ môn Tiếng Anh 2 phòng 507-A9');";
+
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
                     "(1, 'Công nghệ thông tin'), " +
