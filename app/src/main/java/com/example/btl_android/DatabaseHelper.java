@@ -159,6 +159,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return isUnique;
     }
 
+//    public List<HocPhan> getAllHocPhan() {
+//        List<HocPhan> hocPhanList = new ArrayList<>();
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery("SELECT maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo FROM HocPhan", null);
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                String maHp = cursor.getString(cursor.getColumnIndexOrThrow("maHp"));
+//                String tenHp = cursor.getString(cursor.getColumnIndexOrThrow("tenHp"));
+//                float soTinChiLyThuyet = cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiLyThuyet"));
+//                float soTinChiThucHanh = cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiThucHanh"));
+//                int soTietLyThuyet = cursor.getInt(cursor.getColumnIndexOrThrow("soTietLyThuyet"));
+//                int soTietThucHanh = cursor.getInt(cursor.getColumnIndexOrThrow("soTietThucHanh"));
+//                int hocKy = cursor.getInt(cursor.getColumnIndexOrThrow("hocKy"));
+//                String hinhThucThi = cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi"));
+//                String heSo = cursor.getString(cursor.getColumnIndexOrThrow("heSo"));
+//
+//                HocPhan hocPhan = new HocPhan(maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo);
+//                hocPhanList.add(hocPhan);
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//        db.close();
+//        return hocPhanList;
+//    }
+public List<HocPhan> getAllHocPhan() {
+    List<HocPhan> hocPhanList = new ArrayList<>();
+    SQLiteDatabase db = this.getReadableDatabase();
+    Cursor cursor = db.rawQuery("SELECT * FROM HocPhan", null);
+
+    if (cursor.moveToFirst()) {
+        do {
+            HocPhan hocPhan = new HocPhan(
+                    cursor.getString(cursor.getColumnIndexOrThrow("maHp")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("tenHp")),
+                    cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")),
+                    cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiThucHanh")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("soTietLyThuyet")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("soTietThucHanh")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("heSo"))
+            );
+            hocPhanList.add(hocPhan);
+        } while (cursor.moveToNext());
+    }
+    cursor.close();
+    db.close();
+    return hocPhanList;
+}
+
+
+
+
     public List<HocPhan> getAllSubjects() {
         List<HocPhan> hocPhanList = new ArrayList<>();
         String selectQuery = "SELECT * FROM HocPhan";

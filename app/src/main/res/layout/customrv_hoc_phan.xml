@@ -57,7 +57,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Lý thuyết"
+                    android:text="Số tín chỉ lý thuyết"
                     android:textSize="16sp" />
 
                 <TextView
@@ -77,7 +77,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Thực hành/Thí nghiệm"
+                    android:text="Số tín chỉ thực hành"
                     android:textSize="16sp" />
 
                 <TextView
@@ -85,6 +85,46 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0.00"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Số tiết lý thuyết"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/soTietLtTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Số tiết thực hành"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/soTietThTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
                     android:textSize="16sp" />
             </LinearLayout>
 
