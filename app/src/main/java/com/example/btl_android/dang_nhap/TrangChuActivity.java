@@ -44,7 +44,7 @@ public class TrangChuActivity extends AppCompatActivity {
         btnHocPhan = findViewById(R.id.btnHocPhan);
         btnDiem = findViewById(R.id.btnDiem);
         btnThongBao = findViewById(R.id.imgThongBao);
-        btnLichHoc =findViewById(R.id.btnLichHoc);
+        btnLichHoc = findViewById(R.id.btnLichHoc);
 
         btnCongViec.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
