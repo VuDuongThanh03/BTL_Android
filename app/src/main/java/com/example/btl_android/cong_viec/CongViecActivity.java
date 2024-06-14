@@ -10,7 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
@@ -35,7 +39,15 @@ public class CongViecActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cong_viec);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
         congViecArrayList = dbHelper.getAllCongViec();
@@ -81,7 +93,7 @@ public class CongViecActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu_congviec, menu);
+        inflater.inflate(R.menu.context_menu_cong_viec, menu);
     }
 
     public void sortCongViecList(ArrayList<CongViec> congViecList) {
