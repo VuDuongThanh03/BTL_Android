@@ -3,9 +3,18 @@ package com.example.btl_android.cong_viec;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
@@ -25,16 +34,35 @@ public class CongViecActivity extends AppCompatActivity {
     CongViecAdapter cvAdapter;
     SQLiteDatabase db;
     private DatabaseHelper dbHelper;
+    int selectedItemPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cong_viec);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
         congViecArrayList = dbHelper.getAllCongViec();
         sortCongViecList(congViecArrayList);
         showlvCongViec();
+//        registerForContextMenu(lvcongviec);
+        lvcongviec.setClickable(true);
+        lvcongviec.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedItemPosition = i;
+                Toast.makeText(CongViecActivity.this, "a", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 
     void showlvCongViec() {
@@ -43,7 +71,31 @@ public class CongViecActivity extends AppCompatActivity {
 
         cvAdapter = new CongViecAdapter(x, R.layout.customlv_cong_viec, congViecArrayList);
         lvcongviec.setAdapter(cvAdapter);
+
+//        registerForContextMenu(lvcongviec);
+//        lvcongviec.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                selectedItemPosition = i;
+//                Toast.makeText(x, ""+i, Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
+        lvcongviec.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(x, ""+i, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu_cong_viec, menu);
+    }
+
     public void sortCongViecList(ArrayList<CongViec> congViecList) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 

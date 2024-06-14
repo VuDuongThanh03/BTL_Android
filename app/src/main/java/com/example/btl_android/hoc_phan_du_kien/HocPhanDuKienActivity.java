@@ -58,8 +58,6 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         databaseHelper = new DatabaseHelper(this);
-        // Gọi phương thức để luôn thêm dữ liệu
-        databaseHelper.themDuLieuHocPhanMoiLan();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_icon);
@@ -117,7 +115,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
+        getMenuInflater().inflate(R.menu.options_menu_hoc_phan_du_kien, menu);
         return true;
     }
 
