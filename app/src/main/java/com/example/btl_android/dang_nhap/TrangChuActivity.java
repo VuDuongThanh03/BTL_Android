@@ -20,7 +20,6 @@ import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViec;
 import com.example.btl_android.cong_viec.CongViecActivity;
-import com.example.btl_android.cong_viec.CongViecAdapter;
 import com.example.btl_android.diem.DiemActivity;
 import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKienActivity;
 import com.example.btl_android.thoi_khoa_bieu.TimeTable;
@@ -36,7 +35,7 @@ import java.util.Date;
  */
 public class TrangChuActivity extends AppCompatActivity {
 
-    LinearLayout btnCongViec, btnHocPhan, btnDiem ,btnLichHoc;
+    LinearLayout btnCongViec, btnHocPhan, btnDiem, btnLichHoc;
     ImageView btnThongBao;
     BroadcastReceiver receiver;
     ListView lvCongViec;
@@ -101,12 +100,14 @@ public class TrangChuActivity extends AppCompatActivity {
             btnThongBao.setImageResource(R.drawable.bell);
         }
     }
+
     void showlvCongViec() {
         Context x = this;
         lvCongViec = findViewById(R.id.lv_minicongviec);
         cvAdapter = new MiniCongViecAdapter(x, R.layout.customlv_cong_viec_can_lam, congViecList);
         lvCongViec.setAdapter(cvAdapter);
     }
+
     public void softCongViecList(ArrayList<CongViec> congViecList) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -143,16 +144,17 @@ public class TrangChuActivity extends AppCompatActivity {
         congViecList.clear();
         congViecList.addAll(trangThai0List);
     }
-    void savetrangthai(CongViec congViec,boolean b){
+
+    void saveTrangThai(CongViec congViec, boolean b) {
         int stt = congViecList.indexOf(congViec);
-        if(b){
+        if (b) {
             congViec.setTrangThai(1);
-            Toast.makeText(this, "Hoàn thành "+congViec.getTenCongViec(), Toast.LENGTH_SHORT).show();
-        }else{
+            Toast.makeText(this, "Hoàn thành " + congViec.getTenCongViec(), Toast.LENGTH_SHORT).show();
+        } else {
             congViec.setTrangThai(0);
         }
         dbHelper.updateCongViec(congViec);
-        congViecList.set(stt,congViec);
+        congViecList.set(stt, congViec);
         softCongViecList(congViecList);
         cvAdapter.notifyDataSetChanged();
     }

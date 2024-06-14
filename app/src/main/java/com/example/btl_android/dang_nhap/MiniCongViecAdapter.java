@@ -11,10 +11,8 @@ import android.widget.TextView;
 
 import com.example.btl_android.R;
 import com.example.btl_android.cong_viec.CongViec;
-import com.example.btl_android.cong_viec.CongViecActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MiniCongViecAdapter extends BaseAdapter {
     private final Context context;
@@ -57,7 +55,7 @@ public class MiniCongViecAdapter extends BaseAdapter {
         trangthai.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                ((TrangChuActivity) context).savetrangthai(congViecx,b);
+                ((TrangChuActivity) context).saveTrangThai(congViecx,b);
             }
         });
         return view;
