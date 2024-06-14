@@ -153,19 +153,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return hocPhanList;
     }
 
-    public void insertLichHoc(String maLop, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+    public void insertLichHoc(String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues tb = new ContentValues();
 
-        tb.put("maLop", maLop);
+
+        tb.put("mon",mon);
         tb.put("thu", thu);
         tb.put("ngay", ngay);
         tb.put("giangVien", giangVien);
         tb.put("phong", phong);
         tb.put("tiet", tiet);
         tb.put("diaDiem", diaDiem);
-        tb.put("loaiTietHoc", 0);
-        tb.put("vang", 0);
+
         long result = db.insert("LichHoc", null, tb);
         if (result == -1) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
@@ -186,16 +186,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor searchLichHoc(String keyword) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM LichHoc WHERE maLop LIKE ? OR phong LIKE ?";
+        String query = "SELECT * FROM LichHoc WHERE mon LIKE ? OR phong LIKE ?";
         String[] selectionArgs = {"%" + keyword + "%", "%" + keyword + "%"};
         Cursor cursor = db.rawQuery(query, selectionArgs);
         return cursor;
     }
 
-    public boolean updateDataTime(Context context, int row_id, String maLop, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+    public boolean updateDataTime(Context context, int row_id, String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("maLop", maLop);
+        values.put("mon", mon);
         values.put("thu", thu);
         values.put("ngay", ngay);
         values.put("giangVien", giangVien);
@@ -505,10 +505,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS LichHoc (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "maLop TEXT NOT NULL, " +
+                    "mon TEXT NOT NULL, " +
                     "thu TEXT NOT NULL, " +
                     "ngay TEXT NOT NULL, " +
-                    "phong INTEGER NOT NULL, " +
                     "giangVien TEXT NOT NULL, " +
+                    "phong INTEGER NOT NULL, " +
                     "tiet TEXT NOT NULL, " +
                     "diaDiem TEXT NOT NULL, " +
                     "loaiTietHoc INTEGER NOT NULL, " +
@@ -766,72 +767,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('2025HP005.5', 'BS6001', 8.0, 6.5, null, null, null, 8);";
     private static final String INSERT_TABLE_LICHHOC =
             "INSERT INTO LichHoc " +
-                    "(id, maLop, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +
+                    "(id, maLop, mon,thu, ngay,giangVien, phong, tiet, diaDiem, loaiTietHoc, vang) " +
                     "VALUES " +
-                    "(1, '2021HP002.3', 'Friday', '2023-06-21', 110, 'James Anderson', '19-20', 'Room J', 0, 1), " +
-                    "(2, '2021HP003.1', 'Tuesday', '2023-06-25', 112, 'William Hernandez', '23-24', 'Room L', 0, 0), " +
-                    "(3, '2021HP002.3', 'Wednesday', '2023-06-26', 113, 'Isabella Martinez', '25-26', 'Room M', 1, 1), " +
-                    "(4, '2021HP003.3', 'Thursday', '2023-06-27', 114, 'Ethan Phillips', '27-28', 'Room N', 0, 0), " +
-                    "(5, '2021HP003.1', 'Friday', '2023-06-28', 115, 'Amelia Brown', '29-30', 'Room O', 1, 0), " +
-                    "(6, '2021HP002.3', 'Monday', '2023-07-01', 116, 'Benjamin Davis', '31-32', 'Room P', 0, 1), " +
-                    "(7, '2021HP003.3', 'Tuesday', '2023-07-02', 117, 'Mia Miller', '33-34', 'Room Q', 1, 0), " +
-                    "(8, '2021HP003.1', 'Wednesday', '2023-07-03', 118, 'Logan Wilson', '35-36', 'Room R', 0, 0), " +
-                    "(9, '2021HP002.3', 'Thursday', '2023-07-04', 119, 'Harper Garcia', '37-38', 'Room S', 1, 1), " +
-                    "(10, '2021HP003.3', 'Friday', '2023-07-05', 120, 'Evelyn Rodriguez', '39-40', 'Room T', 0, 0), " +
-                    "(11, '2021HP003.3', 'Monday', '2023-06-24', 111, 'Emma Garcia', '21-22', 'Room K', 1, 0), " +
-                    "(12, '2021HP003.1', 'Thursday', '2023-06-20', 109, 'Olivia Taylor', '17-18', 'Room I', 1, 0), " +
-                    "(13, '2021HP001.3', 'Friday', '2023-07-12', 121, 'John Doe', '41-42', 'Room U', 0, 1), " +
-                    "(14, '2021HP004.6', 'Tuesday', '2023-07-16', 122, 'Jane Smith', '43-44', 'Room V', 0, 0), " +
-                    "(15, '2021HP005.9', 'Wednesday', '2023-07-17', 123, 'Tom Johnson', '45-46', 'Room W', 1, 1), " +
-                    "(16, '2021HP006.1', 'Thursday', '2023-07-18', 124, 'Lucy Adams', '47-48', 'Room X', 0, 0), " +
-                    "(17, '2021HP007.3', 'Friday', '2023-07-19', 125, 'Steve Brown', '49-50', 'Room Y', 1, 0), " +
-                    "(18, '2021HP002.2', 'Monday', '2023-07-22', 126, 'Nancy Davis', '51-52', 'Room Z', 0, 1), " +
-                    "(19, '2021HP009.4', 'Tuesday', '2023-07-23', 127, 'Mark Lee', '53-54', 'Room AA', 1, 0), " +
-                    "(20, '2021HP001.2', 'Wednesday', '2023-07-24', 128, 'Emily Clark', '55-56', 'Room BB', 0, 0), " +
-                    "(21, '2021HP004.5', 'Thursday', '2023-07-25', 129, 'Jason Lewis', '57-58', 'Room CC', 1, 1), " +
-                    "(22, '2021HP002.3', 'Friday', '2023-07-26', 130, 'Sophia Hill', '59-60', 'Room DD', 0, 0), " +
-                    "(23, '2021HP005.9', 'Monday', '2023-07-29', 131, 'Liam Harris', '61-62', 'Room EE', 1, 0), " +
-                    "(24, '2022HP005.1', 'Tuesday', '2023-07-30', 132, 'Noah Martin', '63-64', 'Room FF', 0, 1), " +
-                    "(25, '2022HP006.1', 'Wednesday', '2023-07-31', 133, 'Olivia Thompson', '65-66', 'Room GG', 1, 0), " +
-                    "(26, '2022HP007.3', 'Thursday', '2023-08-01', 134, 'Mason White', '67-68', 'Room HH', 0, 0), " +
-                    "(27, '2022HP002.2', 'Friday', '2023-08-02', 135, 'Elijah Harris', '69-70', 'Room II', 1, 1), " +
-                    "(28, '2022HP009.4', 'Monday', '2023-08-05', 136, 'Lucas Walker', '71-72', 'Room JJ', 0, 0), " +
-                    "(29, '2022HP001.2', 'Tuesday', '2023-08-06', 137, 'Mia Young', '73-74', 'Room KK', 1, 0), " +
-                    "(30, '2022HP004.5', 'Wednesday', '2023-08-07', 138, 'Harper Martinez', '75-76', 'Room LL', 0, 1), " +
-                    "(31, '2022HP005.9', 'Thursday', '2023-08-08', 139, 'Evelyn Hernandez', '77-78', 'Room MM', 1, 0), " +
-                    "(32, '2022HP006.3', 'Friday', '2023-08-09', 140, 'James Allen', '79-80', 'Room NN', 0, 0), " +
-                    "(33, '2022HP007.4', 'Monday', '2023-08-12', 141, 'Liam King', '81-82', 'Room OO', 1, 1), " +
-                    "(34, '2022HP001.1', 'Tuesday', '2023-08-13', 142, 'Charlotte Wright', '83-84', 'Room PP', 0, 0), " +
-                    "(35, '2022HP009.7', 'Wednesday', '2023-08-14', 143, 'Alexander Scott', '85-86', 'Room QQ', 1, 0), " +
-                    "(36, '2022HP001.3', 'Thursday', '2023-08-15', 144, 'Sofia Green', '87-88', 'Room RR', 0, 1), " +
-                    "(37, '2023HP005.9', 'Monday', '2023-08-19', 146, 'Ava Carter', '91-92', 'Room TT', 0, 0), " +
-                    "(38, '2023HP006.1', 'Tuesday', '2023-08-20', 147, 'Logan Hill', '93-94', 'Room UU', 1, 1), " +
-                    "(39, '2023HP008.3', 'Wednesday', '2023-08-21', 148, 'Sophie Foster', '95-96', 'Room VV', 0, 0), " +
-                    "(40, '2023HP002.2', 'Thursday', '2023-08-22', 149, 'Henry Reed', '97-98', 'Room WW', 1, 0), " +
-                    "(41, '2023HP009.4', 'Friday', '2023-08-23', 150, 'Aiden Gray', '99-100', 'Room XX', 0, 1), " +
-                    "(42, '2023HP001.2', 'Monday', '2023-08-26', 151, 'Ella Brooks', '101-102', 'Room YY', 1, 0), " +
-                    "(43, '2023HP006.5', 'Tuesday', '2023-08-27', 152, 'Leo Wood', '103-104', 'Room ZZ', 0, 0), " +
-                    "(44, '2023HP005.1', 'Wednesday', '2023-08-28', 153, 'Stella Cook', '105-106', 'Room AAA', 1, 1), " +
-                    "(45, '2023HP004.4', 'Thursday', '2023-08-29', 154, 'Zoe Murphy', '107-108', 'Room BBB', 0, 0), " +
-                    "(46, '2023HP008.2', 'Friday', '2023-08-30', 155, 'David Price', '109-110', 'Room CCC', 1, 0), " +
-                    "(47, '2023HP002.7', 'Monday', '2023-09-02', 156, 'Luna Rivera', '111-112', 'Room DDD', 0, 1), " +
-                    "(48, '2023HP003.3', 'Tuesday', '2023-09-03', 157, 'Hudson Ward', '113-114', 'Room EEE', 1, 0), " +
-                    "(49, '2023HP001.3', 'Wednesday', '2023-09-04', 158, 'Mila Brooks', '115-116', 'Room FFF', 0, 0), " +
-                    "(50, '2023HP004.3', 'Thursday', '2023-09-05', 159, 'Owen Watson', '117-118', 'Room GGG', 1, 1), " +
-                    "(51, '2024HP006.9', 'Friday', '2023-09-06', 160, 'Ruby Long', '119-120', 'Room HHH', 0, 0), " +
-                    "(52, '2024HP008.1', 'Monday', '2023-09-09', 161, 'Carter Hughes', '121-122', 'Room III', 1, 0), " +
-                    "(53, '2024HP007.3', 'Tuesday', '2023-09-10', 162, 'Samantha Price', '123-124', 'Room JJJ', 0, 1), " +
-                    "(54, '2024HP001.2', 'Wednesday', '2023-09-11', 163, 'Xavier Evans', '125-126', 'Room KKK', 1, 0), " +
-                    "(55, '2024HP009.4', 'Thursday', '2023-09-12', 164, 'Layla Ward', '127-128', 'Room LLL', 0, 0), " +
-                    "(56, '2024HP001.6', 'Friday', '2023-09-13', 165, 'Gabriel Bryant', '129-130', 'Room MMM', 1, 1), " +
-                    "(57, '2024HP005.5', 'Monday', '2023-09-16', 166, 'Molly Perry', '131-132', 'Room NNN', 0, 0), " +
-                    "(58, '2025HP003.9', 'Tuesday', '2023-09-17', 167, 'Anthony Lopez', '133-134', 'Room OOO', 1, 0), " +
-                    "(59, '2025HP008.1', 'Wednesday', '2023-09-18', 168, 'Nathan Ward', '135-136', 'Room PPP', 0, 1), " +
-                    "(60, '2025HP006.3', 'Thursday', '2023-09-19', 169, 'Aria Griffin', '137-138', 'Room QQQ', 1, 0), " +
-                    "(61, '2025HP002.2', 'Friday', '2023-09-20', 170, 'Eliana Rivera', '139-140', 'Room RRR', 0, 0), " +
-                    "(62, '2025HP001.4', 'Monday', '2023-09-23', 171, 'Riley Torres', '141-142', 'Room SSS', 1, 1), " +
-                    "(63, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
-                    "(64, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
+                    "(1,'CS101','Thiết kế Web','Thứ 2','10/6/2024','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1',2,0), " +
+                    "(2, 'CS102', 'Cơ Sở Dữ Liệu', 'Thứ Ba', '2024-06-18', 'Trần Thị B', 102, '4-6', 'Tòa nhà B, Phòng 102', 2, 2), " +
+                    "(3, 'CS103', 'Lập Trình C', 'Thứ Tư', '2024-06-19', 'Lê Văn C', 103, '7-9', 'Tòa nhà C, Phòng 103', 1, 1), " +
+                    "(4, 'CS104', 'Hệ Điều Hành', 'Thứ Năm', '2024-06-20', 'Phạm Thị D', 104, '10-12', 'Tòa nhà D, Phòng 104', 2, 0), " +
+                    "(5, 'CS105', 'Mạng Máy Tính', 'Thứ Sáu', '2024-06-21', 'Ngô Văn E', 105, '1-3', 'Tòa nhà E, Phòng 105', 1, 3);";
 
     public boolean addHocPhan(HocPhan hocPhan) {
         SQLiteDatabase db = this.getWritableDatabase();

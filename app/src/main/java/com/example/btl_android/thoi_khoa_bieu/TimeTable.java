@@ -37,14 +37,11 @@ public class TimeTable extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Set the content view before accessing any views
         setContentView(R.layout.activity_lich_hoc);
-
         // Initialize the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,20 +53,16 @@ public class TimeTable extends AppCompatActivity {
             }
             actionBar.setTitle(tab + "Lịch Học");
         }
-
         // Enable Edge to Edge
         EdgeToEdge.enable(this);
-
         // Apply window insets to the main view
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         // Initialize the DatabaseHelper
         myDB = new DatabaseHelper(TimeTable.this);
-
         // Initialize the ArrayLists
         tb_id = new ArrayList<>();
         tb_mon = new ArrayList<>();
@@ -125,13 +118,13 @@ public class TimeTable extends AppCompatActivity {
 
             while (cursor.moveToNext()) {
                 tb_id.add(cursor.getInt(0));
-                tb_mon.add(cursor.getString(1));
-                tb_thu.add(cursor.getString(2));
-                tb_ngay.add(cursor.getString(3));
-                tb_giangvien.add(cursor.getString(4));
-                tb_phong.add(cursor.getString(5));
-                tb_tiet.add(cursor.getString(6));
-                tb_diadiem.add(cursor.getString(7));
+                tb_mon.add(cursor.getString(2));
+                tb_thu.add(cursor.getString(3));
+                tb_ngay.add(cursor.getString(4));
+                tb_giangvien.add(cursor.getString(5));
+                tb_phong.add(cursor.getString(6));
+                tb_tiet.add(cursor.getString(7));
+                tb_diadiem.add(cursor.getString(8));
             }
             // After adding new data, update the RecyclerView
             timeTableAdapter.notifyDataSetChanged();
@@ -146,13 +139,13 @@ public class TimeTable extends AppCompatActivity {
         } else {
             while (cursor.moveToNext()) {
                 tb_id.add(cursor.getInt(0));
-                tb_mon.add(cursor.getString(1));
-                tb_thu.add(cursor.getString(2));
-                tb_ngay.add(cursor.getString(3));
-                tb_giangvien.add(cursor.getString(4));
-                tb_phong.add(cursor.getString(5));
-                tb_tiet.add(cursor.getString(6));
-                tb_diadiem.add(cursor.getString(7));
+                tb_mon.add(cursor.getString(2));
+                tb_thu.add(cursor.getString(3));
+                tb_ngay.add(cursor.getString(4));
+                tb_giangvien.add(cursor.getString(5));
+                tb_phong.add(cursor.getString(6));
+                tb_tiet.add(cursor.getString(7));
+                tb_diadiem.add(cursor.getString(8));
             }
         }
         cursor.close();
