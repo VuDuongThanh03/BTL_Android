@@ -54,7 +54,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
     private void getWidget() {
         btnQuayLai = findViewById(R.id.imgQuayLai);
-        btnThongKe = findViewById(R.id.imgThongKe);
+        btnThongKe = findViewById(R.id.imgMenu);
         rvDiemHp = findViewById(R.id.rvDiemHp);
         diemList = new ArrayList<>();
         hocKy = "1";

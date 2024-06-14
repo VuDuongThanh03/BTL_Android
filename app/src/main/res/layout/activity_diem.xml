@@ -30,7 +30,7 @@
             android:textStyle="bold" />
 
         <ImageButton
-            android:id="@+id/imgThongKe"
+            android:id="@+id/imgMenu"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
