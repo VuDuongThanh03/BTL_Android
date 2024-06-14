@@ -58,9 +58,9 @@ public class DangKyActivity extends AppCompatActivity {
                     return;
                 }
 
-                Cursor cursor = db.rawQuery("SELECT maSv FROM SinhVien WHERE maSv = ?", new String[]{maSv});
+                Cursor cursor = db.rawQuery("SELECT maSv, tenTk FROM SinhVien WHERE maSv = ? OR tenTk = ?", new String[]{maSv, tenTk});
                 if (cursor.getCount() > 0) {
-                    Toast.makeText(DangKyActivity.this, "Đã tồn tại tài khoản với MSV này", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DangKyActivity.this, "Đã tồn tại tài khoản với tên tài khoản hoặc MSV này", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

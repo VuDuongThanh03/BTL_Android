@@ -71,7 +71,7 @@ public class CongViecAdapter extends BaseAdapter {
         holder.setLongClickListener(new LongClickListener() {
             @Override
             public void onItemLongClick() {
-                Toast.makeText(context, ""+i, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, ""+i, Toast.LENGTH_SHORT).show();
                 ((CongViecActivity) context).setSelectedItemPosition(i);
             }
         });

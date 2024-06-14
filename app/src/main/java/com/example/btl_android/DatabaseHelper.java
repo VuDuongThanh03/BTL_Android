@@ -38,20 +38,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_LICHHOC);
         db.execSQL(CREATE_TABLE_THONGBAO);
 
-//        String insertData = "INSERT INTO " + TABLE_THOIKHOABIEU + " ("
-//                + COLUMN_MON + ", "
-//                + COLUMN_THU + ", "
-//                + COLUMN_NGAY + ", "
-//                + COLUMN_GIANGVIEN + ", "
-//                + COLUMN_PHONG + ", "
-//                + COLUMN_TIET + ", "
-//                + COLUMN_DIADIEM + ") VALUES " +
-//                "('Thiết kế Web','Thứ 2','10/6/2024','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1')," +
-//                "('Tiếng Anh Công Nghệ Thông Tin 2','Thứ 3','11/6/2024','Bùi Phương Thảo(0389937161 - Trường NN-DL)','508','7,8','A9')," +
-//                "('Phát triển ứng dụng trên thiết bị di động','Thứ 6','14/6/2024','Vũ Thị Dương(0904755919 - CNTT)','402','3,4,5','A8')," +
-//                "('Thiết kế đồ hoạ 2D','Thứ 5','13/6/2024','Đỗ Mạnh Hùng(0916113319 - CNTT)','609','9,10,11','A9')," +
-//                "('Đồ án chuyên ngành','Chủ nhật','16/6/2024','Nguyễn Bá Nghiễn (0358218310 - CNTT)','Phòng thực hành Khoa CNTT 06','1,2,3,4,5,7,8,9,10,11','A1');";
-//        db.execSQL(insertData);
         populateInitialData(db);
     }
 
@@ -91,6 +77,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("heSo", hocPhan.getHeSo());
         db.insert("HocPhan", null, values);
         db.close();
+    }
+
+    public boolean addHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maHp", hocPhan.getMaHp());
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
+        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
+        values.put("soTietThucHanh", hocPhan.getSoTietTh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        // Thêm học phần vào bảng HocPhan
+        long result = db.insert("HocPhan", null, values);
+        db.close(); // Đóng cơ sở dữ liệu sau khi hoàn thành
+
+        // Kiểm tra kết quả thêm mới
+        return result != -1; // Nếu result khác -1 thì thêm mới thành công
     }
 
     public void updateHocPhan(HocPhan hocPhan) {
@@ -775,25 +782,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "(4, 'CS104', 'Hệ Điều Hành', 'Thứ Năm', '2024-06-20', 'Phạm Thị Dung', 104, '10-12', 'Tòa nhà D, Phòng 104', 2, 0), " +
                     "(5, 'CS105', 'Mạng Máy Tính', 'Thứ Sáu', '2024-06-21', 'Ngô Văn Em', 105, '1-3', 'Tòa nhà E, Phòng 105', 1, 3);";
 
-    public boolean addHocPhan(HocPhan hocPhan) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("maHp", hocPhan.getMaHp());
-        values.put("tenHp", hocPhan.getTenHp());
-        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
-        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
-        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
-        values.put("soTietThucHanh", hocPhan.getSoTietTh());
-        values.put("hocKy", hocPhan.getHocKy());
-        values.put("hinhThucThi", hocPhan.getHinhThucThi());
-        values.put("heSo", hocPhan.getHeSo());
-
-        // Thêm học phần vào bảng HocPhan
-        long result = db.insert("HocPhan", null, values);
-        db.close(); // Đóng cơ sở dữ liệu sau khi hoàn thành
-
-        // Kiểm tra kết quả thêm mới
-        return result != -1; // Nếu result khác -1 thì thêm mới thành công
-    }
-
+//                "('Thiết kế Web','Thứ 2','10/6/2024','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1')," +
+//                "('Tiếng Anh Công Nghệ Thông Tin 2','Thứ 3','11/6/2024','Bùi Phương Thảo(0389937161 - Trường NN-DL)','508','7,8','A9')," +
+//                "('Phát triển ứng dụng trên thiết bị di động','Thứ 6','14/6/2024','Vũ Thị Dương(0904755919 - CNTT)','402','3,4,5','A8')," +
+//                "('Thiết kế đồ hoạ 2D','Thứ 5','13/6/2024','Đỗ Mạnh Hùng(0916113319 - CNTT)','609','9,10,11','A9')," +
+//                "('Đồ án chuyên ngành','Chủ nhật','16/6/2024','Nguyễn Bá Nghiễn (0358218310 - CNTT)','Phòng thực hành Khoa CNTT 06','1,2,3,4,5,7,8,9,10,11','A1');";
 }
