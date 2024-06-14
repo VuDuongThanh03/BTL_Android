@@ -140,7 +140,7 @@ public class TimeTable extends AppCompatActivity {
     }
 
     void LuuTruData() {
-        Cursor cursor = myDB.readAllData();
+        Cursor cursor = myDB.getLichHoc();
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
         } else {

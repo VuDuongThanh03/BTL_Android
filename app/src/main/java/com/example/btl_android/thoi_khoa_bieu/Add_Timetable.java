@@ -18,7 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 
-
+/**
+ * @noinspection ALL
+ */
 public class Add_Timetable extends AppCompatActivity {
 
 
@@ -62,7 +64,7 @@ public class Add_Timetable extends AppCompatActivity {
                     Toast.makeText(Add_Timetable.this, "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
                 } else {
                     DatabaseHelper myDB = new DatabaseHelper(Add_Timetable.this);
-                    myDB.AddTimeTable(
+                    myDB.insertLichHoc(
                             mon.getText().toString().trim(),
                             thu.getText().toString().trim(),
                             ngay.getText().toString().trim(),

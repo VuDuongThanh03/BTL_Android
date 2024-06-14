@@ -60,7 +60,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
         hocKy = "1";
 
         db = new DatabaseHelper(this);
-        db.getTatCaDiemHp();
+        db.getDiemHp();
     }
 
     private void setupButtons() {

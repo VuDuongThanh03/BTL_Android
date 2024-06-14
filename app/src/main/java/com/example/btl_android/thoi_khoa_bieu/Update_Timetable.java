@@ -5,14 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +22,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 
+/**
+ * @noinspection ALL
+ */
 public class Update_Timetable extends AppCompatActivity {
     EditText mon_input, thu_input, ngay_input, giangvien_input, phong_input, tiet_input, diadiem_input;
     Button btnUpdate, btnXoa;
@@ -139,7 +140,7 @@ public class Update_Timetable extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                boolean isDeleted = myDB.deleteData(id);
+                boolean isDeleted = myDB.deleteLichHoc(id);
                 if (isDeleted) {
                     // Xóa thành công, thực hiện các hành động phù hợp ở đây
                     Toast.makeText(Update_Timetable.this, "Dữ Liệu Đã Được Xóa Thành Công !", Toast.LENGTH_SHORT).show();

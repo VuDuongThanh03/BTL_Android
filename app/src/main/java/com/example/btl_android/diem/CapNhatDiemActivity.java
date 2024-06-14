@@ -100,7 +100,7 @@ public class CapNhatDiemActivity extends AppCompatActivity {
 
             boolean res = db.updateDiem(diem);
             if (res) {
-                db.getTatCaDiemHp();
+                db.getDiemHp();
                 String tieuDe = "Bạn đã cập nhật điểm học phần " + diem.getTenHp() + " thành công!";
 
                 StringBuilder builder = new StringBuilder();
@@ -112,7 +112,7 @@ public class CapNhatDiemActivity extends AppCompatActivity {
                 String noiDung = builder.toString();
 
                 String thoiGian = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy"));
-                db.updateThongBao(tieuDe, noiDung, thoiGian);
+                db.insertThongBao(tieuDe, noiDung, thoiGian);
 
                 setResult(1, null);
 
