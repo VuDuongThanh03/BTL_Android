@@ -37,12 +37,8 @@
             android:exported="false" />
         <activity
             android:name=".hoc_phan_du_kien.HocPhanDuKienActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false" >
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity
@@ -69,8 +65,12 @@
             android:exported="false" />
         <activity
             android:name=".dang_nhap.DangNhapActivity"
-            android:exported="false">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
     </application>
