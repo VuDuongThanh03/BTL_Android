@@ -54,8 +54,8 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
             tenHpTextView = itemView.findViewById(R.id.tenHpTextView);
             soTinChiLyThuyetTextView = itemView.findViewById(R.id.soTinChiLyThuyetTextView);
             soTinChiThucHanhTextView = itemView.findViewById(R.id.soTinChiThucHanhTextView);
-            soTietLyThuyetTextView = itemView.findViewById(R.id.soTietLtTextView);
-            soTietThucHanhTextView = itemView.findViewById(R.id.soTietThTextView);
+            soTietLyThuyetTextView = itemView.findViewById(R.id.soTietLyThuyetTextView);
+            soTietThucHanhTextView = itemView.findViewById(R.id.soTietThucHanhTextView);
             hocKyTextView = itemView.findViewById(R.id.hocKyTextView);
             hinhThucThiTextView = itemView.findViewById(R.id.hinhThucThiTextView);
             heSoTextView = itemView.findViewById(R.id.heSoTextView);
