@@ -59,7 +59,7 @@ public class TrangChuActivity extends AppCompatActivity {
         btnHocPhan = findViewById(R.id.btnHocPhan);
         btnDiem = findViewById(R.id.btnDiem);
         btnThongBao = findViewById(R.id.imgThongBao);
-        btnLichHoc =findViewById(R.id.btnLichHoc);
+        btnLichHoc = findViewById(R.id.btnLichHoc);
 
         dbHelper = new DatabaseHelper(this);
         congViecList = dbHelper.getAllCongViec();
