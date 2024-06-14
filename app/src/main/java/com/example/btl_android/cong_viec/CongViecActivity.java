@@ -52,6 +52,7 @@ public class CongViecActivity extends AppCompatActivity {
     ArrayList<String> mucUuTienList = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ImageView back;
+    String maSV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,8 @@ public class CongViecActivity extends AppCompatActivity {
         btnMenu = findViewById(R.id.btn_menu);
         back = findViewById(R.id.btn_backtrangchu);
         dbHelper = new DatabaseHelper(this);
-        congViecList = dbHelper.getAllCongViec();
+        maSV = getIntent().getStringExtra("maSV");
+        congViecList = dbHelper.getAllCongViec(maSV);
         softCongViecList(congViecList);
         showlvCongViec();
         btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -205,7 +207,7 @@ public class CongViecActivity extends AppCompatActivity {
                 String thoiHanNgay = etThoiHanNgay.getText().toString();
 
                 if (congViec == null) {
-                    CongViec x = new CongViec(congViecList.size()+1,tenCongViec,chiTietCongViec,mucUuTien+"",thoiHanGio,thoiHanNgay,0);
+                    CongViec x = new CongViec(congViecList.size()+1,maSV,tenCongViec,chiTietCongViec,mucUuTien+"",thoiHanGio,thoiHanNgay,0);
                     congViecList.add(x);
                     dbHelper.addCongViec(x);
                     softCongViecList(congViecList);

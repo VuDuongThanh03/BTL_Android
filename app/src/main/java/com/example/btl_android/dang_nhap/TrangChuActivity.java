@@ -68,12 +68,14 @@ public class TrangChuActivity extends AppCompatActivity {
         txtUserName.setText(tenSV);
 
         dbHelper = new DatabaseHelper(this);
-        congViecList = dbHelper.getAllCongViec();
+        congViecList = dbHelper.getAllCongViec(dangNhapIntent.getStringExtra("maSV"));
         softCongViecList(congViecList);
         showlvCongViec();
 
         btnCongViec.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
+            intent.putExtra("maSV",dangNhapIntent.getStringExtra("maSV"));
+            intent.putExtra("tenSV", tenSV);
             startActivity(intent);
         });
 

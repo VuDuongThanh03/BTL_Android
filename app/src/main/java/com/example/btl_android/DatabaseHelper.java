@@ -332,20 +332,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return thongBaoList;
     }
 
-    public ArrayList<CongViec> getAllCongViec() {
+    public ArrayList<CongViec> getAllCongViec(String msv) {
         ArrayList<CongViec> congViecList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM CongViec", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM CongViec WHERE maSv = ?", new String[]{msv});
         if (cursor.moveToFirst()) {
             do {
                 int macongviec = cursor.getInt(cursor.getColumnIndex("id"));
+                String maSinhVien = cursor.getString(cursor.getColumnIndex("maSv"));
                 String tencongviec = cursor.getString(cursor.getColumnIndex("tenViec"));
                 String chitietcongviec = cursor.getString(cursor.getColumnIndex("chiTiet"));
                 String mucuutien = cursor.getString(cursor.getColumnIndex("mucUuTien"));
                 String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
                 String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
                 int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
-                CongViec congViec = new CongViec(macongviec, tencongviec, chitietcongviec, mucuutien, thoihangio, thoihanngay, trangthai);
+                CongViec congViec = new CongViec(macongviec, maSinhVien, tencongviec, chitietcongviec, mucuutien, thoihangio, thoihanngay, trangthai);
 
                 congViecList.add(congViec);
             } while (cursor.moveToNext());
@@ -360,6 +361,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("id", congViec.getMaCongViec());
+        values.put("maSv", congViec.getMaSinhVien());
         values.put("tenViec", congViec.getTenCongViec());
         values.put("chiTiet", congViec.getChiTietCongViec());
         values.put("mucUuTien", congViec.getMucUuTien());
@@ -375,6 +377,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("id", congViec.getMaCongViec());
+        values.put("maSv", congViec.getMaSinhVien());
         values.put("tenViec", congViec.getTenCongViec());
         values.put("chiTiet", congViec.getChiTietCongViec());
         values.put("mucUuTien", congViec.getMucUuTien());
@@ -442,12 +445,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_CONGVIEC =
             "CREATE TABLE IF NOT EXISTS CongViec (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "maSv TEXT NOT NULL," +
                     "tenViec TEXT NOT NULL," +
                     "mucUuTien INTEGER," +
                     "thoiHanGio TEXT NOT NULL," +
                     "thoiHanNgay TEXT NOT NULL," +
                     "trangThai INTEGER NOT NULL," +
-                    "chiTiet TEXT" +
+                    "chiTiet TEXT," +
+                    "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
     // ChuyenNganh table
     private static final String CREATE_TABLE_CHUYENNGANH =
@@ -485,15 +491,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS KetQuaHocPhan (" +
                     "maLop TEXT NOT NULL," +
                     "maHp TEXT NOT NULL," +
+                    "maSv TEXT NOT NULL," +
                     "tx1 REAL," +
                     "tx2 REAL," +
                     "giuaKy REAL," +
                     "cuoiKy REAL," +
                     "diemKiVong REAL," +
                     "hocKy INTEGER NOT NULL," +
-                    "PRIMARY KEY(maLop)," +
+                    "PRIMARY KEY(maLop, maSv), " +
                     "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION, " +
+                    "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION " +
                     ");";
     // LichHoc table
     private static final String CREATE_TABLE_LICHHOC =
@@ -525,15 +534,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('2021607252', 1, 'Vũ Dương Thành', 'vuduongthanh', 'abc123!@#')";
 
     private static final String INSERT_TABLE_CONGVIEC =
-            "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHanGio, thoiHanNgay, trangThai, chiTiet) VALUES " +
-                    "(1, 'Nộp báo cáo Android', 2, '8:00', '2024-06-15', 0, 'Nộp báo cáo bài tập lớn môn Android gồm các file word và video giới thiệu'), " +
-                    "(2, 'Bảo vệ bài tập lớn Android', 3, '14:00', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 802-A1'), " +
-                    "(3, 'Bảo vệ bài tập lớn Kiểm thử phần mềm', 3, '14:30', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 701-A1'), " +
-                    "(4, 'Ôn tập Quản trị mạng', 2, '8:35', '2024-06-20', 0, 'Ôn tập trước ngày thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
-                    "(5, 'Thi Quản trị mạng', 3, '11:15', '2024-06-21', 0, 'Đi thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
-                    "(6, 'Hoàn thành bài tập lớn Web nâng cao', 2, '8:00', '2023-06-10', 1, 'Hoàn thiện bài tập lớn sau đó đi in cho buổi vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
-                    "(7, 'Bảo vệ bài tập lớn Web nâng cao', 3, '8:00', '2023-06-12', 1, 'Đi bảo vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
-                    "(8, 'Thi cuối kỳ môn Tiếng Anh 2', 3, '13:30', '2023-05-26', 1, 'Đi thi cuối kỳ môn Tiếng Anh 2 phòng 507-A9');";
+            "INSERT INTO CongViec (id, maSv, tenViec, mucUuTien, thoiHanGio, thoiHanNgay, trangThai, chiTiet) VALUES " +
+                    "(1,'2021607252', 'Nộp báo cáo Android', 2, '8:00', '2024-06-15', 0, 'Nộp báo cáo bài tập lớn môn Android gồm các file word và video giới thiệu'), " +
+                    "(2,'2021607252', 'Bảo vệ bài tập lớn Android', 3, '14:00', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 802-A1'), " +
+                    "(3,'2021607252', 'Bảo vệ bài tập lớn Kiểm thử phần mềm', 3, '14:30', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 701-A1'), " +
+                    "(4,'2021607252', 'Ôn tập Quản trị mạng', 2, '8:35', '2024-06-20', 0, 'Ôn tập trước ngày thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
+                    "(5,'2021607252', 'Thi Quản trị mạng', 3, '11:15', '2024-06-21', 0, 'Đi thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
+                    "(6,'2021607252', 'Hoàn thành bài tập lớn Web nâng cao', 2, '8:00', '2023-06-10', 1, 'Hoàn thiện bài tập lớn sau đó đi in cho buổi vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
+                    "(7,'2021607252', 'Bảo vệ bài tập lớn Web nâng cao', 3, '8:00', '2023-06-12', 1, 'Đi bảo vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
+                    "(8,'2021607252', 'Thi cuối kỳ môn Tiếng Anh 2', 3, '13:30', '2023-05-26', 1, 'Đi thi cuối kỳ môn Tiếng Anh 2 phòng 507-A9');";
 
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
@@ -719,45 +728,84 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('IT6129', 4, 0), " +
                     "('IT6128', 4, 1)";
     private static final String INSERT_TABLE_KETQUAHOCPHAN =
-            "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
-                    "('2021HP003.1', 'IT6016', 8.5, 9.0, null, null, null, 1), " +
-                    "('2021HP002.3', 'IT6015', 7.5, 8.0, 6.5, null, 7.0, 1), " +
-                    "('2021HP001.3', 'BS6002', 3.5, 2.5, null, 5.0, null, 1), " +
-                    "('2021HP008.1', 'IT6017', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
-                    "('2021HP005.9', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 2), " +
-                    "('2021HP002.2', 'IT6015', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
-                    "('2021HP009.4', 'IT6018', 8.0, 8.5, 7.0, null, null, 2), " +
-                    "('2021HP001.2', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 2), " +
-                    "('2022HP005.1', 'BS6001', 7.5, 6.0, 7.5, 7.5, null, 3), " +
-                    "('2022HP002.2', 'IT6015', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
-                    "('2022HP009.4', 'IT6018', 8.0, 6.5, 7.0, null, null, 3), " +
-                    "('2022HP001.2', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 3), " +
-                    "('2022HP005.9', 'BS6001', 7.5, 8.0, 8.5, 4.5, null, 4), " +
-                    "('2022HP001.1', 'BS6002', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
-                    "('2022HP009.7', 'IT6018', 8.0, 8.5, 7.0, null, null, 4), " +
-                    "('2022HP001.3', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 4), " +
-                    "('2022HP003.3', 'IT6016', 8.0, 8.5, null, null, null, 4), " +
-                    "('2023HP005.9', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 5), " +
-                    "('2023HP008.3', 'IT6017', 7.5, 8.0, null, null, 7.0, 5), " +
-                    "('2023HP002.2', 'IT6015', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
-                    "('2023HP009.4', 'IT6018', 8.0, 8.5, 7.0, null, null, 5), " +
-                    "('2023HP001.2', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 5), " +
-                    "('2023HP005.1', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 6), " +
-                    "('2023HP008.2', 'IT6017', 7.5, 6.0, null, null, 7.0, 6), " +
-                    "('2023HP002.7', 'IT6015', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
-                    "('2023HP003.3', 'IT6016', 8.0, 8.5, 7.0, null, null, 6), " +
-                    "('2023HP001.3', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 6), " +
-                    "('2024HP008.1', 'IT6017', 8.5, 7.0, null, null, 8.0, 7), " +
-                    "('2024HP001.2', 'BS6002', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
-                    "('2024HP009.4', 'IT6018', 8.0, 9.5, 9.0, null, null, 7), " +
-                    "('2024HP001.6', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 7), " +
-                    "('2024HP005.5', 'BS6001', 8.0, 8.5, null, null, null, 7), " +
-                    "('2025HP003.9', 'IT6016', 7.5, 8.0, 7.5, 7.5, null, 8), " +
-                    "('2025HP008.1', 'IT6017', 8.5, 9.0, null, null, 8.0, 8), " +
-                    "('2025HP002.2', 'IT6015', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
-                    "('2025HP001.4', 'BS6002', 9.0, 8.5, 7.0, null, null, 8), " +
-                    "('2025HP001.2', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 8), " +
-                    "('2025HP005.5', 'BS6001', 8.0, 6.5, null, null, null, 8);";
+            "INSERT INTO KetQuaHocPhan (maLop, maHp,maSv, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
+                    "('2021HP003.1', 'IT6016','2021607252', 8.5, 9.0, null, null, null, 1), " +
+                    "('2021HP002.3', 'IT6015','2021607252', 7.5, 8.0, 6.5, null, 7.0, 1), " +
+                    "('2021HP001.3', 'BS6002','2021607252', 3.5, 2.5, null, 5.0, null, 1), " +
+                    "('2021HP008.1', 'IT6017','2021607252', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('2021HP005.9', 'BS6001','2021607252', 7.5, 8.0, 7.5, 7.5, null, 2), " +
+                    "('2021HP002.2', 'IT6015','2021607252', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
+                    "('2021HP009.4', 'IT6018','2021607252', 8.0, 8.5, 7.0, null, null, 2), " +
+                    "('2021HP001.2', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 2), " +
+                    "('2022HP005.1', 'BS6001','2021607252', 7.5, 6.0, 7.5, 7.5, null, 3), " +
+                    "('2022HP002.2', 'IT6015','2021607252', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
+                    "('2022HP009.4', 'IT6018','2021607252', 8.0, 6.5, 7.0, null, null, 3), " +
+                    "('2022HP001.2', 'BS6002','2021607252', 7.5, 7.0, null, 7.5, 7.5, 3), " +
+                    "('2022HP005.9', 'BS6001','2021607252', 7.5, 8.0, 8.5, 4.5, null, 4), " +
+                    "('2022HP001.1', 'BS6002','2021607252', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
+                    "('2022HP009.7', 'IT6018','2021607252', 8.0, 8.5, 7.0, null, null, 4), " +
+                    "('2022HP001.3', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 4), " +
+                    "('2022HP003.3', 'IT6016','2021607252', 8.0, 8.5, null, null, null, 4), " +
+                    "('2023HP005.9', 'BS6001','2021607252', 7.5, 8.0, 7.5, 7.5, null, 5), " +
+                    "('2023HP008.3', 'IT6017','2021607252', 7.5, 8.0, null, null, 7.0, 5), " +
+                    "('2023HP002.2', 'IT6015','2021607252', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
+                    "('2023HP009.4', 'IT6018','2021607252', 8.0, 8.5, 7.0, null, null, 5), " +
+                    "('2023HP001.2', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 5), " +
+                    "('2023HP005.1', 'BS6001','2021607252', 7.5, 8.0, 7.5, 7.5, null, 6), " +
+                    "('2023HP008.2', 'IT6017','2021607252', 7.5, 6.0, null, null, 7.0, 6), " +
+                    "('2023HP002.7', 'IT6015','2021607252', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
+                    "('2023HP003.3', 'IT6016','2021607252', 8.0, 8.5, 7.0, null, null, 6), " +
+                    "('2023HP001.3', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 6), " +
+                    "('2024HP008.1', 'IT6017','2021607252', 8.5, 7.0, null, null, 8.0, 7), " +
+                    "('2024HP001.2', 'BS6002','2021607252', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
+                    "('2024HP009.4', 'IT6018','2021607252', 8.0, 9.5, 9.0, null, null, 7), " +
+                    "('2024HP001.6', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 7), " +
+                    "('2024HP005.5', 'BS6001','2021607252', 8.0, 8.5, null, null, null, 7), " +
+                    "('2025HP003.9', 'IT6016','2021607252', 7.5, 8.0, 7.5, 7.5, null, 8), " +
+                    "('2025HP008.1', 'IT6017','2021607252', 8.5, 9.0, null, null, 8.0, 8), " +
+                    "('2025HP002.2', 'IT6015','2021607252', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
+                    "('2025HP001.4', 'BS6002','2021607252', 9.0, 8.5, 7.0, null, null, 8), " +
+                    "('2025HP001.2', 'BS6002','2021607252', 7.5, 7.0, null, 7.5, 7.5, 8), " +
+                    "('2025HP005.5', 'BS6001','2021607252', 8.0, 6.5, null, null, null, 8), " +
+
+                    "('2021HP003.1', 'IT6016','2021606516', 8.5, 9.0, null, null, null, 1), " +
+                    "('2021HP002.3', 'IT6015','2021606516', 7.5, 8.0, 6.5, null, 7.0, 1), " +
+                    "('2021HP001.3', 'BS6002','2021606516', 3.5, 2.5, null, 5.0, null, 1), " +
+                    "('2021HP008.1', 'IT6017','2021606516', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('2021HP005.9', 'BS6001','2021606516', 7.5, 8.0, 7.5, 7.5, null, 2), " +
+                    "('2021HP002.2', 'IT6015','2021606516', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
+                    "('2021HP009.4', 'IT6018','2021606516', 8.0, 8.5, 7.0, null, null, 2), " +
+                    "('2021HP001.2', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 2), " +
+                    "('2022HP005.1', 'BS6001','2021606516', 7.5, 6.0, 7.5, 7.5, null, 3), " +
+                    "('2022HP002.2', 'IT6015','2021606516', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
+                    "('2022HP009.4', 'IT6018','2021606516', 8.0, 6.5, 7.0, null, null, 3), " +
+                    "('2022HP001.2', 'BS6002','2021606516', 7.5, 7.0, null, 7.5, 7.5, 3), " +
+                    "('2022HP005.9', 'BS6001','2021606516', 7.5, 8.0, 8.5, 4.5, null, 4), " +
+                    "('2022HP001.1', 'BS6002','2021606516', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
+                    "('2022HP009.7', 'IT6018','2021606516', 8.0, 8.5, 7.0, null, null, 4), " +
+                    "('2022HP001.3', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 4), " +
+                    "('2022HP003.3', 'IT6016','2021606516', 8.0, 8.5, null, null, null, 4), " +
+                    "('2023HP005.9', 'BS6001','2021606516', 7.5, 8.0, 7.5, 7.5, null, 5), " +
+                    "('2023HP008.3', 'IT6017','2021606516', 7.5, 8.0, null, null, 7.0, 5), " +
+                    "('2023HP002.2', 'IT6015','2021606516', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
+                    "('2023HP009.4', 'IT6018','2021606516', 8.0, 8.5, 7.0, null, null, 5), " +
+                    "('2023HP001.2', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 5), " +
+                    "('2023HP005.1', 'BS6001','2021606516', 7.5, 8.0, 7.5, 7.5, null, 6), " +
+                    "('2023HP008.2', 'IT6017','2021606516', 7.5, 6.0, null, null, 7.0, 6), " +
+                    "('2023HP002.7', 'IT6015','2021606516', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
+                    "('2023HP003.3', 'IT6016','2021606516', 8.0, 8.5, 7.0, null, null, 6), " +
+                    "('2023HP001.3', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 6), " +
+                    "('2024HP008.1', 'IT6017','2021606516', 8.5, 7.0, null, null, 8.0, 7), " +
+                    "('2024HP001.2', 'BS6002','2021606516', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
+                    "('2024HP009.4', 'IT6018','2021606516', 8.0, 9.5, 9.0, null, null, 7), " +
+                    "('2024HP001.6', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 7), " +
+                    "('2024HP005.5', 'BS6001','2021606516', 8.0, 8.5, null, null, null, 7), " +
+                    "('2025HP003.9', 'IT6016','2021606516', 7.5, 8.0, 7.5, 7.5, null, 8), " +
+                    "('2025HP008.1', 'IT6017','2021606516', 8.5, 9.0, null, null, 8.0, 8), " +
+                    "('2025HP002.2', 'IT6015','2021606516', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
+                    "('2025HP001.4', 'BS6002','2021606516', 9.0, 8.5, 7.0, null, null, 8), " +
+                    "('2025HP001.2', 'BS6002','2021606516', 7.5, 7.0, null, 7.5, 7.5, 8), " +
+                    "('2025HP005.5', 'BS6001','2021606516', 8.0, 6.5, null, null, null, 8);";
     private static final String INSERT_TABLE_LICHHOC =
             "INSERT INTO LichHoc " +
                     "(id, maLop, mon,thu, ngay,giangVien, phong, tiet, diaDiem, loaiTietHoc, vang) " +

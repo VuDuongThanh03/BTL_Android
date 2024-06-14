@@ -5,6 +5,16 @@ package com.example.btl_android.cong_viec;
  */
 public class CongViec {
     int maCongViec;
+
+    public String getMaSinhVien() {
+        return maSinhVien;
+    }
+
+    public void setMaSinhVien(String maSinhVien) {
+        this.maSinhVien = maSinhVien;
+    }
+
+    String maSinhVien;
     String tenCongViec;
     String chiTietCongViec;
     String mucUuTien;
@@ -12,8 +22,9 @@ public class CongViec {
     String thoiHanNgay;
     int trangThai;
 
-    public CongViec(final int maCongViec,final String tenCongViec, final String chiTietCongViec, final String mucUuTien, final String thoiHanGio, final String thoiHanNgay, final int trangThai) {
+    public CongViec(final int maCongViec,String maSinhVien,final String tenCongViec, final String chiTietCongViec, final String mucUuTien, final String thoiHanGio, final String thoiHanNgay, final int trangThai) {
         this.maCongViec = maCongViec;
+        this.maSinhVien = maSinhVien;
         this.tenCongViec = tenCongViec;
         this.chiTietCongViec = chiTietCongViec;
         this.mucUuTien = mucUuTien;
