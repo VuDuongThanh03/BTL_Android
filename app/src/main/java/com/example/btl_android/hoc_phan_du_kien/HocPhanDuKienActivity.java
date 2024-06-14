@@ -1,3 +1,4 @@
+// HocPhanDuKienActivity.java
 package com.example.btl_android.hoc_phan_du_kien;
 
 import android.content.Intent;
@@ -8,8 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +28,6 @@ public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanA
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
     private static final int REQUEST_CODE_EDIT_HOCPHAN = 2;
-
     private RecyclerView recyclerView;
     private HocPhanAdapter hocPhanAdapter;
     private List<HocPhan> hocPhanList;
@@ -34,7 +38,13 @@ public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_hoc_phan_du_kien);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,7 +71,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanA
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
+        getMenuInflater().inflate(R.menu.options_menu_hoc_phan_du_kien, menu);
         return true;
     }
 

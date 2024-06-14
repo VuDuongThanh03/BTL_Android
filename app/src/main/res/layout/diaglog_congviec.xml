@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFE8A2">
+    android:background="#FFEFE6">
     <TextView
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Thêm công việc"
         android:textAlignment="center"
+        android:textStyle="bold"
         android:textSize="70px">
 
     </TextView>
@@ -24,7 +25,9 @@
     <EditText
         android:id="@+id/edt_tenviec"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:paddingHorizontal="5dp"
+        android:layout_height="100px"
+        android:background="@drawable/custom_edittext"
         android:layout_marginLeft="20px"
         android:layout_marginRight="20px"
         android:layout_marginTop="10px">
@@ -33,12 +36,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
         android:weightSum="8">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20px"
             android:layout_marginLeft="20px"
+            android:layout_gravity="center"
             android:text="Hạn Ngày: "
             android:layout_weight="3">
 
@@ -46,11 +50,13 @@
         <EditText
             android:id="@+id/edt_hanngay"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100px"
             android:layout_marginLeft="20px"
             android:layout_marginRight="20px"
-            android:layout_marginTop="20px"
-            android:layout_weight="2">
+            android:paddingHorizontal="5dp"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:background="@drawable/custom_edittext">
 
         </EditText>
         <Button
@@ -59,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:layout_marginRight="20px"
+            android:layout_gravity="center"
             android:text="Pick">
 
         </Button>
@@ -66,23 +73,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
         android:weightSum="8">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20px"
             android:layout_marginLeft="20px"
             android:text="Hạn Giờ: "
+            android:layout_gravity="center"
             android:layout_weight="3">
 
         </TextView>
         <EditText
             android:id="@+id/edt_hangio"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100px"
+            android:background="@drawable/custom_edittext"
             android:layout_marginLeft="20px"
             android:layout_marginRight="20px"
-            android:layout_marginTop="20px"
+            android:paddingHorizontal="5dp"
+            android:layout_gravity="center"
             android:layout_weight="2">
 
         </EditText>
@@ -92,7 +102,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:layout_marginRight="20px"
-            android:text="Pick">
+            android:text="Pick"
+            android:layout_gravity="center">
 
         </Button>
     </LinearLayout>
@@ -106,16 +117,18 @@
             android:layout_marginTop="20px"
             android:layout_marginLeft="20px"
             android:text="Mức ưu tiên: "
+            android:layout_gravity="center"
             android:layout_weight="2">
 
         </TextView>
         <Spinner
             android:id="@+id/spn_mucuutien"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100px"
             android:layout_marginLeft="20px"
             android:layout_marginRight="20px"
             android:layout_marginTop="20px"
+            android:layout_gravity="center"
             android:layout_weight="1">
 
         </Spinner>
@@ -137,8 +150,10 @@
         android:layout_marginLeft="20px"
         android:layout_marginRight="20px"
         android:layout_marginTop="20px"
+        android:paddingHorizontal="5dp"
         android:ems="10"
         android:gravity="start|top"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:background="@drawable/custom_edittext"/>
 
 </LinearLayout>

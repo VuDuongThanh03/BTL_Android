@@ -110,7 +110,7 @@ public class TimeTable extends AppCompatActivity {
     }
 
     private void search(String keyword) {
-        Cursor cursor = myDB.searchTKB(keyword);
+        Cursor cursor = myDB.searchLichHoc(keyword);
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
         } else {
@@ -140,7 +140,7 @@ public class TimeTable extends AppCompatActivity {
     }
 
     void LuuTruData() {
-        Cursor cursor = myDB.readAllData();
+        Cursor cursor = myDB.getLichHoc();
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
         } else {

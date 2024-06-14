@@ -18,22 +18,15 @@ import com.example.btl_android.thong_bao.ThongBao;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
-   private Context context;
+
     public DatabaseHelper(@Nullable final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-    private static final String TABLE_THOIKHOABIEU="THOIKHOABIEU";
-    // Subject table column names
-    private static final String COLUMN_ID = "id";
-    private static final String COLUMN_MON = "mon";
-    private static final String COLUMN_THU = "thu";
-    private static final String COLUMN_NGAY = "ngay";
-    private static final String COLUMN_GIANGVIEN = "giangvien";
-    private static final String COLUMN_PHONG = "phong";
-    private static final String COLUMN_TIET = "tiet";
-    private static final String COLUMN_DIADIEM = "diadiem";
+
     @Override
     public void onCreate(final SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_SINHVIEN);
@@ -44,30 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
         db.execSQL(CREATE_TABLE_LICHHOC);
         db.execSQL(CREATE_TABLE_THONGBAO);
-        String query="CREATE TABLE " + TABLE_THOIKHOABIEU +
-                "("+  COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_MON + " TEXT,"
-                + COLUMN_THU + " TEXT,"
-                + COLUMN_NGAY + " TEXT,"
-                + COLUMN_GIANGVIEN + " TEXT,"
-                + COLUMN_PHONG + " TEXT,"
-                + COLUMN_TIET + " TEXT,"
-                + COLUMN_DIADIEM + " TEXT" + ")";
-        db.execSQL(query);
-        String insertData = "INSERT INTO " + TABLE_THOIKHOABIEU + " ("
-                + COLUMN_MON + ", "
-                + COLUMN_THU + ", "
-                + COLUMN_NGAY + ", "
-                + COLUMN_GIANGVIEN + ", "
-                + COLUMN_PHONG + ", "
-                + COLUMN_TIET + ", "
-                + COLUMN_DIADIEM + ") VALUES " +
-                "('Thiết kế Web','Thứ 2','10/6/2024','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1')," +
-                "('Tiếng Anh Công Nghệ Thông Tin 2','Thứ 3','11/6/2024','Bùi Phương Thảo(0389937161 - Trường NN-DL)','508','7,8','A9')," +
-                "('Phát triển ứng dụng trên thiết bị di động','Thứ 6','14/6/2024','Vũ Thị Dương(0904755919 - CNTT)','402','3,4,5','A8')," +
-                "('Thiết kế đồ hoạ 2D','Thứ 5','13/6/2024','Đỗ Mạnh Hùng(0916113319 - CNTT)','609','9,10,11','A9')," +
-                "('Đồ án chuyên ngành','Chủ nhật','16/6/2024','Nguyễn Bá Nghiễn (0358218310 - CNTT)','Phòng thực hành Khoa CNTT 06','1,2,3,4,5,7,8,9,10,11','A1');";
-        db.execSQL(insertData);
+
         populateInitialData(db);
     }
 
@@ -81,7 +51,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
         db.execSQL("DROP TABLE IF EXISTS LichHoc");
         db.execSQL("DROP TABLE IF EXISTS ThongBao");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_THOIKHOABIEU);
         onCreate(db);
     }
 
@@ -96,33 +65,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // CRUD operations for HocPhan
-    public void addSubject(final HocPhan hocPhan) {
-        final SQLiteDatabase db = getWritableDatabase();
-
-        String sql = "INSERT INTO HocPhan (tenHp, maHp, soTinChiLyThuyet, hocKy) VALUES (?, ?, ?, ?)";
-
-        db.execSQL(sql, new Object[]{
-                hocPhan.getTenHp(),
-                hocPhan.getMaHp(),
-                hocPhan.getSoTietLt(),
-                hocPhan.getHocKy()
-        });
-
-        db.close();
-    }
-
-    public void insertHocPhan(HocPhan hocPhan) {
+    public boolean addHocPhan(HocPhan hocPhan) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("maHp", hocPhan.getMaHp());
         values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
         values.put("soTietLyThuyet", hocPhan.getSoTietLt());
         values.put("soTietThucHanh", hocPhan.getSoTietTh());
         values.put("hocKy", hocPhan.getHocKy());
         values.put("hinhThucThi", hocPhan.getHinhThucThi());
         values.put("heSo", hocPhan.getHeSo());
-        db.insert("HocPhan", null, values);
+
+        long result = db.insert("HocPhan", null, values);
         db.close();
+
+        return result != -1;
     }
 
     public boolean updateHocPhan(HocPhan hocPhan) {
@@ -141,8 +100,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return result > 0;
     }
-
-
 
     public void deleteHocPhan(String maHp) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -164,140 +121,87 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return isUnique;
     }
 
-public List<HocPhan> getAllHocPhan() {
-    List<HocPhan> hocPhanList = new ArrayList<>();
-    SQLiteDatabase db = this.getReadableDatabase();
-    Cursor cursor = db.rawQuery("SELECT * FROM HocPhan", null);
-
-    if (cursor.moveToFirst()) {
-        do {
-            HocPhan hocPhan = new HocPhan(
-                    cursor.getString(cursor.getColumnIndexOrThrow("maHp")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("tenHp")),
-                    cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")),
-                    cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiThucHanh")),
-                    cursor.getInt(cursor.getColumnIndexOrThrow("soTietLyThuyet")),
-                    cursor.getInt(cursor.getColumnIndexOrThrow("soTietThucHanh")),
-                    cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("heSo"))
-            );
-            hocPhanList.add(hocPhan);
-        } while (cursor.moveToNext());
-    }
-    cursor.close();
-    db.close();
-    return hocPhanList;
-}
-
-
-
-
-    public List<HocPhan> getAllSubjects() {
+    public List<HocPhan> getAllHocPhan() {
         List<HocPhan> hocPhanList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM HocPhan";
-
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan", null);
 
         if (cursor.moveToFirst()) {
             do {
-                HocPhan hocPhan = new HocPhan();
-                hocPhan.setTenHp(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
-                hocPhan.setMaHp(cursor.getString(cursor.getColumnIndexOrThrow("maHp")));
-                hocPhan.setSoTietLt(cursor.getInt(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")));
-                hocPhan.setHocKy(cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")));
+                HocPhan hocPhan = new HocPhan(
+                        cursor.getString(cursor.getColumnIndexOrThrow("maHp")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("tenHp")),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiThucHanh")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("soTietLyThuyet")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("soTietThucHanh")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("heSo"))
+                );
                 hocPhanList.add(hocPhan);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
         db.close();
         return hocPhanList;
     }
 
-    public void themDuLieuHocPhanMoiLan() {
+    public void insertLichHoc(String maLop, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
         SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues tb = new ContentValues();
 
-        // Thêm dữ liệu mới
-        themHocPhanMau(db);
-
-        db.close();
-    }
-    public void AddTimeTable(String mon, String thu, String ngay, String giangvien, String phong, String tiet, String diadiem)
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        ContentValues tb=new ContentValues();
-
-        tb.put(COLUMN_MON,mon);
-        tb.put(COLUMN_THU,thu);
-        tb.put(COLUMN_NGAY,ngay);
-        tb.put(COLUMN_GIANGVIEN,giangvien);
-        tb.put(COLUMN_PHONG,phong);
-        tb.put(COLUMN_TIET,tiet);
-        tb.put(COLUMN_DIADIEM,diadiem);
-        long result = db.insert(TABLE_THOIKHOABIEU,null,tb);
-        if(result == -1)
-        {
-            Toast.makeText(context,"Failed",Toast.LENGTH_SHORT).show();
+        tb.put("maLop", maLop);
+        tb.put("thu", thu);
+        tb.put("ngay", ngay);
+        tb.put("giangVien", giangVien);
+        tb.put("phong", phong);
+        tb.put("tiet", tiet);
+        tb.put("diaDiem", diaDiem);
+        tb.put("loaiTietHoc", 0);
+        tb.put("vang", 0);
+        long result = db.insert("LichHoc", null, tb);
+        if (result == -1) {
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Add Thanh Cong", Toast.LENGTH_SHORT).show();
         }
-        else {
-            Toast.makeText(context,"Add Thanh Cong",Toast.LENGTH_SHORT).show();
-        }
-
     }
-    public Cursor readAllData()
-    {
-        String query = "SELECT * FROM "+TABLE_THOIKHOABIEU;
-        SQLiteDatabase db= this.getReadableDatabase();
 
-        Cursor cursor=  null;
-        if (db != null);
-        {
-            cursor= db.rawQuery(query,null);
-
-        }
-        return cursor;
-    }
-    public Cursor searchTKB(String keyword) {
+    public Cursor getLichHoc() {
         SQLiteDatabase db = this.getReadableDatabase();
-
-        // Xây dựng câu truy vấn SQL
-        String query = "SELECT * FROM " + TABLE_THOIKHOABIEU + " WHERE " + COLUMN_MON + " LIKE ? OR " + COLUMN_PHONG + " LIKE ?";
-        String[] selectionArgs = {"%" + keyword + "%", "%" + keyword + "%"};
-
-        Cursor cursor = db.rawQuery(query, selectionArgs);
-
-        // Trả về con trỏ
+        String query = "SELECT * FROM LichHoc";
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
         return cursor;
     }
 
-    public boolean updateDataTime(Context context, int row_id, String mon, String thu, String ngay, String giangvien, String phong, String tiet, String diadiem) {
+    public Cursor searchLichHoc(String keyword) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM LichHoc WHERE maLop LIKE ? OR phong LIKE ?";
+        String[] selectionArgs = {"%" + keyword + "%", "%" + keyword + "%"};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        return cursor;
+    }
+
+    public boolean updateDataTime(Context context, int row_id, String maLop, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_MON, mon);
-        values.put(COLUMN_THU, thu);
-        values.put(COLUMN_NGAY, ngay);
-        values.put(COLUMN_GIANGVIEN, giangvien);
-        values.put(COLUMN_PHONG, phong);
-        values.put(COLUMN_TIET, tiet);
-        values.put(COLUMN_DIADIEM, diadiem);
+        values.put("maLop", maLop);
+        values.put("thu", thu);
+        values.put("ngay", ngay);
+        values.put("giangVien", giangVien);
+        values.put("phong", phong);
+        values.put("tiet", tiet);
+        values.put("diaDiem", diaDiem);
+        values.put("loaiTietHoc", 0);
+        values.put("vang", 0);
 
-        // Log các giá trị đầu vào
-        Log.d("updateDataTime", "Updating row_id: " + row_id + " with values: "
-                + COLUMN_MON + "=" + mon + ", "
-                + COLUMN_THU + "=" + thu + ", "
-                + COLUMN_NGAY + "=" + ngay + ", "
-                + COLUMN_GIANGVIEN + "=" + giangvien + ", "
-                + COLUMN_PHONG + "=" + phong + ", "
-                + COLUMN_TIET + "=" + tiet + ", "
-                + COLUMN_DIADIEM + "=" + diadiem);
-
-        // Cập nhật bảng và lưu số hàng bị ảnh hưởng vào biến result
-        int result = db.update(TABLE_THOIKHOABIEU, values, COLUMN_ID + " = ?", new String[]{String.valueOf(row_id)});
+        int result = db.update("LichHoc", values, "id = ?", new String[]{String.valueOf(row_id)});
         db.close();
 
-        // Ghi log kết quả cập nhật
         if (result > 0) {
             Log.d("updateDataTime", "Update Successful for row_id: " + row_id);
             Toast.makeText(context, "Cập Nhật Thành Công !!", Toast.LENGTH_SHORT).show();
@@ -309,380 +213,13 @@ public List<HocPhan> getAllHocPhan() {
         }
     }
 
-
-    public boolean deleteData(int row_id) {
+    public boolean deleteLichHoc(int row_id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Xóa hàng dựa trên row_id
-        int result = db.delete(TABLE_THOIKHOABIEU, COLUMN_ID + "=?", new String[]{String.valueOf(row_id)});
+        int result = db.delete("LichHoc", "id=?", new String[]{String.valueOf(row_id)});
         db.close();
-
-        // Trả về true nếu có ít nhất một hàng đã bị xóa, ngược lại trả về false
         return result > 0;
     }
-    //Cái này sẽ sửa thành được thêm ngay khi login thành công oke k?
-    private void themHocPhanMau(SQLiteDatabase db) {
-//        ContentValues cv = new ContentValues();
-//
-//        // Thêm môn học cho Học kỳ 1
-//            cv.put("maHp", "LP6010");
-//            cv.put("tenHp", "Triết học Mác-Lênin");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "BS6002");
-//            cv.put("tenHp", "Giải tích");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 0);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            // Thêm các môn học khác tương tự cho Học kỳ 1
-//            cv.put("maHp", "BS6001");
-//            cv.put("tenHp", "Đại số tuyến tính");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6016");
-//            cv.put("tenHp", "Vật lý đại cương");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6015");
-//            cv.put("tenHp", "Kỹ thuật lập trình");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6017");
-//            cv.put("tenHp", "Cấu trúc dữ liệu");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6018");
-//            cv.put("tenHp", "Lý thuyết thông tin");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6019");
-//            cv.put("tenHp", "Mạng máy tính");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6020");
-//            cv.put("tenHp", "Hệ điều hành");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6021");
-//            cv.put("tenHp", "Nhập môn AI");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 1);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            // Thêm môn học cho Học kỳ 2
-//            cv.put("maHp", "MH2_01");
-//            cv.put("tenHp", "Toán cao cấp");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_02");
-//            cv.put("tenHp", "Xác suất thống kê");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 0);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_03");
-//            cv.put("tenHp", "Phân tích thiết kế hệ thống");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_04");
-//            cv.put("tenHp", "An ninh mạng");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_05");
-//            cv.put("tenHp", "Kiến trúc máy tính");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_06");
-//            cv.put("tenHp", "Phát triển phần mềm");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_07");
-//            cv.put("tenHp", "Trí tuệ nhân tạo nâng cao");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_08");
-//            cv.put("tenHp", "Khoa học dữ liệu");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_09");
-//            cv.put("tenHp", "Phát triển game");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "MH2_10");
-//            cv.put("tenHp", "Blockchain");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 2);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            // Học kỳ 3
-//            cv.put("maHp", "LP6012");
-//            cv.put("tenHp", "Chủ nghĩa xã hội khoa học");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 3);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6035");
-//            cv.put("tenHp", "Toán rời rạc");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 0);
-//            cv.put("hocKy", 3);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6126");
-//            cv.put("tenHp", "Hệ thống cơ sở dữ liệu");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 3);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6067");
-//            cv.put("tenHp", "Kiến trúc máy tính và hệ điều hành");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 3);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6120");
-//            cv.put("tenHp", "Lập trình hướng đối tượng");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 3);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            // Học kỳ 4
-//            cv.put("maHp", "LP6013");
-//            cv.put("tenHp", "Lịch sử Đảng Cộng sản Việt Nam");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 4);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6001");
-//            cv.put("tenHp", "An toàn và bảo mật thông tin");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 0);
-//            cv.put("hocKy", 4);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6002");
-//            cv.put("tenHp", "Cấu trúc dữ liệu và giải thuật");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 4);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            // Học kỳ 5
-//            cv.put("maHp", "LP6004");
-//            cv.put("tenHp", "Tư tưởng Hồ Chí Minh");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 5);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6071");
-//            cv.put("tenHp", "Phát triển dự án công nghệ thông tin");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 0);
-//            cv.put("hocKy", 5);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6100");
-//            cv.put("tenHp", "Thiết kế đồ họa 2D");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 5);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            // Học kỳ 6
-//            cv.put("maHp", "IT6047");
-//            cv.put("tenHp", "Học máy");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 6);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6057");
-//            cv.put("tenHp", "Phát triển ứng dụng thương mại điện tử");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 0);
-//            cv.put("hocKy", 6);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6125");
-//            cv.put("tenHp", "Thiết kế web nâng cao");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 6);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            // Học kỳ 7
-//            cv.put("maHp", "IT6122");
-//            cv.put("tenHp", "Đồ án chuyên ngành");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 0);
-//            cv.put("hocKy", 7);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6013");
-//            cv.put("tenHp", "Kiểm thử phần mềm");
-//            cv.put("soTinChiLyThuyet", 2);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 7);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "25-25-50");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6029");
-//            cv.put("tenHp", "Phát triển ứng dụng trên thiết bị di động");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 1);
-//            cv.put("hocKy", 7);
-//            cv.put("hinhThucThi", "Thi trên máy tính");
-//            cv.put("heSo", "20-20-60");
-//            db.insert("HocPhan", null, cv);
-//
-//            // Học kỳ 8
-//            cv.put("maHp", "IT6129");
-//            cv.put("tenHp", "Đồ án tốt nghiệp");
-//            cv.put("soTinChiLyThuyet", 4);
-//            cv.put("soTinChiThucHanh", 5);
-//            cv.put("hocKy", 8);
-//            cv.put("hinhThucThi", "Tự luận");
-//            cv.put("heSo", "30-30-40");
-//            db.insert("HocPhan", null, cv);
-//
-//            cv.put("maHp", "IT6128");
-//            cv.put("tenHp", "Thực tập doanh nghiệp");
-//            cv.put("soTinChiLyThuyet", 3);
-//            cv.put("soTinChiThucHanh", 3);
-//            cv.put("hocKy", 8);
-//            cv.put("hinhThucThi", "Bài tập lớn");
-//            cv.put("heSo", "20-30-50");
-//            db.insert("HocPhan", null, cv);
-    }
+
 
     public boolean updateDiem(Diem diem) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -697,7 +234,7 @@ public List<HocPhan> getAllHocPhan() {
         return res > 0;
     }
 
-    public void getTatCaDiemHp() {
+    public void getDiemHp() {
         allDiemHpList.clear();
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "";
@@ -764,7 +301,7 @@ public List<HocPhan> getAllHocPhan() {
         return diemList;
     }
 
-    public boolean updateThongBao(String tieuDe, String noiDung, String thoiGian) {
+    public boolean insertThongBao(String tieuDe, String noiDung, String thoiGian) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("tieuDe", tieuDe);
@@ -808,7 +345,7 @@ public List<HocPhan> getAllHocPhan() {
                 String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
                 String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
                 int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
-                CongViec congViec = new CongViec(macongviec,tencongviec,chitietcongviec,mucuutien,thoihangio,thoihanngay,trangthai);
+                CongViec congViec = new CongViec(macongviec, tencongviec, chitietcongviec, mucuutien, thoihangio, thoihanngay, trangthai);
 
                 congViecList.add(congViec);
             } while (cursor.moveToNext());
@@ -818,6 +355,7 @@ public List<HocPhan> getAllHocPhan() {
         db.close();
         return congViecList;
     }
+
     public void addCongViec(CongViec congViec) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -832,6 +370,7 @@ public List<HocPhan> getAllHocPhan() {
         db.insert("CongViec", null, values);
         db.close();
     }
+
     public void updateCongViec(CongViec congViec) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -847,115 +386,18 @@ public List<HocPhan> getAllHocPhan() {
         db.update("CongViec", values, "id" + " = ?", new String[]{String.valueOf(congViec.getMaCongViec())});
         db.close();
     }
+
     public void deleteCongViec(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("CongViec", "id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 
-    // Database name and version
-    private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
-    private static final int DATABASE_VERSION = 1;
-
-    public static List<Diem> allDiemHpList = new ArrayList<>();
-
-    // SinhVien table
-    private static final String CREATE_TABLE_SINHVIEN =
-            "CREATE TABLE IF NOT EXISTS SinhVien (" +
-                    "maSv TEXT NOT NULL," +
-                    "maCn INTEGER NOT NULL," +
-                    "tenSv TEXT NOT NULL," +
-                    "tenTk INTEGER NOT NULL," +
-                    "matKhau TEXT NOT NULL," +
-                    "PRIMARY KEY(maSv)," +
-                    "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
-    // CongViec table
-    private static final String CREATE_TABLE_CONGVIEC =
-            "CREATE TABLE IF NOT EXISTS CongViec (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "tenViec TEXT NOT NULL," +
-                    "mucUuTien INTEGER," +
-                    "thoiHanGio TEXT NOT NULL," +
-                    "thoiHanNgay TEXT NOT NULL," +
-                    "trangThai INTEGER NOT NULL," +
-                    "chiTiet TEXT" +
-                    ");";
-
-    // ChuyenNganh table
-    private static final String CREATE_TABLE_CHUYENNGANH =
-            "CREATE TABLE IF NOT EXISTS ChuyenNganh (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "tenCn TEXT NOT NULL" +
-                    ");";
-
-    // HocPhan table
-    private static final String CREATE_TABLE_HOCPHAN =
-            "CREATE TABLE IF NOT EXISTS HocPhan (" +
-                    "maHp TEXT PRIMARY KEY," +
-                    "tenHp TEXT NOT NULL," +
-                    "soTinChiLyThuyet REAL NOT NULL," +
-                    "soTinChiThucHanh REAL NOT NULL," +
-                    "soTietLyThuyet INTEGER NOT NULL," +
-                    "soTietThucHanh INTEGER NOT NULL," +
-                    "hocKy INTEGER NOT NULL," +
-                    "hinhThucThi TEXT NOT NULL," +
-                    "heSo TEXT NOT NULL" +
-                    ");";
-
-    // LoaiHocPhan table
-    private static final String CREATE_TABLE_LOAIHOCPHAN =
-            "CREATE TABLE IF NOT EXISTS LoaiHocPhan (" +
-                    "maHp TEXT NOT NULL," +
-                    "maCn INTEGER NOT NULL," +
-                    "loai INTEGER NOT NULL," +
-                    "PRIMARY KEY(maHp, maCn)," +
-                    "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
-                    "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
-    // KetQuaHocPhan table
-    private static final String CREATE_TABLE_KETQUAHOCPHAN =
-            "CREATE TABLE IF NOT EXISTS KetQuaHocPhan (" +
-                    "maLop TEXT NOT NULL," +
-                    "maHp TEXT NOT NULL," +
-                    "tx1 REAL," +
-                    "tx2 REAL," +
-                    "giuaKy REAL," +
-                    "cuoiKy REAL," +
-                    "diemKiVong REAL," +
-                    "hocKy INTEGER NOT NULL," +
-                    "PRIMARY KEY(maLop)," +
-                    "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
-    // LichHoc table
-    private static final String CREATE_TABLE_LICHHOC =
-            "CREATE TABLE IF NOT EXISTS LichHoc (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "maLop TEXT NOT NULL, " +
-                    "thu TEXT NOT NULL, " +
-                    "ngay TEXT NOT NULL, " +
-                    "phong INTEGER NOT NULL, " +
-                    "giangVien TEXT NOT NULL, " +
-                    "tiet TEXT NOT NULL, " +
-                    "diaDiem TEXT NOT NULL, " +
-                    "loaiTietHoc INTEGER NOT NULL, " +
-                    "vang INTEGER, " +
-                    "FOREIGN KEY(maLop) REFERENCES KetQuaHocPhan(maLop) " +
-                    "ON UPDATE NO ACTION ON DELETE NO ACTION" +
-                    ");";
-
     // ThongBao table
     public List<HocPhan> getHocPhanByHocKy(int hocKy) {
         List<HocPhan> hocPhanList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE hocKy = ?", new String[] {String.valueOf(hocKy)});
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE hocKy = ?", new String[]{String.valueOf(hocKy)});
 
         if (cursor.moveToFirst()) {
             do {
@@ -979,6 +421,96 @@ public List<HocPhan> getAllHocPhan() {
         return hocPhanList;
     }
 
+    // Database name and version
+    private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
+    private static final int DATABASE_VERSION = 1;
+    public static List<Diem> allDiemHpList = new ArrayList<>();
+    private Context context;
+    // SinhVien table
+    private static final String CREATE_TABLE_SINHVIEN =
+            "CREATE TABLE IF NOT EXISTS SinhVien (" +
+                    "maSv TEXT NOT NULL," +
+                    "maCn INTEGER NOT NULL," +
+                    "tenSv TEXT NOT NULL," +
+                    "tenTk INTEGER NOT NULL," +
+                    "matKhau TEXT NOT NULL," +
+                    "PRIMARY KEY(maSv)," +
+                    "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
+    // CongViec table
+    private static final String CREATE_TABLE_CONGVIEC =
+            "CREATE TABLE IF NOT EXISTS CongViec (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "tenViec TEXT NOT NULL," +
+                    "mucUuTien INTEGER," +
+                    "thoiHanGio TEXT NOT NULL," +
+                    "thoiHanNgay TEXT NOT NULL," +
+                    "trangThai INTEGER NOT NULL," +
+                    "chiTiet TEXT" +
+                    ");";
+    // ChuyenNganh table
+    private static final String CREATE_TABLE_CHUYENNGANH =
+            "CREATE TABLE IF NOT EXISTS ChuyenNganh (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "tenCn TEXT NOT NULL" +
+                    ");";
+    // HocPhan table
+    private static final String CREATE_TABLE_HOCPHAN =
+            "CREATE TABLE IF NOT EXISTS HocPhan (" +
+                    "maHp TEXT PRIMARY KEY," +
+                    "tenHp TEXT NOT NULL," +
+                    "soTinChiLyThuyet REAL NOT NULL," +
+                    "soTinChiThucHanh REAL NOT NULL," +
+                    "soTietLyThuyet INTEGER NOT NULL," +
+                    "soTietThucHanh INTEGER NOT NULL," +
+                    "hocKy INTEGER NOT NULL," +
+                    "hinhThucThi TEXT NOT NULL," +
+                    "heSo TEXT NOT NULL" +
+                    ");";
+    // LoaiHocPhan table
+    private static final String CREATE_TABLE_LOAIHOCPHAN =
+            "CREATE TABLE IF NOT EXISTS LoaiHocPhan (" +
+                    "maHp TEXT NOT NULL," +
+                    "maCn INTEGER NOT NULL," +
+                    "loai INTEGER NOT NULL," +
+                    "PRIMARY KEY(maHp, maCn)," +
+                    "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
+                    "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
+    // KetQuaHocPhan table
+    private static final String CREATE_TABLE_KETQUAHOCPHAN =
+            "CREATE TABLE IF NOT EXISTS KetQuaHocPhan (" +
+                    "maLop TEXT NOT NULL," +
+                    "maHp TEXT NOT NULL," +
+                    "tx1 REAL," +
+                    "tx2 REAL," +
+                    "giuaKy REAL," +
+                    "cuoiKy REAL," +
+                    "diemKiVong REAL," +
+                    "hocKy INTEGER NOT NULL," +
+                    "PRIMARY KEY(maLop)," +
+                    "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
+    // LichHoc table
+    private static final String CREATE_TABLE_LICHHOC =
+            "CREATE TABLE IF NOT EXISTS LichHoc (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "maLop TEXT NOT NULL, " +
+                    "thu TEXT NOT NULL, " +
+                    "ngay TEXT NOT NULL, " +
+                    "phong INTEGER NOT NULL, " +
+                    "giangVien TEXT NOT NULL, " +
+                    "tiet TEXT NOT NULL, " +
+                    "diaDiem TEXT NOT NULL, " +
+                    "loaiTietHoc INTEGER NOT NULL, " +
+                    "vang INTEGER, " +
+                    "FOREIGN KEY(maLop) REFERENCES KetQuaHocPhan(maLop) " +
+                    "ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    ");";
     private static final String CREATE_TABLE_THONGBAO =
             "CREATE TABLE IF NOT EXISTS ThongBao (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -986,23 +518,21 @@ public List<HocPhan> getAllHocPhan() {
                     "noiDung TEXT NOT NULL, " +
                     "thoiGian TEXT NOT NULL" +
                     ");";
-
     private static final String INSERT_TABLE_SINHVIEN =
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
-                    "('2021606516', 1, 'Phùng Đức Cần', 'Tao là nhất', 'abc123!@#')";
+                    "('2021606516', 1, 'Phùng Đức Cần', 'phungduccan', 'abc123!@#'),"+
+                    "('2021607252', 1, 'Vũ Dương Thành', 'vuduongthanh', 'abc123!@#')";
 
     private static final String INSERT_TABLE_CONGVIEC =
             "INSERT INTO CongViec (id, tenViec, mucUuTien, thoiHanGio, thoiHanNgay, trangThai, chiTiet) VALUES " +
-                    "(1, 'Complete Math Homework', 1, '9:30', '2023-06-10', 0, 'Chapter 1-3 exercises'), " +
-                    "(2, 'Prepare Physics Presentation', 2, '15:10', '2023-06-12', 0, 'Presentation on Quantum Mechanics'), " +
-                    "(3, 'Chemistry Lab Report', 1, '8:00', '2023-06-14', 0, 'Lab report on chemical reactions'), " +
-                    "(4, 'Biology Field Trip', 3, '11:15', '2023-06-16', 1, 'Field trip to the botanical garden'), " +
-                    "(5, 'Computer Science Project', 1, '16:30', '2023-06-18', 0, 'Project on data structures'), " +
-                    "(6, 'Math Quiz Preparation', 2, '10:30', '2023-06-20', 0, 'Prepare for upcoming quiz'), " +
-                    "(7, 'Physics Assignment', 1, '6:50', '2023-06-22', 0, 'Complete assignments from chapter 4'), " +
-                    "(8, 'Chemistry Homework', 2, '20:40', '2023-06-24', 0, 'Solve problems from the textbook'), " +
-                    "(9, 'Biology Research', 3, '22:00', '2023-06-26', 1, 'Research on genetic mutations'), " +
-                    "(10, 'Computer Science Exam', 1, '23:30', '2023-06-28', 0, 'Study for final exam');";
+                    "(1, 'Nộp báo cáo Android', 2, '8:00', '2024-06-15', 0, 'Nộp báo cáo bài tập lớn môn Android gồm các file word và video giới thiệu'), " +
+                    "(2, 'Bảo vệ bài tập lớn Android', 3, '14:00', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 802-A1'), " +
+                    "(3, 'Bảo vệ bài tập lớn Kiểm thử phần mềm', 3, '14:30', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 701-A1'), " +
+                    "(4, 'Ôn tập Quản trị mạng', 2, '8:35', '2024-06-20', 0, 'Ôn tập trước ngày thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
+                    "(5, 'Thi Quản trị mạng', 3, '11:15', '2024-06-21', 0, 'Đi thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
+                    "(6, 'Hoàn thành bài tập lớn Web nâng cao', 2, '8:00', '2023-06-10', 1, 'Hoàn thiện bài tập lớn sau đó đi in cho buổi vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
+                    "(7, 'Bảo vệ bài tập lớn Web nâng cao', 3, '8:00', '2023-06-12', 1, 'Đi bảo vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
+                    "(8, 'Thi cuối kỳ môn Tiếng Anh 2', 3, '13:30', '2023-05-26', 1, 'Đi thi cuối kỳ môn Tiếng Anh 2 phòng 507-A9');";
 
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
@@ -1010,7 +540,6 @@ public List<HocPhan> getAllHocPhan() {
                     "(2, 'Khoa học máy tính'), " +
                     "(3, 'Hệ thống thông tin'), " +
                     "(4, 'Kỹ thuật phần mềm');";
-
     private static final String INSERT_TABLE_HOCPHAN =
             "INSERT INTO HocPhan (maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, soTietLyThuyet, soTietThucHanh, hocKy, hinhThucThi, heSo) VALUES " +
                     "('LP6010', 'Triết học Mác-Lênin', 2, 0, 20, 0, 1, 'Tự luận', '20-20-60'), " +
@@ -1052,7 +581,6 @@ public List<HocPhan> getAllHocPhan() {
                     "('IT6029', 'Phát triển ứng dụng trên thiết bị di động', 3, 1, 30, 30, 7, 'Thi trên máy tính', '20-20-60'), " +
                     "('IT6129', 'Đồ án tốt nghiệp', 4, 5, 40, 45, 8, 'Tự luận', '30-30-40'), " +
                     "('IT6128', 'Thực tập doanh nghiệp', 3, 3, 30, 45, 8, 'Bài tập lớn', '20-30-50');";
-
     private static final String INSERT_TABLE_LOAIHOCPHAN =
             "INSERT INTO LoaiHocPhan (maHp, maCn, loai) VALUES " +
                     "('LP6010', 1, 0), " +
@@ -1072,7 +600,6 @@ public List<HocPhan> getAllHocPhan() {
                     "('MH2_07', 1, 1), " +
                     "('MH2_08', 1, 1), " +
                     "('MH2_09', 1, 1), " +
-                    "('MH2_10', 1, 1), " +
                     "('IT6035', 1, 1), " +
                     "('IT6126', 1, 1), " +
                     "('IT6067', 1, 1), " +
@@ -1104,7 +631,6 @@ public List<HocPhan> getAllHocPhan() {
                     "('MH2_06', 2, 0), " +
                     "('MH2_08', 2, 0), " +
                     "('MH2_09', 2, 0), " +
-                    "('MH2_10', 2, 0), " +
                     "('LP6012', 2, 1), " +
                     "('IT6035', 2, 0), " +
                     "('IT6126', 2, 0), " +
@@ -1191,7 +717,6 @@ public List<HocPhan> getAllHocPhan() {
                     "('IT6029', 4, 1), " +
                     "('IT6129', 4, 0), " +
                     "('IT6128', 4, 1)";
-
     private static final String INSERT_TABLE_KETQUAHOCPHAN =
             "INSERT INTO KetQuaHocPhan (maLop, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
                     "('2021HP003.1', 'IT6016', 8.5, 9.0, null, null, null, 1), " +
@@ -1232,7 +757,6 @@ public List<HocPhan> getAllHocPhan() {
                     "('2025HP001.4', 'BS6002', 9.0, 8.5, 7.0, null, null, 8), " +
                     "('2025HP001.2', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 8), " +
                     "('2025HP005.5', 'BS6001', 8.0, 6.5, null, null, null, 8);";
-
     private static final String INSERT_TABLE_LICHHOC =
             "INSERT INTO LichHoc " +
                     "(id, maLop, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +
@@ -1304,23 +828,8 @@ public List<HocPhan> getAllHocPhan() {
 
 
 
-    public boolean addHocPhan(HocPhan hocPhan) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("maHp", hocPhan.getMaHp());
-        values.put("tenHp", hocPhan.getTenHp());
-        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
-        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
-        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
-        values.put("soTietThucHanh", hocPhan.getSoTietTh());
-        values.put("hocKy", hocPhan.getHocKy());
-        values.put("hinhThucThi", hocPhan.getHinhThucThi());
-        values.put("heSo", hocPhan.getHeSo());
 
-        long result = db.insert("HocPhan", null, values);
-        db.close();
 
-        return result != -1;
-    }
+
 
 }
