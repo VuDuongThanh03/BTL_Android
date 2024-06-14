@@ -1,4 +1,3 @@
-// HocPhanDuKienActivity.java
 package com.example.btl_android.hoc_phan_du_kien;
 
 import android.content.Intent;
@@ -126,6 +125,27 @@ public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanA
         hocPhanList = databaseHelper.getHocPhanByHocKy(semester);
         hocPhanAdapter = new HocPhanAdapter(hocPhanList, this);
         recyclerView.setAdapter(hocPhanAdapter);
+    }
+
+    private void updateHocPhanList() {
+        if (selectedButton != null) {
+            int semester = Integer.parseInt(selectedButton.getText().toString());
+            hocPhanList = databaseHelper.getHocPhanByHocKy(semester);
+        } else {
+            hocPhanList = databaseHelper.getAllHocPhan();
+        }
+        hocPhanAdapter = new HocPhanAdapter(hocPhanList, this);
+        recyclerView.setAdapter(hocPhanAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_ADD_HOCPHAN || requestCode == REQUEST_CODE_EDIT_HOCPHAN) {
+                updateHocPhanList();
+            }
+        }
     }
 
     @Override

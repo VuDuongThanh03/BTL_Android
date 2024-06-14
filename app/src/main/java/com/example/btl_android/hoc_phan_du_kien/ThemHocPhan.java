@@ -109,6 +109,7 @@ public class ThemHocPhan extends AppCompatActivity {
 
         if (result) {
             Toast.makeText(this, hocPhan == null ? "Thực hiện thành công" : "Thực hiện thành công", Toast.LENGTH_LONG).show();
+            setResult(RESULT_OK);
             finish();
         } else {
             Toast.makeText(this, hocPhan == null ? "Có lỗi xảy ra" : "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
