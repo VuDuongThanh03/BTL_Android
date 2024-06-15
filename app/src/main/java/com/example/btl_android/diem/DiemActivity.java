@@ -2,6 +2,7 @@ package com.example.btl_android.diem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -59,7 +60,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
         hocKy = "1";
 
         db = new DatabaseHelper(this);
-        db.getDiemHp();
+        db.getDiemHp(getIntent().getStringExtra("MaSv"));
     }
 
     private void setupButtons() {
@@ -98,7 +99,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
                         if (diemList.isEmpty()) {
                             Toast.makeText(DiemActivity.this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                         }
-                        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, R.id.rvDiemHp);
+                        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, getIntent());
                         rvDiemHp.setAdapter(diemHpAdapter);
                     }
                 });
@@ -109,7 +110,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     protected void onResume() {
         diemList = db.getDiemHpTheoKy(hocKy);
-        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, R.id.rvDiemHp);
+        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, getIntent());
         rvDiemHp.setAdapter(diemHpAdapter);
         super.onResume();
     }

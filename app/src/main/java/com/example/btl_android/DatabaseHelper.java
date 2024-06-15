@@ -151,7 +151,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues tb = new ContentValues();
 
-
         tb.put("mon",mon);
         tb.put("thu", thu);
         tb.put("ngay", ngay);
@@ -234,39 +233,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res > 0;
     }
 
-    public void getDiemHp() {
-        allDiemHpList.clear();
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "";
-        Cursor cursor;
+    public List<HocPhan> getHocPhanByHocKy(int hocKy) {
+        List<HocPhan> hocPhanList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE hocKy = ?", new String[]{String.valueOf(hocKy)});
 
-        query = "SELECT maCn FROM SinhVien";
-        cursor = db.rawQuery(query, null);
-        int id = 0;
         if (cursor.moveToFirst()) {
-            id = cursor.getInt(cursor.getColumnIndex("maCn"));
+            do {
+                HocPhan hocPhan = new HocPhan(
+                        cursor.getString(cursor.getColumnIndex("maHp")),
+                        cursor.getString(cursor.getColumnIndex("tenHp")),
+                        cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")),
+                        cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")),
+                        cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")),
+                        cursor.getInt(cursor.getColumnIndex("soTietThucHanh")),
+                        cursor.getInt(cursor.getColumnIndex("hocKy")),
+                        cursor.getString(cursor.getColumnIndex("hinhThucThi")),
+                        cursor.getString(cursor.getColumnIndex("heSo"))
+                );
+                hocPhanList.add(hocPhan);
+            } while (cursor.moveToNext());
         }
 
-        query = "SELECT kq.maLop, hp.maHp, hp.tenHp, lhp.loai, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
+        cursor.close();
+        db.close();
+        return hocPhanList;
+    }
+
+    public void getDiemHp(String maSv) {
+        allDiemHpList.clear();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT kq.maLop, kq.maSv, hp.maHp, hp.tenHp, lhp.loai, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
                 "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, kq.hocKy, " +
                 "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
                 "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
                 "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
                 "FROM KetQuaHocPhan kq " +
-                "LEFT JOIN HocPhan hp ON hp.maHp = kq.maHp " +
-                "LEFT JOIN LoaiHocPhan lhp ON lhp.maHp = hp.maHp " +
+                "JOIN SinhVien sv ON sv.maSv = kq.maSv " +
+                "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
+                "JOIN LoaiHocPhan lhp ON lhp.maHp = hp.maHp AND lhp.maCn = sv.maCn " +
                 "LEFT JOIN LichHoc lh ON lh.maLop = kq.maLop " +
-                "WHERE lhp.maCn = ? " +
-                "GROUP BY kq.maLop, kq.maHp, hp.tenHp, lhp.loai, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+                "WHERE kq.maSv = ?" +
+                "GROUP BY kq.maLop, kq.maSv, kq.maHp, hp.tenHp, lhp.loai, hp.soTietLyThuyet, hp.soTietThucHanh, " +
                 "hp.hinhThucThi, hp.heSo, kq.hocKy, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong " +
                 "ORDER BY hp.tenHp";
 
-        cursor = db.rawQuery(query, new String[]{id + ""});
+        Cursor cursor = db.rawQuery(query, new String[]{maSv});
         if (cursor.moveToFirst()) {
             do {
                 Diem diem = new Diem();
 
                 diem.setMaLop(cursor.getString(cursor.getColumnIndex("maLop")));
+                Log.d("MaSv DBhelper", cursor.getString(cursor.getColumnIndex("maSv")));
                 diem.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
                 diem.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
                 diem.setLoai(cursor.getInt(cursor.getColumnIndex("loai")));
@@ -396,34 +414,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // ThongBao table
-    public List<HocPhan> getHocPhanByHocKy(int hocKy) {
-        List<HocPhan> hocPhanList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE hocKy = ?", new String[]{String.valueOf(hocKy)});
-
-        if (cursor.moveToFirst()) {
-            do {
-                HocPhan hocPhan = new HocPhan(
-                        cursor.getString(cursor.getColumnIndex("maHp")),
-                        cursor.getString(cursor.getColumnIndex("tenHp")),
-                        cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")),
-                        cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")),
-                        cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")),
-                        cursor.getInt(cursor.getColumnIndex("soTietThucHanh")),
-                        cursor.getInt(cursor.getColumnIndex("hocKy")),
-                        cursor.getString(cursor.getColumnIndex("hinhThucThi")),
-                        cursor.getString(cursor.getColumnIndex("heSo"))
-                );
-                hocPhanList.add(hocPhan);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return hocPhanList;
-    }
-
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
     private static final int DATABASE_VERSION = 1;
@@ -435,7 +425,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "maSv TEXT NOT NULL," +
                     "maCn INTEGER NOT NULL," +
                     "tenSv TEXT NOT NULL," +
-                    "tenTk INTEGER NOT NULL," +
+                    "tenTk INTEGER NOT NULL UNIQUE," +
                     "matKhau TEXT NOT NULL," +
                     "PRIMARY KEY(maSv)," +
                     "FOREIGN KEY (maCn) REFERENCES ChuyenNganh(id)" +
@@ -490,17 +480,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_KETQUAHOCPHAN =
             "CREATE TABLE IF NOT EXISTS KetQuaHocPhan (" +
                     "maLop TEXT NOT NULL," +
-                    "maHp TEXT NOT NULL," +
                     "maSv TEXT NOT NULL," +
+                    "maHp TEXT NOT NULL," +                    
                     "tx1 REAL," +
                     "tx2 REAL," +
                     "giuaKy REAL," +
                     "cuoiKy REAL," +
                     "diemKiVong REAL," +
                     "hocKy INTEGER NOT NULL," +
-                    "PRIMARY KEY(maLop, maSv), " +
+                    "PRIMARY KEY(maLop, maSv)," +
                     "FOREIGN KEY (maHp) REFERENCES HocPhan(maHp)" +
-                    " ON UPDATE NO ACTION ON DELETE NO ACTION, " +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
                     "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION " +
                     ");";
@@ -509,11 +499,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS LichHoc (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "maLop TEXT NOT NULL, " +
-                    "mon TEXT NOT NULL, " +
                     "thu TEXT NOT NULL, " +
                     "ngay TEXT NOT NULL, " +
-                    "giangVien TEXT NOT NULL, " +
                     "phong INTEGER NOT NULL, " +
+                    "giangVien TEXT NOT NULL, " +
                     "tiet TEXT NOT NULL, " +
                     "diaDiem TEXT NOT NULL, " +
                     "loaiTietHoc INTEGER NOT NULL, " +
@@ -521,6 +510,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(maLop) REFERENCES KetQuaHocPhan(maLop) " +
                     "ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
+
+    // ThongBao table
     private static final String CREATE_TABLE_THONGBAO =
             "CREATE TABLE IF NOT EXISTS ThongBao (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -528,6 +519,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "noiDung TEXT NOT NULL, " +
                     "thoiGian TEXT NOT NULL" +
                     ");";
+
     private static final String INSERT_TABLE_SINHVIEN =
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
                     "('2021606516', 1, 'Phùng Đức Cần', 'phungduccan', 'abc123!@#'),"+
@@ -728,98 +720,149 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('IT6129', 4, 0), " +
                     "('IT6128', 4, 1)";
     private static final String INSERT_TABLE_KETQUAHOCPHAN =
-            "INSERT INTO KetQuaHocPhan (maLop, maHp,maSv, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
-                    "('2021HP003.1', 'IT6016','2021607252', 8.5, 9.0, null, null, null, 1), " +
-                    "('2021HP002.3', 'IT6015','2021607252', 7.5, 8.0, 6.5, null, 7.0, 1), " +
-                    "('2021HP001.3', 'BS6002','2021607252', 3.5, 2.5, null, 5.0, null, 1), " +
-                    "('2021HP008.1', 'IT6017','2021607252', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
-                    "('2021HP005.9', 'BS6001','2021607252', 7.5, 8.0, 7.5, 7.5, null, 2), " +
-                    "('2021HP002.2', 'IT6015','2021607252', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
-                    "('2021HP009.4', 'IT6018','2021607252', 8.0, 8.5, 7.0, null, null, 2), " +
-                    "('2021HP001.2', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 2), " +
-                    "('2022HP005.1', 'BS6001','2021607252', 7.5, 6.0, 7.5, 7.5, null, 3), " +
-                    "('2022HP002.2', 'IT6015','2021607252', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
-                    "('2022HP009.4', 'IT6018','2021607252', 8.0, 6.5, 7.0, null, null, 3), " +
-                    "('2022HP001.2', 'BS6002','2021607252', 7.5, 7.0, null, 7.5, 7.5, 3), " +
-                    "('2022HP005.9', 'BS6001','2021607252', 7.5, 8.0, 8.5, 4.5, null, 4), " +
-                    "('2022HP001.1', 'BS6002','2021607252', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
-                    "('2022HP009.7', 'IT6018','2021607252', 8.0, 8.5, 7.0, null, null, 4), " +
-                    "('2022HP001.3', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 4), " +
-                    "('2022HP003.3', 'IT6016','2021607252', 8.0, 8.5, null, null, null, 4), " +
-                    "('2023HP005.9', 'BS6001','2021607252', 7.5, 8.0, 7.5, 7.5, null, 5), " +
-                    "('2023HP008.3', 'IT6017','2021607252', 7.5, 8.0, null, null, 7.0, 5), " +
-                    "('2023HP002.2', 'IT6015','2021607252', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
-                    "('2023HP009.4', 'IT6018','2021607252', 8.0, 8.5, 7.0, null, null, 5), " +
-                    "('2023HP001.2', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 5), " +
-                    "('2023HP005.1', 'BS6001','2021607252', 7.5, 8.0, 7.5, 7.5, null, 6), " +
-                    "('2023HP008.2', 'IT6017','2021607252', 7.5, 6.0, null, null, 7.0, 6), " +
-                    "('2023HP002.7', 'IT6015','2021607252', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
-                    "('2023HP003.3', 'IT6016','2021607252', 8.0, 8.5, 7.0, null, null, 6), " +
-                    "('2023HP001.3', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 6), " +
-                    "('2024HP008.1', 'IT6017','2021607252', 8.5, 7.0, null, null, 8.0, 7), " +
-                    "('2024HP001.2', 'BS6002','2021607252', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
-                    "('2024HP009.4', 'IT6018','2021607252', 8.0, 9.5, 9.0, null, null, 7), " +
-                    "('2024HP001.6', 'BS6002','2021607252', 7.5, 8.0, null, 7.5, 7.5, 7), " +
-                    "('2024HP005.5', 'BS6001','2021607252', 8.0, 8.5, null, null, null, 7), " +
-                    "('2025HP003.9', 'IT6016','2021607252', 7.5, 8.0, 7.5, 7.5, null, 8), " +
-                    "('2025HP008.1', 'IT6017','2021607252', 8.5, 9.0, null, null, 8.0, 8), " +
-                    "('2025HP002.2', 'IT6015','2021607252', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
-                    "('2025HP001.4', 'BS6002','2021607252', 9.0, 8.5, 7.0, null, null, 8), " +
-                    "('2025HP001.2', 'BS6002','2021607252', 7.5, 7.0, null, 7.5, 7.5, 8), " +
-                    "('2025HP005.5', 'BS6001','2021607252', 8.0, 6.5, null, null, null, 8), " +
-
-                    "('2021HP003.1', 'IT6016','2021606516', 8.5, 9.0, null, null, null, 1), " +
-                    "('2021HP002.3', 'IT6015','2021606516', 7.5, 8.0, 6.5, null, 7.0, 1), " +
-                    "('2021HP001.3', 'BS6002','2021606516', 3.5, 2.5, null, 5.0, null, 1), " +
-                    "('2021HP008.1', 'IT6017','2021606516', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
-                    "('2021HP005.9', 'BS6001','2021606516', 7.5, 8.0, 7.5, 7.5, null, 2), " +
-                    "('2021HP002.2', 'IT6015','2021606516', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
-                    "('2021HP009.4', 'IT6018','2021606516', 8.0, 8.5, 7.0, null, null, 2), " +
-                    "('2021HP001.2', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 2), " +
-                    "('2022HP005.1', 'BS6001','2021606516', 7.5, 6.0, 7.5, 7.5, null, 3), " +
-                    "('2022HP002.2', 'IT6015','2021606516', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
-                    "('2022HP009.4', 'IT6018','2021606516', 8.0, 6.5, 7.0, null, null, 3), " +
-                    "('2022HP001.2', 'BS6002','2021606516', 7.5, 7.0, null, 7.5, 7.5, 3), " +
-                    "('2022HP005.9', 'BS6001','2021606516', 7.5, 8.0, 8.5, 4.5, null, 4), " +
-                    "('2022HP001.1', 'BS6002','2021606516', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
-                    "('2022HP009.7', 'IT6018','2021606516', 8.0, 8.5, 7.0, null, null, 4), " +
-                    "('2022HP001.3', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 4), " +
-                    "('2022HP003.3', 'IT6016','2021606516', 8.0, 8.5, null, null, null, 4), " +
-                    "('2023HP005.9', 'BS6001','2021606516', 7.5, 8.0, 7.5, 7.5, null, 5), " +
-                    "('2023HP008.3', 'IT6017','2021606516', 7.5, 8.0, null, null, 7.0, 5), " +
-                    "('2023HP002.2', 'IT6015','2021606516', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
-                    "('2023HP009.4', 'IT6018','2021606516', 8.0, 8.5, 7.0, null, null, 5), " +
-                    "('2023HP001.2', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 5), " +
-                    "('2023HP005.1', 'BS6001','2021606516', 7.5, 8.0, 7.5, 7.5, null, 6), " +
-                    "('2023HP008.2', 'IT6017','2021606516', 7.5, 6.0, null, null, 7.0, 6), " +
-                    "('2023HP002.7', 'IT6015','2021606516', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
-                    "('2023HP003.3', 'IT6016','2021606516', 8.0, 8.5, 7.0, null, null, 6), " +
-                    "('2023HP001.3', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 6), " +
-                    "('2024HP008.1', 'IT6017','2021606516', 8.5, 7.0, null, null, 8.0, 7), " +
-                    "('2024HP001.2', 'BS6002','2021606516', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
-                    "('2024HP009.4', 'IT6018','2021606516', 8.0, 9.5, 9.0, null, null, 7), " +
-                    "('2024HP001.6', 'BS6002','2021606516', 7.5, 8.0, null, 7.5, 7.5, 7), " +
-                    "('2024HP005.5', 'BS6001','2021606516', 8.0, 8.5, null, null, null, 7), " +
-                    "('2025HP003.9', 'IT6016','2021606516', 7.5, 8.0, 7.5, 7.5, null, 8), " +
-                    "('2025HP008.1', 'IT6017','2021606516', 8.5, 9.0, null, null, 8.0, 8), " +
-                    "('2025HP002.2', 'IT6015','2021606516', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
-                    "('2025HP001.4', 'BS6002','2021606516', 9.0, 8.5, 7.0, null, null, 8), " +
-                    "('2025HP001.2', 'BS6002','2021606516', 7.5, 7.0, null, 7.5, 7.5, 8), " +
-                    "('2025HP005.5', 'BS6001','2021606516', 8.0, 6.5, null, null, null, 8);";
+            "INSERT INTO KetQuaHocPhan (maLop, maSv, maHp, tx1, tx2, giuaKy, cuoiKy, diemKiVong, hocKy) VALUES " +
+                    "('2021HP003.1', '2021607252', 'IT6016', 8.5, 9.0, null, null, null, 1), " +
+                    "('2021HP002.3', '2021607252', 'MH2_06', 7.5, 8.0, 6.5, null, 7.0, 1), " +
+                    "('2021HP001.3', '2021607252', 'BS6002', 3.5, 2.5, null, 5.0, null, 1), " +
+                    "('2021HP008.1', '2021607252', 'IT6017', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('2021HP005.9', '2021607252', 'MH2_05', 7.5, 8.0, 7.5, 7.5, null, 2), " +
+                    "('2021HP002.2', '2021607252', 'IT6015', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
+                    "('2021HP009.4', '2021607252', 'IT6018', 8.0, 8.5, 7.0, null, null, 2), " +
+                    "('2021HP001.2', '2021607252', 'LP6012', 7.5, 8.0, null, 7.5, 7.5, 2), " +
+                    "('2022HP005.1', '2021607252', 'BS6001', 7.5, 6.0, 7.5, 7.5, null, 3), " +
+                    "('2022HP002.2', '2021607252', 'IT6015', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
+                    "('2022HP009.4', '2021607252', 'MH2_08', 8.0, 6.5, 7.0, null, null, 3), " +
+                    "('2022HP001.2', '2021607252', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 3), " +
+                    "('2022HP005.9', '2021607252', 'BS6001', 7.5, 8.0, 8.5, 4.5, null, 4), " +
+                    "('2022HP001.1', '2021607252', 'BS6002', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
+                    "('2022HP009.7', '2021607252', 'IT6018', 8.0, 8.5, 7.0, null, null, 4), " +
+                    "('2022HP001.3', '2021607252', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 4), " +
+                    "('2022HP003.3', '2021607252', 'IT6016', 8.0, 8.5, null, null, null, 4), " +
+                    "('2023HP005.9', '2021607252', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 5), " +
+                    "('2023HP008.3', '2021607252', 'IT6017', 7.5, 8.0, null, null, 7.0, 5), " +
+                    "('2023HP002.2', '2021607252', 'IT6015', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
+                    "('2023HP009.4', '2021607252', 'IT6018', 8.0, 8.5, 7.0, null, null, 5), " +
+                    "('2023HP001.2', '2021607252', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 5), " +
+                    "('2023HP005.1', '2021607252', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 6), " +
+                    "('2023HP008.2', '2021607252', 'IT6017', 7.5, 6.0, null, null, 7.0, 6), " +
+                    "('2023HP002.7', '2021607252', 'IT6015', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
+                    "('2023HP003.3', '2021607252', 'IT6016', 8.0, 8.5, 7.0, null, null, 6), " +
+                    "('2023HP001.3', '2021607252', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 6), " +
+                    "('2024HP008.1', '2021607252', 'IT6017', 8.5, 7.0, null, null, 8.0, 7), " +
+                    "('2024HP001.2', '2021607252', 'BS6002', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
+                    "('2024HP009.4', '2021607252', 'IT6018', 8.0, 9.5, 9.0, null, null, 7), " +
+                    "('2024HP001.6', '2021607252', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 7), " +
+                    "('2024HP005.5', '2021607252', 'BS6001', 8.0, 8.5, null, null, null, 7), " +
+                    "('2025HP003.9', '2021607252', 'IT6016', 7.5, 8.0, 7.5, 7.5, null, 8), " +
+                    "('2025HP008.1', '2021607252', 'IT6017', 8.5, 9.0, null, null, 8.0, 8), " +
+                    "('2025HP002.2', '2021607252', 'IT6015', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
+                    "('2025HP001.4', '2021607252', 'BS6002', 9.0, 8.5, 7.0, null, null, 8), " +
+                    "('2025HP001.2', '2021607252', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 8), " +
+                    "('2025HP005.5', '2021607252', 'BS6001', 8.0, 6.5, null, null, null, 8), " +
+                    "('2021HP003.1', '2021606516', 'IT6016', 8.5, 9.0, null, null, null, 1), " +
+                    "('2021HP002.3', '2021606516', 'IT6015', 7.5, 8.0, 6.5, null, 7.0, 1), " +
+                    "('2021HP001.3', '2021606516', 'BS6002', 3.5, 2.5, null, 5.0, null, 1), " +
+                    "('2021HP008.1', '2021606516', 'IT6017', 9.0, 9.5, 8.5, 9.0, 9.0, 1), " +
+                    "('2021HP005.9', '2021606516', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 2), " +
+                    "('2021HP002.2', '2021606516', 'IT6015', 9.0, 9.5, 8.5, 9.0, 9.0, 2), " +
+                    "('2021HP009.4', '2021606516', 'IT6018', 8.0, 8.5, 7.0, null, null, 2), " +
+                    "('2021HP001.2', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 2), " +
+                    "('2022HP005.1', '2021606516', 'BS6001', 7.5, 6.0, 7.5, 7.5, null, 3), " +
+                    "('2022HP002.2', '2021606516', 'IT6015', 9.0, 3.5, 8.5, 9.0, 9.0, 3), " +
+                    "('2022HP009.4', '2021606516', 'IT6018', 8.0, 6.5, 7.0, null, null, 3), " +
+                    "('2022HP001.2', '2021606516', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 3), " +
+                    "('2022HP005.9', '2021606516', 'BS6001', 7.5, 8.0, 8.5, 4.5, null, 4), " +
+                    "('2022HP001.1', '2021606516', 'BS6002', 9.0, 9.5, 8.5, 9.0, 9.0, 4), " +
+                    "('2022HP009.7', '2021606516', 'IT6018', 8.0, 8.5, 7.0, null, null, 4), " +
+                    "('2022HP001.3', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 4), " +
+                    "('2022HP003.3', '2021606516', 'IT6016', 8.0, 8.5, null, null, null, 4), " +
+                    "('2023HP005.9', '2021606516', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 5), " +
+                    "('2023HP008.3', '2021606516', 'IT6017', 7.5, 8.0, null, null, 7.0, 5), " +
+                    "('2023HP002.2', '2021606516', 'IT6015', 9.0, 9.5, 8.5, 9.0, 9.0, 5), " +
+                    "('2023HP009.4', '2021606516', 'IT6018', 8.0, 8.5, 7.0, null, null, 5), " +
+                    "('2023HP001.2', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 5), " +
+                    "('2023HP005.1', '2021606516', 'BS6001', 7.5, 8.0, 7.5, 7.5, null, 6), " +
+                    "('2023HP008.2', '2021606516', 'IT6017', 7.5, 6.0, null, null, 7.0, 6), " +
+                    "('2023HP002.7', '2021606516', 'IT6015', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
+                    "('2023HP003.3', '2021606516', 'IT6016', 8.0, 8.5, 7.0, null, null, 6), " +
+                    "('2023HP001.3', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 6), " +
+                    "('2024HP008.1', '2021606516', 'IT6017', 8.5, 7.0, null, null, 8.0, 7), " +
+                    "('2024HP001.2', '2021606516', 'BS6002', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
+                    "('2024HP009.4', '2021606516', 'IT6018', 8.0, 9.5, 9.0, null, null, 7), " +
+                    "('2024HP001.6', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 7), " +
+                    "('2024HP005.5', '2021606516', 'BS6001', 8.0, 8.5, null, null, null, 7), " +
+                    "('2025HP003.9', '2021606516', 'IT6016', 7.5, 8.0, 7.5, 7.5, null, 8), " +
+                    "('2025HP008.1', '2021606516', 'IT6017', 8.5, 9.0, null, null, 8.0, 8), " +
+                    "('2025HP002.2', '2021606516', 'IT6015', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
+                    "('2025HP001.4', '2021606516', 'BS6002', 9.0, 8.5, 7.0, null, null, 8), " +
+                    "('2025HP001.2', '2021606516', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 8), " +
+                    "('2025HP005.5', '2021606516', 'BS6001', 8.0, 6.5, null, null, null, 8)";
     private static final String INSERT_TABLE_LICHHOC =
             "INSERT INTO LichHoc " +
-                    "(id, maLop, mon,thu, ngay,giangVien, phong, tiet, diaDiem, loaiTietHoc, vang) " +
+                    "(id, maLop, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +
                     "VALUES " +
-                    "(1,'CS101','Thiết kế Web','Thứ Hai','2024-06-17','Phạm Thế Anh(0902131386 - CNTT)','Phòng máy số 3','1,2,3','A1',2,0), " +
-                    "(2, 'CS102', 'Tiếng Anh CNTT 2', 'Thứ Ba', '2024-06-18', 'Trần Thị Bình', 502, '1,2,3', 'A9', 2, 2), " +
-                    "(3, 'CS103', 'Phát Triển Ứng Dụng Trên Thiết Bị Di Động', 'Thứ Tư', '2024-06-19', 'Vũ Thị Dương', 103, '7-9', 'Tòa nhà C, Phòng 103', 1, 1), " +
-                    "(4, 'CS104', 'Hệ Điều Hành', 'Thứ Năm', '2024-06-20', 'Phạm Thị Dung', 104, '10-12', 'Tòa nhà D, Phòng 104', 2, 0), " +
-                    "(5, 'CS105', 'Mạng Máy Tính', 'Thứ Sáu', '2024-06-21', 'Ngô Văn Em', 105, '1-3', 'Tòa nhà E, Phòng 105', 1, 3);";
-
-
-
-
-
-
-
+                    "(1, '2021HP002.3', 'Friday', '2023-06-21', 110, 'James Anderson', '19-20', 'Room J', 0, 1), " +
+                    "(2, '2021HP003.1', 'Tuesday', '2023-06-25', 112, 'William Hernandez', '23-24', 'Room L', 0, 0), " +
+                    "(3, '2021HP002.3', 'Wednesday', '2023-06-26', 113, 'Isabella Martinez', '25-26', 'Room M', 1, 1), " +
+                    "(4, '2021HP003.3', 'Thursday', '2023-06-27', 114, 'Ethan Phillips', '27-28', 'Room N', 0, 0), " +
+                    "(5, '2021HP003.1', 'Friday', '2023-06-28', 115, 'Amelia Brown', '29-30', 'Room O', 1, 0), " +
+                    "(6, '2021HP002.3', 'Monday', '2023-07-01', 116, 'Benjamin Davis', '31-32', 'Room P', 0, 1), " +
+                    "(7, '2021HP003.3', 'Tuesday', '2023-07-02', 117, 'Mia Miller', '33-34', 'Room Q', 1, 0), " +
+                    "(8, '2021HP003.1', 'Wednesday', '2023-07-03', 118, 'Logan Wilson', '35-36', 'Room R', 0, 0), " +
+                    "(9, '2021HP002.3', 'Thursday', '2023-07-04', 119, 'Harper Garcia', '37-38', 'Room S', 1, 1), " +
+                    "(10, '2021HP003.3', 'Friday', '2023-07-05', 120, 'Evelyn Rodriguez', '39-40', 'Room T', 0, 0), " +
+                    "(11, '2021HP003.3', 'Monday', '2023-06-24', 111, 'Emma Garcia', '21-22', 'Room K', 1, 0), " +
+                    "(12, '2021HP003.1', 'Thursday', '2023-06-20', 109, 'Olivia Taylor', '17-18', 'Room I', 1, 0), " +
+                    "(13, '2021HP001.3', 'Friday', '2023-07-12', 121, 'John Doe', '41-42', 'Room U', 0, 1), " +
+                    "(14, '2021HP004.6', 'Tuesday', '2023-07-16', 122, 'Jane Smith', '43-44', 'Room V', 0, 0), " +
+                    "(15, '2021HP005.9', 'Wednesday', '2023-07-17', 123, 'Tom Johnson', '45-46', 'Room W', 1, 1), " +
+                    "(16, '2021HP006.1', 'Thursday', '2023-07-18', 124, 'Lucy Adams', '47-48', 'Room X', 0, 0), " +
+                    "(17, '2021HP007.3', 'Friday', '2023-07-19', 125, 'Steve Brown', '49-50', 'Room Y', 1, 0), " +
+                    "(18, '2021HP002.2', 'Monday', '2023-07-22', 126, 'Nancy Davis', '51-52', 'Room Z', 0, 1), " +
+                    "(19, '2021HP009.4', 'Tuesday', '2023-07-23', 127, 'Mark Lee', '53-54', 'Room AA', 1, 0), " +
+                    "(20, '2021HP001.2', 'Wednesday', '2023-07-24', 128, 'Emily Clark', '55-56', 'Room BB', 0, 0), " +
+                    "(21, '2021HP004.5', 'Thursday', '2023-07-25', 129, 'Jason Lewis', '57-58', 'Room CC', 1, 1), " +
+                    "(22, '2021HP002.3', 'Friday', '2023-07-26', 130, 'Sophia Hill', '59-60', 'Room DD', 0, 0), " +
+                    "(23, '2021HP005.9', 'Monday', '2023-07-29', 131, 'Liam Harris', '61-62', 'Room EE', 1, 0), " +
+                    "(24, '2022HP005.1', 'Tuesday', '2023-07-30', 132, 'Noah Martin', '63-64', 'Room FF', 0, 1), " +
+                    "(25, '2022HP006.1', 'Wednesday', '2023-07-31', 133, 'Olivia Thompson', '65-66', 'Room GG', 1, 0), " +
+                    "(26, '2022HP007.3', 'Thursday', '2023-08-01', 134, 'Mason White', '67-68', 'Room HH', 0, 0), " +
+                    "(27, '2022HP002.2', 'Friday', '2023-08-02', 135, 'Elijah Harris', '69-70', 'Room II', 1, 1), " +
+                    "(28, '2022HP009.4', 'Monday', '2023-08-05', 136, 'Lucas Walker', '71-72', 'Room JJ', 0, 0), " +
+                    "(29, '2022HP001.2', 'Tuesday', '2023-08-06', 137, 'Mia Young', '73-74', 'Room KK', 1, 0), " +
+                    "(30, '2022HP004.5', 'Wednesday', '2023-08-07', 138, 'Harper Martinez', '75-76', 'Room LL', 0, 1), " +
+                    "(31, '2022HP005.9', 'Thursday', '2023-08-08', 139, 'Evelyn Hernandez', '77-78', 'Room MM', 1, 0), " +
+                    "(32, '2022HP006.3', 'Friday', '2023-08-09', 140, 'James Allen', '79-80', 'Room NN', 0, 0), " +
+                    "(33, '2022HP007.4', 'Monday', '2023-08-12', 141, 'Liam King', '81-82', 'Room OO', 1, 1), " +
+                    "(34, '2022HP001.1', 'Tuesday', '2023-08-13', 142, 'Charlotte Wright', '83-84', 'Room PP', 0, 0), " +
+                    "(35, '2022HP009.7', 'Wednesday', '2023-08-14', 143, 'Alexander Scott', '85-86', 'Room QQ', 1, 0), " +
+                    "(36, '2022HP001.3', 'Thursday', '2023-08-15', 144, 'Sofia Green', '87-88', 'Room RR', 0, 1), " +
+                    "(37, '2023HP005.9', 'Monday', '2023-08-19', 146, 'Ava Carter', '91-92', 'Room TT', 0, 0), " +
+                    "(38, '2023HP006.1', 'Tuesday', '2023-08-20', 147, 'Logan Hill', '93-94', 'Room UU', 1, 1), " +
+                    "(39, '2023HP008.3', 'Wednesday', '2023-08-21', 148, 'Sophie Foster', '95-96', 'Room VV', 0, 0), " +
+                    "(40, '2023HP002.2', 'Thursday', '2023-08-22', 149, 'Henry Reed', '97-98', 'Room WW', 1, 0), " +
+                    "(41, '2023HP009.4', 'Friday', '2023-08-23', 150, 'Aiden Gray', '99-100', 'Room XX', 0, 1), " +
+                    "(42, '2023HP001.2', 'Monday', '2023-08-26', 151, 'Ella Brooks', '101-102', 'Room YY', 1, 0), " +
+                    "(43, '2023HP006.5', 'Tuesday', '2023-08-27', 152, 'Leo Wood', '103-104', 'Room ZZ', 0, 0), " +
+                    "(44, '2023HP005.1', 'Wednesday', '2023-08-28', 153, 'Stella Cook', '105-106', 'Room AAA', 1, 1), " +
+                    "(45, '2023HP004.4', 'Thursday', '2023-08-29', 154, 'Zoe Murphy', '107-108', 'Room BBB', 0, 0), " +
+                    "(46, '2023HP008.2', 'Friday', '2023-08-30', 155, 'David Price', '109-110', 'Room CCC', 1, 0), " +
+                    "(47, '2023HP002.7', 'Monday', '2023-09-02', 156, 'Luna Rivera', '111-112', 'Room DDD', 0, 1), " +
+                    "(48, '2023HP003.3', 'Tuesday', '2023-09-03', 157, 'Hudson Ward', '113-114', 'Room EEE', 1, 0), " +
+                    "(49, '2023HP001.3', 'Wednesday', '2023-09-04', 158, 'Mila Brooks', '115-116', 'Room FFF', 0, 0), " +
+                    "(50, '2023HP004.3', 'Thursday', '2023-09-05', 159, 'Owen Watson', '117-118', 'Room GGG', 1, 1), " +
+                    "(51, '2024HP006.9', 'Friday', '2023-09-06', 160, 'Ruby Long', '119-120', 'Room HHH', 0, 0), " +
+                    "(52, '2024HP008.1', 'Monday', '2023-09-09', 161, 'Carter Hughes', '121-122', 'Room III', 1, 0), " +
+                    "(53, '2024HP007.3', 'Tuesday', '2023-09-10', 162, 'Samantha Price', '123-124', 'Room JJJ', 0, 1), " +
+                    "(54, '2024HP001.2', 'Wednesday', '2023-09-11', 163, 'Xavier Evans', '125-126', 'Room KKK', 1, 0), " +
+                    "(55, '2024HP009.4', 'Thursday', '2023-09-12', 164, 'Layla Ward', '127-128', 'Room LLL', 0, 0), " +
+                    "(56, '2024HP001.6', 'Friday', '2023-09-13', 165, 'Gabriel Bryant', '129-130', 'Room MMM', 1, 1), " +
+                    "(57, '2024HP005.5', 'Monday', '2023-09-16', 166, 'Molly Perry', '131-132', 'Room NNN', 0, 0), " +
+                    "(58, '2025HP003.9', 'Tuesday', '2023-09-17', 167, 'Anthony Lopez', '133-134', 'Room OOO', 1, 0), " +
+                    "(59, '2025HP008.1', 'Wednesday', '2023-09-18', 168, 'Nathan Ward', '135-136', 'Room PPP', 0, 1), " +
+                    "(60, '2025HP006.3', 'Thursday', '2023-09-19', 169, 'Aria Griffin', '137-138', 'Room QQQ', 1, 0), " +
+                    "(61, '2025HP002.2', 'Friday', '2023-09-20', 170, 'Eliana Rivera', '139-140', 'Room RRR', 0, 0), " +
+                    "(62, '2025HP001.4', 'Monday', '2023-09-23', 171, 'Riley Torres', '141-142', 'Room SSS', 1, 1), " +
+                    "(63, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
+                    "(64, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
 }

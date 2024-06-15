@@ -100,7 +100,7 @@ public class CapNhatDiemActivity extends AppCompatActivity {
 
             boolean res = db.updateDiem(diem);
             if (res) {
-                db.getDiemHp();
+                db.getDiemHp(intent.getStringExtra("MaSv"));
                 String tieuDe = "Bạn đã cập nhật điểm học phần " + diem.getTenHp() + " thành công!";
 
                 StringBuilder builder = new StringBuilder();

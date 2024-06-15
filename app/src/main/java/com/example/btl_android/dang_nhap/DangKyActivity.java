@@ -64,8 +64,6 @@ public class DangKyActivity extends AppCompatActivity {
                     return;
                 }
 
-                db.execSQL("DELETE FROM SinhVien");
-
                 ContentValues values = new ContentValues();
                 values.put("maSv", maSv);
                 values.put("maCn", chuyenNganh);

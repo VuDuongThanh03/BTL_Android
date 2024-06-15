@@ -39,7 +39,7 @@ public class DangNhapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         this.setContentView(R.layout.activity_dang_nhap);
-
+        deleteDatabase("QuanLyHocTapCaNhan.db");
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 
@@ -75,14 +75,14 @@ public class DangNhapActivity extends AppCompatActivity {
                         }
                         Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
-                        Intent intentDangNhap = new Intent(DangNhapActivity.this, TrangChuActivity.class);
-                        intentDangNhap.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        intentDangNhap.putExtra("maSV", sinhVien.getMaSV() + "");
-                        intentDangNhap.putExtra("maCN", sinhVien.getMaChuyenNganh());
-                        intentDangNhap.putExtra("tenSV", sinhVien.getTenSV());
-                        intentDangNhap.putExtra("tenTK", sinhVien.getTenTK());
-                        intentDangNhap.putExtra("matKhau", sinhVien.getMatKhau());
-                        startActivity(intentDangNhap);
+                        Intent trangChuIntent = new Intent(DangNhapActivity.this, TrangChuActivity.class);
+                        trangChuIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        trangChuIntent.putExtra("MaSv", sinhVien.getMaSV());
+                        trangChuIntent.putExtra("MaCn", sinhVien.getMaChuyenNganh());
+                        trangChuIntent.putExtra("TenSv", sinhVien.getTenSV());
+                        trangChuIntent.putExtra("TenTk", sinhVien.getTenTK());
+                        trangChuIntent.putExtra("MatKhau", sinhVien.getMatKhau());
+                        startActivity(trangChuIntent);
                         finish();
                     } else {
                         Toast.makeText(DangNhapActivity.this, "Tài khoản hoặc mật khẩu không chính xác!", Toast.LENGTH_SHORT).show();

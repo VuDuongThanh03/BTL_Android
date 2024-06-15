@@ -55,8 +55,6 @@ public class TrangChuActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Intent dangNhapIntent = getIntent();
-        String tenSV = dangNhapIntent.getStringExtra("tenSV");
 
         btnCongViec = findViewById(R.id.btnCongViec);
         btnHocPhan = findViewById(R.id.btnHocPhan);
@@ -65,22 +63,25 @@ public class TrangChuActivity extends AppCompatActivity {
         btnLichHoc = findViewById(R.id.btnLichHoc);
         txtUserName = findViewById(R.id.txtUsername);
 
+        Intent trangChuIntent = getIntent();
+        String tenSV = trangChuIntent.getStringExtra("tenSV");
         txtUserName.setText(tenSV);
 
         dbHelper = new DatabaseHelper(this);
-        congViecList = dbHelper.getAllCongViec(dangNhapIntent.getStringExtra("maSV"));
+        congViecList = dbHelper.getAllCongViec(trangChuIntent.getStringExtra("MaSv"));
         softCongViecList(congViecList);
         showlvCongViec();
 
         btnCongViec.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
-            intent.putExtra("maSV",dangNhapIntent.getStringExtra("maSV"));
-            intent.putExtra("tenSV", tenSV);
+            intent.putExtra("MaSv", trangChuIntent.getStringExtra("MaSv"));
+            intent.putExtra("TenSv", tenSV);
             startActivity(intent);
         });
 
         btnDiem.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
+            intent.putExtra("MaSv", trangChuIntent.getStringExtra("MaSv"));
             startActivityForResult(intent, 0);
         });
 
