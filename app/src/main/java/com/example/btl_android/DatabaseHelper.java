@@ -553,6 +553,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "thoiGian TEXT NOT NULL" +
                     ");";
 
+    // ThongBao table
     private static final String INSERT_TABLE_SINHVIEN =
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
                     "('2021606516', 1, 'Phùng Đức Cần', 'phungduccan', 'abc123!@#'),"+

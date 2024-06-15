@@ -74,8 +74,7 @@ public class TrangChuActivity extends AppCompatActivity {
 
         lichHocList = dbHelper.getLichHocLite("2024-06-19");
         showlvLichHoc();
-        congViecList = dbHelper.getAllCongViec(trangChuIntent.getStringExtra("MaSv"));
-
+        congViecList = dbHelper.getAllCongViec(dangNhapIntent.getStringExtra("maSV"));
         softCongViecList(congViecList);
         showlvCongViec();
 
