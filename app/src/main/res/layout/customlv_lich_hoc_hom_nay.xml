@@ -5,11 +5,13 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_minitenmonhoc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30px"
         android:layout_marginTop="10px"
         android:text="Thiết kế web"
+        android:paddingTop="20px"
         android:textColor="@color/black"
         android:textSize="17dp"
         android:textStyle="bold">
@@ -33,6 +35,7 @@
         </TextView>
 
         <TextView
+            android:id="@+id/tv_minitiethoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20px"
@@ -48,7 +51,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30px"
-        android:layout_marginTop="10px">
+        android:layout_marginTop="10px"
+        android:paddingBottom="20px">
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,6 +65,7 @@
         </TextView>
 
         <TextView
+            android:id="@+id/tv_minidiadiem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30px"

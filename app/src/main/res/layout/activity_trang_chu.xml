@@ -337,6 +337,7 @@
                     android:background="@drawable/custom_panel1">
 
                     <ListView
+                        android:id="@+id/lv_minilichhoc"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         tools:listitem="@layout/customlv_lich_hoc_hom_nay" />
