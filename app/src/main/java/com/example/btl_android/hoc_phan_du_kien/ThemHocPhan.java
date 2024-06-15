@@ -1,144 +1,118 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 
-/**
- * @noinspection ALL
- */
 public class ThemHocPhan extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;
-    private Button buttonSubmit, buttonCancel;
-    private DatabaseHelper dbHelper;
-    private HocPhan hocPhanToEdit;
+    private Button buttonCancel, buttonSubmit;
+    private EditText soTietLyThuyetEditText, soTietThucHanhEditText;
+    private DatabaseHelper databaseHelper;
+    private HocPhan hocPhan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_them_hoc_phan);
 
-        // Initialize views
+        databaseHelper = new DatabaseHelper(this);
+
         maHpEditText = findViewById(R.id.maHpEditText);
         tenHpEditText = findViewById(R.id.tenHpEditText);
         soTinChiLyThuyetEditText = findViewById(R.id.soTinChiLyThuyetEditText);
         soTinChiThucHanhEditText = findViewById(R.id.soTinChiThucHanhEditText);
         hocKyEditText = findViewById(R.id.hocKyEditText);
         hinhThucThiEditText = findViewById(R.id.hinhThucThiEditText);
+        soTietLyThuyetEditText = findViewById(R.id.soTietLyThuyetEditText);
+        soTietThucHanhEditText = findViewById(R.id.soTietThucHanhEditText);
         heSoEditText = findViewById(R.id.heSoEditText);
-        buttonSubmit = findViewById(R.id.buttonSubmit);
         buttonCancel = findViewById(R.id.buttonCancel);
+        buttonSubmit = findViewById(R.id.buttonSubmit);
 
-        dbHelper = new DatabaseHelper(this);
+        buttonCancel.setOnClickListener(v -> finish());
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        buttonSubmit.setOnClickListener(v -> submitForm());
 
-        // Check if editing an existing HocPhan
-        hocPhanToEdit = (HocPhan) getIntent().getSerializableExtra("hocPhan");
-        if (hocPhanToEdit != null) {
-            maHpEditText.setText(hocPhanToEdit.getMaHp());
-            maHpEditText.setEnabled(false); // Không cho phép chỉnh sửa mã học phần
-            tenHpEditText.setText(hocPhanToEdit.getTenHp());
-            soTinChiLyThuyetEditText.setText(String.valueOf(hocPhanToEdit.getSoTinChiLt()));
-            soTinChiThucHanhEditText.setText(String.valueOf(hocPhanToEdit.getSoTinChiTh()));
-            hocKyEditText.setText(String.valueOf(hocPhanToEdit.getHocKy()));
-            hinhThucThiEditText.setText(hocPhanToEdit.getHinhThucThi());
-            heSoEditText.setText(hocPhanToEdit.getHeSo());
+        hocPhan = (HocPhan) getIntent().getSerializableExtra("HOC_PHAN");
+        if (hocPhan != null) {
+            loadHocPhanData();
+            maHpEditText.setEnabled(false); // Disable editing Ma Hoc Phan
         }
-
-        // Set button listeners
-        buttonSubmit.setOnClickListener(view -> {
-            if (validateInputs()) {
-                if (hocPhanToEdit == null) {
-                    // Create HocPhan object
-                    HocPhan hocPhan = new HocPhan(
-                            maHpEditText.getText().toString(),
-                            tenHpEditText.getText().toString(),
-                            Integer.parseInt(soTinChiLyThuyetEditText.getText().toString()),
-                            Integer.parseInt(soTinChiThucHanhEditText.getText().toString()),
-                            Integer.parseInt(hocKyEditText.getText().toString()),
-                            hinhThucThiEditText.getText().toString(),
-                            heSoEditText.getText().toString()
-                    );
-
-                    // Insert HocPhan into database
-                    if (dbHelper.isMaHpUnique(hocPhan.getMaHp())) {
-                        dbHelper.insertHocPhan(hocPhan);
-                        Toast.makeText(this, "Học phần đã được thêm!", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
-                        Toast.makeText(this, "Mã học phần đã tồn tại!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    // Update HocPhan
-                    hocPhanToEdit.setTenHp(tenHpEditText.getText().toString());
-                    hocPhanToEdit.setSoTinChiLt(Float.parseFloat(soTinChiLyThuyetEditText.getText().toString()));
-                    hocPhanToEdit.setSoTinChiTh(Float.parseFloat(soTinChiThucHanhEditText.getText().toString()));
-                    hocPhanToEdit.setHocKy(Integer.parseInt(hocKyEditText.getText().toString()));
-                    hocPhanToEdit.setHinhThucThi(hinhThucThiEditText.getText().toString());
-                    hocPhanToEdit.setHeSo(heSoEditText.getText().toString());
-
-                    dbHelper.updateHocPhan(hocPhanToEdit);
-                    Toast.makeText(this, "Học phần đã được cập nhật!", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
-                    finish();
-                }
-            }
-        });
-
-        buttonCancel.setOnClickListener(view -> finish());
     }
 
-    private boolean validateInputs() {
+    private void loadHocPhanData() {
+        maHpEditText.setText(hocPhan.getMaHp());
+        tenHpEditText.setText(hocPhan.getTenHp());
+        soTinChiLyThuyetEditText.setText(String.valueOf(hocPhan.getSoTinChiLt()));
+        soTinChiThucHanhEditText.setText(String.valueOf(hocPhan.getSoTinChiTh()));
+        soTietLyThuyetEditText.setText(String.valueOf(hocPhan.getSoTietLt()));
+        soTietThucHanhEditText.setText(String.valueOf(hocPhan.getSoTietTh()));
+        hocKyEditText.setText(String.valueOf(hocPhan.getHocKy()));
+        hinhThucThiEditText.setText(hocPhan.getHinhThucThi());
+        heSoEditText.setText(hocPhan.getHeSo());
+    }
+
+    private void submitForm() {
         String maHp = maHpEditText.getText().toString();
         String tenHp = tenHpEditText.getText().toString();
-        String soTinChiLyThuyet = soTinChiLyThuyetEditText.getText().toString();
-        String soTinChiThucHanh = soTinChiThucHanhEditText.getText().toString();
+        String soTinChiLt = soTinChiLyThuyetEditText.getText().toString();
+        String soTinChiTh = soTinChiThucHanhEditText.getText().toString();
+        String soTietLt = soTietLyThuyetEditText.getText().toString();
+        String soTietTh = soTietThucHanhEditText.getText().toString();
         String hocKy = hocKyEditText.getText().toString();
         String hinhThucThi = hinhThucThiEditText.getText().toString();
         String heSo = heSoEditText.getText().toString();
 
-        if (maHp.isEmpty() || tenHp.isEmpty() || soTinChiLyThuyet.isEmpty() || soTinChiThucHanh.isEmpty() || hocKy.isEmpty() || hinhThucThi.isEmpty() || heSo.isEmpty()) {
-            Toast.makeText(this, "Yêu cầu nhập tất cả các trường", Toast.LENGTH_SHORT).show();
-            return false;
+        if (maHp.isEmpty() || tenHp.isEmpty() || soTinChiLt.isEmpty() || soTinChiTh.isEmpty() ||
+                soTietLt.isEmpty() || soTietTh.isEmpty() || hocKy.isEmpty() || hinhThucThi.isEmpty() || heSo.isEmpty()) {
+            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_LONG).show();
+            return;
         }
 
-        if (!heSo.matches("^\\d+-\\d+-\\d+$")) {
-            Toast.makeText(this, "Hệ số phải có định dạng x-y-z với x, y, z là các số", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        int soTinChiLyThuyetInt = Integer.parseInt(soTinChiLyThuyet);
-        int soTinChiThucHanhInt = Integer.parseInt(soTinChiThucHanh);
         int hocKyInt = Integer.parseInt(hocKy);
-
-        if (soTinChiLyThuyetInt < 0 || soTinChiThucHanhInt < 0) {
-            Toast.makeText(this, "Số tín chỉ không hợp lệ", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
         if (hocKyInt < 1 || hocKyInt > 8) {
-            Toast.makeText(this, "Học kỳ phải từ 1 đến 8", Toast.LENGTH_SHORT).show();
-            return false;
+            Toast.makeText(this, "Học kỳ phải nằm trong khoảng từ 1 đến 8", Toast.LENGTH_LONG).show();
+            return;
         }
 
-        return true;
+        if (!heSo.matches("\\d+-\\d+-\\d+")) {
+            Toast.makeText(this, "Hệ số phải theo dạng x-y-z (x, y, z là các số nguyên dương)", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        boolean result;
+        if (hocPhan == null) {
+            hocPhan = new HocPhan(maHp, tenHp, Float.parseFloat(soTinChiLt), Float.parseFloat(soTinChiTh),
+                    Integer.parseInt(soTietLt), Integer.parseInt(soTietTh), hocKyInt,
+                    hinhThucThi, heSo);
+            result = databaseHelper.addHocPhan(hocPhan);
+        } else {
+            hocPhan.setTenHp(tenHp);
+            hocPhan.setSoTinChiLt(Float.parseFloat(soTinChiLt));
+            hocPhan.setSoTinChiTh(Float.parseFloat(soTinChiTh));
+            hocPhan.setSoTietLt(Integer.parseInt(soTietLt));
+            hocPhan.setSoTietTh(Integer.parseInt(soTietTh));
+            hocPhan.setHocKy(hocKyInt);
+            hocPhan.setHinhThucThi(hinhThucThi);
+            hocPhan.setHeSo(heSo);
+            result = databaseHelper.updateHocPhan(hocPhan);
+        }
+
+        if (result) {
+            Toast.makeText(this, hocPhan == null ? "Thực hiện thành công" : "Thực hiện thành công", Toast.LENGTH_LONG).show();
+            setResult(RESULT_OK);
+            finish();
+        } else {
+            Toast.makeText(this, hocPhan == null ? "Có lỗi xảy ra" : "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
+        }
     }
 }

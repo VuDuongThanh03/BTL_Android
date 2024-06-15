@@ -11,6 +11,19 @@ public class HocPhan implements Serializable {
     private Integer soTietLt, soTietTh, hocKy;
     private String hinhThucThi, heSo;
 
+    public HocPhan(String maHp, String tenHp, float soTinChiLt, float soTinChiTh, int soTietLt, int soTietTh, int hocKy, String hinhThucThi, String heSo) {
+        this.maHp = maHp;
+        this.tenHp = tenHp;
+        this.soTinChiLt = soTinChiLt;
+        this.soTinChiTh = soTinChiTh;
+        this.soTietLt = soTietLt;
+        this.soTietTh = soTietTh;
+        this.hocKy = hocKy;
+        this.hinhThucThi = hinhThucThi;
+        this.heSo = heSo;
+    }
+
+
     public HocPhan() {
         this.maHp = "HP000";
         this.tenHp = "Unknown";
@@ -120,4 +133,15 @@ public class HocPhan implements Serializable {
     public void setHeSo(String heSo) {
         this.heSo = heSo;
     }
+
+    public HocPhan(String maHp, String tenHp, float soTinChiLyThuyet, float soTinChiThucHanh, int hocKy, String hinhThucThi, String heSo) {
+        this.maHp = maHp;
+        this.tenHp = tenHp;
+        this.soTinChiLt = soTinChiLyThuyet;
+        this.soTinChiTh = soTinChiThucHanh;
+        this.hocKy = hocKy;
+        this.hinhThucThi = hinhThucThi;
+        this.heSo = heSo;
+    }
+
 }

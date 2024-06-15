@@ -2,6 +2,7 @@ package com.example.btl_android.diem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.DatabaseHelper;
-import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
 
 import java.util.ArrayList;
@@ -54,13 +54,13 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
 
     private void getWidget() {
         btnQuayLai = findViewById(R.id.imgQuayLai);
-        btnThongKe = findViewById(R.id.imgThongKe);
+        btnThongKe = findViewById(R.id.imgMenu);
         rvDiemHp = findViewById(R.id.rvDiemHp);
         diemList = new ArrayList<>();
         hocKy = "1";
 
         db = new DatabaseHelper(this);
-        db.getTatCaDiemHp();
+        db.getDiemHp(getIntent().getStringExtra("MaSv"));
     }
 
     private void setupButtons() {
@@ -99,7 +99,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
                         if (diemList.isEmpty()) {
                             Toast.makeText(DiemActivity.this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                         }
-                        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, R.id.rvDiemHp);
+                        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, getIntent());
                         rvDiemHp.setAdapter(diemHpAdapter);
                     }
                 });
@@ -110,7 +110,7 @@ public class DiemActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     protected void onResume() {
         diemList = db.getDiemHpTheoKy(hocKy);
-        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, R.id.rvDiemHp);
+        diemHpAdapter = new DiemAdapter(diemList, DiemActivity.this, getIntent());
         rvDiemHp.setAdapter(diemHpAdapter);
         super.onResume();
     }

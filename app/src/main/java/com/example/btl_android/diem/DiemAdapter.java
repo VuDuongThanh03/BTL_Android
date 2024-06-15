@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.btl_android.OnItemClickListener;
 import com.example.btl_android.R;
 
 import java.util.List;
@@ -23,12 +22,12 @@ import java.util.List;
 public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
     private List<Diem> data;
     private OnItemClickListener listener;
-    private int id;
+    private Intent intent;
 
-    public DiemAdapter(List<Diem> data, OnItemClickListener listener, int id) {
+    public DiemAdapter(List<Diem> data, OnItemClickListener listener, Intent intent) {
         this.data = data;
         this.listener = listener;
-        this.id = id;
+        this.intent = intent;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -52,10 +51,10 @@ public class DiemAdapter extends RecyclerView.Adapter<DiemAdapter.ViewHolder> {
             diemHp.setOnClickListener(this);
             btnCapNhat.setOnClickListener(v -> {
                 Diem diem = data.get((int) view.getTag());
-
-                Intent intent = new Intent((Context) listener, CapNhatDiemActivity.class);
-                intent.putExtra("Diem", diem);
-                startActivityForResult((Activity) listener, intent, 1, null);
+                Intent capNhatDiemIntent = new Intent((Context) listener, CapNhatDiemActivity.class);
+                capNhatDiemIntent.putExtra("Diem", diem);
+                capNhatDiemIntent.putExtra("MaSv", intent.getStringExtra("MaSv"));
+                startActivityForResult((Activity) listener, capNhatDiemIntent, 1, null);
             });
         }
         @Override

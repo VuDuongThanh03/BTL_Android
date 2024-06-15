@@ -1,10 +1,7 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
@@ -25,23 +21,18 @@ import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 import com.example.btl_android.dang_nhap.TrangChuActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
-public class HocPhanDuKienActivity extends AppCompatActivity {
+public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanAdapter.OnItemClickListener {
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
     private static final int REQUEST_CODE_EDIT_HOCPHAN = 2;
-
     private RecyclerView recyclerView;
     private HocPhanAdapter hocPhanAdapter;
     private List<HocPhan> hocPhanList;
     private DatabaseHelper databaseHelper;
-    private int selectedHocKy = -1;
-    private Button[] hocKyButtons;
+    private Button selectedButton = null;
+    private HocPhan selectedHocPhan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +48,6 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        databaseHelper = new DatabaseHelper(this);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_icon);
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,44 +59,13 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewHocPhan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        databaseHelper = new DatabaseHelper(this);
 
-        hocPhanList = new ArrayList<>();
-
-        hocPhanAdapter = new HocPhanAdapter(hocPhanList);
+        hocPhanList = databaseHelper.getAllHocPhan();
+        hocPhanAdapter = new HocPhanAdapter(hocPhanList, this);
         recyclerView.setAdapter(hocPhanAdapter);
 
-        setupHocKyButtons();
-    }
-
-    private void setupHocKyButtons() {
-        hocKyButtons = new Button[8];
-        for (int i = 1; i <= 8; i++) {
-            int buttonId = getResources().getIdentifier("button" + i, "id", getPackageName());
-            hocKyButtons[i - 1] = findViewById(buttonId);
-            int hocKy = i;
-            hocKyButtons[i - 1].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedHocKy = hocKy;
-                    updateHocKyButtonColors();
-                    hocPhanList.clear();
-                    loadHocPhanFromDatabase();
-                    hocPhanAdapter.notifyDataSetChanged();
-                }
-            });
-        }
-    }
-
-    private void updateHocKyButtonColors() {
-        for (int i = 0; i < hocKyButtons.length; i++) {
-            if (i == selectedHocKy - 1) {
-                hocKyButtons[i].setBackgroundResource(R.drawable.button_selected);
-                hocKyButtons[i].setTextColor(0xFFFFFFFF);
-            } else {
-                hocKyButtons[i].setBackgroundResource(R.drawable.button_default1);
-                hocKyButtons[i].setTextColor(0xFF000000);
-            }
-        }
+        setupSemesterButtons();
     }
 
     @Override
@@ -121,67 +76,81 @@ public class HocPhanDuKienActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        HocPhan selectedHocPhan = hocPhanAdapter.getSelectedHocPhan();
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                Intent addIntent = new Intent(this, ThemHocPhan.class);
-                startActivityForResult(addIntent, REQUEST_CODE_ADD_HOCPHAN);
-                return true;
-            case R.id.action_edit:
-                if (selectedHocPhan != null) {
-                    Intent editIntent = new Intent(this, ThemHocPhan.class);
-                    editIntent.putExtra("hocPhan", selectedHocPhan);
-                    startActivityForResult(editIntent, REQUEST_CODE_EDIT_HOCPHAN);
-                } else {
-                    Toast.makeText(this, "Vui lòng chọn môn học cần sửa", Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            case R.id.action_delete:
-                if (selectedHocPhan != null) {
-                    databaseHelper.deleteHocPhan(selectedHocPhan.getMaHp());
-                    hocPhanList.clear();
-                    loadHocPhanFromDatabase();
-                    hocPhanAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(this, "Vui lòng chọn môn học cần xóa", Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        if (id == R.id.action_add) {
+            Intent intent = new Intent(this, ThemHocPhan.class);
+            startActivityForResult(intent, REQUEST_CODE_ADD_HOCPHAN);
+            return true;
+        } else if (id == R.id.action_edit) {
+            if (selectedHocPhan != null) {
+                Intent intent = new Intent(this, ThemHocPhan.class);
+                intent.putExtra("HOC_PHAN", selectedHocPhan);
+                startActivityForResult(intent, REQUEST_CODE_EDIT_HOCPHAN);
+            } else {
+                Toast.makeText(this, "Vui lòng chọn một học phần để sửa", Toast.LENGTH_LONG).show();
+            }
+            return true;
+        } else if (id == R.id.action_delete) {
+            if (selectedHocPhan != null) {
+                databaseHelper.deleteHocPhan(selectedHocPhan.getMaHp());
+                hocPhanList.remove(selectedHocPhan);
+                hocPhanAdapter.notifyDataSetChanged();
+                selectedHocPhan = null;
+                Toast.makeText(this, "Xóa học phần thành công", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Vui lòng chọn một học phần để xóa", Toast.LENGTH_LONG).show();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupSemesterButtons() {
+        int[] buttonIds = {R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8};
+        for (int i = 0; i < buttonIds.length; i++) {
+            Button button = findViewById(buttonIds[i]);
+            int finalI = i + 1;
+            button.setOnClickListener(v -> filterBySemester(finalI, button));
+        }
+    }
+
+    private void filterBySemester(int semester, Button button) {
+        if (selectedButton != null) {
+            selectedButton.setBackground(getResources().getDrawable(R.drawable.button_default1));
+        }
+
+        selectedButton = button;
+        selectedButton.setBackground(getResources().getDrawable(R.drawable.button_selected));
+
+        hocPhanList = databaseHelper.getHocPhanByHocKy(semester);
+        hocPhanAdapter = new HocPhanAdapter(hocPhanList, this);
+        recyclerView.setAdapter(hocPhanAdapter);
+    }
+
+    private void updateHocPhanList() {
+        if (selectedButton != null) {
+            int semester = Integer.parseInt(selectedButton.getText().toString());
+            hocPhanList = databaseHelper.getHocPhanByHocKy(semester);
+        } else {
+            hocPhanList = databaseHelper.getAllHocPhan();
+        }
+        hocPhanAdapter = new HocPhanAdapter(hocPhanList, this);
+        recyclerView.setAdapter(hocPhanAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_ADD_HOCPHAN || requestCode == REQUEST_CODE_EDIT_HOCPHAN) {
+                updateHocPhanList();
+            }
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == REQUEST_CODE_ADD_HOCPHAN || requestCode == REQUEST_CODE_EDIT_HOCPHAN) && resultCode == RESULT_OK) {
-            hocPhanList.clear();
-            loadHocPhanFromDatabase();
-            hocPhanAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void loadHocPhanFromDatabase() {
-        //T sửa trên master cho m query đc r, cơ mà thấy còn nhiều lỗi lắm :)
-        String query = "SELECT * FROM HocPhan";
-        if (selectedHocKy == -1) return;
-        query += " WHERE hocKy = " + selectedHocKy;
-        Cursor cursor = databaseHelper.getWritableDatabase().rawQuery(query, null);
-        Log.d("HocPhanDuKienActivity", cursor.getCount() + ", " + selectedHocKy);
-        if (cursor.moveToFirst()) {
-            do {
-                @SuppressLint("Range") String maHp = cursor.getString(cursor.getColumnIndex("maHp"));
-                @SuppressLint("Range") String tenHp = cursor.getString(cursor.getColumnIndex("tenHp"));
-                @SuppressLint("Range") int soTinChiLyThuyet = cursor.getInt(cursor.getColumnIndex("soTinChiLyThuyet"));
-                @SuppressLint("Range") int soTinChiThucHanh = cursor.getInt(cursor.getColumnIndex("soTinChiThucHanh"));
-                @SuppressLint("Range") int hocKy = cursor.getInt(cursor.getColumnIndex("hocKy"));
-                @SuppressLint("Range") String hinhThucThi = cursor.getString(cursor.getColumnIndex("hinhThucThi"));
-                @SuppressLint("Range") String heSo = cursor.getString(cursor.getColumnIndex("heSo"));
-
-                HocPhan hocPhan = new HocPhan(maHp, tenHp, soTinChiLyThuyet, soTinChiThucHanh, hocKy, hinhThucThi, heSo);
-                hocPhanList.add(hocPhan);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
+    public void onItemClick(HocPhan hocPhan) {
+        selectedHocPhan = hocPhan;
+        hocPhanAdapter.setSelectedHocPhan(hocPhan);
     }
 }
