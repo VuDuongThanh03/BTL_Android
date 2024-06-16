@@ -101,7 +101,7 @@ public class CapNhatDiemActivity extends AppCompatActivity {
             diem.setDiemKiVong(kiVong.equals(".") ? null : Float.parseFloat(kiVong));
             diem.setCuoiKy(cuoiKy.equals(".") ? null : Float.parseFloat(cuoiKy));
 
-            boolean res = db.updateDiem(diem);
+            boolean res = db.updateDiem(diem, intent.getStringExtra("MaSv"));
             if (res) {
                 db.getDiemHp(intent.getStringExtra("MaSv"));
                 String tieuDe = "Bạn đã cập nhật điểm học phần " + diem.getTenHp() + " thành công!";
@@ -115,7 +115,7 @@ public class CapNhatDiemActivity extends AppCompatActivity {
                 String noiDung = builder.toString();
 
                 String thoiGian = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy"));
-                db.insertThongBao(tieuDe, noiDung, thoiGian);
+                db.insertThongBao(intent.getStringExtra("MaSv"), tieuDe, noiDung, thoiGian);
 
                 setResult(1, null);
 

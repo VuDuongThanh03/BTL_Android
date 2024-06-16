@@ -114,7 +114,7 @@ public class ThongKeActivity extends AppCompatActivity {
 
     private void setupLineChart() {
         diemChuByHocKy = new int[8][8];
-        for (Diem diem : db.allDiemHpList) {
+        for (Diem diem : db.tatCaDiemHpList) {
             int hocKy = diem.getHocKy() - 1;
             String diemChu = diem.getDiemChu();
             if (diemChu.equals("-")) continue;
@@ -227,7 +227,7 @@ public class ThongKeActivity extends AppCompatActivity {
 
     private void setupBarChart() {
         diemSoByHocKy = new int[8][8];
-        for (Diem diem : db.allDiemHpList) {
+        for (Diem diem : db.tatCaDiemHpList) {
             int hocKy = diem.getHocKy() - 1;
             Float diemSo = diem.getDiem10();
             if (diemSo == null) continue;
@@ -322,7 +322,7 @@ public class ThongKeActivity extends AppCompatActivity {
         for (int i = 0; i < 8; i++) {
             diemHpByHocKy.add(new ArrayList<>(8));
         }
-        for (Diem diem : db.allDiemHpList) {
+        for (Diem diem : db.tatCaDiemHpList) {
             int hocKy = diem.getHocKy() - 1;
             if (diem.getDiem4() == null) continue;
             Float diem4 = diem.getDiem4(), soTc = diem.getSoTinChiLt() + diem.getSoTinChiTh();
