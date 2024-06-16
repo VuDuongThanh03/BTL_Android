@@ -66,7 +66,7 @@
             android:layout_weight="3"
             android:layout_marginRight="20px"
             android:layout_gravity="center"
-            android:text="Pick">
+            android:text="Chọn">
 
         </Button>
     </LinearLayout>
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:layout_marginRight="20px"
-            android:text="Pick"
+            android:text="Chọn"
             android:layout_gravity="center">
 
         </Button>
