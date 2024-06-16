@@ -1,4 +1,3 @@
-
 package com.example.btl_android.thoi_khoa_bieu;
 
 import android.os.Bundle;
@@ -23,40 +22,44 @@ import com.example.btl_android.R;
  */
 public class Add_Timetable extends AppCompatActivity {
 
-
-    private EditText mon,thu,ngay,giangvien,phong,tiet,diadiem;
-    private Button btnAdd,btnCancel;
+    private EditText mon, thu, ngay, giangvien, phong, tiet, diadiem;
+    private Button btnAdd, btnCancel;
     Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_timetable);
 
-        mon=findViewById(R.id.mon);
-        thu=findViewById(R.id.thu);
-        ngay=findViewById(R.id.ngay);
-        giangvien=findViewById(R.id.giangvien);
-        phong=findViewById(R.id.phong);
-        tiet=findViewById(R.id.tiet);
-        diadiem=findViewById(R.id.diadiem);
-        btnAdd=findViewById(R.id.btnAdd);
-        btnCancel=findViewById(R.id.btnCancel);
-        toolbar=findViewById(R.id.toolbar);
+        // Khởi tạo các view
+        mon = findViewById(R.id.mon);
+        thu = findViewById(R.id.thu);
+        ngay = findViewById(R.id.ngay);
+        giangvien = findViewById(R.id.giangvien);
+        phong = findViewById(R.id.phong);
+        tiet = findViewById(R.id.tiet);
+        diadiem = findViewById(R.id.diadiem);
+        btnAdd = findViewById(R.id.btnAdd);
+        btnCancel = findViewById(R.id.btnCancel);
+        toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
-        ActionBar actionBar=getSupportActionBar();
-        String tab="";
+        ActionBar actionBar = getSupportActionBar();
+        String tab = "";
         for (int i = 0; i < 15; i++) {
             tab += "\t";
         }
-        actionBar.setTitle(tab+"Thêm Lịch Học");
+        actionBar.setTitle(tab + "Thêm Lịch Học");
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Thiết lập sự kiện click
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,14 +79,15 @@ public class Add_Timetable extends AppCompatActivity {
                 }
             }
         });
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
     }
+
     private boolean areFieldsEmpty() {
         return mon.getText().toString().trim().isEmpty() ||
                 thu.getText().toString().trim().isEmpty() ||
@@ -93,6 +97,4 @@ public class Add_Timetable extends AppCompatActivity {
                 tiet.getText().toString().trim().isEmpty() ||
                 diadiem.getText().toString().trim().isEmpty();
     }
-
-
 }
