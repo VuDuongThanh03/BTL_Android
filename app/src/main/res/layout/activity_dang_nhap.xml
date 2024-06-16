@@ -127,10 +127,10 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_login"
-                app:backgroundTint="@null"
-                android:textStyle="bold"
+                android:text="Đăng Nhập"
                 android:textSize="14sp"
-                android:text="Đăng Nhập" />
+                android:textStyle="bold"
+                app:backgroundTint="@null" />
 
             <Button
                 android:id="@+id/btnDangKy"
@@ -139,10 +139,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_login"
-                app:backgroundTint="@null"
-                android:textStyle="bold"
+                android:text="Đăng Ký"
                 android:textSize="14sp"
-                android:text="Đăng Ký" />
+                android:textStyle="bold"
+                app:backgroundTint="@null" />
         </TableRow>
 
         <TextView

@@ -2,7 +2,6 @@ package com.example.btl_android.thoi_khoa_bieu;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,15 @@ import com.example.btl_android.R;
 
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
 public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.MyViewHolder> {
 
     private Context context;
     private ArrayList<String> tb_mon, tb_thu, tb_ngay, tb_giangvien, tb_phong, tb_tiet, tb_diadiem;
     private ArrayList<Integer> tb_id;
+
     TimeTableAdapter(Context context,
                      ArrayList<Integer> tb_id,
                      ArrayList<String> tb_mon,

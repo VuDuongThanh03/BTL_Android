@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import com.example.btl_android.R;
 
-public class CongViecViewHolder implements View.OnLongClickListener,View.OnCreateContextMenuListener {
-    TextView tt,chitiet,uutien,gio,ngay;
+public class CongViecViewHolder implements View.OnLongClickListener, View.OnCreateContextMenuListener {
+    TextView tt, chitiet, uutien, gio, ngay;
     CheckBox trangthai;
     LongClickListener longClickListener;
 
@@ -22,7 +22,8 @@ public class CongViecViewHolder implements View.OnLongClickListener,View.OnCreat
         view.setOnLongClickListener(this);
         view.setOnCreateContextMenuListener(this);
     }
-    public void setLongClickListener(LongClickListener lc){
+
+    public void setLongClickListener(LongClickListener lc) {
         this.longClickListener = lc;
     }
 

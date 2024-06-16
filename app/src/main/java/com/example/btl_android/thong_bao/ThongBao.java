@@ -1,6 +1,8 @@
 package com.example.btl_android.thong_bao;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class ThongBao {
     private String tieuDe, noiDung, thoiGian;
 

@@ -17,10 +17,6 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
     private OnItemClickListener onItemClickListener;
     private HocPhan selectedHocPhan;
 
-    public interface OnItemClickListener {
-        void onItemClick(HocPhan hocPhan);
-    }
-
     public HocPhanAdapter(List<HocPhan> hocPhanList, OnItemClickListener onItemClickListener) {
         this.hocPhanList = hocPhanList;
         this.onItemClickListener = onItemClickListener;
@@ -66,6 +62,10 @@ public class HocPhanAdapter extends RecyclerView.Adapter<HocPhanAdapter.HocPhanV
     public void setSelectedHocPhan(HocPhan hocPhan) {
         selectedHocPhan = hocPhan;
         notifyDataSetChanged();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(HocPhan hocPhan);
     }
 
     public static class HocPhanViewHolder extends RecyclerView.ViewHolder {

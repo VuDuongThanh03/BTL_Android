@@ -1,4 +1,3 @@
-
 package com.example.btl_android.thoi_khoa_bieu;
 
 import android.content.Intent;
@@ -10,9 +9,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,7 +24,9 @@ import com.example.btl_android.R;
 
 import java.util.ArrayList;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class TimeTable extends AppCompatActivity {
 
     DatabaseHelper myDB;

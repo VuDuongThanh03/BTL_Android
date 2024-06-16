@@ -4,8 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -33,7 +31,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
-import com.example.btl_android.dang_nhap.TrangChuActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,14 +47,14 @@ public class CongViecActivity extends AppCompatActivity {
     ImageButton btnMenu;
     ArrayList<CongViec> congViecList = new ArrayList<>();
     CongViecAdapter cvAdapter;
-    private DatabaseHelper dbHelper;
     int selectedItemPosition;
     Spinner spMucUuTien;
     ArrayList<String> mucUuTienList = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ImageView back;
-    String maSV;
-    EditText etThoiHanGio,etThoiHanNgay;
+    String maSv;
+    EditText etThoiHanGio, etThoiHanNgay;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,25 +69,17 @@ public class CongViecActivity extends AppCompatActivity {
         btnMenu = findViewById(R.id.btn_menu);
         back = findViewById(R.id.btn_backtrangchu);
         dbHelper = new DatabaseHelper(this);
-        maSV = getIntent().getStringExtra("maSV");
-        congViecList = dbHelper.getAllCongViec(maSV);
+        maSv = getIntent().getStringExtra("MaSv");
+        congViecList = dbHelper.getAllCongViec(maSv);
         softCongViecList(congViecList);
         showlvCongViec();
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAddEditDialog(null,0);
+                showAddEditDialog(null, 0);
             }
         });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CongViecActivity.this, TrangChuActivity.class);
-                intent.putExtra("maSV",getIntent().getStringExtra("maSV"));
-                intent.putExtra("tenSV", getIntent().getStringExtra("tenSV"));
-                startActivity(intent);
-            }
-        });
+        back.setOnClickListener(v -> finish());
         mucUuTienList.add("Không quan trọng");
         mucUuTienList.add("Quan trọng");
         mucUuTienList.add("Rất quan trọng");
@@ -116,7 +105,7 @@ public class CongViecActivity extends AppCompatActivity {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.congviec_edit:
-                showAddEditDialog(congViecList.get(selectedItemPosition),selectedItemPosition);
+                showAddEditDialog(congViecList.get(selectedItemPosition), selectedItemPosition);
                 return true;
             case R.id.congviec_delete:
                 // Xử lý sự kiện xóa
@@ -138,7 +127,8 @@ public class CongViecActivity extends AppCompatActivity {
                 return super.onContextItemSelected(item);
         }
     }
-    public void setSelectedItemPosition(int position){
+
+    public void setSelectedItemPosition(int position) {
         selectedItemPosition = position;
     }
 
@@ -180,6 +170,7 @@ public class CongViecActivity extends AppCompatActivity {
         congViecList.addAll(trangThai0List);
         congViecList.addAll(trangThai1List);
     }
+
     private void showAddEditDialog(final CongViec congViec, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -211,10 +202,10 @@ public class CongViecActivity extends AppCompatActivity {
             texttitle.setText("Sửa công việc");
             etTenCongViec.setText(congViec.getTenCongViec());
             etChiTietCongViec.setText(congViec.getChiTietCongViec());
-            spMucUuTien.setSelection(Integer.parseInt(congViec.mucUuTien)-1);
+            spMucUuTien.setSelection(Integer.parseInt(congViec.mucUuTien) - 1);
             etThoiHanGio.setText(congViec.getThoiHanGio());
             etThoiHanNgay.setText(congViec.getThoiHanNgay());
-        }else {
+        } else {
             texttitle.setText("Thêm công việc");
         }
 
@@ -223,12 +214,12 @@ public class CongViecActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String tenCongViec = etTenCongViec.getText().toString();
                 String chiTietCongViec = etChiTietCongViec.getText().toString();
-                int mucUuTien = spMucUuTien.getSelectedItemPosition()+1;
+                int mucUuTien = spMucUuTien.getSelectedItemPosition() + 1;
                 String thoiHanGio = etThoiHanGio.getText().toString();
                 String thoiHanNgay = etThoiHanNgay.getText().toString();
 
                 if (congViec == null) {
-                    CongViec x = new CongViec(dbHelper.getMaxId()+1,maSV,tenCongViec,chiTietCongViec,mucUuTien+"",thoiHanGio,thoiHanNgay,0);
+                    CongViec x = new CongViec(dbHelper.getMaxId() + 1, maSv, tenCongViec, chiTietCongViec, mucUuTien + "", thoiHanGio, thoiHanNgay, 0);
                     congViecList.add(x);
                     dbHelper.addCongViec(x);
                     softCongViecList(congViecList);
@@ -237,7 +228,7 @@ public class CongViecActivity extends AppCompatActivity {
 //                     Chỉnh sửa công việc
                     congViec.setTenCongViec(tenCongViec);
                     congViec.setChiTietCongViec(chiTietCongViec);
-                    congViec.setMucUuTien(mucUuTien+"");
+                    congViec.setMucUuTien(mucUuTien + "");
                     congViec.setThoiHanGio(thoiHanGio);
                     congViec.setThoiHanNgay(thoiHanNgay);
                     dbHelper.updateCongViec(congViec);
@@ -255,19 +246,21 @@ public class CongViecActivity extends AppCompatActivity {
         });
         builder.show();
     }
-    void savetrangthai(CongViec congViec,boolean b){
+
+    void savetrangthai(CongViec congViec, boolean b) {
         int stt = congViecList.indexOf(congViec);
-        if(b){
+        if (b) {
             congViec.trangThai = 1;
-            Toast.makeText(this, "Hoàn thành "+congViec.tenCongViec, Toast.LENGTH_SHORT).show();
-        }else{
+            Toast.makeText(this, "Hoàn thành " + congViec.tenCongViec, Toast.LENGTH_SHORT).show();
+        } else {
             congViec.trangThai = 0;
         }
         dbHelper.updateCongViec(congViec);
-        congViecList.set(stt,congViec);
+        congViecList.set(stt, congViec);
         softCongViecList(congViecList);
         cvAdapter.notifyDataSetChanged();
     }
+
     private void spinner() {
         this.adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -286,6 +279,7 @@ public class CongViecActivity extends AppCompatActivity {
             }
         });
     }
+
     private void showDatePickerDialog() {
         // Lấy ngày hiện tại
         final Calendar calendar = Calendar.getInstance();

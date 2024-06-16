@@ -16,7 +16,9 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class ThongBaoActivity extends AppCompatActivity {
 
     private DatabaseHelper db;
@@ -24,6 +26,7 @@ public class ThongBaoActivity extends AppCompatActivity {
     private RecyclerView rvThongBao;
     private List<ThongBao> thongBaoList;
     private ThongBaoAdapter thongBaoAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,7 @@ public class ThongBaoActivity extends AppCompatActivity {
         rvThongBao = findViewById(R.id.rvThongBao);
         rvThongBao.setLayoutManager(new LinearLayoutManager(this));
 
-        thongBaoList = db.getThongBao();
+        thongBaoList = db.getThongBao(getIntent().getStringExtra("MaSv"));
         thongBaoAdapter = new ThongBaoAdapter(thongBaoList);
         rvThongBao.setAdapter(thongBaoAdapter);
 

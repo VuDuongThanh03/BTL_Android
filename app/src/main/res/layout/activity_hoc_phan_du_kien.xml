@@ -13,10 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#d8bfd8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/back_icon"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:title="Học Phần Dự Kiến" />
+        app:title="Học Phần Dự Kiến" />
 
 
     <HorizontalScrollView

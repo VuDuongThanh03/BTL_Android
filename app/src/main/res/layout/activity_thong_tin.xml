@@ -162,13 +162,13 @@
             android:id="@+id/buttoncontinue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="60px"
             android:layout_gravity="center"
+            android:layout_marginVertical="60px"
             android:background="@drawable/button_login"
-            app:backgroundTint="@null"
-            android:textStyle="bold"
+            android:text="Tiếp theo"
             android:textSize="14sp"
-            android:text="Tiếp theo" />
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

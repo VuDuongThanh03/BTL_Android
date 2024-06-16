@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:padding="10dp"
     android:background="@drawable/custom_panel2"
+    android:elevation="5dp"
     android:orientation="horizontal"
-    android:elevation="5dp">
+    android:padding="10dp">
 
     <View
         android:layout_width="4dp"
@@ -23,8 +23,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="4"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="4">
 
             <TextView
                 android:id="@+id/tvTenHp"
@@ -40,8 +40,8 @@
                 android:id="@+id/btnCapNhat"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:gravity="end"
                 android:paddingTop="3dp"
                 android:text="Cập nhật"
@@ -149,6 +149,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
         <TextView
             android:id="@+id/tvLoai"
             android:layout_width="wrap_content"
@@ -156,6 +157,6 @@
             android:layout_gravity="end"
             android:text="Bắt buộc"
             android:textColor="#a6a8aa"
-            android:textStyle="italic"/>
+            android:textStyle="italic" />
     </LinearLayout>
 </LinearLayout>

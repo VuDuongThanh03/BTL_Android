@@ -19,13 +19,16 @@ import com.example.btl_android.R;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class CapNhatDiemActivity extends AppCompatActivity {
 
     private ImageButton btnQuayLai;
     private Button btnCapNhat;
     private EditText etTx1, etTx2, etGiuaKy, etKiVong, etCuoiKy;
     private DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

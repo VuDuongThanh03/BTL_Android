@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -19,10 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
-import com.example.btl_android.dang_nhap.TrangChuActivity;
 
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanAdapter.OnItemClickListener {
 
     private static final int REQUEST_CODE_ADD_HOCPHAN = 1;
@@ -48,14 +49,7 @@ public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanA
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HocPhanDuKienActivity.this, TrangChuActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         recyclerView = findViewById(R.id.recyclerViewHocPhan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

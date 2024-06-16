@@ -24,7 +24,7 @@
             android:gravity="center_horizontal"
             android:text="Tổng kết"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <ScrollView
@@ -42,26 +42,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingBottom="10dp"
                 android:background="@drawable/custom_panel1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:layout_marginTop="10dp"
                     android:layout_marginHorizontal="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="4"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
-                        android:paddingVertical="3dp"
+                        android:layout_weight="1"
                         android:background="@drawable/custom_panel2"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingVertical="3dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -74,8 +74,8 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="4dp"
-                            android:layout_marginVertical="3dp"
                             android:layout_marginHorizontal="5dp"
+                            android:layout_marginVertical="3dp"
                             android:background="@android:color/holo_green_light" />
 
                         <TextView
@@ -85,7 +85,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="Giỏi"
-                            android:textColor="@android:color/holo_green_light"/>
+                            android:textColor="@android:color/holo_green_light" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -114,9 +114,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:paddingVertical="3dp"
                         android:background="@drawable/custom_panel2"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingVertical="3dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -125,13 +125,13 @@
                             android:layout_weight="1"
                             android:text="TBC\ntích lũy"
                             android:textAlignment="center"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="4dp"
-                            android:layout_marginVertical="3dp"
                             android:layout_marginHorizontal="5dp"
+                            android:layout_marginVertical="3dp"
                             android:background="@android:color/holo_green_light" />
 
                         <TextView
@@ -141,7 +141,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="4.00"
-                            android:textColor="@android:color/holo_green_light"/>
+                            android:textColor="@android:color/holo_green_light" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -155,15 +155,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingBottom="10dp"
                 android:background="@drawable/custom_panel1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
                     android:text="Điểm chữ"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -185,15 +185,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingBottom="10dp"
                 android:background="@drawable/custom_panel1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
                     android:text="Điểm số"
                     android:textSize="16sp"
                     android:textStyle="bold" />

@@ -1,7 +1,6 @@
 package com.example.btl_android.hoc_phan_du_kien;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
 
+/**
+ * @noinspection ALL
+ */
 public class ThemHocPhan extends AppCompatActivity {
 
     private EditText maHpEditText, tenHpEditText, soTinChiLyThuyetEditText, soTinChiThucHanhEditText, hocKyEditText, hinhThucThiEditText, heSoEditText;

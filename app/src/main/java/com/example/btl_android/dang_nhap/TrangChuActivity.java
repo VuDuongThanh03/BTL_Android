@@ -65,29 +65,27 @@ public class TrangChuActivity extends AppCompatActivity {
         btnThongBao = findViewById(R.id.imgThongBao);
         btnLichHoc = findViewById(R.id.btnLichHoc);
         txtUserName = findViewById(R.id.txtUsername);
-
-        Intent trangChuIntent = getIntent();
-        String tenSV = trangChuIntent.getStringExtra("tenSV");
-        txtUserName.setText(tenSV);
+        txtUserName.setText(getIntent().getStringExtra("TenSv"));
 
         dbHelper = new DatabaseHelper(this);
 
         lichHocList = dbHelper.getLichHocLite("2024-06-19");
         showlvLichHoc();
-        congViecList = dbHelper.getAllCongViec(dangNhapIntent.getStringExtra("maSV"));
+
+        congViecList = dbHelper.getAllCongViec(getIntent().getStringExtra("MaSv"));
         softCongViecList(congViecList);
         showlvCongViec();
 
         btnCongViec.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, CongViecActivity.class);
-            intent.putExtra("MaSv", trangChuIntent.getStringExtra("MaSv"));
-            intent.putExtra("TenSv", tenSV);
+            intent.putExtra("MaSv", getIntent().getStringExtra("MaSv"));
+            intent.putExtra("TenSv", getIntent().getStringExtra("TenSv"));
             startActivity(intent);
         });
 
         btnDiem.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, DiemActivity.class);
-            intent.putExtra("MaSv", trangChuIntent.getStringExtra("MaSv"));
+            intent.putExtra("MaSv", getIntent().getStringExtra("MaSv"));
             startActivityForResult(intent, 0);
         });
 
@@ -95,6 +93,7 @@ public class TrangChuActivity extends AppCompatActivity {
             Intent intent = new Intent(TrangChuActivity.this, HocPhanDuKienActivity.class);
             startActivity(intent);
         });
+
         btnLichHoc.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, TimeTable.class);
             startActivity(intent);
@@ -102,6 +101,7 @@ public class TrangChuActivity extends AppCompatActivity {
 
         btnThongBao.setOnClickListener(v -> {
             Intent intent = new Intent(TrangChuActivity.this, ThongBaoActivity.class);
+            intent.putExtra("MaSv", getIntent().getStringExtra("MaSv"));
             startActivityForResult(intent, 1);
         });
     }
@@ -123,6 +123,7 @@ public class TrangChuActivity extends AppCompatActivity {
         cvAdapter = new MiniCongViecAdapter(x, R.layout.customlv_cong_viec_can_lam, congViecList);
         lvCongViec.setAdapter(cvAdapter);
     }
+
     void showlvLichHoc() {
         Context x = this;
         lvLichHoc = findViewById(R.id.lv_minilichhoc);

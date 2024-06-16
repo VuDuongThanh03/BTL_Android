@@ -12,23 +12,14 @@ import com.example.btl_android.R;
 
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ViewHolder> {
     private List<ThongBao> data;
 
     public ThongBaoAdapter(List<ThongBao> data) {
         this.data = data;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvTieuDe, tvNoiDung, tvThoiGian;
-
-        public ViewHolder(View view) {
-            super(view);
-            tvTieuDe = view.findViewById(R.id.tvTieuDe);
-            tvNoiDung = view.findViewById(R.id.tvNoiDung);
-            tvThoiGian = view.findViewById(R.id.tvThoiGian);
-        }
     }
 
     @NonNull
@@ -49,5 +40,16 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ViewHo
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView tvTieuDe, tvNoiDung, tvThoiGian;
+
+        public ViewHolder(View view) {
+            super(view);
+            tvTieuDe = view.findViewById(R.id.tvTieuDe);
+            tvNoiDung = view.findViewById(R.id.tvNoiDung);
+            tvThoiGian = view.findViewById(R.id.tvThoiGian);
+        }
     }
 }

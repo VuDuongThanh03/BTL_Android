@@ -24,434 +24,9 @@ import java.util.List;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public DatabaseHelper(@Nullable final Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(final SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_SINHVIEN);
-        db.execSQL(CREATE_TABLE_CONGVIEC);
-        db.execSQL(CREATE_TABLE_CHUYENNGANH);
-        db.execSQL(CREATE_TABLE_HOCPHAN);
-        db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
-        db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
-        db.execSQL(CREATE_TABLE_LICHHOC);
-        db.execSQL(CREATE_TABLE_THONGBAO);
-
-        populateInitialData(db);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS SinhVien");
-        db.execSQL("DROP TABLE IF EXISTS CongViec");
-        db.execSQL("DROP TABLE IF EXISTS ChuyenNganh");
-        db.execSQL("DROP TABLE IF EXISTS HocPhan");
-        db.execSQL("DROP TABLE IF EXISTS LoaiHocPhan");
-        db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
-        db.execSQL("DROP TABLE IF EXISTS LichHoc");
-        db.execSQL("DROP TABLE IF EXISTS ThongBao");
-        onCreate(db);
-    }
-
-    private void populateInitialData(final SQLiteDatabase db) {
-        db.execSQL(INSERT_TABLE_SINHVIEN);
-        db.execSQL(INSERT_TABLE_CONGVIEC);
-        db.execSQL(INSERT_TABLE_CHUYENNGANH);
-        db.execSQL(INSERT_TABLE_HOCPHAN);
-        db.execSQL(INSERT_TABLE_LOAIHOCPHAN);
-        db.execSQL(INSERT_TABLE_KETQUAHOCPHAN);
-        db.execSQL(INSERT_TABLE_LICHHOC);
-    }
-
-    // CRUD operations for HocPhan
-    public boolean addHocPhan(HocPhan hocPhan) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("maHp", hocPhan.getMaHp());
-        values.put("tenHp", hocPhan.getTenHp());
-        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
-        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
-        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
-        values.put("soTietThucHanh", hocPhan.getSoTietTh());
-        values.put("hocKy", hocPhan.getHocKy());
-        values.put("hinhThucThi", hocPhan.getHinhThucThi());
-        values.put("heSo", hocPhan.getHeSo());
-
-        long result = db.insert("HocPhan", null, values);
-        db.close();
-
-        return result != -1;
-    }
-
-    public boolean updateHocPhan(HocPhan hocPhan) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("tenHp", hocPhan.getTenHp());
-        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
-        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
-        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
-        values.put("soTietThucHanh", hocPhan.getSoTietTh());
-        values.put("hocKy", hocPhan.getHocKy());
-        values.put("hinhThucThi", hocPhan.getHinhThucThi());
-        values.put("heSo", hocPhan.getHeSo());
-
-        int result = db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
-        db.close();
-        return result > 0;
-    }
-
-    public void deleteHocPhan(String maHp) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete("HocPhan", "maHp=?", new String[]{maHp});
-        if (result == -1) {
-            Log.e("DatabaseHelper", "Xóa học phần thất bại");
-        } else {
-            Log.i("DatabaseHelper", "Xóa học phần thành công");
-        }
-        db.close();
-    }
-
-    public boolean isMaHpUnique(String maHp) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE maHp = ?", new String[]{maHp});
-        boolean isUnique = !cursor.moveToFirst();
-        cursor.close();
-        db.close();
-        return isUnique;
-    }
-
-    public List<HocPhan> getAllHocPhan() {
-        List<HocPhan> hocPhanList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan", null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                HocPhan hocPhan = new HocPhan(
-                        cursor.getString(cursor.getColumnIndexOrThrow("maHp")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("tenHp")),
-                        cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")),
-                        cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiThucHanh")),
-                        cursor.getInt(cursor.getColumnIndexOrThrow("soTietLyThuyet")),
-                        cursor.getInt(cursor.getColumnIndexOrThrow("soTietThucHanh")),
-                        cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("heSo"))
-                );
-                hocPhanList.add(hocPhan);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return hocPhanList;
-    }
-
-    public void insertLichHoc(String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues tb = new ContentValues();
-
-        tb.put("mon",mon);
-        tb.put("thu", thu);
-        tb.put("ngay", ngay);
-        tb.put("giangVien", giangVien);
-        tb.put("phong", phong);
-        tb.put("tiet", tiet);
-        tb.put("diaDiem", diaDiem);
-
-        long result = db.insert("LichHoc", null, tb);
-        if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Add Thanh Cong", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public Cursor getLichHoc() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM LichHoc";
-        Cursor cursor = null;
-        if (db != null) {
-            cursor = db.rawQuery(query, null);
-        }
-        return cursor;
-    }
-    public ArrayList<MiniTimeTable> getLichHocLite(String date){
-        ArrayList<MiniTimeTable> lichHocList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM LichHoc WHERE ngay = ?", new String[]{date});
-        if (cursor.moveToFirst()) {
-            do {
-                String tenmonhoc = cursor.getString(cursor.getColumnIndex("mon"));
-                String tiethoc = cursor.getString(cursor.getColumnIndex("tiet"));
-                String diadiem = cursor.getString(cursor.getColumnIndex("diaDiem"));
-                MiniTimeTable miniTimeTable = new MiniTimeTable(tenmonhoc,tiethoc,diadiem);
-
-                lichHocList.add(miniTimeTable);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return lichHocList;
-    }
-
-    public Cursor searchLichHoc(String keyword) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM LichHoc WHERE mon LIKE ? OR phong LIKE ?";
-        String[] selectionArgs = {"%" + keyword + "%", "%" + keyword + "%"};
-        Cursor cursor = db.rawQuery(query, selectionArgs);
-        return cursor;
-    }
-
-    public boolean updateDataTime(Context context, int row_id, String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("mon", mon);
-        values.put("thu", thu);
-        values.put("ngay", ngay);
-        values.put("giangVien", giangVien);
-        values.put("phong", phong);
-        values.put("tiet", tiet);
-        values.put("diaDiem", diaDiem);
-        values.put("loaiTietHoc", 0);
-        values.put("vang", 0);
-
-        int result = db.update("LichHoc", values, "id = ?", new String[]{String.valueOf(row_id)});
-        db.close();
-
-        if (result > 0) {
-            Log.d("updateDataTime", "Update Successful for row_id: " + row_id);
-            Toast.makeText(context, "Cập Nhật Thành Công !!", Toast.LENGTH_SHORT).show();
-            return true;
-        } else {
-            Log.d("updateDataTime", "Update Failed for row_id: " + row_id);
-            Toast.makeText(context, "Cập Nhật Không Thành Công !!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-    }
-
-    public boolean deleteLichHoc(int row_id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete("LichHoc", "id=?", new String[]{String.valueOf(row_id)});
-        db.close();
-        return result > 0;
-    }
-
-
-    public boolean updateDiem(Diem diem) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("tx1", diem.getTx1());
-        values.put("tx2", diem.getTx2());
-        values.put("giuaKy", diem.getGiuaKy());
-        values.put("diemKiVong", diem.getDiemKiVong());
-        values.put("cuoiKy", diem.getCuoiKy());
-        long res = db.update("KetQuaHocPhan", values, "maLop = ?", new String[]{diem.getMaLop()});
-        db.close();
-        return res > 0;
-    }
-
-    public List<HocPhan> getHocPhanByHocKy(int hocKy) {
-        List<HocPhan> hocPhanList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE hocKy = ?", new String[]{String.valueOf(hocKy)});
-
-        if (cursor.moveToFirst()) {
-            do {
-                HocPhan hocPhan = new HocPhan(
-                        cursor.getString(cursor.getColumnIndex("maHp")),
-                        cursor.getString(cursor.getColumnIndex("tenHp")),
-                        cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")),
-                        cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")),
-                        cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")),
-                        cursor.getInt(cursor.getColumnIndex("soTietThucHanh")),
-                        cursor.getInt(cursor.getColumnIndex("hocKy")),
-                        cursor.getString(cursor.getColumnIndex("hinhThucThi")),
-                        cursor.getString(cursor.getColumnIndex("heSo"))
-                );
-                hocPhanList.add(hocPhan);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return hocPhanList;
-    }
-
-    public void getDiemHp(String maSv) {
-        allDiemHpList.clear();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT kq.maLop, kq.maSv, hp.maHp, hp.tenHp, lhp.loai, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
-                "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, kq.hocKy, " +
-                "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
-                "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
-                "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
-                "FROM KetQuaHocPhan kq " +
-                "JOIN SinhVien sv ON sv.maSv = kq.maSv " +
-                "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
-                "JOIN LoaiHocPhan lhp ON lhp.maHp = hp.maHp AND lhp.maCn = sv.maCn " +
-                "LEFT JOIN LichHoc lh ON lh.maLop = kq.maLop " +
-                "WHERE kq.maSv = ?" +
-                "GROUP BY kq.maLop, kq.maSv, kq.maHp, hp.tenHp, lhp.loai, hp.soTietLyThuyet, hp.soTietThucHanh, " +
-                "hp.hinhThucThi, hp.heSo, kq.hocKy, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong " +
-                "ORDER BY hp.tenHp";
-
-        Cursor cursor = db.rawQuery(query, new String[]{maSv});
-        if (cursor.moveToFirst()) {
-            do {
-                Diem diem = new Diem();
-
-                diem.setMaLop(cursor.getString(cursor.getColumnIndex("maLop")));
-                Log.d("MaSv DBhelper", cursor.getString(cursor.getColumnIndex("maSv")));
-                diem.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
-                diem.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
-                diem.setLoai(cursor.getInt(cursor.getColumnIndex("loai")));
-                diem.setSoTinChiLt(cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")));
-                diem.setSoTinChiTh(cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")));
-                diem.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
-                diem.setSoTietTh(cursor.getInt(cursor.getColumnIndex("soTietThucHanh")));
-                diem.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
-                diem.setHocKy(cursor.getInt(cursor.getColumnIndex("hocKy")));
-                diem.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
-                diem.setTx1(cursor.isNull(cursor.getColumnIndex("tx1")) ? null : cursor.getFloat(cursor.getColumnIndex("tx1")));
-                diem.setTx2(cursor.isNull(cursor.getColumnIndex("tx2")) ? null : cursor.getFloat(cursor.getColumnIndex("tx2")));
-                diem.setGiuaKy(cursor.isNull(cursor.getColumnIndex("giuaKy")) ? null : cursor.getFloat(cursor.getColumnIndex("giuaKy")));
-                diem.setCuoiKy(cursor.isNull(cursor.getColumnIndex("cuoiKy")) ? null : cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
-                diem.setDiemKiVong(cursor.isNull(cursor.getColumnIndex("diemKiVong")) ? null : cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
-                diem.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
-                diem.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
-
-                allDiemHpList.add(diem);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-    }
-
-    public List<Diem> getDiemHpTheoKy(String hocKyStr) {
-        int hocKy = Integer.parseInt(hocKyStr);
-        List<Diem> diemList = new ArrayList<>();
-        for (Diem diem : allDiemHpList) {
-            if (diem.getHocKy() == hocKy) diemList.add(diem);
-        }
-        return diemList;
-    }
-
-    public boolean insertThongBao(String tieuDe, String noiDung, String thoiGian) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("tieuDe", tieuDe);
-        values.put("noiDung", noiDung);
-        values.put("thoiGian", thoiGian);
-        long res = db.insert("ThongBao", null, values);
-        db.close();
-        return res > 0;
-    }
-
-    public List<ThongBao> getThongBao() {
-        List<ThongBao> thongBaoList = new ArrayList<>();
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT tieuDe, noiDung, thoiGian FROM ThongBao ORDER BY id DESC", null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                String tieuDe = cursor.getString(cursor.getColumnIndex("tieuDe"));
-                String noiDung = cursor.getString(cursor.getColumnIndex("noiDung"));
-                String thoiGian = cursor.getString(cursor.getColumnIndex("thoiGian"));
-                ThongBao thongBao = new ThongBao(tieuDe, noiDung, thoiGian);
-                thongBaoList.add(thongBao);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return thongBaoList;
-    }
-
-    public ArrayList<CongViec> getAllCongViec(String msv) {
-        ArrayList<CongViec> congViecList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM CongViec WHERE maSv = ?", new String[]{msv});
-        if (cursor.moveToFirst()) {
-            do {
-                int macongviec = cursor.getInt(cursor.getColumnIndex("id"));
-                String maSinhVien = cursor.getString(cursor.getColumnIndex("maSv"));
-                String tencongviec = cursor.getString(cursor.getColumnIndex("tenViec"));
-                String chitietcongviec = cursor.getString(cursor.getColumnIndex("chiTiet"));
-                String mucuutien = cursor.getString(cursor.getColumnIndex("mucUuTien"));
-                String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
-                String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
-                int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
-                CongViec congViec = new CongViec(macongviec, maSinhVien, tencongviec, chitietcongviec, mucuutien, thoihangio, thoihanngay, trangthai);
-
-                congViecList.add(congViec);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return congViecList;
-    }
-
-    public void addCongViec(CongViec congViec) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("id", congViec.getMaCongViec());
-        values.put("maSv", congViec.getMaSinhVien());
-        values.put("tenViec", congViec.getTenCongViec());
-        values.put("chiTiet", congViec.getChiTietCongViec());
-        values.put("mucUuTien", congViec.getMucUuTien());
-        values.put("thoiHanNgay", congViec.getThoiHanNgay());
-        values.put("thoiHanGio", congViec.getThoiHanGio());
-        values.put("trangThai", congViec.getTrangThai());
-
-        db.insert("CongViec", null, values);
-        db.close();
-    }
-
-    public void updateCongViec(CongViec congViec) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("id", congViec.getMaCongViec());
-        values.put("maSv", congViec.getMaSinhVien());
-        values.put("tenViec", congViec.getTenCongViec());
-        values.put("chiTiet", congViec.getChiTietCongViec());
-        values.put("mucUuTien", congViec.getMucUuTien());
-        values.put("thoiHanNgay", congViec.getThoiHanNgay());
-        values.put("thoiHanGio", congViec.getThoiHanGio());
-        values.put("trangThai", congViec.getTrangThai());
-
-        // Cập nhật công việc dựa trên ID
-        db.update("CongViec", values, "id" + " = ?", new String[]{String.valueOf(congViec.getMaCongViec())});
-        db.close();
-    }
-
-    public void deleteCongViec(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("CongViec", "id = ?", new String[]{String.valueOf(id)});
-        db.close();
-    }
-    public int getMaxId() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT MAX(id) AS max_id FROM CongViec";
-        Cursor cursor = db.rawQuery(query, null);
-
-        int maxId = -1;
-        if (cursor.moveToFirst()) {
-            maxId = cursor.getInt(cursor.getColumnIndex("max_id"));
-        }
-        cursor.close();
-        db.close();
-        return maxId;
-    }
-
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
     private static final int DATABASE_VERSION = 1;
-    public static List<Diem> allDiemHpList = new ArrayList<>();
-    private Context context;
     // SinhVien table
     private static final String CREATE_TABLE_SINHVIEN =
             "CREATE TABLE IF NOT EXISTS SinhVien (" +
@@ -514,7 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS KetQuaHocPhan (" +
                     "maLop TEXT NOT NULL," +
                     "maSv TEXT NOT NULL," +
-                    "maHp TEXT NOT NULL," +                    
+                    "maHp TEXT NOT NULL," +
                     "tx1 REAL," +
                     "tx2 REAL," +
                     "giuaKy REAL," +
@@ -531,45 +106,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_LICHHOC =
             "CREATE TABLE IF NOT EXISTS LichHoc (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "maLop TEXT NOT NULL, " +
-                    "thu TEXT NOT NULL, " +
-                    "ngay TEXT NOT NULL, " +
-                    "phong INTEGER NOT NULL, " +
-                    "giangVien TEXT NOT NULL, " +
-                    "tiet TEXT NOT NULL, " +
-                    "diaDiem TEXT NOT NULL, " +
-                    "loaiTietHoc INTEGER NOT NULL, " +
-                    "vang INTEGER, " +
+                    "maSv TEXT NOT NULL," +
+                    "maLop TEXT NOT NULL," +
+                    "thu TEXT NOT NULL," +
+                    "ngay TEXT NOT NULL," +
+                    "phong INTEGER NOT NULL," +
+                    "giangVien TEXT NOT NULL," +
+                    "tiet TEXT NOT NULL," +
+                    "diaDiem TEXT NOT NULL," +
+                    "loaiTietHoc INTEGER NOT NULL," +
+                    "vang INTEGER," +
+                    "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION," +
                     "FOREIGN KEY(maLop) REFERENCES KetQuaHocPhan(maLop) " +
-                    "ON UPDATE NO ACTION ON DELETE NO ACTION" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
-
     // ThongBao table
     private static final String CREATE_TABLE_THONGBAO =
             "CREATE TABLE IF NOT EXISTS ThongBao (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "tieuDe TEXT NOT NULL, " +
-                    "noiDung TEXT NOT NULL, " +
-                    "thoiGian TEXT NOT NULL" +
+                    "maSv TEXT NOT NULL," +
+                    "tieuDe TEXT NOT NULL," +
+                    "noiDung TEXT NOT NULL," +
+                    "thoiGian TEXT NOT NULL," +
+                    "FOREIGN KEY (maSv) REFERENCES SinhVien(maSv)" +
+                    " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
-
     // ThongBao table
     private static final String INSERT_TABLE_SINHVIEN =
             "INSERT INTO SinhVien (maSv, maCn, tenSv, tenTk, matKhau) VALUES " +
-                    "('2021606516', 1, 'Phùng Đức Cần', 'phungduccan', 'abc123!@#'),"+
+                    "('2021606516', 1, 'Phùng Đức Cần', 'phungduccan', 'abc123!@#')," +
                     "('2021607252', 1, 'Vũ Dương Thành', 'vuduongthanh', 'abc123!@#')";
-
     private static final String INSERT_TABLE_CONGVIEC =
             "INSERT INTO CongViec (id, maSv, tenViec, mucUuTien, thoiHanGio, thoiHanNgay, trangThai, chiTiet) VALUES " +
                     "(1,'2021606516', 'Nộp báo cáo Android', 2, '8:00', '2024-06-15', 0, 'Nộp báo cáo bài tập lớn môn Android gồm các file word và video giới thiệu'), " +
-                    "(2,'2021606516', 'Bảo vệ bài tập lớn Android', 3, '14:00', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 802-A1'), " +
+                    "(2,'2021606516', 'Bảo vệ bài tập lớn Học máy', 3, '14:00', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Học máy ở phòng 902-A8'), " +
                     "(3,'2021606516', 'Bảo vệ bài tập lớn Kiểm thử phần mềm', 3, '14:30', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 701-A1'), " +
-                    "(4,'2021606516', 'Ôn tập Quản trị mạng', 2, '8:35', '2024-06-20', 0, 'Ôn tập trước ngày thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
+                    "(4,'2021606516', 'Ôn tập Ứng dụng thuật toán', 2, '8:35', '2024-06-20', 0, 'Ôn tập trước ngày thi cuối kỳ môn Ứng dụng thuật toán'), " +
                     "(5,'2021606516', 'Thi Quản trị mạng', 3, '11:15', '2024-06-21', 0, 'Đi thi cuối kỳ môn Quản trị mạng trên hệ điều hành Windows'), " +
                     "(6,'2021606516', 'Hoàn thành bài tập lớn Web nâng cao', 2, '8:00', '2023-06-10', 1, 'Hoàn thiện bài tập lớn sau đó đi in cho buổi vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
                     "(7,'2021606516', 'Bảo vệ bài tập lớn Web nâng cao', 3, '8:00', '2023-06-12', 1, 'Đi bảo vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
-                    "(8,'2021606516', 'Thi cuối kỳ môn Tiếng Anh 2', 3, '13:30', '2023-05-26', 1, 'Đi thi cuối kỳ môn Tiếng Anh 2 phòng 507-A9'), " +
-
+                    "(8,'2021606516', 'Thi cuối kỳ môn Tiếng Anh 1', 3, '13:30', '2023-05-26', 1, 'Đi thi cuối kỳ môn Tiếng Anh 2 phòng 507-A9'), " +
                     "(9,'2021607252', 'Nộp báo cáo Android', 2, '8:00', '2024-06-15', 0, 'Nộp báo cáo bài tập lớn môn Android gồm các file word và video giới thiệu'), " +
                     "(10,'2021607252', 'Bảo vệ bài tập lớn Android', 3, '14:00', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 802-A1'), " +
                     "(11,'2021607252', 'Bảo vệ bài tập lớn Kiểm thử phần mềm', 3, '14:30', '2024-06-18', 0, 'Đi bảo vệ bài tập lớn môn Android ở phòng 701-A1'), " +
@@ -578,7 +155,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "(14,'2021607252', 'Hoàn thành bài tập lớn Web nâng cao', 2, '8:00', '2023-06-10', 1, 'Hoàn thiện bài tập lớn sau đó đi in cho buổi vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
                     "(15,'2021607252', 'Bảo vệ bài tập lớn Web nâng cao', 3, '8:00', '2023-06-12', 1, 'Đi bảo vệ bài tập lớn cuối kỳ môn Thiết kế web nâng cao'), " +
                     "(16,'2021607252', 'Thi cuối kỳ môn Tiếng Anh 2', 3, '13:30', '2023-05-26', 1, 'Đi thi cuối kỳ môn Tiếng Anh 2 phòng 507-A9');";
-
     private static final String INSERT_TABLE_CHUYENNGANH =
             "INSERT INTO ChuyenNganh (id, tenCn) VALUES " +
                     "(1, 'Công nghệ thông tin'), " +
@@ -796,12 +372,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('2024HP009.4', '2021607252', 'IT6018', 8.0, 9.5, 9.0, null, null, 7), " +
                     "('2024HP001.6', '2021607252', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 7), " +
                     "('2024HP005.5', '2021607252', 'BS6001', 8.0, 8.5, null, null, null, 7), " +
-                    "('2025HP003.9', '2021607252', 'IT6016', 7.5, 8.0, 7.5, 7.5, null, 8), " +
-                    "('2025HP008.1', '2021607252', 'IT6017', 8.5, 9.0, null, null, 8.0, 8), " +
-                    "('2025HP002.2', '2021607252', 'IT6015', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
-                    "('2025HP001.4', '2021607252', 'BS6002', 9.0, 8.5, 7.0, null, null, 8), " +
-                    "('2025HP001.2', '2021607252', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 8), " +
-                    "('2025HP005.5', '2021607252', 'BS6001', 8.0, 6.5, null, null, null, 8), " +
                     "('2021HP003.1', '2021606516', 'IT6016', 8.5, 9.0, null, null, null, 1), " +
                     "('2021HP002.3', '2021606516', 'IT6015', 7.5, 8.0, 6.5, null, 7.0, 1), " +
                     "('2021HP001.3', '2021606516', 'BS6002', 3.5, 2.5, null, 5.0, null, 1), " +
@@ -828,84 +398,473 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('2023HP008.2', '2021606516', 'IT6017', 7.5, 6.0, null, null, 7.0, 6), " +
                     "('2023HP002.7', '2021606516', 'IT6015', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
                     "('2023HP003.3', '2021606516', 'IT6016', 8.0, 8.5, 7.0, null, null, 6), " +
-                    "('2023HP001.3', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 6), " +
-                    "('2024HP008.1', '2021606516', 'IT6017', 8.5, 7.0, null, null, 8.0, 7), " +
-                    "('2024HP001.2', '2021606516', 'BS6002', 8.0, 6.5, 8.5, 9.0, 9.0, 7), " +
-                    "('2024HP009.4', '2021606516', 'IT6018', 8.0, 9.5, 9.0, null, null, 7), " +
-                    "('2024HP001.6', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 7), " +
-                    "('2024HP005.5', '2021606516', 'BS6001', 8.0, 8.5, null, null, null, 7), " +
-                    "('2025HP003.9', '2021606516', 'IT6016', 7.5, 8.0, 7.5, 7.5, null, 8), " +
-                    "('2025HP008.1', '2021606516', 'IT6017', 8.5, 9.0, null, null, 8.0, 8), " +
-                    "('2025HP002.2', '2021606516', 'IT6015', 7.0, 9.5, 8.5, 9.0, 9.0, 8), " +
-                    "('2025HP001.4', '2021606516', 'BS6002', 9.0, 8.5, 7.0, null, null, 8), " +
-                    "('2025HP001.2', '2021606516', 'BS6002', 7.5, 7.0, null, 7.5, 7.5, 8), " +
-                    "('2025HP005.5', '2021606516', 'BS6001', 8.0, 6.5, null, null, null, 8)";
+                    "('2023HP001.3', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 6)";
     private static final String INSERT_TABLE_LICHHOC =
             "INSERT INTO LichHoc " +
-                    "(id, maLop, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +
+                    "(id, maSv, maLop, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +
                     "VALUES " +
-                    "(1, '2021HP002.3', 'Friday', '2023-06-21', 110, 'James Anderson', '19-20', 'Room J', 0, 1), " +
-                    "(2, '2021HP003.1', 'Tuesday', '2023-06-25', 112, 'William Hernandez', '23-24', 'Room L', 0, 0), " +
-                    "(3, '2021HP002.3', 'Wednesday', '2023-06-26', 113, 'Isabella Martinez', '25-26', 'Room M', 1, 1), " +
-                    "(4, '2021HP003.3', 'Thursday', '2023-06-27', 114, 'Ethan Phillips', '27-28', 'Room N', 0, 0), " +
-                    "(5, '2021HP003.1', 'Friday', '2023-06-28', 115, 'Amelia Brown', '29-30', 'Room O', 1, 0), " +
-                    "(6, '2021HP002.3', 'Monday', '2023-07-01', 116, 'Benjamin Davis', '31-32', 'Room P', 0, 1), " +
-                    "(7, '2021HP003.3', 'Tuesday', '2023-07-02', 117, 'Mia Miller', '33-34', 'Room Q', 1, 0), " +
-                    "(8, '2021HP003.1', 'Wednesday', '2023-07-03', 118, 'Logan Wilson', '35-36', 'Room R', 0, 0), " +
-                    "(9, '2021HP002.3', 'Thursday', '2023-07-04', 119, 'Harper Garcia', '37-38', 'Room S', 1, 1), " +
-                    "(10, '2021HP003.3', 'Friday', '2023-07-05', 120, 'Evelyn Rodriguez', '39-40', 'Room T', 0, 0), " +
-                    "(11, '2021HP003.3', 'Monday', '2023-06-24', 111, 'Emma Garcia', '21-22', 'Room K', 1, 0), " +
-                    "(12, '2021HP003.1', 'Thursday', '2023-06-20', 109, 'Olivia Taylor', '17-18', 'Room I', 1, 0), " +
-                    "(13, '2021HP001.3', 'Friday', '2023-07-12', 121, 'John Doe', '41-42', 'Room U', 0, 1), " +
-                    "(14, '2021HP004.6', 'Tuesday', '2023-07-16', 122, 'Jane Smith', '43-44', 'Room V', 0, 0), " +
-                    "(15, '2021HP005.9', 'Wednesday', '2023-07-17', 123, 'Tom Johnson', '45-46', 'Room W', 1, 1), " +
-                    "(16, '2021HP006.1', 'Thursday', '2023-07-18', 124, 'Lucy Adams', '47-48', 'Room X', 0, 0), " +
-                    "(17, '2021HP007.3', 'Friday', '2023-07-19', 125, 'Steve Brown', '49-50', 'Room Y', 1, 0), " +
-                    "(18, '2021HP002.2', 'Monday', '2023-07-22', 126, 'Nancy Davis', '51-52', 'Room Z', 0, 1), " +
-                    "(19, '2021HP009.4', 'Tuesday', '2023-07-23', 127, 'Mark Lee', '53-54', 'Room AA', 1, 0), " +
-                    "(20, '2021HP001.2', 'Wednesday', '2023-07-24', 128, 'Emily Clark', '55-56', 'Room BB', 0, 0), " +
-                    "(21, '2021HP004.5', 'Thursday', '2023-07-25', 129, 'Jason Lewis', '57-58', 'Room CC', 1, 1), " +
-                    "(22, '2021HP002.3', 'Friday', '2023-07-26', 130, 'Sophia Hill', '59-60', 'Room DD', 0, 0), " +
-                    "(23, '2021HP005.9', 'Monday', '2023-07-29', 131, 'Liam Harris', '61-62', 'Room EE', 1, 0), " +
-                    "(24, '2022HP005.1', 'Tuesday', '2023-07-30', 132, 'Noah Martin', '63-64', 'Room FF', 0, 1), " +
-                    "(25, '2022HP006.1', 'Wednesday', '2023-07-31', 133, 'Olivia Thompson', '65-66', 'Room GG', 1, 0), " +
-                    "(26, '2022HP007.3', 'Thursday', '2023-08-01', 134, 'Mason White', '67-68', 'Room HH', 0, 0), " +
-                    "(27, '2022HP002.2', 'Friday', '2023-08-02', 135, 'Elijah Harris', '69-70', 'Room II', 1, 1), " +
-                    "(28, '2022HP009.4', 'Monday', '2023-08-05', 136, 'Lucas Walker', '71-72', 'Room JJ', 0, 0), " +
-                    "(29, '2022HP001.2', 'Tuesday', '2023-08-06', 137, 'Mia Young', '73-74', 'Room KK', 1, 0), " +
-                    "(30, '2022HP004.5', 'Wednesday', '2023-08-07', 138, 'Harper Martinez', '75-76', 'Room LL', 0, 1), " +
-                    "(31, '2022HP005.9', 'Thursday', '2023-08-08', 139, 'Evelyn Hernandez', '77-78', 'Room MM', 1, 0), " +
-                    "(32, '2022HP006.3', 'Friday', '2023-08-09', 140, 'James Allen', '79-80', 'Room NN', 0, 0), " +
-                    "(33, '2022HP007.4', 'Monday', '2023-08-12', 141, 'Liam King', '81-82', 'Room OO', 1, 1), " +
-                    "(34, '2022HP001.1', 'Tuesday', '2023-08-13', 142, 'Charlotte Wright', '83-84', 'Room PP', 0, 0), " +
-                    "(35, '2022HP009.7', 'Wednesday', '2023-08-14', 143, 'Alexander Scott', '85-86', 'Room QQ', 1, 0), " +
-                    "(36, '2022HP001.3', 'Thursday', '2023-08-15', 144, 'Sofia Green', '87-88', 'Room RR', 0, 1), " +
-                    "(37, '2023HP005.9', 'Monday', '2023-08-19', 146, 'Ava Carter', '91-92', 'Room TT', 0, 0), " +
-                    "(38, '2023HP006.1', 'Tuesday', '2023-08-20', 147, 'Logan Hill', '93-94', 'Room UU', 1, 1), " +
-                    "(39, '2023HP008.3', 'Wednesday', '2023-08-21', 148, 'Sophie Foster', '95-96', 'Room VV', 0, 0), " +
-                    "(40, '2023HP002.2', 'Thursday', '2023-08-22', 149, 'Henry Reed', '97-98', 'Room WW', 1, 0), " +
-                    "(41, '2023HP009.4', 'Friday', '2023-08-23', 150, 'Aiden Gray', '99-100', 'Room XX', 0, 1), " +
-                    "(42, '2023HP001.2', 'Monday', '2023-08-26', 151, 'Ella Brooks', '101-102', 'Room YY', 1, 0), " +
-                    "(43, '2023HP006.5', 'Tuesday', '2023-08-27', 152, 'Leo Wood', '103-104', 'Room ZZ', 0, 0), " +
-                    "(44, '2023HP005.1', 'Wednesday', '2023-08-28', 153, 'Stella Cook', '105-106', 'Room AAA', 1, 1), " +
-                    "(45, '2023HP004.4', 'Thursday', '2023-08-29', 154, 'Zoe Murphy', '107-108', 'Room BBB', 0, 0), " +
-                    "(46, '2023HP008.2', 'Friday', '2023-08-30', 155, 'David Price', '109-110', 'Room CCC', 1, 0), " +
-                    "(47, '2023HP002.7', 'Monday', '2023-09-02', 156, 'Luna Rivera', '111-112', 'Room DDD', 0, 1), " +
-                    "(48, '2023HP003.3', 'Tuesday', '2023-09-03', 157, 'Hudson Ward', '113-114', 'Room EEE', 1, 0), " +
-                    "(49, '2023HP001.3', 'Wednesday', '2023-09-04', 158, 'Mila Brooks', '115-116', 'Room FFF', 0, 0), " +
-                    "(50, '2023HP004.3', 'Thursday', '2023-09-05', 159, 'Owen Watson', '117-118', 'Room GGG', 1, 1), " +
-                    "(51, '2024HP006.9', 'Friday', '2023-09-06', 160, 'Ruby Long', '119-120', 'Room HHH', 0, 0), " +
-                    "(52, '2024HP008.1', 'Monday', '2023-09-09', 161, 'Carter Hughes', '121-122', 'Room III', 1, 0), " +
-                    "(53, '2024HP007.3', 'Tuesday', '2023-09-10', 162, 'Samantha Price', '123-124', 'Room JJJ', 0, 1), " +
-                    "(54, '2024HP001.2', 'Wednesday', '2023-09-11', 163, 'Xavier Evans', '125-126', 'Room KKK', 1, 0), " +
-                    "(55, '2024HP009.4', 'Thursday', '2023-09-12', 164, 'Layla Ward', '127-128', 'Room LLL', 0, 0), " +
-                    "(56, '2024HP001.6', 'Friday', '2023-09-13', 165, 'Gabriel Bryant', '129-130', 'Room MMM', 1, 1), " +
-                    "(57, '2024HP005.5', 'Monday', '2023-09-16', 166, 'Molly Perry', '131-132', 'Room NNN', 0, 0), " +
-                    "(58, '2025HP003.9', 'Tuesday', '2023-09-17', 167, 'Anthony Lopez', '133-134', 'Room OOO', 1, 0), " +
-                    "(59, '2025HP008.1', 'Wednesday', '2023-09-18', 168, 'Nathan Ward', '135-136', 'Room PPP', 0, 1), " +
-                    "(60, '2025HP006.3', 'Thursday', '2023-09-19', 169, 'Aria Griffin', '137-138', 'Room QQQ', 1, 0), " +
-                    "(61, '2025HP002.2', 'Friday', '2023-09-20', 170, 'Eliana Rivera', '139-140', 'Room RRR', 0, 0), " +
-                    "(62, '2025HP001.4', 'Monday', '2023-09-23', 171, 'Riley Torres', '141-142', 'Room SSS', 1, 1), " +
-                    "(63, '2025HP001.2', 'Tuesday', '2023-09-24', 172, 'Peyton Ward', '143-144', 'Room TTT', 0, 0), " +
-                    "(64, '2025HP005.5', 'Wednesday', '2023-09-25', 173, 'Angelina Allen', '145-146', 'Room UUU', 1, 0)";
+                    "(1, '2021606516', '2021HP002.3', 'Thứ Sáu', '2023-06-21', 201, 'Nguyễn Văn An', '1-2', 'A1', 0, 1), " +
+                    "(2, '2021606516', '2021HP003.1', 'Thứ Ba', '2023-06-25', 202, 'Trần Thị Bích', '3-4', 'A7', 0, 0), " +
+                    "(3, '2021606516', '2021HP002.3', 'Thứ Tư', '2023-06-26', 203, 'Lê Văn Hùng', '5-7', 'A8', 1, 1), " +
+                    "(4, '2021606516', '2021HP003.3', 'Thứ Năm', '2023-06-27', 204, 'Phạm Thị Lan', '8-9', 'A9', 0, 0), " +
+                    "(5, '2021606516', '2021HP003.1', 'Thứ Sáu', '2023-06-28', 205, 'Hoàng Minh Tuấn', '10-12', 'A10', 1, 0), " +
+                    "(6, '2021606516', '2021HP002.3', 'Thứ Hai', '2023-07-01', 206, 'Đặng Thị Vân', '13-14', 'A1', 0, 1), " +
+                    "(7, '2021606516', '2021HP003.3', 'Thứ Ba', '2023-07-02', 207, 'Bùi Thị Hạnh', '1-3', 'A7', 1, 0), " +
+                    "(8, '2021606516', '2021HP003.1', 'Thứ Tư', '2023-07-03', 208, 'Phan Thanh Tùng', '4-5', 'A8', 0, 0), " +
+                    "(9, '2021606516', '2021HP002.3', 'Thứ Năm', '2023-07-04', 601, 'Ngô Thị Ngọc', '6-7', 'A9', 1, 1), " +
+                    "(10, '2021606516', '2021HP003.3', 'Thứ Sáu', '2023-07-05', 602, 'Đỗ Quang Huy', '8-9', 'A10', 0, 0), " +
+                    "(11, '2021606516', '2021HP003.3', 'Thứ Hai', '2023-06-24', 603, 'Lý Thị Hoa', '10-11', 'A1', 1, 0), " +
+                    "(12, '2021606516', '2021HP003.1', 'Thứ Năm', '2023-06-20', 604, 'Lương Xuân Bảo', '12-13', 'A7', 1, 0), " +
+                    "(13, '2021606516', '2021HP001.3', 'Thứ Sáu', '2023-07-12', 605, 'Phạm Văn Đức', '14-15', 'A8', 0, 1), " +
+                    "(14, '2021606516', '2021HP004.6', 'Thứ Ba', '2023-07-16', 606, 'Trần Văn Nam', '1-2', 'A9', 0, 0), " +
+                    "(15, '2021606516', '2021HP005.9', 'Thứ Tư', '2023-07-17', 607, 'Nguyễn Thị Hồng', '3-4', 'A10', 1, 1), " +
+                    "(16, '2021606516', '2021HP006.1', 'Thứ Năm', '2023-07-18', 201, 'Nguyễn Văn Bình', '5-6', 'A1', 0, 0), " +
+                    "(17, '2021606516', '2021HP007.3', 'Thứ Sáu', '2023-07-19', 202, 'Lê Thị Dung', '7-8', 'A7', 1, 0), " +
+                    "(18, '2021606516', '2021HP002.2', 'Thứ Hai', '2023-07-22', 203, 'Vũ Văn Cường', '9-10', 'A8', 0, 1), " +
+                    "(19, '2021606516', '2021HP009.4', 'Thứ Ba', '2023-07-23', 204, 'Trịnh Thị Mai', '11-12', 'A9', 1, 0), " +
+                    "(20, '2021606516', '2021HP001.2', 'Thứ Tư', '2023-07-24', 205, 'Hoàng Văn Tài', '13-14', 'A10', 0, 0), " +
+                    "(21, '2021606516', '2021HP004.5', 'Thứ Năm', '2023-07-25', 206, 'Phạm Thị Lệ', '15', 'A1', 1, 1), " +
+                    "(22, '2021606516', '2021HP002.3', 'Thứ Sáu', '2023-07-26', 207, 'Nguyễn Văn Khoa', '1-2', 'A7', 0, 0), " +
+                    "(23, '2021606516', '2021HP005.9', 'Thứ Hai', '2023-07-29', 208, 'Phan Văn Bình', '3-4', 'A8', 1, 0), " +
+                    "(24, '2021607252', '2021HP004.1', 'Thứ Hai', '2023-07-29', 201, 'Nguyễn Thị Mai', '1-2', 'A1', 0, 1), " +
+                    "(25, '2021607252', '2021HP004.2', 'Thứ Ba', '2023-07-30', 202, 'Trần Văn Bình', '3-5', 'A7', 1, 0), " +
+                    "(26, '2021607252', '2021HP004.3', 'Thứ Tư', '2023-07-31', 203, 'Lê Thị Hằng', '6-7', 'A8', 0, 1), " +
+                    "(27, '2021607252', '2021HP004.4', 'Thứ Năm', '2023-08-01', 204, 'Phạm Văn Khánh', '8-10', 'A9', 1, 0), " +
+                    "(28, '2021607252', '2021HP004.5', 'Thứ Sáu', '2023-08-02', 205, 'Hoàng Thị Thu', '11-12', 'A10', 0, 1), " +
+                    "(29, '2021607252', '2021HP004.6', 'Thứ Bảy', '2023-08-03', 206, 'Vũ Văn Nam', '13-15', 'A1', 1, 0), " +
+                    "(30, '2021607252', '2021HP004.7', 'Chủ Nhật', '2023-08-04', 207, 'Nguyễn Thị Ngọc', '1-3', 'A7', 0, 1), " +
+                    "(31, '2021607252', '2021HP004.8', 'Thứ Hai', '2023-08-05', 208, 'Trần Văn Cường', '4-6', 'A8', 1, 0), " +
+                    "(32, '2021607252', '2021HP004.9', 'Thứ Ba', '2023-08-06', 601, 'Lê Thị Tuyết', '7-9', 'A9', 0, 1), " +
+                    "(33, '2021607252', '2021HP005.1', 'Thứ Tư', '2023-08-07', 602, 'Phạm Văn Hòa', '10-12', 'A10', 1, 0), " +
+                    "(34, '2021607252', '2021HP005.2', 'Thứ Năm', '2023-08-08', 603, 'Hoàng Thị Lan', '13-15', 'A1', 0, 1), " +
+                    "(35, '2021607252', '2021HP005.3', 'Thứ Sáu', '2023-08-09', 604, 'Vũ Văn Hải', '1-3', 'A7', 1, 0), " +
+                    "(36, '2021607252', '2021HP005.4', 'Thứ Bảy', '2023-08-10', 605, 'Nguyễn Thị Thanh', '4-6', 'A8', 0, 1), " +
+                    "(37, '2021607252', '2021HP005.5', 'Chủ Nhật', '2023-08-11', 606, 'Trần Văn Thịnh', '7-9', 'A9', 1, 0), " +
+                    "(38, '2021607252', '2021HP005.6', 'Thứ Hai', '2023-08-12', 607, 'Lê Thị Minh', '10-12', 'A10', 0, 1)";
+    public static List<Diem> allDiemHpList = new ArrayList<>();
+    private Context context;
+
+    public DatabaseHelper(@Nullable final Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(final SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE_SINHVIEN);
+        db.execSQL(CREATE_TABLE_CONGVIEC);
+        db.execSQL(CREATE_TABLE_CHUYENNGANH);
+        db.execSQL(CREATE_TABLE_HOCPHAN);
+        db.execSQL(CREATE_TABLE_LOAIHOCPHAN);
+        db.execSQL(CREATE_TABLE_KETQUAHOCPHAN);
+        db.execSQL(CREATE_TABLE_LICHHOC);
+        db.execSQL(CREATE_TABLE_THONGBAO);
+
+        populateInitialData(db);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS SinhVien");
+        db.execSQL("DROP TABLE IF EXISTS CongViec");
+        db.execSQL("DROP TABLE IF EXISTS ChuyenNganh");
+        db.execSQL("DROP TABLE IF EXISTS HocPhan");
+        db.execSQL("DROP TABLE IF EXISTS LoaiHocPhan");
+        db.execSQL("DROP TABLE IF EXISTS KetQuaHocPhan");
+        db.execSQL("DROP TABLE IF EXISTS LichHoc");
+        db.execSQL("DROP TABLE IF EXISTS ThongBao");
+        onCreate(db);
+    }
+
+    private void populateInitialData(final SQLiteDatabase db) {
+        db.execSQL(INSERT_TABLE_SINHVIEN);
+        db.execSQL(INSERT_TABLE_CONGVIEC);
+        db.execSQL(INSERT_TABLE_CHUYENNGANH);
+        db.execSQL(INSERT_TABLE_HOCPHAN);
+        db.execSQL(INSERT_TABLE_LOAIHOCPHAN);
+        db.execSQL(INSERT_TABLE_KETQUAHOCPHAN);
+        db.execSQL(INSERT_TABLE_LICHHOC);
+    }
+
+    // CRUD operations for HocPhan
+    public boolean addHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("maHp", hocPhan.getMaHp());
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
+        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
+        values.put("soTietThucHanh", hocPhan.getSoTietTh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        long result = db.insert("HocPhan", null, values);
+        db.close();
+
+        return result != -1;
+    }
+
+    public boolean updateHocPhan(HocPhan hocPhan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("tenHp", hocPhan.getTenHp());
+        values.put("soTinChiLyThuyet", hocPhan.getSoTinChiLt());
+        values.put("soTinChiThucHanh", hocPhan.getSoTinChiTh());
+        values.put("soTietLyThuyet", hocPhan.getSoTietLt());
+        values.put("soTietThucHanh", hocPhan.getSoTietTh());
+        values.put("hocKy", hocPhan.getHocKy());
+        values.put("hinhThucThi", hocPhan.getHinhThucThi());
+        values.put("heSo", hocPhan.getHeSo());
+
+        int result = db.update("HocPhan", values, "maHp = ?", new String[]{hocPhan.getMaHp()});
+        db.close();
+        return result > 0;
+    }
+
+    public void deleteHocPhan(String maHp) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("HocPhan", "maHp=?", new String[]{maHp});
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Xóa học phần thất bại");
+        } else {
+            Log.i("DatabaseHelper", "Xóa học phần thành công");
+        }
+        db.close();
+    }
+
+    public boolean isMaHpUnique(String maHp) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE maHp = ?", new String[]{maHp});
+        boolean isUnique = !cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return isUnique;
+    }
+
+    public List<HocPhan> getAllHocPhan() {
+        List<HocPhan> hocPhanList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                HocPhan hocPhan = new HocPhan(
+                        cursor.getString(cursor.getColumnIndexOrThrow("maHp")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("tenHp")),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiLyThuyet")),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow("soTinChiThucHanh")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("soTietLyThuyet")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("soTietThucHanh")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("hocKy")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("hinhThucThi")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("heSo"))
+                );
+                hocPhanList.add(hocPhan);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return hocPhanList;
+    }
+
+    public void insertLichHoc(String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues tb = new ContentValues();
+
+        tb.put("mon", mon);
+        tb.put("thu", thu);
+        tb.put("ngay", ngay);
+        tb.put("giangVien", giangVien);
+        tb.put("phong", phong);
+        tb.put("tiet", tiet);
+        tb.put("diaDiem", diaDiem);
+
+        long result = db.insert("LichHoc", null, tb);
+        if (result == -1) {
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Add Thanh Cong", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Cursor getLichHoc() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM LichHoc";
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public ArrayList<MiniTimeTable> getLichHocLite(String date) {
+        ArrayList<MiniTimeTable> lichHocList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM LichHoc WHERE ngay = ?", new String[]{date});
+        if (cursor.moveToFirst()) {
+            do {
+                String tenmonhoc = cursor.getString(cursor.getColumnIndex("mon"));
+                String tiethoc = cursor.getString(cursor.getColumnIndex("tiet"));
+                String diadiem = cursor.getString(cursor.getColumnIndex("diaDiem"));
+                MiniTimeTable miniTimeTable = new MiniTimeTable(tenmonhoc, tiethoc, diadiem);
+
+                lichHocList.add(miniTimeTable);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return lichHocList;
+    }
+
+    public Cursor searchLichHoc(String keyword) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM LichHoc WHERE mon LIKE ? OR phong LIKE ?";
+        String[] selectionArgs = {"%" + keyword + "%", "%" + keyword + "%"};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        return cursor;
+    }
+
+    public boolean updateDataTime(Context context, int row_id, String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("mon", mon);
+        values.put("thu", thu);
+        values.put("ngay", ngay);
+        values.put("giangVien", giangVien);
+        values.put("phong", phong);
+        values.put("tiet", tiet);
+        values.put("diaDiem", diaDiem);
+        values.put("loaiTietHoc", 0);
+        values.put("vang", 0);
+
+        int result = db.update("LichHoc", values, "id = ?", new String[]{String.valueOf(row_id)});
+        db.close();
+
+        if (result > 0) {
+            Log.d("updateDataTime", "Update Successful for row_id: " + row_id);
+            Toast.makeText(context, "Cập Nhật Thành Công !!", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Log.d("updateDataTime", "Update Failed for row_id: " + row_id);
+            Toast.makeText(context, "Cập Nhật Không Thành Công !!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    public boolean deleteLichHoc(int row_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete("LichHoc", "id=?", new String[]{String.valueOf(row_id)});
+        db.close();
+        return result > 0;
+    }
+
+    public boolean updateDiem(Diem diem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("tx1", diem.getTx1());
+        values.put("tx2", diem.getTx2());
+        values.put("giuaKy", diem.getGiuaKy());
+        values.put("diemKiVong", diem.getDiemKiVong());
+        values.put("cuoiKy", diem.getCuoiKy());
+        long res = db.update("KetQuaHocPhan", values, "maLop = ?", new String[]{diem.getMaLop()});
+        db.close();
+        return res > 0;
+    }
+
+    public List<HocPhan> getHocPhanByHocKy(int hocKy) {
+        List<HocPhan> hocPhanList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HocPhan WHERE hocKy = ?", new String[]{String.valueOf(hocKy)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                HocPhan hocPhan = new HocPhan(
+                        cursor.getString(cursor.getColumnIndex("maHp")),
+                        cursor.getString(cursor.getColumnIndex("tenHp")),
+                        cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")),
+                        cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")),
+                        cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")),
+                        cursor.getInt(cursor.getColumnIndex("soTietThucHanh")),
+                        cursor.getInt(cursor.getColumnIndex("hocKy")),
+                        cursor.getString(cursor.getColumnIndex("hinhThucThi")),
+                        cursor.getString(cursor.getColumnIndex("heSo"))
+                );
+                hocPhanList.add(hocPhan);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return hocPhanList;
+    }
+
+    public void getDiemHp(String maSv) {
+        allDiemHpList.clear();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT kq.maLop, kq.maSv, hp.maHp, hp.tenHp, lhp.loai, hp.soTinChiLyThuyet, hp.soTinChiThucHanh, " +
+                "hp.soTietLyThuyet, hp.soTietThucHanh, hp.hinhThucThi, hp.heSo, kq.hocKy, " +
+                "kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong, " +
+                "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 0 THEN 1 ELSE 0 END) AS vangLt, " +
+                "SUM(CASE WHEN lh.vang = 1 AND lh.loaiTietHoc = 1 THEN 1 ELSE 0 END) AS vangTh " +
+                "FROM KetQuaHocPhan kq " +
+                "JOIN SinhVien sv ON sv.maSv = kq.maSv " +
+                "JOIN HocPhan hp ON hp.maHp = kq.maHp " +
+                "JOIN LoaiHocPhan lhp ON lhp.maHp = hp.maHp AND lhp.maCn = sv.maCn " +
+                "LEFT JOIN LichHoc lh ON lh.maLop = kq.maLop AND lh.maSv = kq.maSv " +
+                "WHERE kq.maSv = ?" +
+                "GROUP BY kq.maLop, kq.maSv, kq.maHp, hp.tenHp, lhp.loai, hp.soTietLyThuyet, hp.soTietThucHanh, " +
+                "hp.hinhThucThi, hp.heSo, kq.hocKy, kq.tx1, kq.tx2, kq.giuaKy, kq.cuoiKy, kq.diemKiVong " +
+                "ORDER BY hp.tenHp";
+
+        Cursor cursor = db.rawQuery(query, new String[]{maSv});
+        if (cursor.moveToFirst()) {
+            do {
+                Diem diem = new Diem();
+
+                diem.setMaLop(cursor.getString(cursor.getColumnIndex("maLop")));
+                Log.d("MaSv DBhelper", cursor.getString(cursor.getColumnIndex("maSv")));
+                diem.setMaHp(cursor.getString(cursor.getColumnIndex("maHp")));
+                diem.setTenHp(cursor.getString(cursor.getColumnIndex("tenHp")));
+                diem.setLoai(cursor.getInt(cursor.getColumnIndex("loai")));
+                diem.setSoTinChiLt(cursor.getFloat(cursor.getColumnIndex("soTinChiLyThuyet")));
+                diem.setSoTinChiTh(cursor.getFloat(cursor.getColumnIndex("soTinChiThucHanh")));
+                diem.setSoTietLt(cursor.getInt(cursor.getColumnIndex("soTietLyThuyet")));
+                diem.setSoTietTh(cursor.getInt(cursor.getColumnIndex("soTietThucHanh")));
+                diem.setHinhThucThi(cursor.getString(cursor.getColumnIndex("hinhThucThi")));
+                diem.setHocKy(cursor.getInt(cursor.getColumnIndex("hocKy")));
+                diem.setHeSo(cursor.getString(cursor.getColumnIndex("heSo")));
+                diem.setTx1(cursor.isNull(cursor.getColumnIndex("tx1")) ? null : cursor.getFloat(cursor.getColumnIndex("tx1")));
+                diem.setTx2(cursor.isNull(cursor.getColumnIndex("tx2")) ? null : cursor.getFloat(cursor.getColumnIndex("tx2")));
+                diem.setGiuaKy(cursor.isNull(cursor.getColumnIndex("giuaKy")) ? null : cursor.getFloat(cursor.getColumnIndex("giuaKy")));
+                diem.setCuoiKy(cursor.isNull(cursor.getColumnIndex("cuoiKy")) ? null : cursor.getFloat(cursor.getColumnIndex("cuoiKy")));
+                diem.setDiemKiVong(cursor.isNull(cursor.getColumnIndex("diemKiVong")) ? null : cursor.getFloat(cursor.getColumnIndex("diemKiVong")));
+                diem.setVangLt(cursor.getInt(cursor.getColumnIndex("vangLt")));
+                diem.setVangTh(cursor.getInt(cursor.getColumnIndex("vangTh")));
+
+                allDiemHpList.add(diem);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public List<Diem> getDiemHpTheoKy(String hocKyStr) {
+        int hocKy = Integer.parseInt(hocKyStr);
+        List<Diem> diemList = new ArrayList<>();
+        for (Diem diem : allDiemHpList) {
+            if (diem.getHocKy() == hocKy) diemList.add(diem);
+        }
+        return diemList;
+    }
+
+    public boolean insertThongBao(String tieuDe, String noiDung, String thoiGian) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("tieuDe", tieuDe);
+        values.put("noiDung", noiDung);
+        values.put("thoiGian", thoiGian);
+        long res = db.insert("ThongBao", null, values);
+        db.close();
+        return res > 0;
+    }
+
+    public List<ThongBao> getThongBao(String maSv) {
+        List<ThongBao> thongBaoList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT tieuDe, noiDung, thoiGian FROM ThongBao WHERE maSv = ? ORDER BY id DESC", new String[]{maSv});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tieuDe = cursor.getString(cursor.getColumnIndex("tieuDe"));
+                String noiDung = cursor.getString(cursor.getColumnIndex("noiDung"));
+                String thoiGian = cursor.getString(cursor.getColumnIndex("thoiGian"));
+                ThongBao thongBao = new ThongBao(tieuDe, noiDung, thoiGian);
+                thongBaoList.add(thongBao);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return thongBaoList;
+    }
+
+    public ArrayList<CongViec> getAllCongViec(String msv) {
+        ArrayList<CongViec> congViecList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM CongViec WHERE maSv = ?", new String[]{msv});
+        if (cursor.moveToFirst()) {
+            do {
+                int macongviec = cursor.getInt(cursor.getColumnIndex("id"));
+                String maSinhVien = cursor.getString(cursor.getColumnIndex("maSv"));
+                String tencongviec = cursor.getString(cursor.getColumnIndex("tenViec"));
+                String chitietcongviec = cursor.getString(cursor.getColumnIndex("chiTiet"));
+                String mucuutien = cursor.getString(cursor.getColumnIndex("mucUuTien"));
+                String thoihanngay = cursor.getString(cursor.getColumnIndex("thoiHanNgay"));
+                String thoihangio = cursor.getString(cursor.getColumnIndex("thoiHanGio"));
+                int trangthai = cursor.getInt(cursor.getColumnIndex("trangThai"));
+                CongViec congViec = new CongViec(macongviec, maSinhVien, tencongviec, chitietcongviec, mucuutien, thoihangio, thoihanngay, trangthai);
+
+                congViecList.add(congViec);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return congViecList;
+    }
+
+    public void addCongViec(CongViec congViec) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", congViec.getMaCongViec());
+        values.put("maSv", congViec.getMaSinhVien());
+        values.put("tenViec", congViec.getTenCongViec());
+        values.put("chiTiet", congViec.getChiTietCongViec());
+        values.put("mucUuTien", congViec.getMucUuTien());
+        values.put("thoiHanNgay", congViec.getThoiHanNgay());
+        values.put("thoiHanGio", congViec.getThoiHanGio());
+        values.put("trangThai", congViec.getTrangThai());
+
+        db.insert("CongViec", null, values);
+        db.close();
+    }
+
+    public void updateCongViec(CongViec congViec) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", congViec.getMaCongViec());
+        values.put("maSv", congViec.getMaSinhVien());
+        values.put("tenViec", congViec.getTenCongViec());
+        values.put("chiTiet", congViec.getChiTietCongViec());
+        values.put("mucUuTien", congViec.getMucUuTien());
+        values.put("thoiHanNgay", congViec.getThoiHanNgay());
+        values.put("thoiHanGio", congViec.getThoiHanGio());
+        values.put("trangThai", congViec.getTrangThai());
+
+        // Cập nhật công việc dựa trên ID
+        db.update("CongViec", values, "id" + " = ?", new String[]{String.valueOf(congViec.getMaCongViec())});
+        db.close();
+    }
+
+    public void deleteCongViec(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("CongViec", "id = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public int getMaxId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT MAX(id) AS max_id FROM CongViec";
+        Cursor cursor = db.rawQuery(query, null);
+
+        int maxId = -1;
+        if (cursor.moveToFirst()) {
+            maxId = cursor.getInt(cursor.getColumnIndex("max_id"));
+        }
+        cursor.close();
+        db.close();
+        return maxId;
+    }
 }

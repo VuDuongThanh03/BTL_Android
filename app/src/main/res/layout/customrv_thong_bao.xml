@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:padding="10dp"
     android:background="@drawable/custom_panel2"
+    android:elevation="5dp"
     android:orientation="horizontal"
-    android:elevation="5dp">
+    android:padding="10dp">
 
     <View
         android:layout_width="4dp"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="5dp"
-                android:background="@drawable/clock"/>
+                android:background="@drawable/clock" />
 
             <TextView
                 android:id="@+id/tvThoiGian"
@@ -58,7 +58,7 @@
                 android:text="14:16 - 20/12/2024"
                 android:textColor="#a6a8aa"
                 android:textSize="15sp"
-                android:textStyle="italic"/>
+                android:textStyle="italic" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

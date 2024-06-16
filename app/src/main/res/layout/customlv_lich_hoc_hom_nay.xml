@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30px"
         android:layout_marginTop="10px"
-        android:text="Thiết kế web"
         android:paddingTop="20px"
+        android:text="Thiết kế web"
         android:textColor="@color/black"
         android:textSize="17dp"
         android:textStyle="bold">

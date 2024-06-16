@@ -122,11 +122,11 @@
                             android:id="@+id/btnLichHoc"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginVertical="7dp"
-                            android:elevation="5dp"
                             android:layout_marginHorizontal="20px"
+                            android:layout_marginVertical="7dp"
+                            android:layout_weight="1"
                             android:background="@drawable/button_default2"
+                            android:elevation="5dp"
                             android:orientation="vertical">
 
                             <ImageView
@@ -150,11 +150,11 @@
                             android:id="@+id/btnHocPhan"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:elevation="5dp"
+                            android:layout_marginVertical="7dp"
+                            android:layout_weight="1"
                             android:background="@drawable/button_default2"
+                            android:elevation="5dp"
                             android:orientation="vertical">
 
                             <ImageView
@@ -169,7 +169,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginBottom="5dp"
-                                android:text="Học phần\n dự kiến"
+                                android:text="Học phần\ndự kiến"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
@@ -179,11 +179,11 @@
                             android:id="@+id/btnDiem"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:elevation="5dp"
+                            android:layout_marginVertical="7dp"
+                            android:layout_weight="1"
                             android:background="@drawable/button_default2"
+                            android:elevation="5dp"
                             android:orientation="vertical">
 
                             <ImageView
@@ -207,11 +207,11 @@
                             android:id="@+id/btnCongViec"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:elevation="5dp"
+                            android:layout_marginVertical="7dp"
+                            android:layout_weight="1"
                             android:background="@drawable/button_default2"
+                            android:elevation="5dp"
                             android:orientation="vertical">
 
                             <ImageView
@@ -235,8 +235,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginVertical="5dp"
                         android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="5dp"
                         android:orientation="horizontal"
                         android:weightSum="4">
 
@@ -244,11 +244,11 @@
                             android:id="@+id/btnKhac"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
-                            android:elevation="5dp"
+                            android:layout_marginVertical="7dp"
+                            android:layout_weight="1"
                             android:background="@drawable/button_default2"
+                            android:elevation="5dp"
                             android:orientation="vertical">
 
                             <ImageView
@@ -271,9 +271,9 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
+                            android:layout_marginVertical="7dp"
+                            android:layout_weight="1"
                             android:elevation="5dp"
                             android:orientation="vertical">
 
@@ -296,20 +296,20 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
+                            android:layout_marginVertical="7dp"
+                            android:layout_weight="1"
                             android:elevation="5dp"
-                            android:orientation="vertical"/>
+                            android:orientation="vertical" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginVertical="7dp"
                             android:layout_marginHorizontal="20px"
+                            android:layout_marginVertical="7dp"
+                            android:layout_weight="1"
                             android:elevation="5dp"
-                            android:orientation="vertical"/>
+                            android:orientation="vertical" />
                     </LinearLayout>
                 </LinearLayout>
 

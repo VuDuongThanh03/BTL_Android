@@ -1,4 +1,3 @@
-
 package com.example.btl_android.thoi_khoa_bieu;
 
 import android.os.Bundle;
@@ -10,10 +9,10 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
@@ -24,9 +23,10 @@ import com.example.btl_android.R;
 public class Add_Timetable extends AppCompatActivity {
 
 
-    private EditText mon,thu,ngay,giangvien,phong,tiet,diadiem;
-    private Button btnAdd,btnCancel;
     Toolbar toolbar;
+    private EditText mon, thu, ngay, giangvien, phong, tiet, diadiem;
+    private Button btnAdd, btnCancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,23 +35,23 @@ public class Add_Timetable extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_timetable);
 
-        mon=findViewById(R.id.mon);
-        thu=findViewById(R.id.thu);
-        ngay=findViewById(R.id.ngay);
-        giangvien=findViewById(R.id.giangvien);
-        phong=findViewById(R.id.phong);
-        tiet=findViewById(R.id.tiet);
-        diadiem=findViewById(R.id.diadiem);
-        btnAdd=findViewById(R.id.btnAdd);
-        btnCancel=findViewById(R.id.btnCancel);
-        toolbar=findViewById(R.id.toolbar);
+        mon = findViewById(R.id.mon);
+        thu = findViewById(R.id.thu);
+        ngay = findViewById(R.id.ngay);
+        giangvien = findViewById(R.id.giangvien);
+        phong = findViewById(R.id.phong);
+        tiet = findViewById(R.id.tiet);
+        diadiem = findViewById(R.id.diadiem);
+        btnAdd = findViewById(R.id.btnAdd);
+        btnCancel = findViewById(R.id.btnCancel);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar=getSupportActionBar();
-        String tab="";
+        ActionBar actionBar = getSupportActionBar();
+        String tab = "";
         for (int i = 0; i < 15; i++) {
             tab += "\t";
         }
-        actionBar.setTitle(tab+"Thêm Lịch Học");
+        actionBar.setTitle(tab + "Thêm Lịch Học");
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -84,6 +84,7 @@ public class Add_Timetable extends AppCompatActivity {
         });
 
     }
+
     private boolean areFieldsEmpty() {
         return mon.getText().toString().trim().isEmpty() ||
                 thu.getText().toString().trim().isEmpty() ||

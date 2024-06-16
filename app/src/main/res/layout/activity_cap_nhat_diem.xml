@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/capNhatDiemActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,7 +35,7 @@
         android:layout_marginHorizontal="15dp"
         android:layout_marginBottom="5dp"
         android:text="*Nhập điểm thường xuyên 1"
-        android:textColor="#a6a8aa"/>
+        android:textColor="#a6a8aa" />
 
     <EditText
         android:id="@+id/etTx1"
@@ -56,7 +56,7 @@
         android:layout_marginHorizontal="15dp"
         android:layout_marginBottom="5dp"
         android:text="*Nhập điểm thường xuyên 2"
-        android:textColor="#a6a8aa"/>
+        android:textColor="#a6a8aa" />
 
     <EditText
         android:id="@+id/etTx2"
@@ -77,7 +77,7 @@
         android:layout_marginHorizontal="15dp"
         android:layout_marginBottom="5dp"
         android:text="*Nhập điểm giữa kỳ"
-        android:textColor="#a6a8aa"/>
+        android:textColor="#a6a8aa" />
 
     <EditText
         android:id="@+id/etGiuaKy"
@@ -98,7 +98,7 @@
         android:layout_marginHorizontal="15dp"
         android:layout_marginBottom="5dp"
         android:text="*Nhập điểm kì vọng"
-        android:textColor="#a6a8aa"/>
+        android:textColor="#a6a8aa" />
 
     <EditText
         android:id="@+id/etKiVong"
@@ -119,7 +119,7 @@
         android:layout_marginHorizontal="15dp"
         android:layout_marginBottom="5dp"
         android:text="*Nhập điểm cuối kỳ"
-        android:textColor="#a6a8aa"/>
+        android:textColor="#a6a8aa" />
 
     <EditText
         android:id="@+id/etCuoiKy"
@@ -139,8 +139,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Ghi chú: Gõ . để xóa điểm"
-        android:textStyle="italic"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="italic" />
 
     <Button
         android:id="@+id/btnCapNhat"
@@ -149,8 +149,8 @@
         android:layout_gravity="center"
         android:layout_margin="15dp"
         android:background="@drawable/button_selected"
-        app:backgroundTint="@null"
         android:text="Cập nhật"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:backgroundTint="@null" />
 
 </LinearLayout>

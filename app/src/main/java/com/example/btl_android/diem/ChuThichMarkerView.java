@@ -20,7 +20,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class ChuThichMarkerView extends MarkerView {
 
     private final TextView tvTieuDe;
@@ -39,7 +41,7 @@ public class ChuThichMarkerView extends MarkerView {
         int xIndex = (int) e.getX();
         int yIndex = (int) e.getY();
         if (chartId <= 1) {
-            int [][] data = new int[8][8];
+            int[][] data = new int[8][8];
             if (chartId == 0) data = ((ThongKeActivity) getContext()).getDiemChuByHocKy();
             else data = ((ThongKeActivity) getContext()).getDiemSoByHocKy();
 
@@ -54,7 +56,8 @@ public class ChuThichMarkerView extends MarkerView {
             if (!isEmpty) {
                 StringBuilder info = new StringBuilder();
                 for (int i = 0; i < 8; i++) {
-                    if (data[xIndex][i] > 0) info.append("HK").append(i + 1).append(": ").append(data[xIndex][i]).append("\n");
+                    if (data[xIndex][i] > 0)
+                        info.append("HK").append(i + 1).append(": ").append(data[xIndex][i]).append("\n");
                 }
                 if (info.charAt(info.length() - 1) == '\n')
                     info.deleteCharAt(info.length() - 1);
@@ -65,7 +68,8 @@ public class ChuThichMarkerView extends MarkerView {
         } else {
             if (e instanceof BarEntry) {
                 tvTieuDe.setText("Điểm tổng kết");
-                if (yIndex > 0) tvNoiDung.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
+                if (yIndex > 0)
+                    tvNoiDung.setText("Học kỳ " + (xIndex + 1) + ": " + String.format("%.2f", e.getY()));
                 else tvNoiDung.setText("Không có\ndữ liệu");
             } else {
                 tvTieuDe.setText("Số lượng\nđiểm HK" + (xIndex + 1));

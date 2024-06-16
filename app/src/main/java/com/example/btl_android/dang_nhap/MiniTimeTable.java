@@ -4,6 +4,7 @@ public class MiniTimeTable {
     String tenMonHoc;
     String tietHoc;
     String diaDiem;
+
     public MiniTimeTable(String tenMonHoc, String tietHoc, String diaDiem) {
         this.tenMonHoc = tenMonHoc;
         this.tietHoc = tietHoc;

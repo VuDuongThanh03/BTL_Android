@@ -24,6 +24,7 @@ public class MiniCongViecAdapter extends BaseAdapter {
         this.layout = layout;
         this.congvieclist = congvieclist;
     }
+
     @Override
     public int getCount() {
         return this.congvieclist.size();
@@ -55,7 +56,7 @@ public class MiniCongViecAdapter extends BaseAdapter {
         trangthai.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                ((TrangChuActivity) context).saveTrangThai(congViecx,b);
+                ((TrangChuActivity) context).saveTrangThai(congViecx, b);
             }
         });
         return view;

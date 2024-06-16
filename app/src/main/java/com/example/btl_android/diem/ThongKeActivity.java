@@ -180,7 +180,7 @@ public class ThongKeActivity extends AppCompatActivity {
 
         LineData lineData = new LineData(lineDataSet);
         lineChart.setData(lineData);
-        
+
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
@@ -203,7 +203,7 @@ public class ThongKeActivity extends AppCompatActivity {
         yAxis.setTextSize(12f);
         yAxis.setXOffset(12f);
         lineChart.getAxisRight().setEnabled(false);
-        
+
         lineChart.getLegend().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.animateY(1000, Easing.EaseInOutQuad);
@@ -271,7 +271,7 @@ public class ThongKeActivity extends AppCompatActivity {
         barDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
         barChart.setData(new BarData(barDataSet));
-        
+
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setYOffset(-8f);
@@ -383,7 +383,7 @@ public class ThongKeActivity extends AppCompatActivity {
             }
         }
 
-        String[] colors = { "#F50057", "#FF5733", "#FFC300", "#4CAF50", "#673AB7", "#2196F3", "#F45eEf" , "#00BCD4" };
+        String[] colors = {"#F50057", "#FF5733", "#FFC300", "#4CAF50", "#673AB7", "#2196F3", "#F45eEf", "#00BCD4"};
         List<LineDataSet> lineDataSets = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             LineDataSet lineDataSet = new LineDataSet(lineEntriesList.get(i), letterScores[i]);
@@ -467,16 +467,20 @@ public class ThongKeActivity extends AppCompatActivity {
         });
         combinedChart.setOnChartGestureListener(new OnChartGestureListener() {
             @Override
-            public void onChartGestureStart(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {}
+            public void onChartGestureStart(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {
+            }
 
             @Override
-            public void onChartGestureEnd(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {}
+            public void onChartGestureEnd(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {
+            }
 
             @Override
-            public void onChartLongPressed(MotionEvent motionEvent) {}
+            public void onChartLongPressed(MotionEvent motionEvent) {
+            }
 
             @Override
-            public void onChartDoubleTapped(MotionEvent motionEvent) {}
+            public void onChartDoubleTapped(MotionEvent motionEvent) {
+            }
 
             @Override
             public void onChartSingleTapped(MotionEvent me) {

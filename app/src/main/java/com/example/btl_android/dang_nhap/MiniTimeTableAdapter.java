@@ -21,6 +21,7 @@ public class MiniTimeTableAdapter extends BaseAdapter {
         this.layout = layout;
         this.lichhoclist = lichhoclist;
     }
+
     @Override
     public int getCount() {
         return this.lichhoclist.size();

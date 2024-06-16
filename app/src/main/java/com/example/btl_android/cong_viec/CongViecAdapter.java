@@ -5,13 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.btl_android.R;
-import com.example.btl_android.dang_nhap.TrangChuActivity;
 
 import java.util.List;
 
@@ -54,18 +48,18 @@ public class CongViecAdapter extends BaseAdapter {
         CongViecViewHolder holder = new CongViecViewHolder(convertView);
         holder.tt.setText(congViecx.getTenCongViec());
         holder.chitiet.setText(congViecx.getChiTietCongViec());
-        if(congViecx.getMucUuTien().equals("1")){
+        if (congViecx.getMucUuTien().equals("1")) {
             holder.uutien.setText("Không quan trọng");
         }
-        if(congViecx.getMucUuTien().equals("2")){
+        if (congViecx.getMucUuTien().equals("2")) {
             holder.uutien.setText("Quan trọng");
         }
-        if(congViecx.getMucUuTien().equals("3")){
+        if (congViecx.getMucUuTien().equals("3")) {
             holder.uutien.setText("Rất quan trọng");
         }
         holder.gio.setText(congViecx.getThoiHanGio());
         holder.ngay.setText(congViecx.getThoiHanNgay());
-        if(congViecx.trangThai==1){
+        if (congViecx.trangThai == 1) {
             holder.trangthai.setChecked(true);
         }
         holder.setLongClickListener(new LongClickListener() {
@@ -79,7 +73,7 @@ public class CongViecAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 //                Toast.makeText(context, b+" "+congViecx.tenCongViec, Toast.LENGTH_SHORT).show();
-                ((CongViecActivity) context).savetrangthai(congViecx,b);
+                ((CongViecActivity) context).savetrangthai(congViecx, b);
             }
         });
         return convertView;

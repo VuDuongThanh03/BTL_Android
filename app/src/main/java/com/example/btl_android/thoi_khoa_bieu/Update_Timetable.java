@@ -1,4 +1,3 @@
-
 package com.example.btl_android.thoi_khoa_bieu;
 
 import android.content.DialogInterface;
@@ -10,14 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.btl_android.DatabaseHelper;
 import com.example.btl_android.R;
@@ -28,7 +26,7 @@ import com.example.btl_android.R;
 public class Update_Timetable extends AppCompatActivity {
     EditText mon_input, thu_input, ngay_input, giangvien_input, phong_input, tiet_input, diadiem_input;
     Button btnUpdate, btnXoa;
-    String  mon, thu, ngay, giangvien, phong, tiet, diadiem;
+    String mon, thu, ngay, giangvien, phong, tiet, diadiem;
     int id;
     Toolbar toolbar;
     DatabaseHelper myDB;
@@ -48,15 +46,15 @@ public class Update_Timetable extends AppCompatActivity {
         diadiem_input = findViewById(R.id.diadiem2);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnXoa = findViewById(R.id.btnXoa);
-        toolbar=findViewById(R.id.toolbar2);
+        toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ActionBar actionBar=getSupportActionBar();
-        String tab="";
+        ActionBar actionBar = getSupportActionBar();
+        String tab = "";
         for (int i = 0; i < 8; i++) {
             tab += "\t";
         }
-        actionBar.setTitle(tab+"Cập Nhật Lịch Học");
+        actionBar.setTitle(tab + "Cập Nhật Lịch Học");
         myDB = new DatabaseHelper(Update_Timetable.this);
         getAndSetIntentData();
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -132,11 +130,10 @@ public class Update_Timetable extends AppCompatActivity {
         }
     }
 
-    void confirmDialog()
-    {
-        AlertDialog.Builder builder= new AlertDialog.Builder(this);
-        builder.setTitle(" Xóa Môn " +mon+" ? ");
-        builder.setMessage(" Bạn có muốn xóa môn "+mon+" ? ");
+    void confirmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(" Xóa Môn " + mon + " ? ");
+        builder.setMessage(" Bạn có muốn xóa môn " + mon + " ? ");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
