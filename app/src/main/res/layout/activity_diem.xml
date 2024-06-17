@@ -17,8 +17,8 @@
 
         <ImageButton
             android:id="@+id/imgQuayLai"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/back" />
 
         <TextView
@@ -26,13 +26,13 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Kết quả học tập"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/imgMenu"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentEnd="true"
             android:background="@drawable/graph" />
     </RelativeLayout>

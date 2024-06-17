@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".thoi_khoa_bieu.Update_Timetable">
+    tools:context=".lich_hoc.Update_Timetable">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
@@ -27,22 +27,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar2">
 
-        <ImageView
 
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/score" />
-
-        <EditText
+        <TextView
             android:id="@+id/mon2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_weight="5"
-            android:hint="Tên Môn Học"
-            android:textSize="15dp" />
+            android:layout_weight="3"
+            android:text="Môn"
+            android:textAlignment="center"
+            android:textColor="#2D83E1"
+            android:layout_marginTop="20dp"
+            android:textSize="30dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout

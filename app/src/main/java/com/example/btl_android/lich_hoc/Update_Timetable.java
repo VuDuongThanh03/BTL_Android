@@ -1,4 +1,4 @@
-package com.example.btl_android.thoi_khoa_bieu;
+package com.example.btl_android.lich_hoc;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -24,7 +25,8 @@ import com.example.btl_android.R;
  * @noinspection ALL
  */
 public class Update_Timetable extends AppCompatActivity {
-    EditText mon_input, thu_input, ngay_input, giangvien_input, phong_input, tiet_input, diadiem_input;
+    EditText thu_input, ngay_input, giangvien_input, phong_input, tiet_input, diadiem_input;
+    TextView mon_input;
     Button btnUpdate, btnXoa;
     String mon, thu, ngay, giangvien, phong, tiet, diadiem;
     int id;
@@ -62,7 +64,7 @@ public class Update_Timetable extends AppCompatActivity {
             public void onClick(View v) {
                 // Cập nhật các giá trị từ các trường đầu vào
 
-                mon = mon_input.getText().toString().trim();
+                // mon = mon_input.getText().toString().trim();
                 thu = thu_input.getText().toString().trim();
                 ngay = ngay_input.getText().toString().trim();
                 giangvien = giangvien_input.getText().toString().trim();
@@ -70,15 +72,13 @@ public class Update_Timetable extends AppCompatActivity {
                 tiet = tiet_input.getText().toString().trim();
                 diadiem = diadiem_input.getText().toString().trim();
 
-                boolean isUpdated = myDB.updateDataTime(Update_Timetable.this, id, mon, thu, ngay, giangvien, phong, tiet, diadiem);
+                boolean isUpdated = myDB.updateDataTime(Update_Timetable.this, id, thu, ngay, giangvien, phong, tiet, diadiem);
                 if (isUpdated) {
                     Intent intent = new Intent(Update_Timetable.this, TimeTable.class);
                     startActivity(intent);
                 } else {
                     Log.d("MainActivity", "Update Failed for row_id: " + id);
                 }
-
-
             }
         });
 
@@ -98,16 +98,14 @@ public class Update_Timetable extends AppCompatActivity {
 
 
     void getAndSetIntentData() {
-        if (
-
-                getIntent().hasExtra("mon") &&
-                        getIntent().hasExtra("id") &&
-                        getIntent().hasExtra("thu") &&
-                        getIntent().hasExtra("ngay") &&
-                        getIntent().hasExtra("giangvien") &&
-                        getIntent().hasExtra("phong") &&
-                        getIntent().hasExtra("tiet") &&
-                        getIntent().hasExtra("diadiem")) {
+        if (getIntent().hasExtra("mon") &&
+            getIntent().hasExtra("id") &&
+            getIntent().hasExtra("thu") &&
+            getIntent().hasExtra("ngay") &&
+            getIntent().hasExtra("giangvien") &&
+            getIntent().hasExtra("phong") &&
+            getIntent().hasExtra("tiet") &&
+            getIntent().hasExtra("diadiem")) {
 
             id = getIntent().getIntExtra("id", 0);
             mon = getIntent().getStringExtra("mon");
