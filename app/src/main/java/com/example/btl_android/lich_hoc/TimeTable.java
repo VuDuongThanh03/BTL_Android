@@ -1,4 +1,4 @@
-package com.example.btl_android.thoi_khoa_bieu;
+package com.example.btl_android.lich_hoc;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -40,20 +39,6 @@ public class TimeTable extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Set the content view before accessing any views
         setContentView(R.layout.activity_lich_hoc);
-        // Initialize the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            String tab = "";
-            for (int i = 0; i < 15; i++) {
-                tab += "\t";
-            }
-            actionBar.setTitle(tab + "Lịch Học");
-        }
         // Enable Edge to Edge
         EdgeToEdge.enable(this);
         // Apply window insets to the main view
@@ -62,6 +47,12 @@ public class TimeTable extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+
         // Initialize the DatabaseHelper
         myDB = new DatabaseHelper(TimeTable.this);
         // Initialize the ArrayLists
@@ -81,6 +72,9 @@ public class TimeTable extends AppCompatActivity {
         timeTableAdapter = new TimeTableAdapter(TimeTable.this, tb_id, tb_mon, tb_thu, tb_ngay, tb_giangvien, tb_phong, tb_tiet, tb_diadiem);
         Log.d("TimeTableAdapter", "tb_id: " + tb_id);
 
+        // Initialize the RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Set the adapter to the RecyclerView
         recyclerView.setAdapter(timeTableAdapter);
 

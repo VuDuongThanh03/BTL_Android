@@ -1,4 +1,4 @@
-package com.example.btl_android.thoi_khoa_bieu;
+package com.example.btl_android.lich_hoc;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -79,8 +79,6 @@ public class Update_Timetable extends AppCompatActivity {
                 } else {
                     Log.d("MainActivity", "Update Failed for row_id: " + id);
                 }
-
-
             }
         });
 
@@ -100,16 +98,14 @@ public class Update_Timetable extends AppCompatActivity {
 
 
     void getAndSetIntentData() {
-        if (
-
-                getIntent().hasExtra("mon") &&
-                        getIntent().hasExtra("id") &&
-                        getIntent().hasExtra("thu") &&
-                        getIntent().hasExtra("ngay") &&
-                        getIntent().hasExtra("giangvien") &&
-                        getIntent().hasExtra("phong") &&
-                        getIntent().hasExtra("tiet") &&
-                        getIntent().hasExtra("diadiem")) {
+        if (getIntent().hasExtra("mon") &&
+            getIntent().hasExtra("id") &&
+            getIntent().hasExtra("thu") &&
+            getIntent().hasExtra("ngay") &&
+            getIntent().hasExtra("giangvien") &&
+            getIntent().hasExtra("phong") &&
+            getIntent().hasExtra("tiet") &&
+            getIntent().hasExtra("diadiem")) {
 
             id = getIntent().getIntExtra("id", 0);
             mon = getIntent().getStringExtra("mon");

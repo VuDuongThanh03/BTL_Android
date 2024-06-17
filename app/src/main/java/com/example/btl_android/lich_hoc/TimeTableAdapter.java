@@ -1,4 +1,4 @@
-package com.example.btl_android.thoi_khoa_bieu;
+package com.example.btl_android.lich_hoc;
 
 import android.content.Context;
 import android.content.Intent;

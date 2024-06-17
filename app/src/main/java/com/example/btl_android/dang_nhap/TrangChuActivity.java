@@ -23,7 +23,7 @@ import com.example.btl_android.cong_viec.CongViec;
 import com.example.btl_android.cong_viec.CongViecActivity;
 import com.example.btl_android.diem.DiemActivity;
 import com.example.btl_android.hoc_phan_du_kien.HocPhanDuKienActivity;
-import com.example.btl_android.thoi_khoa_bieu.TimeTable;
+import com.example.btl_android.lich_hoc.TimeTable;
 import com.example.btl_android.thong_bao.ThongBaoActivity;
 
 import java.text.ParseException;

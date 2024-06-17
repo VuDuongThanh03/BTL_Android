@@ -48,7 +48,6 @@ public class HocPhanDuKienActivity extends AppCompatActivity implements HocPhanA
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         toolbar.setNavigationOnClickListener(v -> finish());
 
         recyclerView = findViewById(R.id.recyclerViewHocPhan);

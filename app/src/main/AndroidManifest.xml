@@ -18,14 +18,14 @@
         android:theme="@style/Theme.BTL_Android"
         tools:targetApi="31">
         <activity
-            android:name=".thoi_khoa_bieu.Update_Timetable"
+            android:name=".lich_hoc.Update_Timetable"
             android:exported="false"
-            android:parentActivityName=".thoi_khoa_bieu.TimeTable" />
+            android:parentActivityName=".lich_hoc.TimeTable" />
         <activity
-            android:name=".thoi_khoa_bieu.Add_Timetable"
+            android:name=".lich_hoc.Add_Timetable"
             android:exported="false" />
         <activity
-            android:name=".thoi_khoa_bieu.TimeTable"
+            android:name=".lich_hoc.TimeTable"
             android:exported="false"
             android:parentActivityName=".dang_nhap.TrangChuActivity" />
         <activity

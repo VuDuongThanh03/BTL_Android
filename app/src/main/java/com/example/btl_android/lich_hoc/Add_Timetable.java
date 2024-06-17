@@ -1,4 +1,4 @@
-package com.example.btl_android.thoi_khoa_bieu;
+package com.example.btl_android.lich_hoc;
 
 import android.os.Bundle;
 import android.view.View;
