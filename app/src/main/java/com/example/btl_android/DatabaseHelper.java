@@ -170,7 +170,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getLichHoc() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM LichHoc";
+        String query = "SELECT LichHoc.*, HocPhan.tenHp " +
+                "FROM LichHoc " +
+                "JOIN KetQuaHocPhan ON LichHoc.maLop = KetQuaHocPhan.maLop " +
+                "JOIN HocPhan ON KetQuaHocPhan.maHp = HocPhan.maHp";
         Cursor cursor = null;
         if (db != null) {
             cursor = db.rawQuery(query, null);
@@ -200,16 +203,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor searchLichHoc(String keyword) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM LichHoc WHERE mon LIKE ? OR phong LIKE ?";
+        String query = "SELECT LichHoc.*, HocPhan.tenHp " +
+                "FROM LichHoc " +
+                "JOIN KetQuaHocPhan ON LichHoc.maLop = KetQuaHocPhan.maLop " +
+                "JOIN HocPhan ON KetQuaHocPhan.maHp = HocPhan.maHp " +
+                "WHERE HocPhan.tenHp LIKE ? OR LichHoc.phong LIKE ?";
         String[] selectionArgs = {"%" + keyword + "%", "%" + keyword + "%"};
         Cursor cursor = db.rawQuery(query, selectionArgs);
         return cursor;
     }
 
-    public boolean updateDataTime(Context context, int row_id, String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+    public boolean updateDataTime(Context context, int row_id, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("mon", mon);
+        //   values.put("mon", mon);
         values.put("thu", thu);
         values.put("ngay", ngay);
         values.put("giangVien", giangVien);

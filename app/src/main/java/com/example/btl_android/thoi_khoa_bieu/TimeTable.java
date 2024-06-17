@@ -118,14 +118,14 @@ public class TimeTable extends AppCompatActivity {
             tb_diadiem.clear();
 
             while (cursor.moveToNext()) {
-                tb_id.add(cursor.getInt(0));
-                tb_mon.add(cursor.getString(2));
-                tb_thu.add(cursor.getString(3));
-                tb_ngay.add(cursor.getString(4));
-                tb_giangvien.add(cursor.getString(5));
-                tb_phong.add(cursor.getString(6));
-                tb_tiet.add(cursor.getString(7));
-                tb_diadiem.add(cursor.getString(8));
+                tb_id.add(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+                tb_mon.add(cursor.getString(cursor.getColumnIndexOrThrow("tenHp"))); // Sử dụng tenHp thay vì maLop
+                tb_thu.add(cursor.getString(cursor.getColumnIndexOrThrow("thu")));
+                tb_ngay.add(cursor.getString(cursor.getColumnIndexOrThrow("ngay")));
+                tb_giangvien.add(cursor.getString(cursor.getColumnIndexOrThrow("giangVien")));
+                tb_phong.add(cursor.getString(cursor.getColumnIndexOrThrow("phong")));
+                tb_tiet.add(cursor.getString(cursor.getColumnIndexOrThrow("tiet")));
+                tb_diadiem.add(cursor.getString(cursor.getColumnIndexOrThrow("diaDiem")));
             }
             // After adding new data, update the RecyclerView
             timeTableAdapter.notifyDataSetChanged();
@@ -133,20 +133,21 @@ public class TimeTable extends AppCompatActivity {
         cursor.close();
     }
 
+
     void LuuTruData() {
         Cursor cursor = myDB.getLichHoc();
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
-                tb_id.add(cursor.getInt(0));
-                tb_mon.add(cursor.getString(2));
-                tb_thu.add(cursor.getString(3));
-                tb_ngay.add(cursor.getString(4));
-                tb_giangvien.add(cursor.getString(5));
-                tb_phong.add(cursor.getString(6));
-                tb_tiet.add(cursor.getString(7));
-                tb_diadiem.add(cursor.getString(8));
+                tb_id.add(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+                tb_mon.add(cursor.getString(cursor.getColumnIndexOrThrow("tenHp"))); // Sử dụng tenHp thay vì maLop
+                tb_thu.add(cursor.getString(cursor.getColumnIndexOrThrow("thu")));
+                tb_ngay.add(cursor.getString(cursor.getColumnIndexOrThrow("ngay")));
+                tb_giangvien.add(cursor.getString(cursor.getColumnIndexOrThrow("giangVien")));
+                tb_phong.add(cursor.getString(cursor.getColumnIndexOrThrow("phong")));
+                tb_tiet.add(cursor.getString(cursor.getColumnIndexOrThrow("tiet")));
+                tb_diadiem.add(cursor.getString(cursor.getColumnIndexOrThrow("diaDiem")));
             }
         }
         cursor.close();
