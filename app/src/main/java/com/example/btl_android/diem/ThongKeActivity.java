@@ -113,11 +113,20 @@ public class ThongKeActivity extends AppCompatActivity {
     }
 
     private void setupLineChart() {
+        // Khởi tạo mảng 2 chiều lưu trữ số điểm chữ các loại theo học kỳ từ 1 tới 8.
+        // Mỗi hàng tương ứng một loại điểm chữ, mỗi cột tương ứng một học kỳ.
         diemChuByHocKy = new int[8][8];
+        // Duyệt qua biến lưu trữ điểm tất cả học phần, thay vì phải truy vấn lại.
         for (Diem diem : db.tatCaDiemHpList) {
+            // Lấy thuộc tính hocKy của diem.
             int hocKy = diem.getHocKy() - 1;
+            // Lấy thuộc tính diemChu của diem.
             String diemChu = diem.getDiemChu();
+            // Nếu diem có điểm chữ null, ta bỏ qua không đếm nó.
             if (diemChu.equals("-")) continue;
+            // Xử lý các trường hợp của diemChu.
+            // Tương ứng với mỗi trường hợp của điểm chữ, ta truy cập vào hàng tương ứng với điểm chữ đó,
+            // và cột tương ứng với học kỳ của diem.
             switch (diemChu) {
                 case "F":
                     diemChuByHocKy[0][hocKy]++;
@@ -154,6 +163,7 @@ public class ThongKeActivity extends AppCompatActivity {
             }
         }
 
+        // Tạo 1 mảng 1 chiều lưu tổng sổ điểm chữ của mỗi loại.
         int[] diemChu = new int[8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -161,14 +171,21 @@ public class ThongKeActivity extends AppCompatActivity {
             }
         }
 
+        // Sủ dụng thử viện MPAndroidChart để vẽ biểu đồ.
+        // Khởi tạo danh sách Entry, là các điểm dữ liệu biểu thị trên biểu đồ.
         List<Entry> diemChuEntries = new ArrayList<>();
+        // Khởi tạo nhãn của trục X, tương ứng với các điểm chữ.
         List<String> diemChuLabels = new ArrayList<>(Arrays.asList("F", "D", "D+", "C", "C+", "B", "B+", "A"));
 
+        // Thêm các Entry vào danh sách Entry, các Entry được lấy từ mảng diemChu lưu trũ số điểm chữ mỗi loại.
+        // Entry(i, value) với i tương ứng với vị trí label mà Entry sẽ hiển thị hay giá trị x, value tương ứng giá trị y.
         for (int i = 0; i < 8; i++) {
             diemChuEntries.add(new Entry(i, diemChu[i]));
         }
 
+        // Tạo lineDataSet, là phần đường biểu thị dữ liệu trên biểu đồ.
         LineDataSet lineDataSet = new LineDataSet(diemChuEntries, "Điểm chữ");
+        // Đặt các thuộc tính hiển thị của đường dữ liệu, gồm màu, độ dày của đường, giá trị hiển thị, kiểu dữ liệu, v.v
         lineDataSet.setColor(Color.parseColor("#4CAF50"));
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillColor(Color.parseColor("#4CAF50"));
@@ -178,9 +195,12 @@ public class ThongKeActivity extends AppCompatActivity {
         lineDataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
         lineDataSet.setValueFormatter(new DefaultValueFormatter(0));
 
+        // Sau khi đặt các thuộc tính cho đường dữ liệu, ta cho nó vào đối tượng
+        // LineData để hiển thị chúng trên biểu đồ.
         LineData lineData = new LineData(lineDataSet);
         lineChart.setData(lineData);
 
+        // Thiết lập các thuộc tính cho trục X, gồm vị trí, cỡ chữ nhãn, kiểu chữ đậm, v.v.
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false);
@@ -189,6 +209,7 @@ public class ThongKeActivity extends AppCompatActivity {
         xAxis.setYOffset(3f);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(diemChuLabels));
 
+        // Thiết lập các thuộc tính cho trục Y, gồm giới hạn giá trị trên và giới hạn giá trị dưới mà dữ liệu có thể hiển thị.
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setDrawAxisLine(false);
         yAxis.setAxisMinimum(0f);
@@ -204,10 +225,14 @@ public class ThongKeActivity extends AppCompatActivity {
         yAxis.setXOffset(12f);
         lineChart.getAxisRight().setEnabled(false);
 
+        // Tắt chú thích.
         lineChart.getLegend().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
+        // Tạo chuyển động cho biểu đồ.
         lineChart.animateY(1000, Easing.EaseInOutQuad);
 
+        // Thiết lập các tương tác với biểu đồ
+        // Khi ấn vào một điểm biểu diễn mà đường dữ liệu đi qua, sẽ hiển thị 1 chú thích nhỏ, hiển thị thêm thông tin.
         ChuThichMarkerView markerView = new ChuThichMarkerView(this, R.layout.custommv_chu_thich, 0);
         markerView.setChartView(lineChart);
         lineChart.setMarker(markerView);
@@ -222,6 +247,7 @@ public class ThongKeActivity extends AppCompatActivity {
             }
         });
 
+        // Cuối cùng, hiển thị biểu đồ
         lineChart.invalidate();
     }
 
