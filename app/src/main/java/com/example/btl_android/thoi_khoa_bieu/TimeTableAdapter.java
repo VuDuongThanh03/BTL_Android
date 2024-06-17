@@ -34,8 +34,8 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.MyVi
                      ArrayList<String> tb_tiet,
                      ArrayList<String> tb_diadiem) {
         this.context = context;
-        this.tb_mon = tb_mon;
         this.tb_id = tb_id;
+        this.tb_mon = tb_mon;
         this.tb_thu = tb_thu;
         this.tb_ngay = tb_ngay;
         this.tb_giangvien = tb_giangvien;
@@ -55,13 +55,13 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull TimeTableAdapter.MyViewHolder holder, int position) {
 
-        holder.tb_mon_txt.setText(String.valueOf(tb_mon.get(position)));
-        holder.tb_thu_txt.setText(String.valueOf(tb_thu.get(position)));
-        holder.tb_ngay_txt.setText(String.valueOf(tb_ngay.get(position)));
-        holder.tb_giangvien_txt.setText(String.valueOf(tb_giangvien.get(position)));
-        holder.tb_phong_txt.setText(String.valueOf(tb_phong.get(position)));
-        holder.tb_tiet_txt.setText(String.valueOf(tb_tiet.get(position)));
-        holder.tb_diadiem_txt.setText(String.valueOf(tb_diadiem.get(position)));
+        holder.tb_mon_txt.setText(tb_mon.get(position));
+        holder.tb_thu_txt.setText(tb_thu.get(position));
+        holder.tb_ngay_txt.setText(tb_ngay.get(position));
+        holder.tb_giangvien_txt.setText(tb_giangvien.get(position));
+        holder.tb_phong_txt.setText(tb_phong.get(position));
+        holder.tb_tiet_txt.setText(tb_tiet.get(position));
+        holder.tb_diadiem_txt.setText(tb_diadiem.get(position));
 
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
