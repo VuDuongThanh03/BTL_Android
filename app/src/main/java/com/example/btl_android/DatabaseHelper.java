@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database name and version
     private static final String DATABASE_NAME = "QuanLyHocTapCaNhan.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     // SinhVien table
     private static final String CREATE_TABLE_SINHVIEN =
             "CREATE TABLE IF NOT EXISTS SinhVien (" +
@@ -103,11 +103,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     " ON UPDATE NO ACTION ON DELETE NO ACTION " +
                     ");";
     // LichHoc table
+    // Cập nhật bảng LichHoc
+    // Cập nhật bảng LichHoc
     private static final String CREATE_TABLE_LICHHOC =
             "CREATE TABLE IF NOT EXISTS LichHoc (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "maSv TEXT NOT NULL," +
                     "maLop TEXT NOT NULL," +
+                    "tenHp TEXT NOT NULL," +
                     "thu TEXT NOT NULL," +
                     "ngay TEXT NOT NULL," +
                     "phong INTEGER NOT NULL," +
@@ -121,6 +124,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(maLop) REFERENCES KetQuaHocPhan(maLop) " +
                     " ON UPDATE NO ACTION ON DELETE NO ACTION" +
                     ");";
+
+    // Phương thức để thêm lịch học
+    public boolean insertLichHoc(String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("tenHp", mon);  // Chuyển đổi tên môn học sang cột tenHp
+        values.put("thu", thu);
+        values.put("ngay", ngay);
+        values.put("giangVien", giangVien);
+        values.put("phong", phong);
+        values.put("tiet", tiet);
+        values.put("diaDiem", diaDiem);
+
+        long result = db.insert("LichHoc", null, values);
+        db.close();
+
+        return result != -1;
+    }
+
+
+    // Phương thức để lấy danh sách tên các môn học
+    public ArrayList<String> getAllTenHocPhan() {
+        ArrayList<String> hocPhanList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT tenHp FROM HocPhan", null);
+        if (cursor.moveToFirst()) {
+            do {
+                hocPhanList.add(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return hocPhanList;
+    }
+
+
     // ThongBao table
     private static final String CREATE_TABLE_THONGBAO =
             "CREATE TABLE IF NOT EXISTS ThongBao (" +
@@ -399,48 +438,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "('2023HP002.7', '2021606516', 'IT6015', 4.0, 9.5, 6.5, 9.0, 9.0, 6), " +
                     "('2023HP003.3', '2021606516', 'IT6016', 8.0, 8.5, 7.0, null, null, 6), " +
                     "('2023HP001.3', '2021606516', 'BS6002', 7.5, 8.0, null, 7.5, 7.5, 6)";
-    private static final String INSERT_TABLE_LICHHOC =
-            "INSERT INTO LichHoc " +
-                    "(id, maSv, maLop, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +
-                    "VALUES " +
-                    "(1, '2021606516', '2021HP002.3', 'Thứ Sáu', '2023-06-21', 201, 'Nguyễn Văn An', '1-2', 'A1', 0, 1), " +
-                    "(2, '2021606516', '2021HP003.1', 'Thứ Ba', '2023-06-25', 202, 'Trần Thị Bích', '3-4', 'A7', 0, 0), " +
-                    "(3, '2021606516', '2021HP002.3', 'Thứ Tư', '2023-06-26', 203, 'Lê Văn Hùng', '5-7', 'A8', 1, 1), " +
-                    "(4, '2021606516', '2021HP003.3', 'Thứ Năm', '2023-06-27', 204, 'Phạm Thị Lan', '8-9', 'A9', 0, 0), " +
-                    "(5, '2021606516', '2021HP003.1', 'Thứ Sáu', '2023-06-28', 205, 'Hoàng Minh Tuấn', '10-12', 'A10', 1, 0), " +
-                    "(6, '2021606516', '2021HP002.3', 'Thứ Hai', '2023-07-01', 206, 'Đặng Thị Vân', '13-14', 'A1', 0, 1), " +
-                    "(7, '2021606516', '2021HP003.3', 'Thứ Ba', '2023-07-02', 207, 'Bùi Thị Hạnh', '1-3', 'A7', 1, 0), " +
-                    "(8, '2021606516', '2021HP003.1', 'Thứ Tư', '2023-07-03', 208, 'Phan Thanh Tùng', '4-5', 'A8', 0, 0), " +
-                    "(9, '2021606516', '2021HP002.3', 'Thứ Năm', '2023-07-04', 601, 'Ngô Thị Ngọc', '6-7', 'A9', 1, 1), " +
-                    "(10, '2021606516', '2021HP003.3', 'Thứ Sáu', '2023-07-05', 602, 'Đỗ Quang Huy', '8-9', 'A10', 0, 0), " +
-                    "(11, '2021606516', '2021HP003.3', 'Thứ Hai', '2023-06-24', 603, 'Lý Thị Hoa', '10-11', 'A1', 1, 0), " +
-                    "(12, '2021606516', '2021HP003.1', 'Thứ Năm', '2023-06-20', 604, 'Lương Xuân Bảo', '12-13', 'A7', 1, 0), " +
-                    "(13, '2021606516', '2021HP001.3', 'Thứ Sáu', '2023-07-12', 605, 'Phạm Văn Đức', '14-15', 'A8', 0, 1), " +
-                    "(14, '2021606516', '2021HP004.6', 'Thứ Ba', '2023-07-16', 606, 'Trần Văn Nam', '1-2', 'A9', 0, 0), " +
-                    "(15, '2021606516', '2021HP005.9', 'Thứ Tư', '2023-07-17', 607, 'Nguyễn Thị Hồng', '3-4', 'A10', 1, 1), " +
-                    "(16, '2021606516', '2021HP006.1', 'Thứ Năm', '2023-07-18', 201, 'Nguyễn Văn Bình', '5-6', 'A1', 0, 0), " +
-                    "(17, '2021606516', '2021HP007.3', 'Thứ Sáu', '2023-07-19', 202, 'Lê Thị Dung', '7-8', 'A7', 1, 0), " +
-                    "(18, '2021606516', '2021HP002.2', 'Thứ Hai', '2023-07-22', 203, 'Vũ Văn Cường', '9-10', 'A8', 0, 1), " +
-                    "(19, '2021606516', '2021HP009.4', 'Thứ Ba', '2023-07-23', 204, 'Trịnh Thị Mai', '11-12', 'A9', 1, 0), " +
-                    "(20, '2021606516', '2021HP001.2', 'Thứ Tư', '2023-07-24', 205, 'Hoàng Văn Tài', '13-14', 'A10', 0, 0), " +
-                    "(21, '2021606516', '2021HP004.5', 'Thứ Năm', '2023-07-25', 206, 'Phạm Thị Lệ', '15', 'A1', 1, 1), " +
-                    "(22, '2021606516', '2021HP002.3', 'Thứ Sáu', '2023-07-26', 207, 'Nguyễn Văn Khoa', '1-2', 'A7', 0, 0), " +
-                    "(23, '2021606516', '2021HP005.9', 'Thứ Hai', '2023-07-29', 208, 'Phan Văn Bình', '3-4', 'A8', 1, 0), " +
-                    "(24, '2021607252', '2021HP004.1', 'Thứ Hai', '2023-07-29', 201, 'Nguyễn Thị Mai', '1-2', 'A1', 0, 1), " +
-                    "(25, '2021607252', '2021HP004.2', 'Thứ Ba', '2023-07-30', 202, 'Trần Văn Bình', '3-5', 'A7', 1, 0), " +
-                    "(26, '2021607252', '2021HP004.3', 'Thứ Tư', '2023-07-31', 203, 'Lê Thị Hằng', '6-7', 'A8', 0, 1), " +
-                    "(27, '2021607252', '2021HP004.4', 'Thứ Năm', '2023-08-01', 204, 'Phạm Văn Khánh', '8-10', 'A9', 1, 0), " +
-                    "(28, '2021607252', '2021HP004.5', 'Thứ Sáu', '2023-08-02', 205, 'Hoàng Thị Thu', '11-12', 'A10', 0, 1), " +
-                    "(29, '2021607252', '2021HP004.6', 'Thứ Bảy', '2023-08-03', 206, 'Vũ Văn Nam', '13-15', 'A1', 1, 0), " +
-                    "(30, '2021607252', '2021HP004.7', 'Chủ Nhật', '2023-08-04', 207, 'Nguyễn Thị Ngọc', '1-3', 'A7', 0, 1), " +
-                    "(31, '2021607252', '2021HP004.8', 'Thứ Hai', '2023-08-05', 208, 'Trần Văn Cường', '4-6', 'A8', 1, 0), " +
-                    "(32, '2021607252', '2021HP004.9', 'Thứ Ba', '2023-08-06', 601, 'Lê Thị Tuyết', '7-9', 'A9', 0, 1), " +
-                    "(33, '2021607252', '2021HP005.1', 'Thứ Tư', '2023-08-07', 602, 'Phạm Văn Hòa', '10-12', 'A10', 1, 0), " +
-                    "(34, '2021607252', '2021HP005.2', 'Thứ Năm', '2023-08-08', 603, 'Hoàng Thị Lan', '13-15', 'A1', 0, 1), " +
-                    "(35, '2021607252', '2021HP005.3', 'Thứ Sáu', '2023-08-09', 604, 'Vũ Văn Hải', '1-3', 'A7', 1, 0), " +
-                    "(36, '2021607252', '2021HP005.4', 'Thứ Bảy', '2023-08-10', 605, 'Nguyễn Thị Thanh', '4-6', 'A8', 0, 1), " +
-                    "(37, '2021607252', '2021HP005.5', 'Chủ Nhật', '2023-08-11', 606, 'Trần Văn Thịnh', '7-9', 'A9', 1, 0), " +
-                    "(38, '2021607252', '2021HP005.6', 'Thứ Hai', '2023-08-12', 607, 'Lê Thị Minh', '10-12', 'A10', 0, 1)";
+//    private static final String INSERT_TABLE_LICHHOC =
+//            "INSERT INTO LichHoc " +
+//                    "(id, maSv, maLop, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) " +
+//                    "VALUES " +
+//                    "(1, '2021606516', '2021HP002.3', 'Thứ Sáu', '2023-06-21', 201, 'Nguyễn Văn An', '1-2', 'A1', 0, 1), " +
+//                    "(2, '2021606516', '2021HP003.1', 'Thứ Ba', '2023-06-25', 202, 'Trần Thị Bích', '3-4', 'A7', 0, 0), " +
+//                    "(3, '2021606516', '2021HP002.3', 'Thứ Tư', '2023-06-26', 203, 'Lê Văn Hùng', '5-7', 'A8', 1, 1), " +
+//                    "(4, '2021606516', '2021HP003.3', 'Thứ Năm', '2023-06-27', 204, 'Phạm Thị Lan', '8-9', 'A9', 0, 0), " +
+//                    "(5, '2021606516', '2021HP003.1', 'Thứ Sáu', '2023-06-28', 205, 'Hoàng Minh Tuấn', '10-12', 'A10', 1, 0), " +
+//                    "(6, '2021606516', '2021HP002.3', 'Thứ Hai', '2023-07-01', 206, 'Đặng Thị Vân', '13-14', 'A1', 0, 1), " +
+//                    "(7, '2021606516', '2021HP003.3', 'Thứ Ba', '2023-07-02', 207, 'Bùi Thị Hạnh', '1-3', 'A7', 1, 0), " +
+//                    "(8, '2021606516', '2021HP003.1', 'Thứ Tư', '2023-07-03', 208, 'Phan Thanh Tùng', '4-5', 'A8', 0, 0), " +
+//                    "(9, '2021606516', '2021HP002.3', 'Thứ Năm', '2023-07-04', 601, 'Ngô Thị Ngọc', '6-7', 'A9', 1, 1), " +
+//                    "(10, '2021606516', '2021HP003.3', 'Thứ Sáu', '2023-07-05', 602, 'Đỗ Quang Huy', '8-9', 'A10', 0, 0), " +
+//                    "(11, '2021606516', '2021HP003.3', 'Thứ Hai', '2023-06-24', 603, 'Lý Thị Hoa', '10-11', 'A1', 1, 0), " +
+//                    "(12, '2021606516', '2021HP003.1', 'Thứ Năm', '2023-06-20', 604, 'Lương Xuân Bảo', '12-13', 'A7', 1, 0), " +
+//                    "(13, '2021606516', '2021HP001.3', 'Thứ Sáu', '2023-07-12', 605, 'Phạm Văn Đức', '14-15', 'A8', 0, 1), " +
+//                    "(14, '2021606516', '2021HP004.6', 'Thứ Ba', '2023-07-16', 606, 'Trần Văn Nam', '1-2', 'A9', 0, 0), " +
+//                    "(15, '2021606516', '2021HP005.9', 'Thứ Tư', '2023-07-17', 607, 'Nguyễn Thị Hồng', '3-4', 'A10', 1, 1), " +
+//                    "(16, '2021606516', '2021HP006.1', 'Thứ Năm', '2023-07-18', 201, 'Nguyễn Văn Bình', '5-6', 'A1', 0, 0), " +
+//                    "(17, '2021606516', '2021HP007.3', 'Thứ Sáu', '2023-07-19', 202, 'Lê Thị Dung', '7-8', 'A7', 1, 0), " +
+//                    "(18, '2021606516', '2021HP002.2', 'Thứ Hai', '2023-07-22', 203, 'Vũ Văn Cường', '9-10', 'A8', 0, 1), " +
+//                    "(19, '2021606516', '2021HP009.4', 'Thứ Ba', '2023-07-23', 204, 'Trịnh Thị Mai', '11-12', 'A9', 1, 0), " +
+//                    "(20, '2021606516', '2021HP001.2', 'Thứ Tư', '2023-07-24', 205, 'Hoàng Văn Tài', '13-14', 'A10', 0, 0), " +
+//                    "(21, '2021606516', '2021HP004.5', 'Thứ Năm', '2023-07-25', 206, 'Phạm Thị Lệ', '15', 'A1', 1, 1), " +
+//                    "(22, '2021606516', '2021HP002.3', 'Thứ Sáu', '2023-07-26', 207, 'Nguyễn Văn Khoa', '1-2', 'A7', 0, 0), " +
+//                    "(23, '2021606516', '2021HP005.9', 'Thứ Hai', '2023-07-29', 208, 'Phan Văn Bình', '3-4', 'A8', 1, 0), " +
+//                    "(24, '2021607252', '2021HP004.1', 'Thứ Hai', '2023-07-29', 201, 'Nguyễn Thị Mai', '1-2', 'A1', 0, 1), " +
+//                    "(25, '2021607252', '2021HP004.2', 'Thứ Ba', '2023-07-30', 202, 'Trần Văn Bình', '3-5', 'A7', 1, 0), " +
+//                    "(26, '2021607252', '2021HP004.3', 'Thứ Tư', '2023-07-31', 203, 'Lê Thị Hằng', '6-7', 'A8', 0, 1), " +
+//                    "(27, '2021607252', '2021HP004.4', 'Thứ Năm', '2023-08-01', 204, 'Phạm Văn Khánh', '8-10', 'A9', 1, 0), " +
+//                    "(28, '2021607252', '2021HP004.5', 'Thứ Sáu', '2023-08-02', 205, 'Hoàng Thị Thu', '11-12', 'A10', 0, 1), " +
+//                    "(29, '2021607252', '2021HP004.6', 'Thứ Bảy', '2023-08-03', 206, 'Vũ Văn Nam', '13-15', 'A1', 1, 0), " +
+//                    "(30, '2021607252', '2021HP004.7', 'Chủ Nhật', '2023-08-04', 207, 'Nguyễn Thị Ngọc', '1-3', 'A7', 0, 1), " +
+//                    "(31, '2021607252', '2021HP004.8', 'Thứ Hai', '2023-08-05', 208, 'Trần Văn Cường', '4-6', 'A8', 1, 0), " +
+//                    "(32, '2021607252', '2021HP004.9', 'Thứ Ba', '2023-08-06', 601, 'Lê Thị Tuyết', '7-9', 'A9', 0, 1), " +
+//                    "(33, '2021607252', '2021HP005.1', 'Thứ Tư', '2023-08-07', 602, 'Phạm Văn Hòa', '10-12', 'A10', 1, 0), " +
+//                    "(34, '2021607252', '2021HP005.2', 'Thứ Năm', '2023-08-08', 603, 'Hoàng Thị Lan', '13-15', 'A1', 0, 1), " +
+//                    "(35, '2021607252', '2021HP005.3', 'Thứ Sáu', '2023-08-09', 604, 'Vũ Văn Hải', '1-3', 'A7', 1, 0), " +
+//                    "(36, '2021607252', '2021HP005.4', 'Thứ Bảy', '2023-08-10', 605, 'Nguyễn Thị Thanh', '4-6', 'A8', 0, 1), " +
+//                    "(37, '2021607252', '2021HP005.5', 'Chủ Nhật', '2023-08-11', 606, 'Trần Văn Thịnh', '7-9', 'A9', 1, 0), " +
+//                    "(38, '2021607252', '2021HP005.6', 'Thứ Hai', '2023-08-12', 607, 'Lê Thị Minh', '10-12', 'A10', 0, 1)";
+private static final String INSERT_TABLE_LICHHOC =
+        "INSERT INTO LichHoc (id, maSv, maLop, tenHp, thu, ngay, phong, giangVien, tiet, diaDiem, loaiTietHoc, vang) VALUES " +
+                "(1, '2021606516', '2021HP002.3', 'Tên môn học', 'Thứ Sáu', '2023-06-21', 201, 'Nguyễn Văn An', '1-2', 'A1', 0, 1), " +
+                // ... (Các bản ghi khác) ...
+                "(38, '2021607252', '2021HP005.6', 'Tên môn học', 'Thứ Hai', '2023-08-12', 607, 'Lê Thị Minh', '10-12', 'A10', 0, 1)";
+
     public static List<Diem> allDiemHpList = new ArrayList<>();
     private Context context;
 
@@ -522,6 +567,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
+
+
+    public List<String> getAllMonHoc() {
+        List<String> monHocList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT tenHp FROM HocPhan", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                monHocList.add(cursor.getString(cursor.getColumnIndexOrThrow("tenHp")));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return monHocList;
+    }
+
     public void deleteHocPhan(String maHp) {
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete("HocPhan", "maHp=?", new String[]{maHp});
@@ -568,25 +631,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return hocPhanList;
     }
 
-    public void insertLichHoc(String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues tb = new ContentValues();
-
-        tb.put("mon", mon);
-        tb.put("thu", thu);
-        tb.put("ngay", ngay);
-        tb.put("giangVien", giangVien);
-        tb.put("phong", phong);
-        tb.put("tiet", tiet);
-        tb.put("diaDiem", diaDiem);
-
-        long result = db.insert("LichHoc", null, tb);
-        if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Add Thanh Cong", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    public void insertLichHoc(String mon, String thu, String ngay, String giangVien, String phong, String tiet, String diaDiem) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues tb = new ContentValues();
+//
+//        tb.put("mon", mon);
+//        tb.put("thu", thu);
+//        tb.put("ngay", ngay);
+//        tb.put("giangVien", giangVien);
+//        tb.put("phong", phong);
+//        tb.put("tiet", tiet);
+//        tb.put("diaDiem", diaDiem);
+//
+//        long result = db.insert("LichHoc", null, tb);
+//        if (result == -1) {
+//            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(context, "Add Thanh Cong", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
 
 
